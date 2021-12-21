@@ -14,8 +14,8 @@ class Guest extends DataClass implements Insertable<Guest> {
   final String? email;
   final String career;
   final String? gender;
-  final String? nationalID;
-  final String? nationalIDPic;
+  final String? nationalId;
+  final String? nationalIdPic;
   final String? password;
   final bool isAdmin;
   final bool isStaff;
@@ -27,8 +27,8 @@ class Guest extends DataClass implements Insertable<Guest> {
       this.email,
       required this.career,
       this.gender,
-      this.nationalID,
-      this.nationalIDPic,
+      this.nationalId,
+      this.nationalIdPic,
       this.password,
       required this.isAdmin,
       required this.isStaff,
@@ -48,10 +48,10 @@ class Guest extends DataClass implements Insertable<Guest> {
           .mapFromDatabaseResponse(data['${effectivePrefix}career'])!,
       gender: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}gender']),
-      nationalID: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}national_i_d']),
-      nationalIDPic: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}national_i_d_pic']),
+      nationalId: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}national_id']),
+      nationalIdPic: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}national_id_pic']),
       password: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}password']),
       isAdmin: const BoolType()
@@ -77,11 +77,11 @@ class Guest extends DataClass implements Insertable<Guest> {
     if (!nullToAbsent || gender != null) {
       map['gender'] = Variable<String?>(gender);
     }
-    if (!nullToAbsent || nationalID != null) {
-      map['national_i_d'] = Variable<String?>(nationalID);
+    if (!nullToAbsent || nationalId != null) {
+      map['national_id'] = Variable<String?>(nationalId);
     }
-    if (!nullToAbsent || nationalIDPic != null) {
-      map['national_i_d_pic'] = Variable<String?>(nationalIDPic);
+    if (!nullToAbsent || nationalIdPic != null) {
+      map['national_id_pic'] = Variable<String?>(nationalIdPic);
     }
     if (!nullToAbsent || password != null) {
       map['password'] = Variable<String?>(password);
@@ -102,12 +102,12 @@ class Guest extends DataClass implements Insertable<Guest> {
       career: Value(career),
       gender:
           gender == null && nullToAbsent ? const Value.absent() : Value(gender),
-      nationalID: nationalID == null && nullToAbsent
+      nationalId: nationalId == null && nullToAbsent
           ? const Value.absent()
-          : Value(nationalID),
-      nationalIDPic: nationalIDPic == null && nullToAbsent
+          : Value(nationalId),
+      nationalIdPic: nationalIdPic == null && nullToAbsent
           ? const Value.absent()
-          : Value(nationalIDPic),
+          : Value(nationalIdPic),
       password: password == null && nullToAbsent
           ? const Value.absent()
           : Value(password),
@@ -127,8 +127,8 @@ class Guest extends DataClass implements Insertable<Guest> {
       email: serializer.fromJson<String?>(json['email']),
       career: serializer.fromJson<String>(json['career']),
       gender: serializer.fromJson<String?>(json['gender']),
-      nationalID: serializer.fromJson<String?>(json['nationalID']),
-      nationalIDPic: serializer.fromJson<String?>(json['nationalIDPic']),
+      nationalId: serializer.fromJson<String?>(json['nationalId']),
+      nationalIdPic: serializer.fromJson<String?>(json['nationalIdPic']),
       password: serializer.fromJson<String?>(json['password']),
       isAdmin: serializer.fromJson<bool>(json['isAdmin']),
       isStaff: serializer.fromJson<bool>(json['isStaff']),
@@ -145,8 +145,8 @@ class Guest extends DataClass implements Insertable<Guest> {
       'email': serializer.toJson<String?>(email),
       'career': serializer.toJson<String>(career),
       'gender': serializer.toJson<String?>(gender),
-      'nationalID': serializer.toJson<String?>(nationalID),
-      'nationalIDPic': serializer.toJson<String?>(nationalIDPic),
+      'nationalId': serializer.toJson<String?>(nationalId),
+      'nationalIdPic': serializer.toJson<String?>(nationalIdPic),
       'password': serializer.toJson<String?>(password),
       'isAdmin': serializer.toJson<bool>(isAdmin),
       'isStaff': serializer.toJson<bool>(isStaff),
@@ -161,8 +161,8 @@ class Guest extends DataClass implements Insertable<Guest> {
           String? email,
           String? career,
           String? gender,
-          String? nationalID,
-          String? nationalIDPic,
+          String? nationalId,
+          String? nationalIdPic,
           String? password,
           bool? isAdmin,
           bool? isStaff,
@@ -174,8 +174,8 @@ class Guest extends DataClass implements Insertable<Guest> {
         email: email ?? this.email,
         career: career ?? this.career,
         gender: gender ?? this.gender,
-        nationalID: nationalID ?? this.nationalID,
-        nationalIDPic: nationalIDPic ?? this.nationalIDPic,
+        nationalId: nationalId ?? this.nationalId,
+        nationalIdPic: nationalIdPic ?? this.nationalIdPic,
         password: password ?? this.password,
         isAdmin: isAdmin ?? this.isAdmin,
         isStaff: isStaff ?? this.isStaff,
@@ -190,8 +190,8 @@ class Guest extends DataClass implements Insertable<Guest> {
           ..write('email: $email, ')
           ..write('career: $career, ')
           ..write('gender: $gender, ')
-          ..write('nationalID: $nationalID, ')
-          ..write('nationalIDPic: $nationalIDPic, ')
+          ..write('nationalId: $nationalId, ')
+          ..write('nationalIdPic: $nationalIdPic, ')
           ..write('password: $password, ')
           ..write('isAdmin: $isAdmin, ')
           ..write('isStaff: $isStaff, ')
@@ -202,7 +202,7 @@ class Guest extends DataClass implements Insertable<Guest> {
 
   @override
   int get hashCode => Object.hash(id, phone, name, email, career, gender,
-      nationalID, nationalIDPic, password, isAdmin, isStaff, createdDate);
+      nationalId, nationalIdPic, password, isAdmin, isStaff, createdDate);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -213,8 +213,8 @@ class Guest extends DataClass implements Insertable<Guest> {
           other.email == this.email &&
           other.career == this.career &&
           other.gender == this.gender &&
-          other.nationalID == this.nationalID &&
-          other.nationalIDPic == this.nationalIDPic &&
+          other.nationalId == this.nationalId &&
+          other.nationalIdPic == this.nationalIdPic &&
           other.password == this.password &&
           other.isAdmin == this.isAdmin &&
           other.isStaff == this.isStaff &&
@@ -228,8 +228,8 @@ class GuestsCompanion extends UpdateCompanion<Guest> {
   final Value<String?> email;
   final Value<String> career;
   final Value<String?> gender;
-  final Value<String?> nationalID;
-  final Value<String?> nationalIDPic;
+  final Value<String?> nationalId;
+  final Value<String?> nationalIdPic;
   final Value<String?> password;
   final Value<bool> isAdmin;
   final Value<bool> isStaff;
@@ -241,8 +241,8 @@ class GuestsCompanion extends UpdateCompanion<Guest> {
     this.email = const Value.absent(),
     this.career = const Value.absent(),
     this.gender = const Value.absent(),
-    this.nationalID = const Value.absent(),
-    this.nationalIDPic = const Value.absent(),
+    this.nationalId = const Value.absent(),
+    this.nationalIdPic = const Value.absent(),
     this.password = const Value.absent(),
     this.isAdmin = const Value.absent(),
     this.isStaff = const Value.absent(),
@@ -255,8 +255,8 @@ class GuestsCompanion extends UpdateCompanion<Guest> {
     this.email = const Value.absent(),
     this.career = const Value.absent(),
     this.gender = const Value.absent(),
-    this.nationalID = const Value.absent(),
-    this.nationalIDPic = const Value.absent(),
+    this.nationalId = const Value.absent(),
+    this.nationalIdPic = const Value.absent(),
     this.password = const Value.absent(),
     this.isAdmin = const Value.absent(),
     this.isStaff = const Value.absent(),
@@ -269,8 +269,8 @@ class GuestsCompanion extends UpdateCompanion<Guest> {
     Expression<String?>? email,
     Expression<String>? career,
     Expression<String?>? gender,
-    Expression<String?>? nationalID,
-    Expression<String?>? nationalIDPic,
+    Expression<String?>? nationalId,
+    Expression<String?>? nationalIdPic,
     Expression<String?>? password,
     Expression<bool>? isAdmin,
     Expression<bool>? isStaff,
@@ -283,8 +283,8 @@ class GuestsCompanion extends UpdateCompanion<Guest> {
       if (email != null) 'email': email,
       if (career != null) 'career': career,
       if (gender != null) 'gender': gender,
-      if (nationalID != null) 'national_i_d': nationalID,
-      if (nationalIDPic != null) 'national_i_d_pic': nationalIDPic,
+      if (nationalId != null) 'national_id': nationalId,
+      if (nationalIdPic != null) 'national_id_pic': nationalIdPic,
       if (password != null) 'password': password,
       if (isAdmin != null) 'is_admin': isAdmin,
       if (isStaff != null) 'is_staff': isStaff,
@@ -299,8 +299,8 @@ class GuestsCompanion extends UpdateCompanion<Guest> {
       Value<String?>? email,
       Value<String>? career,
       Value<String?>? gender,
-      Value<String?>? nationalID,
-      Value<String?>? nationalIDPic,
+      Value<String?>? nationalId,
+      Value<String?>? nationalIdPic,
       Value<String?>? password,
       Value<bool>? isAdmin,
       Value<bool>? isStaff,
@@ -312,8 +312,8 @@ class GuestsCompanion extends UpdateCompanion<Guest> {
       email: email ?? this.email,
       career: career ?? this.career,
       gender: gender ?? this.gender,
-      nationalID: nationalID ?? this.nationalID,
-      nationalIDPic: nationalIDPic ?? this.nationalIDPic,
+      nationalId: nationalId ?? this.nationalId,
+      nationalIdPic: nationalIdPic ?? this.nationalIdPic,
       password: password ?? this.password,
       isAdmin: isAdmin ?? this.isAdmin,
       isStaff: isStaff ?? this.isStaff,
@@ -342,11 +342,11 @@ class GuestsCompanion extends UpdateCompanion<Guest> {
     if (gender.present) {
       map['gender'] = Variable<String?>(gender.value);
     }
-    if (nationalID.present) {
-      map['national_i_d'] = Variable<String?>(nationalID.value);
+    if (nationalId.present) {
+      map['national_id'] = Variable<String?>(nationalId.value);
     }
-    if (nationalIDPic.present) {
-      map['national_i_d_pic'] = Variable<String?>(nationalIDPic.value);
+    if (nationalIdPic.present) {
+      map['national_id_pic'] = Variable<String?>(nationalIdPic.value);
     }
     if (password.present) {
       map['password'] = Variable<String?>(password.value);
@@ -372,8 +372,8 @@ class GuestsCompanion extends UpdateCompanion<Guest> {
           ..write('email: $email, ')
           ..write('career: $career, ')
           ..write('gender: $gender, ')
-          ..write('nationalID: $nationalID, ')
-          ..write('nationalIDPic: $nationalIDPic, ')
+          ..write('nationalId: $nationalId, ')
+          ..write('nationalIdPic: $nationalIdPic, ')
           ..write('password: $password, ')
           ..write('isAdmin: $isAdmin, ')
           ..write('isStaff: $isStaff, ')
@@ -393,7 +393,7 @@ class $GuestsTable extends Guests with TableInfo<$GuestsTable, Guest> {
       'id', aliasedName, false,
       type: const IntType(),
       requiredDuringInsert: false,
-      defaultConstraints: 'PRIMARY KEY AUTOINCREMENT');
+      $customConstraints: 'UNIQUE');
   final VerificationMeta _phoneMeta = const VerificationMeta('phone');
   @override
   late final GeneratedColumn<String?> phone = GeneratedColumn<String?>(
@@ -401,7 +401,8 @@ class $GuestsTable extends Guests with TableInfo<$GuestsTable, Guest> {
       additionalChecks:
           GeneratedColumn.checkTextLength(minTextLength: 3, maxTextLength: 17),
       type: const StringType(),
-      requiredDuringInsert: true);
+      requiredDuringInsert: true,
+      $customConstraints: 'UNIQUE');
   final VerificationMeta _nameMeta = const VerificationMeta('name');
   @override
   late final GeneratedColumn<String?> name = GeneratedColumn<String?>(
@@ -414,7 +415,9 @@ class $GuestsTable extends Guests with TableInfo<$GuestsTable, Guest> {
   @override
   late final GeneratedColumn<String?> email = GeneratedColumn<String?>(
       'email', aliasedName, true,
-      type: const StringType(), requiredDuringInsert: false);
+      type: const StringType(),
+      requiredDuringInsert: false,
+      $customConstraints: 'UNIQUE');
   final VerificationMeta _careerMeta = const VerificationMeta('career');
   @override
   late final GeneratedColumn<String?> career = GeneratedColumn<String?>(
@@ -430,16 +433,18 @@ class $GuestsTable extends Guests with TableInfo<$GuestsTable, Guest> {
       additionalChecks: GeneratedColumn.checkTextLength(maxTextLength: 13),
       type: const StringType(),
       requiredDuringInsert: false);
-  final VerificationMeta _nationalIDMeta = const VerificationMeta('nationalID');
+  final VerificationMeta _nationalIdMeta = const VerificationMeta('nationalId');
   @override
-  late final GeneratedColumn<String?> nationalID = GeneratedColumn<String?>(
-      'national_i_d', aliasedName, true,
-      type: const StringType(), requiredDuringInsert: false);
-  final VerificationMeta _nationalIDPicMeta =
-      const VerificationMeta('nationalIDPic');
+  late final GeneratedColumn<String?> nationalId = GeneratedColumn<String?>(
+      'national_id', aliasedName, true,
+      type: const StringType(),
+      requiredDuringInsert: false,
+      $customConstraints: 'UNIQUE');
+  final VerificationMeta _nationalIdPicMeta =
+      const VerificationMeta('nationalIdPic');
   @override
-  late final GeneratedColumn<String?> nationalIDPic = GeneratedColumn<String?>(
-      'national_i_d_pic', aliasedName, true,
+  late final GeneratedColumn<String?> nationalIdPic = GeneratedColumn<String?>(
+      'national_id_pic', aliasedName, true,
       type: const StringType(), requiredDuringInsert: false);
   final VerificationMeta _passwordMeta = const VerificationMeta('password');
   @override
@@ -478,8 +483,8 @@ class $GuestsTable extends Guests with TableInfo<$GuestsTable, Guest> {
         email,
         career,
         gender,
-        nationalID,
-        nationalIDPic,
+        nationalId,
+        nationalIdPic,
         password,
         isAdmin,
         isStaff,
@@ -519,17 +524,17 @@ class $GuestsTable extends Guests with TableInfo<$GuestsTable, Guest> {
       context.handle(_genderMeta,
           gender.isAcceptableOrUnknown(data['gender']!, _genderMeta));
     }
-    if (data.containsKey('national_i_d')) {
+    if (data.containsKey('national_id')) {
       context.handle(
-          _nationalIDMeta,
-          nationalID.isAcceptableOrUnknown(
-              data['national_i_d']!, _nationalIDMeta));
+          _nationalIdMeta,
+          nationalId.isAcceptableOrUnknown(
+              data['national_id']!, _nationalIdMeta));
     }
-    if (data.containsKey('national_i_d_pic')) {
+    if (data.containsKey('national_id_pic')) {
       context.handle(
-          _nationalIDPicMeta,
-          nationalIDPic.isAcceptableOrUnknown(
-              data['national_i_d_pic']!, _nationalIDPicMeta));
+          _nationalIdPicMeta,
+          nationalIdPic.isAcceptableOrUnknown(
+              data['national_id_pic']!, _nationalIdPicMeta));
     }
     if (data.containsKey('password')) {
       context.handle(_passwordMeta,
@@ -752,7 +757,7 @@ class $PricesTable extends Prices with TableInfo<$PricesTable, Price> {
       'id', aliasedName, false,
       type: const IntType(),
       requiredDuringInsert: false,
-      defaultConstraints: 'PRIMARY KEY AUTOINCREMENT');
+      $customConstraints: 'UNIQUE');
   final VerificationMeta _ratePerGuestMeta =
       const VerificationMeta('ratePerGuest');
   @override
@@ -1008,7 +1013,7 @@ class $CoursesTable extends Courses with TableInfo<$CoursesTable, Course> {
       'id', aliasedName, false,
       type: const IntType(),
       requiredDuringInsert: false,
-      defaultConstraints: 'PRIMARY KEY AUTOINCREMENT');
+      $customConstraints: 'UNIQUE');
   final VerificationMeta _nameMeta = const VerificationMeta('name');
   @override
   late final GeneratedColumn<String?> name = GeneratedColumn<String?>(
@@ -1258,7 +1263,7 @@ class $RoomsTable extends Rooms with TableInfo<$RoomsTable, Room> {
       'id', aliasedName, false,
       type: const IntType(),
       requiredDuringInsert: false,
-      defaultConstraints: 'PRIMARY KEY AUTOINCREMENT');
+      $customConstraints: 'UNIQUE');
   final VerificationMeta _nameMeta = const VerificationMeta('name');
   @override
   late final GeneratedColumn<String?> name = GeneratedColumn<String?>(
@@ -1330,16 +1335,16 @@ class Reservation extends DataClass implements Insertable<Reservation> {
   final int id;
   final DateTime from;
   final DateTime to;
-  final int roomID;
-  final int guestID;
-  final bool isPrePaid;
+  final int roomId;
+  final int guestId;
+  final bool isPrePaId;
   Reservation(
       {required this.id,
       required this.from,
       required this.to,
-      required this.roomID,
-      required this.guestID,
-      required this.isPrePaid});
+      required this.roomId,
+      required this.guestId,
+      required this.isPrePaId});
   factory Reservation.fromData(Map<String, dynamic> data, {String? prefix}) {
     final effectivePrefix = prefix ?? '';
     return Reservation(
@@ -1349,12 +1354,12 @@ class Reservation extends DataClass implements Insertable<Reservation> {
           .mapFromDatabaseResponse(data['${effectivePrefix}from'])!,
       to: const DateTimeType()
           .mapFromDatabaseResponse(data['${effectivePrefix}to'])!,
-      roomID: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}room_i_d'])!,
-      guestID: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}guest_i_d'])!,
-      isPrePaid: const BoolType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}is_pre_paid'])!,
+      roomId: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}room_id'])!,
+      guestId: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}guest_id'])!,
+      isPrePaId: const BoolType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}is_pre_pa_id'])!,
     );
   }
   @override
@@ -1363,9 +1368,9 @@ class Reservation extends DataClass implements Insertable<Reservation> {
     map['id'] = Variable<int>(id);
     map['from'] = Variable<DateTime>(from);
     map['to'] = Variable<DateTime>(to);
-    map['room_i_d'] = Variable<int>(roomID);
-    map['guest_i_d'] = Variable<int>(guestID);
-    map['is_pre_paid'] = Variable<bool>(isPrePaid);
+    map['room_id'] = Variable<int>(roomId);
+    map['guest_id'] = Variable<int>(guestId);
+    map['is_pre_pa_id'] = Variable<bool>(isPrePaId);
     return map;
   }
 
@@ -1374,9 +1379,9 @@ class Reservation extends DataClass implements Insertable<Reservation> {
       id: Value(id),
       from: Value(from),
       to: Value(to),
-      roomID: Value(roomID),
-      guestID: Value(guestID),
-      isPrePaid: Value(isPrePaid),
+      roomId: Value(roomId),
+      guestId: Value(guestId),
+      isPrePaId: Value(isPrePaId),
     );
   }
 
@@ -1387,9 +1392,9 @@ class Reservation extends DataClass implements Insertable<Reservation> {
       id: serializer.fromJson<int>(json['id']),
       from: serializer.fromJson<DateTime>(json['from']),
       to: serializer.fromJson<DateTime>(json['to']),
-      roomID: serializer.fromJson<int>(json['roomID']),
-      guestID: serializer.fromJson<int>(json['guestID']),
-      isPrePaid: serializer.fromJson<bool>(json['isPrePaid']),
+      roomId: serializer.fromJson<int>(json['roomId']),
+      guestId: serializer.fromJson<int>(json['guestId']),
+      isPrePaId: serializer.fromJson<bool>(json['isPrePaId']),
     );
   }
   @override
@@ -1399,9 +1404,9 @@ class Reservation extends DataClass implements Insertable<Reservation> {
       'id': serializer.toJson<int>(id),
       'from': serializer.toJson<DateTime>(from),
       'to': serializer.toJson<DateTime>(to),
-      'roomID': serializer.toJson<int>(roomID),
-      'guestID': serializer.toJson<int>(guestID),
-      'isPrePaid': serializer.toJson<bool>(isPrePaid),
+      'roomId': serializer.toJson<int>(roomId),
+      'guestId': serializer.toJson<int>(guestId),
+      'isPrePaId': serializer.toJson<bool>(isPrePaId),
     };
   }
 
@@ -1409,16 +1414,16 @@ class Reservation extends DataClass implements Insertable<Reservation> {
           {int? id,
           DateTime? from,
           DateTime? to,
-          int? roomID,
-          int? guestID,
-          bool? isPrePaid}) =>
+          int? roomId,
+          int? guestId,
+          bool? isPrePaId}) =>
       Reservation(
         id: id ?? this.id,
         from: from ?? this.from,
         to: to ?? this.to,
-        roomID: roomID ?? this.roomID,
-        guestID: guestID ?? this.guestID,
-        isPrePaid: isPrePaid ?? this.isPrePaid,
+        roomId: roomId ?? this.roomId,
+        guestId: guestId ?? this.guestId,
+        isPrePaId: isPrePaId ?? this.isPrePaId,
       );
   @override
   String toString() {
@@ -1426,15 +1431,15 @@ class Reservation extends DataClass implements Insertable<Reservation> {
           ..write('id: $id, ')
           ..write('from: $from, ')
           ..write('to: $to, ')
-          ..write('roomID: $roomID, ')
-          ..write('guestID: $guestID, ')
-          ..write('isPrePaid: $isPrePaid')
+          ..write('roomId: $roomId, ')
+          ..write('guestId: $guestId, ')
+          ..write('isPrePaId: $isPrePaId')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, from, to, roomID, guestID, isPrePaid);
+  int get hashCode => Object.hash(id, from, to, roomId, guestId, isPrePaId);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -1442,53 +1447,53 @@ class Reservation extends DataClass implements Insertable<Reservation> {
           other.id == this.id &&
           other.from == this.from &&
           other.to == this.to &&
-          other.roomID == this.roomID &&
-          other.guestID == this.guestID &&
-          other.isPrePaid == this.isPrePaid);
+          other.roomId == this.roomId &&
+          other.guestId == this.guestId &&
+          other.isPrePaId == this.isPrePaId);
 }
 
 class ReservationsCompanion extends UpdateCompanion<Reservation> {
   final Value<int> id;
   final Value<DateTime> from;
   final Value<DateTime> to;
-  final Value<int> roomID;
-  final Value<int> guestID;
-  final Value<bool> isPrePaid;
+  final Value<int> roomId;
+  final Value<int> guestId;
+  final Value<bool> isPrePaId;
   const ReservationsCompanion({
     this.id = const Value.absent(),
     this.from = const Value.absent(),
     this.to = const Value.absent(),
-    this.roomID = const Value.absent(),
-    this.guestID = const Value.absent(),
-    this.isPrePaid = const Value.absent(),
+    this.roomId = const Value.absent(),
+    this.guestId = const Value.absent(),
+    this.isPrePaId = const Value.absent(),
   });
   ReservationsCompanion.insert({
     this.id = const Value.absent(),
     required DateTime from,
     required DateTime to,
-    required int roomID,
-    required int guestID,
-    required bool isPrePaid,
+    required int roomId,
+    required int guestId,
+    required bool isPrePaId,
   })  : from = Value(from),
         to = Value(to),
-        roomID = Value(roomID),
-        guestID = Value(guestID),
-        isPrePaid = Value(isPrePaid);
+        roomId = Value(roomId),
+        guestId = Value(guestId),
+        isPrePaId = Value(isPrePaId);
   static Insertable<Reservation> custom({
     Expression<int>? id,
     Expression<DateTime>? from,
     Expression<DateTime>? to,
-    Expression<int>? roomID,
-    Expression<int>? guestID,
-    Expression<bool>? isPrePaid,
+    Expression<int>? roomId,
+    Expression<int>? guestId,
+    Expression<bool>? isPrePaId,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (from != null) 'from': from,
       if (to != null) 'to': to,
-      if (roomID != null) 'room_i_d': roomID,
-      if (guestID != null) 'guest_i_d': guestID,
-      if (isPrePaid != null) 'is_pre_paid': isPrePaid,
+      if (roomId != null) 'room_id': roomId,
+      if (guestId != null) 'guest_id': guestId,
+      if (isPrePaId != null) 'is_pre_pa_id': isPrePaId,
     });
   }
 
@@ -1496,16 +1501,16 @@ class ReservationsCompanion extends UpdateCompanion<Reservation> {
       {Value<int>? id,
       Value<DateTime>? from,
       Value<DateTime>? to,
-      Value<int>? roomID,
-      Value<int>? guestID,
-      Value<bool>? isPrePaid}) {
+      Value<int>? roomId,
+      Value<int>? guestId,
+      Value<bool>? isPrePaId}) {
     return ReservationsCompanion(
       id: id ?? this.id,
       from: from ?? this.from,
       to: to ?? this.to,
-      roomID: roomID ?? this.roomID,
-      guestID: guestID ?? this.guestID,
-      isPrePaid: isPrePaid ?? this.isPrePaid,
+      roomId: roomId ?? this.roomId,
+      guestId: guestId ?? this.guestId,
+      isPrePaId: isPrePaId ?? this.isPrePaId,
     );
   }
 
@@ -1521,14 +1526,14 @@ class ReservationsCompanion extends UpdateCompanion<Reservation> {
     if (to.present) {
       map['to'] = Variable<DateTime>(to.value);
     }
-    if (roomID.present) {
-      map['room_i_d'] = Variable<int>(roomID.value);
+    if (roomId.present) {
+      map['room_id'] = Variable<int>(roomId.value);
     }
-    if (guestID.present) {
-      map['guest_i_d'] = Variable<int>(guestID.value);
+    if (guestId.present) {
+      map['guest_id'] = Variable<int>(guestId.value);
     }
-    if (isPrePaid.present) {
-      map['is_pre_paid'] = Variable<bool>(isPrePaid.value);
+    if (isPrePaId.present) {
+      map['is_pre_pa_id'] = Variable<bool>(isPrePaId.value);
     }
     return map;
   }
@@ -1539,9 +1544,9 @@ class ReservationsCompanion extends UpdateCompanion<Reservation> {
           ..write('id: $id, ')
           ..write('from: $from, ')
           ..write('to: $to, ')
-          ..write('roomID: $roomID, ')
-          ..write('guestID: $guestID, ')
-          ..write('isPrePaid: $isPrePaid')
+          ..write('roomId: $roomId, ')
+          ..write('guestId: $guestId, ')
+          ..write('isPrePaId: $isPrePaId')
           ..write(')'))
         .toString();
   }
@@ -1558,7 +1563,7 @@ class $ReservationsTable extends Reservations
       'id', aliasedName, false,
       type: const IntType(),
       requiredDuringInsert: false,
-      defaultConstraints: 'PRIMARY KEY AUTOINCREMENT');
+      $customConstraints: 'UNIQUE');
   final VerificationMeta _fromMeta = const VerificationMeta('from');
   @override
   late final GeneratedColumn<DateTime?> from = GeneratedColumn<DateTime?>(
@@ -1569,30 +1574,26 @@ class $ReservationsTable extends Reservations
   late final GeneratedColumn<DateTime?> to = GeneratedColumn<DateTime?>(
       'to', aliasedName, false,
       type: const IntType(), requiredDuringInsert: true);
-  final VerificationMeta _roomIDMeta = const VerificationMeta('roomID');
+  final VerificationMeta _roomIdMeta = const VerificationMeta('roomId');
   @override
-  late final GeneratedColumn<int?> roomID = GeneratedColumn<int?>(
-      'room_i_d', aliasedName, false,
-      type: const IntType(),
-      requiredDuringInsert: true,
-      defaultConstraints: 'REFERENCES rooms (id)');
-  final VerificationMeta _guestIDMeta = const VerificationMeta('guestID');
+  late final GeneratedColumn<int?> roomId = GeneratedColumn<int?>(
+      'room_id', aliasedName, false,
+      type: const IntType(), requiredDuringInsert: true);
+  final VerificationMeta _guestIdMeta = const VerificationMeta('guestId');
   @override
-  late final GeneratedColumn<int?> guestID = GeneratedColumn<int?>(
-      'guest_i_d', aliasedName, false,
-      type: const IntType(),
-      requiredDuringInsert: true,
-      defaultConstraints: 'REFERENCES guests (id)');
-  final VerificationMeta _isPrePaidMeta = const VerificationMeta('isPrePaid');
+  late final GeneratedColumn<int?> guestId = GeneratedColumn<int?>(
+      'guest_id', aliasedName, false,
+      type: const IntType(), requiredDuringInsert: true);
+  final VerificationMeta _isPrePaIdMeta = const VerificationMeta('isPrePaId');
   @override
-  late final GeneratedColumn<bool?> isPrePaid = GeneratedColumn<bool?>(
-      'is_pre_paid', aliasedName, false,
+  late final GeneratedColumn<bool?> isPrePaId = GeneratedColumn<bool?>(
+      'is_pre_pa_id', aliasedName, false,
       type: const BoolType(),
       requiredDuringInsert: true,
-      defaultConstraints: 'CHECK (is_pre_paid IN (0, 1))');
+      defaultConstraints: 'CHECK (is_pre_pa_id IN (0, 1))');
   @override
   List<GeneratedColumn> get $columns =>
-      [id, from, to, roomID, guestID, isPrePaid];
+      [id, from, to, roomId, guestId, isPrePaId];
   @override
   String get aliasedName => _alias ?? 'reservations';
   @override
@@ -1616,25 +1617,25 @@ class $ReservationsTable extends Reservations
     } else if (isInserting) {
       context.missing(_toMeta);
     }
-    if (data.containsKey('room_i_d')) {
-      context.handle(_roomIDMeta,
-          roomID.isAcceptableOrUnknown(data['room_i_d']!, _roomIDMeta));
+    if (data.containsKey('room_id')) {
+      context.handle(_roomIdMeta,
+          roomId.isAcceptableOrUnknown(data['room_id']!, _roomIdMeta));
     } else if (isInserting) {
-      context.missing(_roomIDMeta);
+      context.missing(_roomIdMeta);
     }
-    if (data.containsKey('guest_i_d')) {
-      context.handle(_guestIDMeta,
-          guestID.isAcceptableOrUnknown(data['guest_i_d']!, _guestIDMeta));
+    if (data.containsKey('guest_id')) {
+      context.handle(_guestIdMeta,
+          guestId.isAcceptableOrUnknown(data['guest_id']!, _guestIdMeta));
     } else if (isInserting) {
-      context.missing(_guestIDMeta);
+      context.missing(_guestIdMeta);
     }
-    if (data.containsKey('is_pre_paid')) {
+    if (data.containsKey('is_pre_pa_id')) {
       context.handle(
-          _isPrePaidMeta,
-          isPrePaid.isAcceptableOrUnknown(
-              data['is_pre_paid']!, _isPrePaidMeta));
+          _isPrePaIdMeta,
+          isPrePaId.isAcceptableOrUnknown(
+              data['is_pre_pa_id']!, _isPrePaIdMeta));
     } else if (isInserting) {
-      context.missing(_isPrePaidMeta);
+      context.missing(_isPrePaIdMeta);
     }
     return context;
   }
@@ -1658,21 +1659,21 @@ class Session extends DataClass implements Insertable<Session> {
   final DateTime from;
   final DateTime to;
   final int guestsCount;
-  final int guestID;
-  final int? priceID;
-  final int? courseID;
-  final int? roomID;
-  final int? reservationID;
+  final int guestId;
+  final int? priceId;
+  final int? courseId;
+  final int? roomId;
+  final int? reservationId;
   Session(
       {required this.id,
       required this.from,
       required this.to,
       required this.guestsCount,
-      required this.guestID,
-      this.priceID,
-      this.courseID,
-      this.roomID,
-      this.reservationID});
+      required this.guestId,
+      this.priceId,
+      this.courseId,
+      this.roomId,
+      this.reservationId});
   factory Session.fromData(Map<String, dynamic> data, {String? prefix}) {
     final effectivePrefix = prefix ?? '';
     return Session(
@@ -1684,16 +1685,16 @@ class Session extends DataClass implements Insertable<Session> {
           .mapFromDatabaseResponse(data['${effectivePrefix}to'])!,
       guestsCount: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}guests_count'])!,
-      guestID: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}guest_i_d'])!,
-      priceID: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}price_i_d']),
-      courseID: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}course_i_d']),
-      roomID: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}room_i_d']),
-      reservationID: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}reservation_i_d']),
+      guestId: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}guest_id'])!,
+      priceId: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}price_id']),
+      courseId: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}course_id']),
+      roomId: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}room_id']),
+      reservationId: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}reservation_id']),
     );
   }
   @override
@@ -1703,18 +1704,18 @@ class Session extends DataClass implements Insertable<Session> {
     map['from'] = Variable<DateTime>(from);
     map['to'] = Variable<DateTime>(to);
     map['guests_count'] = Variable<int>(guestsCount);
-    map['guest_i_d'] = Variable<int>(guestID);
-    if (!nullToAbsent || priceID != null) {
-      map['price_i_d'] = Variable<int?>(priceID);
+    map['guest_id'] = Variable<int>(guestId);
+    if (!nullToAbsent || priceId != null) {
+      map['price_id'] = Variable<int?>(priceId);
     }
-    if (!nullToAbsent || courseID != null) {
-      map['course_i_d'] = Variable<int?>(courseID);
+    if (!nullToAbsent || courseId != null) {
+      map['course_id'] = Variable<int?>(courseId);
     }
-    if (!nullToAbsent || roomID != null) {
-      map['room_i_d'] = Variable<int?>(roomID);
+    if (!nullToAbsent || roomId != null) {
+      map['room_id'] = Variable<int?>(roomId);
     }
-    if (!nullToAbsent || reservationID != null) {
-      map['reservation_i_d'] = Variable<int?>(reservationID);
+    if (!nullToAbsent || reservationId != null) {
+      map['reservation_id'] = Variable<int?>(reservationId);
     }
     return map;
   }
@@ -1725,18 +1726,18 @@ class Session extends DataClass implements Insertable<Session> {
       from: Value(from),
       to: Value(to),
       guestsCount: Value(guestsCount),
-      guestID: Value(guestID),
-      priceID: priceID == null && nullToAbsent
+      guestId: Value(guestId),
+      priceId: priceId == null && nullToAbsent
           ? const Value.absent()
-          : Value(priceID),
-      courseID: courseID == null && nullToAbsent
+          : Value(priceId),
+      courseId: courseId == null && nullToAbsent
           ? const Value.absent()
-          : Value(courseID),
-      roomID:
-          roomID == null && nullToAbsent ? const Value.absent() : Value(roomID),
-      reservationID: reservationID == null && nullToAbsent
+          : Value(courseId),
+      roomId:
+          roomId == null && nullToAbsent ? const Value.absent() : Value(roomId),
+      reservationId: reservationId == null && nullToAbsent
           ? const Value.absent()
-          : Value(reservationID),
+          : Value(reservationId),
     );
   }
 
@@ -1748,11 +1749,11 @@ class Session extends DataClass implements Insertable<Session> {
       from: serializer.fromJson<DateTime>(json['from']),
       to: serializer.fromJson<DateTime>(json['to']),
       guestsCount: serializer.fromJson<int>(json['guestsCount']),
-      guestID: serializer.fromJson<int>(json['guestID']),
-      priceID: serializer.fromJson<int?>(json['priceID']),
-      courseID: serializer.fromJson<int?>(json['courseID']),
-      roomID: serializer.fromJson<int?>(json['roomID']),
-      reservationID: serializer.fromJson<int?>(json['reservationID']),
+      guestId: serializer.fromJson<int>(json['guestId']),
+      priceId: serializer.fromJson<int?>(json['priceId']),
+      courseId: serializer.fromJson<int?>(json['courseId']),
+      roomId: serializer.fromJson<int?>(json['roomId']),
+      reservationId: serializer.fromJson<int?>(json['reservationId']),
     );
   }
   @override
@@ -1763,11 +1764,11 @@ class Session extends DataClass implements Insertable<Session> {
       'from': serializer.toJson<DateTime>(from),
       'to': serializer.toJson<DateTime>(to),
       'guestsCount': serializer.toJson<int>(guestsCount),
-      'guestID': serializer.toJson<int>(guestID),
-      'priceID': serializer.toJson<int?>(priceID),
-      'courseID': serializer.toJson<int?>(courseID),
-      'roomID': serializer.toJson<int?>(roomID),
-      'reservationID': serializer.toJson<int?>(reservationID),
+      'guestId': serializer.toJson<int>(guestId),
+      'priceId': serializer.toJson<int?>(priceId),
+      'courseId': serializer.toJson<int?>(courseId),
+      'roomId': serializer.toJson<int?>(roomId),
+      'reservationId': serializer.toJson<int?>(reservationId),
     };
   }
 
@@ -1776,21 +1777,21 @@ class Session extends DataClass implements Insertable<Session> {
           DateTime? from,
           DateTime? to,
           int? guestsCount,
-          int? guestID,
-          int? priceID,
-          int? courseID,
-          int? roomID,
-          int? reservationID}) =>
+          int? guestId,
+          int? priceId,
+          int? courseId,
+          int? roomId,
+          int? reservationId}) =>
       Session(
         id: id ?? this.id,
         from: from ?? this.from,
         to: to ?? this.to,
         guestsCount: guestsCount ?? this.guestsCount,
-        guestID: guestID ?? this.guestID,
-        priceID: priceID ?? this.priceID,
-        courseID: courseID ?? this.courseID,
-        roomID: roomID ?? this.roomID,
-        reservationID: reservationID ?? this.reservationID,
+        guestId: guestId ?? this.guestId,
+        priceId: priceId ?? this.priceId,
+        courseId: courseId ?? this.courseId,
+        roomId: roomId ?? this.roomId,
+        reservationId: reservationId ?? this.reservationId,
       );
   @override
   String toString() {
@@ -1799,18 +1800,18 @@ class Session extends DataClass implements Insertable<Session> {
           ..write('from: $from, ')
           ..write('to: $to, ')
           ..write('guestsCount: $guestsCount, ')
-          ..write('guestID: $guestID, ')
-          ..write('priceID: $priceID, ')
-          ..write('courseID: $courseID, ')
-          ..write('roomID: $roomID, ')
-          ..write('reservationID: $reservationID')
+          ..write('guestId: $guestId, ')
+          ..write('priceId: $priceId, ')
+          ..write('courseId: $courseId, ')
+          ..write('roomId: $roomId, ')
+          ..write('reservationId: $reservationId')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, from, to, guestsCount, guestID, priceID,
-      courseID, roomID, reservationID);
+  int get hashCode => Object.hash(id, from, to, guestsCount, guestId, priceId,
+      courseId, roomId, reservationId);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -1819,11 +1820,11 @@ class Session extends DataClass implements Insertable<Session> {
           other.from == this.from &&
           other.to == this.to &&
           other.guestsCount == this.guestsCount &&
-          other.guestID == this.guestID &&
-          other.priceID == this.priceID &&
-          other.courseID == this.courseID &&
-          other.roomID == this.roomID &&
-          other.reservationID == this.reservationID);
+          other.guestId == this.guestId &&
+          other.priceId == this.priceId &&
+          other.courseId == this.courseId &&
+          other.roomId == this.roomId &&
+          other.reservationId == this.reservationId);
 }
 
 class SessionsCompanion extends UpdateCompanion<Session> {
@@ -1831,56 +1832,56 @@ class SessionsCompanion extends UpdateCompanion<Session> {
   final Value<DateTime> from;
   final Value<DateTime> to;
   final Value<int> guestsCount;
-  final Value<int> guestID;
-  final Value<int?> priceID;
-  final Value<int?> courseID;
-  final Value<int?> roomID;
-  final Value<int?> reservationID;
+  final Value<int> guestId;
+  final Value<int?> priceId;
+  final Value<int?> courseId;
+  final Value<int?> roomId;
+  final Value<int?> reservationId;
   const SessionsCompanion({
     this.id = const Value.absent(),
     this.from = const Value.absent(),
     this.to = const Value.absent(),
     this.guestsCount = const Value.absent(),
-    this.guestID = const Value.absent(),
-    this.priceID = const Value.absent(),
-    this.courseID = const Value.absent(),
-    this.roomID = const Value.absent(),
-    this.reservationID = const Value.absent(),
+    this.guestId = const Value.absent(),
+    this.priceId = const Value.absent(),
+    this.courseId = const Value.absent(),
+    this.roomId = const Value.absent(),
+    this.reservationId = const Value.absent(),
   });
   SessionsCompanion.insert({
     this.id = const Value.absent(),
     this.from = const Value.absent(),
     required DateTime to,
     required int guestsCount,
-    required int guestID,
-    this.priceID = const Value.absent(),
-    this.courseID = const Value.absent(),
-    this.roomID = const Value.absent(),
-    this.reservationID = const Value.absent(),
+    required int guestId,
+    this.priceId = const Value.absent(),
+    this.courseId = const Value.absent(),
+    this.roomId = const Value.absent(),
+    this.reservationId = const Value.absent(),
   })  : to = Value(to),
         guestsCount = Value(guestsCount),
-        guestID = Value(guestID);
+        guestId = Value(guestId);
   static Insertable<Session> custom({
     Expression<int>? id,
     Expression<DateTime>? from,
     Expression<DateTime>? to,
     Expression<int>? guestsCount,
-    Expression<int>? guestID,
-    Expression<int?>? priceID,
-    Expression<int?>? courseID,
-    Expression<int?>? roomID,
-    Expression<int?>? reservationID,
+    Expression<int>? guestId,
+    Expression<int?>? priceId,
+    Expression<int?>? courseId,
+    Expression<int?>? roomId,
+    Expression<int?>? reservationId,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (from != null) 'from': from,
       if (to != null) 'to': to,
       if (guestsCount != null) 'guests_count': guestsCount,
-      if (guestID != null) 'guest_i_d': guestID,
-      if (priceID != null) 'price_i_d': priceID,
-      if (courseID != null) 'course_i_d': courseID,
-      if (roomID != null) 'room_i_d': roomID,
-      if (reservationID != null) 'reservation_i_d': reservationID,
+      if (guestId != null) 'guest_id': guestId,
+      if (priceId != null) 'price_id': priceId,
+      if (courseId != null) 'course_id': courseId,
+      if (roomId != null) 'room_id': roomId,
+      if (reservationId != null) 'reservation_id': reservationId,
     });
   }
 
@@ -1889,21 +1890,21 @@ class SessionsCompanion extends UpdateCompanion<Session> {
       Value<DateTime>? from,
       Value<DateTime>? to,
       Value<int>? guestsCount,
-      Value<int>? guestID,
-      Value<int?>? priceID,
-      Value<int?>? courseID,
-      Value<int?>? roomID,
-      Value<int?>? reservationID}) {
+      Value<int>? guestId,
+      Value<int?>? priceId,
+      Value<int?>? courseId,
+      Value<int?>? roomId,
+      Value<int?>? reservationId}) {
     return SessionsCompanion(
       id: id ?? this.id,
       from: from ?? this.from,
       to: to ?? this.to,
       guestsCount: guestsCount ?? this.guestsCount,
-      guestID: guestID ?? this.guestID,
-      priceID: priceID ?? this.priceID,
-      courseID: courseID ?? this.courseID,
-      roomID: roomID ?? this.roomID,
-      reservationID: reservationID ?? this.reservationID,
+      guestId: guestId ?? this.guestId,
+      priceId: priceId ?? this.priceId,
+      courseId: courseId ?? this.courseId,
+      roomId: roomId ?? this.roomId,
+      reservationId: reservationId ?? this.reservationId,
     );
   }
 
@@ -1922,20 +1923,20 @@ class SessionsCompanion extends UpdateCompanion<Session> {
     if (guestsCount.present) {
       map['guests_count'] = Variable<int>(guestsCount.value);
     }
-    if (guestID.present) {
-      map['guest_i_d'] = Variable<int>(guestID.value);
+    if (guestId.present) {
+      map['guest_id'] = Variable<int>(guestId.value);
     }
-    if (priceID.present) {
-      map['price_i_d'] = Variable<int?>(priceID.value);
+    if (priceId.present) {
+      map['price_id'] = Variable<int?>(priceId.value);
     }
-    if (courseID.present) {
-      map['course_i_d'] = Variable<int?>(courseID.value);
+    if (courseId.present) {
+      map['course_id'] = Variable<int?>(courseId.value);
     }
-    if (roomID.present) {
-      map['room_i_d'] = Variable<int?>(roomID.value);
+    if (roomId.present) {
+      map['room_id'] = Variable<int?>(roomId.value);
     }
-    if (reservationID.present) {
-      map['reservation_i_d'] = Variable<int?>(reservationID.value);
+    if (reservationId.present) {
+      map['reservation_id'] = Variable<int?>(reservationId.value);
     }
     return map;
   }
@@ -1947,11 +1948,11 @@ class SessionsCompanion extends UpdateCompanion<Session> {
           ..write('from: $from, ')
           ..write('to: $to, ')
           ..write('guestsCount: $guestsCount, ')
-          ..write('guestID: $guestID, ')
-          ..write('priceID: $priceID, ')
-          ..write('courseID: $courseID, ')
-          ..write('roomID: $roomID, ')
-          ..write('reservationID: $reservationID')
+          ..write('guestId: $guestId, ')
+          ..write('priceId: $priceId, ')
+          ..write('courseId: $courseId, ')
+          ..write('roomId: $roomId, ')
+          ..write('reservationId: $reservationId')
           ..write(')'))
         .toString();
   }
@@ -1967,7 +1968,7 @@ class $SessionsTable extends Sessions with TableInfo<$SessionsTable, Session> {
       'id', aliasedName, false,
       type: const IntType(),
       requiredDuringInsert: false,
-      defaultConstraints: 'PRIMARY KEY AUTOINCREMENT');
+      $customConstraints: 'UNIQUE');
   final VerificationMeta _fromMeta = const VerificationMeta('from');
   @override
   late final GeneratedColumn<DateTime?> from = GeneratedColumn<DateTime?>(
@@ -1986,53 +1987,43 @@ class $SessionsTable extends Sessions with TableInfo<$SessionsTable, Session> {
   late final GeneratedColumn<int?> guestsCount = GeneratedColumn<int?>(
       'guests_count', aliasedName, false,
       type: const IntType(), requiredDuringInsert: true);
-  final VerificationMeta _guestIDMeta = const VerificationMeta('guestID');
+  final VerificationMeta _guestIdMeta = const VerificationMeta('guestId');
   @override
-  late final GeneratedColumn<int?> guestID = GeneratedColumn<int?>(
-      'guest_i_d', aliasedName, false,
-      type: const IntType(),
-      requiredDuringInsert: true,
-      defaultConstraints: 'REFERENCES guests (id)');
-  final VerificationMeta _priceIDMeta = const VerificationMeta('priceID');
+  late final GeneratedColumn<int?> guestId = GeneratedColumn<int?>(
+      'guest_id', aliasedName, false,
+      type: const IntType(), requiredDuringInsert: true);
+  final VerificationMeta _priceIdMeta = const VerificationMeta('priceId');
   @override
-  late final GeneratedColumn<int?> priceID = GeneratedColumn<int?>(
-      'price_i_d', aliasedName, true,
-      type: const IntType(),
-      requiredDuringInsert: false,
-      defaultConstraints: 'REFERENCES prices (id)');
-  final VerificationMeta _courseIDMeta = const VerificationMeta('courseID');
+  late final GeneratedColumn<int?> priceId = GeneratedColumn<int?>(
+      'price_id', aliasedName, true,
+      type: const IntType(), requiredDuringInsert: false);
+  final VerificationMeta _courseIdMeta = const VerificationMeta('courseId');
   @override
-  late final GeneratedColumn<int?> courseID = GeneratedColumn<int?>(
-      'course_i_d', aliasedName, true,
-      type: const IntType(),
-      requiredDuringInsert: false,
-      defaultConstraints: 'REFERENCES courses (id)');
-  final VerificationMeta _roomIDMeta = const VerificationMeta('roomID');
+  late final GeneratedColumn<int?> courseId = GeneratedColumn<int?>(
+      'course_id', aliasedName, true,
+      type: const IntType(), requiredDuringInsert: false);
+  final VerificationMeta _roomIdMeta = const VerificationMeta('roomId');
   @override
-  late final GeneratedColumn<int?> roomID = GeneratedColumn<int?>(
-      'room_i_d', aliasedName, true,
-      type: const IntType(),
-      requiredDuringInsert: false,
-      defaultConstraints: 'REFERENCES rooms (id)');
-  final VerificationMeta _reservationIDMeta =
-      const VerificationMeta('reservationID');
+  late final GeneratedColumn<int?> roomId = GeneratedColumn<int?>(
+      'room_id', aliasedName, true,
+      type: const IntType(), requiredDuringInsert: false);
+  final VerificationMeta _reservationIdMeta =
+      const VerificationMeta('reservationId');
   @override
-  late final GeneratedColumn<int?> reservationID = GeneratedColumn<int?>(
-      'reservation_i_d', aliasedName, true,
-      type: const IntType(),
-      requiredDuringInsert: false,
-      defaultConstraints: 'REFERENCES reservations (id)');
+  late final GeneratedColumn<int?> reservationId = GeneratedColumn<int?>(
+      'reservation_id', aliasedName, true,
+      type: const IntType(), requiredDuringInsert: false);
   @override
   List<GeneratedColumn> get $columns => [
         id,
         from,
         to,
         guestsCount,
-        guestID,
-        priceID,
-        courseID,
-        roomID,
-        reservationID
+        guestId,
+        priceId,
+        courseId,
+        roomId,
+        reservationId
       ];
   @override
   String get aliasedName => _alias ?? 'sessions';
@@ -2063,29 +2054,29 @@ class $SessionsTable extends Sessions with TableInfo<$SessionsTable, Session> {
     } else if (isInserting) {
       context.missing(_guestsCountMeta);
     }
-    if (data.containsKey('guest_i_d')) {
-      context.handle(_guestIDMeta,
-          guestID.isAcceptableOrUnknown(data['guest_i_d']!, _guestIDMeta));
+    if (data.containsKey('guest_id')) {
+      context.handle(_guestIdMeta,
+          guestId.isAcceptableOrUnknown(data['guest_id']!, _guestIdMeta));
     } else if (isInserting) {
-      context.missing(_guestIDMeta);
+      context.missing(_guestIdMeta);
     }
-    if (data.containsKey('price_i_d')) {
-      context.handle(_priceIDMeta,
-          priceID.isAcceptableOrUnknown(data['price_i_d']!, _priceIDMeta));
+    if (data.containsKey('price_id')) {
+      context.handle(_priceIdMeta,
+          priceId.isAcceptableOrUnknown(data['price_id']!, _priceIdMeta));
     }
-    if (data.containsKey('course_i_d')) {
-      context.handle(_courseIDMeta,
-          courseID.isAcceptableOrUnknown(data['course_i_d']!, _courseIDMeta));
+    if (data.containsKey('course_id')) {
+      context.handle(_courseIdMeta,
+          courseId.isAcceptableOrUnknown(data['course_id']!, _courseIdMeta));
     }
-    if (data.containsKey('room_i_d')) {
-      context.handle(_roomIDMeta,
-          roomID.isAcceptableOrUnknown(data['room_i_d']!, _roomIDMeta));
+    if (data.containsKey('room_id')) {
+      context.handle(_roomIdMeta,
+          roomId.isAcceptableOrUnknown(data['room_id']!, _roomIdMeta));
     }
-    if (data.containsKey('reservation_i_d')) {
+    if (data.containsKey('reservation_id')) {
       context.handle(
-          _reservationIDMeta,
-          reservationID.isAcceptableOrUnknown(
-              data['reservation_i_d']!, _reservationIDMeta));
+          _reservationIdMeta,
+          reservationId.isAcceptableOrUnknown(
+              data['reservation_id']!, _reservationIdMeta));
     }
     return context;
   }
@@ -2107,15 +2098,15 @@ class $SessionsTable extends Sessions with TableInfo<$SessionsTable, Session> {
 class Bill extends DataClass implements Insertable<Bill> {
   final int id;
   final double total;
-  final int staffID;
-  final int? sessionID;
-  final int? reservationID;
+  final int staffId;
+  final int? sessionId;
+  final int? reservationId;
   Bill(
       {required this.id,
       required this.total,
-      required this.staffID,
-      this.sessionID,
-      this.reservationID});
+      required this.staffId,
+      this.sessionId,
+      this.reservationId});
   factory Bill.fromData(Map<String, dynamic> data, {String? prefix}) {
     final effectivePrefix = prefix ?? '';
     return Bill(
@@ -2123,12 +2114,12 @@ class Bill extends DataClass implements Insertable<Bill> {
           .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
       total: const RealType()
           .mapFromDatabaseResponse(data['${effectivePrefix}total'])!,
-      staffID: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}staff_i_d'])!,
-      sessionID: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}session_i_d']),
-      reservationID: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}reservation_i_d']),
+      staffId: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}staff_id'])!,
+      sessionId: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}session_id']),
+      reservationId: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}reservation_id']),
     );
   }
   @override
@@ -2136,12 +2127,12 @@ class Bill extends DataClass implements Insertable<Bill> {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
     map['total'] = Variable<double>(total);
-    map['staff_i_d'] = Variable<int>(staffID);
-    if (!nullToAbsent || sessionID != null) {
-      map['session_i_d'] = Variable<int?>(sessionID);
+    map['staff_id'] = Variable<int>(staffId);
+    if (!nullToAbsent || sessionId != null) {
+      map['session_id'] = Variable<int?>(sessionId);
     }
-    if (!nullToAbsent || reservationID != null) {
-      map['reservation_i_d'] = Variable<int?>(reservationID);
+    if (!nullToAbsent || reservationId != null) {
+      map['reservation_id'] = Variable<int?>(reservationId);
     }
     return map;
   }
@@ -2150,13 +2141,13 @@ class Bill extends DataClass implements Insertable<Bill> {
     return BillsCompanion(
       id: Value(id),
       total: Value(total),
-      staffID: Value(staffID),
-      sessionID: sessionID == null && nullToAbsent
+      staffId: Value(staffId),
+      sessionId: sessionId == null && nullToAbsent
           ? const Value.absent()
-          : Value(sessionID),
-      reservationID: reservationID == null && nullToAbsent
+          : Value(sessionId),
+      reservationId: reservationId == null && nullToAbsent
           ? const Value.absent()
-          : Value(reservationID),
+          : Value(reservationId),
     );
   }
 
@@ -2166,9 +2157,9 @@ class Bill extends DataClass implements Insertable<Bill> {
     return Bill(
       id: serializer.fromJson<int>(json['id']),
       total: serializer.fromJson<double>(json['total']),
-      staffID: serializer.fromJson<int>(json['staffID']),
-      sessionID: serializer.fromJson<int?>(json['sessionID']),
-      reservationID: serializer.fromJson<int?>(json['reservationID']),
+      staffId: serializer.fromJson<int>(json['staffId']),
+      sessionId: serializer.fromJson<int?>(json['sessionId']),
+      reservationId: serializer.fromJson<int?>(json['reservationId']),
     );
   }
   @override
@@ -2177,99 +2168,99 @@ class Bill extends DataClass implements Insertable<Bill> {
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
       'total': serializer.toJson<double>(total),
-      'staffID': serializer.toJson<int>(staffID),
-      'sessionID': serializer.toJson<int?>(sessionID),
-      'reservationID': serializer.toJson<int?>(reservationID),
+      'staffId': serializer.toJson<int>(staffId),
+      'sessionId': serializer.toJson<int?>(sessionId),
+      'reservationId': serializer.toJson<int?>(reservationId),
     };
   }
 
   Bill copyWith(
           {int? id,
           double? total,
-          int? staffID,
-          int? sessionID,
-          int? reservationID}) =>
+          int? staffId,
+          int? sessionId,
+          int? reservationId}) =>
       Bill(
         id: id ?? this.id,
         total: total ?? this.total,
-        staffID: staffID ?? this.staffID,
-        sessionID: sessionID ?? this.sessionID,
-        reservationID: reservationID ?? this.reservationID,
+        staffId: staffId ?? this.staffId,
+        sessionId: sessionId ?? this.sessionId,
+        reservationId: reservationId ?? this.reservationId,
       );
   @override
   String toString() {
     return (StringBuffer('Bill(')
           ..write('id: $id, ')
           ..write('total: $total, ')
-          ..write('staffID: $staffID, ')
-          ..write('sessionID: $sessionID, ')
-          ..write('reservationID: $reservationID')
+          ..write('staffId: $staffId, ')
+          ..write('sessionId: $sessionId, ')
+          ..write('reservationId: $reservationId')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, total, staffID, sessionID, reservationID);
+  int get hashCode => Object.hash(id, total, staffId, sessionId, reservationId);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is Bill &&
           other.id == this.id &&
           other.total == this.total &&
-          other.staffID == this.staffID &&
-          other.sessionID == this.sessionID &&
-          other.reservationID == this.reservationID);
+          other.staffId == this.staffId &&
+          other.sessionId == this.sessionId &&
+          other.reservationId == this.reservationId);
 }
 
 class BillsCompanion extends UpdateCompanion<Bill> {
   final Value<int> id;
   final Value<double> total;
-  final Value<int> staffID;
-  final Value<int?> sessionID;
-  final Value<int?> reservationID;
+  final Value<int> staffId;
+  final Value<int?> sessionId;
+  final Value<int?> reservationId;
   const BillsCompanion({
     this.id = const Value.absent(),
     this.total = const Value.absent(),
-    this.staffID = const Value.absent(),
-    this.sessionID = const Value.absent(),
-    this.reservationID = const Value.absent(),
+    this.staffId = const Value.absent(),
+    this.sessionId = const Value.absent(),
+    this.reservationId = const Value.absent(),
   });
   BillsCompanion.insert({
     this.id = const Value.absent(),
     required double total,
-    required int staffID,
-    this.sessionID = const Value.absent(),
-    this.reservationID = const Value.absent(),
+    required int staffId,
+    this.sessionId = const Value.absent(),
+    this.reservationId = const Value.absent(),
   })  : total = Value(total),
-        staffID = Value(staffID);
+        staffId = Value(staffId);
   static Insertable<Bill> custom({
     Expression<int>? id,
     Expression<double>? total,
-    Expression<int>? staffID,
-    Expression<int?>? sessionID,
-    Expression<int?>? reservationID,
+    Expression<int>? staffId,
+    Expression<int?>? sessionId,
+    Expression<int?>? reservationId,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (total != null) 'total': total,
-      if (staffID != null) 'staff_i_d': staffID,
-      if (sessionID != null) 'session_i_d': sessionID,
-      if (reservationID != null) 'reservation_i_d': reservationID,
+      if (staffId != null) 'staff_id': staffId,
+      if (sessionId != null) 'session_id': sessionId,
+      if (reservationId != null) 'reservation_id': reservationId,
     });
   }
 
   BillsCompanion copyWith(
       {Value<int>? id,
       Value<double>? total,
-      Value<int>? staffID,
-      Value<int?>? sessionID,
-      Value<int?>? reservationID}) {
+      Value<int>? staffId,
+      Value<int?>? sessionId,
+      Value<int?>? reservationId}) {
     return BillsCompanion(
       id: id ?? this.id,
       total: total ?? this.total,
-      staffID: staffID ?? this.staffID,
-      sessionID: sessionID ?? this.sessionID,
-      reservationID: reservationID ?? this.reservationID,
+      staffId: staffId ?? this.staffId,
+      sessionId: sessionId ?? this.sessionId,
+      reservationId: reservationId ?? this.reservationId,
     );
   }
 
@@ -2282,14 +2273,14 @@ class BillsCompanion extends UpdateCompanion<Bill> {
     if (total.present) {
       map['total'] = Variable<double>(total.value);
     }
-    if (staffID.present) {
-      map['staff_i_d'] = Variable<int>(staffID.value);
+    if (staffId.present) {
+      map['staff_id'] = Variable<int>(staffId.value);
     }
-    if (sessionID.present) {
-      map['session_i_d'] = Variable<int?>(sessionID.value);
+    if (sessionId.present) {
+      map['session_id'] = Variable<int?>(sessionId.value);
     }
-    if (reservationID.present) {
-      map['reservation_i_d'] = Variable<int?>(reservationID.value);
+    if (reservationId.present) {
+      map['reservation_id'] = Variable<int?>(reservationId.value);
     }
     return map;
   }
@@ -2299,9 +2290,9 @@ class BillsCompanion extends UpdateCompanion<Bill> {
     return (StringBuffer('BillsCompanion(')
           ..write('id: $id, ')
           ..write('total: $total, ')
-          ..write('staffID: $staffID, ')
-          ..write('sessionID: $sessionID, ')
-          ..write('reservationID: $reservationID')
+          ..write('staffId: $staffId, ')
+          ..write('sessionId: $sessionId, ')
+          ..write('reservationId: $reservationId')
           ..write(')'))
         .toString();
   }
@@ -2317,37 +2308,31 @@ class $BillsTable extends Bills with TableInfo<$BillsTable, Bill> {
       'id', aliasedName, false,
       type: const IntType(),
       requiredDuringInsert: false,
-      defaultConstraints: 'PRIMARY KEY AUTOINCREMENT');
+      $customConstraints: 'UNIQUE');
   final VerificationMeta _totalMeta = const VerificationMeta('total');
   @override
   late final GeneratedColumn<double?> total = GeneratedColumn<double?>(
       'total', aliasedName, false,
       type: const RealType(), requiredDuringInsert: true);
-  final VerificationMeta _staffIDMeta = const VerificationMeta('staffID');
+  final VerificationMeta _staffIdMeta = const VerificationMeta('staffId');
   @override
-  late final GeneratedColumn<int?> staffID = GeneratedColumn<int?>(
-      'staff_i_d', aliasedName, false,
-      type: const IntType(),
-      requiredDuringInsert: true,
-      defaultConstraints: 'REFERENCES guests (id)');
-  final VerificationMeta _sessionIDMeta = const VerificationMeta('sessionID');
+  late final GeneratedColumn<int?> staffId = GeneratedColumn<int?>(
+      'staff_id', aliasedName, false,
+      type: const IntType(), requiredDuringInsert: true);
+  final VerificationMeta _sessionIdMeta = const VerificationMeta('sessionId');
   @override
-  late final GeneratedColumn<int?> sessionID = GeneratedColumn<int?>(
-      'session_i_d', aliasedName, true,
-      type: const IntType(),
-      requiredDuringInsert: false,
-      defaultConstraints: 'REFERENCES sessions (id)');
-  final VerificationMeta _reservationIDMeta =
-      const VerificationMeta('reservationID');
+  late final GeneratedColumn<int?> sessionId = GeneratedColumn<int?>(
+      'session_id', aliasedName, true,
+      type: const IntType(), requiredDuringInsert: false);
+  final VerificationMeta _reservationIdMeta =
+      const VerificationMeta('reservationId');
   @override
-  late final GeneratedColumn<int?> reservationID = GeneratedColumn<int?>(
-      'reservation_i_d', aliasedName, true,
-      type: const IntType(),
-      requiredDuringInsert: false,
-      defaultConstraints: 'REFERENCES reservations (id)');
+  late final GeneratedColumn<int?> reservationId = GeneratedColumn<int?>(
+      'reservation_id', aliasedName, true,
+      type: const IntType(), requiredDuringInsert: false);
   @override
   List<GeneratedColumn> get $columns =>
-      [id, total, staffID, sessionID, reservationID];
+      [id, total, staffId, sessionId, reservationId];
   @override
   String get aliasedName => _alias ?? 'bills';
   @override
@@ -2366,23 +2351,21 @@ class $BillsTable extends Bills with TableInfo<$BillsTable, Bill> {
     } else if (isInserting) {
       context.missing(_totalMeta);
     }
-    if (data.containsKey('staff_i_d')) {
-      context.handle(_staffIDMeta,
-          staffID.isAcceptableOrUnknown(data['staff_i_d']!, _staffIDMeta));
+    if (data.containsKey('staff_id')) {
+      context.handle(_staffIdMeta,
+          staffId.isAcceptableOrUnknown(data['staff_id']!, _staffIdMeta));
     } else if (isInserting) {
-      context.missing(_staffIDMeta);
+      context.missing(_staffIdMeta);
     }
-    if (data.containsKey('session_i_d')) {
-      context.handle(
-          _sessionIDMeta,
-          sessionID.isAcceptableOrUnknown(
-              data['session_i_d']!, _sessionIDMeta));
+    if (data.containsKey('session_id')) {
+      context.handle(_sessionIdMeta,
+          sessionId.isAcceptableOrUnknown(data['session_id']!, _sessionIdMeta));
     }
-    if (data.containsKey('reservation_i_d')) {
+    if (data.containsKey('reservation_id')) {
       context.handle(
-          _reservationIDMeta,
-          reservationID.isAcceptableOrUnknown(
-              data['reservation_i_d']!, _reservationIDMeta));
+          _reservationIdMeta,
+          reservationId.isAcceptableOrUnknown(
+              data['reservation_id']!, _reservationIdMeta));
     }
     return context;
   }

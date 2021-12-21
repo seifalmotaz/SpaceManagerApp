@@ -4,13 +4,13 @@ import 'package:spacemanager/models/reservations/model.dart';
 import 'package:spacemanager/models/sessions/model.dart';
 
 class Bills extends Table {
-  IntColumn get id => integer().autoIncrement()();
+  IntColumn get id => integer().customConstraint('UNIQUE').autoIncrement()();
   // Main data
   RealColumn get total => real()();
   // Main references
-  IntColumn get staffID => integer().references(Guests, #id)();
+  IntColumn get staffId => integer().references(Guests, #Id)();
   //  Pricing references
-  IntColumn get sessionID => integer().nullable().references(Sessions, #id)();
-  IntColumn get reservationID =>
-      integer().nullable().references(Reservations, #id)();
+  IntColumn get sessionId => integer().nullable().references(Sessions, #Id)();
+  IntColumn get reservationId =>
+      integer().nullable().references(Reservations, #Id)();
 }

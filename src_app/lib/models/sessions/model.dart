@@ -6,18 +6,18 @@ import 'package:spacemanager/models/reservations/model.dart';
 import 'package:spacemanager/models/rooms/model.dart';
 
 class Sessions extends Table {
-  IntColumn get id => integer().autoIncrement()();
+  IntColumn get id => integer().customConstraint('UNIQUE').autoIncrement()();
   // Main data
   DateTimeColumn get from => dateTime().withDefault(Constant(DateTime.now()))();
   DateTimeColumn get to => dateTime()();
   // Extra info
   IntColumn get guestsCount => integer()();
   // Main references
-  IntColumn get guestID => integer().references(Guests, #id)();
+  IntColumn get guestId => integer().references(Guests, #Id)();
   //  Pricing references
-  IntColumn get priceID => integer().nullable().references(Prices, #id)();
-  IntColumn get courseID => integer().nullable().references(Courses, #id)();
-  IntColumn get roomID => integer().nullable().references(Rooms, #id)();
-  IntColumn get reservationID =>
-      integer().nullable().references(Reservations, #id)();
+  IntColumn get priceId => integer().nullable().references(Prices, #Id)();
+  IntColumn get courseId => integer().nullable().references(Courses, #Id)();
+  IntColumn get roomId => integer().nullable().references(Rooms, #Id)();
+  IntColumn get reservationId =>
+      integer().nullable().references(Reservations, #Id)();
 }

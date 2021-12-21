@@ -16,23 +16,24 @@ part 'database.g.dart';
 LazyDatabase _openConnection() {
   return LazyDatabase(() async {
     final dbFolder = await getApplicationDocumentsDirectory();
-    final file = File(p.join(dbFolder.path, 'db.sqlite'));
+    final file = File(p.join(dbFolder.path, 'SpaceData', 'database.sqlite'));
     return NativeDatabase(file);
   });
 }
 
-@DriftDatabase(tables: [
-  Guests,
-  Prices,
-  Courses,
-  Rooms,
-  Reservations,
-  Sessions,
-  Bills,
-])
+@DriftDatabase(
+  tables: [
+    Guests,
+    Prices,
+    Courses,
+    Rooms,
+    Reservations,
+    Sessions,
+    Bills,
+  ],
+)
 class MyDatabase extends _$MyDatabase {
   MyDatabase() : super(_openConnection());
-
   @override
   int get schemaVersion => 1;
 }

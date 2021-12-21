@@ -1,18 +1,19 @@
 import 'package:drift/drift.dart';
 
 class Guests extends Table {
-  IntColumn get id => integer().autoIncrement()();
+  IntColumn get id => integer().customConstraint('UNIQUE').autoIncrement()();
   // Main data
-  TextColumn get phone => text().withLength(min: 3, max: 17)();
+  TextColumn get phone =>
+      text().customConstraint('UNIQUE').withLength(min: 3, max: 17)();
   // Info data
   TextColumn get name => text().nullable().withLength(min: 3, max: 51)();
-  TextColumn get email => text().nullable()();
+  TextColumn get email => text().customConstraint('UNIQUE').nullable()();
   TextColumn get career =>
       text().withDefault(const Constant('GUEST')).withLength(max: 13)();
   TextColumn get gender => text().nullable().withLength(max: 13)();
   // Extra data
-  TextColumn get nationalID => text().nullable()();
-  TextColumn get nationalIDPic => text().nullable()();
+  TextColumn get nationalId => text().customConstraint('UNIQUE').nullable()();
+  TextColumn get nationalIdPic => text().nullable()();
   // Auth data
   TextColumn get password => text().nullable()();
   BoolColumn get isAdmin => boolean().withDefault(const Constant(false))();

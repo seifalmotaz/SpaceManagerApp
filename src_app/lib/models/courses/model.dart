@@ -1,7 +1,7 @@
 import 'package:drift/drift.dart';
 
 class Courses extends Table {
-  IntColumn get id => integer().autoIncrement()();
+  IntColumn get id => integer().customConstraint('UNIQUE').autoIncrement()();
   // Main data
   TextColumn get name => text()();
   RealColumn get ratePerGuest => real()();
