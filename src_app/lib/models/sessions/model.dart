@@ -1,23 +1,31 @@
-import 'package:drift/drift.dart';
-import 'package:spacemanager/models/courses/model.dart';
-import 'package:spacemanager/models/guests/model.dart';
-import 'package:spacemanager/models/prices/model.dart';
-import 'package:spacemanager/models/reservations/model.dart';
-import 'package:spacemanager/models/rooms/model.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-class Sessions extends Table {
-  IntColumn get id => integer().customConstraint('UNIQUE').autoIncrement()();
-  // Main data
-  DateTimeColumn get from => dateTime().withDefault(Constant(DateTime.now()))();
-  DateTimeColumn get to => dateTime()();
-  // Extra info
-  IntColumn get guestsCount => integer()();
-  // Main references
-  IntColumn get guestId => integer().references(Guests, #Id)();
-  //  Pricing references
-  IntColumn get priceId => integer().nullable().references(Prices, #Id)();
-  IntColumn get courseId => integer().nullable().references(Courses, #Id)();
-  IntColumn get roomId => integer().nullable().references(Rooms, #Id)();
-  IntColumn get reservationId =>
-      integer().nullable().references(Reservations, #Id)();
+part 'model.freezed.dart';
+part 'model.g.dart';
+
+@freezed
+class Session with _$Session {
+  factory Session({
+    int? id,
+    @JsonKey(name: 'guests_count') int? guestsCount,
+    // Date time data
+    @JsonKey(name: 'start_time', fromJson: _fromJson, toJson: _toJson)
+        DateTime? startTime,
+    @JsonKey(name: 'end_time', fromJson: _fromJson, toJson: _toJson)
+        DateTime? endTime,
+    // Main references
+    @JsonKey(name: 'guest_id') required int guestId,
+    //  Pricing references
+    @JsonKey(name: 'room_id') int? roomId,
+    @JsonKey(name: 'price_id') int? priceId,
+    @JsonKey(name: 'course_id') int? courseId,
+    @JsonKey(name: 'reservation_id') int? reservationId,
+  }) = _Session;
+
+  factory Session.fromJson(Map<String, dynamic> json) =>
+      _$SessionFromJson(json);
+
+  // datetime
+  static DateTime _fromJson(String date) => DateTime.parse(date);
+  static String _toJson(DateTime date) => date.toIso8601String();
 }

@@ -1,7 +1,14 @@
-import 'package:spacemanager/models/database.dart';
+import 'package:spacemanager/models/reservations/model.dart';
+import 'package:spacemanager/services/database.dart';
 
-extension ReservationsQuery on MyDatabase {
-  Future<List<Reservation>> getRooms() => select(reservations).get();
-  Future<int> insertRoom(ReservationsCompanion r) =>
-      into(reservations).insert(r);
+extension Query on Reservation {
+  /// Get spacific room all reservation
+  static Future<List<Reservation>> getByRoom(int i) async {
+    List<Map<String, dynamic>> data = await DBService.to.db.query(
+      'reservations',
+      where: 'room_id = ?',
+      whereArgs: [i],
+    );
+    return data.map((e) => Reservation.fromJson(e)).toList();
+  }
 }

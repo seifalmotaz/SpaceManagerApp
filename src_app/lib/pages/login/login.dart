@@ -78,15 +78,7 @@ class LogInPage extends StatelessWidget {
                   elevation: 0,
                   hoverElevation: 0,
                   color: Colors.white,
-                  onPressed: () async {
-                    // bool log = await login();
-                    // if (log) {
-                    // Get.offUntil(
-                    //   GetPageRoute(page: () => const HomePage()),
-                    //   (route) => false,
-                    // );
-                    // }
-                  },
+                  onPressed: () {},
                 ),
               ),
             ],

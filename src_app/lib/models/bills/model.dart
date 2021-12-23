@@ -1,16 +1,17 @@
-import 'package:drift/drift.dart';
-import 'package:spacemanager/models/guests/model.dart';
-import 'package:spacemanager/models/reservations/model.dart';
-import 'package:spacemanager/models/sessions/model.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-class Bills extends Table {
-  IntColumn get id => integer().customConstraint('UNIQUE').autoIncrement()();
-  // Main data
-  RealColumn get total => real()();
-  // Main references
-  IntColumn get staffId => integer().references(Guests, #Id)();
-  //  Pricing references
-  IntColumn get sessionId => integer().nullable().references(Sessions, #Id)();
-  IntColumn get reservationId =>
-      integer().nullable().references(Reservations, #Id)();
+part 'model.freezed.dart';
+part 'model.g.dart';
+
+@freezed
+class Bill with _$Bill {
+  factory Bill({
+    required int id,
+    required double total,
+    @JsonKey(name: 'staff_id') required int staffId,
+    @JsonKey(name: 'session_id') required int sessionId,
+    @JsonKey(name: 'reservation_id') required int reservationId,
+  }) = _Bill;
+
+  factory Bill.fromJson(Map<String, dynamic> json) => _$BillFromJson(json);
 }

@@ -1,9 +1,17 @@
-import 'package:drift/drift.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-class Rooms extends Table {
-  IntColumn get id => integer().customConstraint('UNIQUE').autoIncrement()();
-  // Main data
-  TextColumn get name => text()();
-  IntColumn get capacity => integer()();
-  RealColumn get ratePerHour => real()();
+part 'model.freezed.dart';
+part 'model.g.dart';
+
+@freezed
+class Room with _$Room {
+  factory Room({
+    required int id,
+    // Info data
+    String? name,
+    required int capacity,
+    required double? rate,
+  }) = _Room;
+
+  factory Room.fromJson(Map<String, dynamic> json) => _$RoomFromJson(json);
 }
