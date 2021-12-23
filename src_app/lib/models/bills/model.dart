@@ -1,17 +1,57 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
+import 'dart:convert';
 
-part 'model.freezed.dart';
-part 'model.g.dart';
+Bill billFromMap(String str) => Bill.fromMap(json.decode(str));
+String billToMap(Bill data) => json.encode(data.toMap());
 
-@freezed
-class Bill with _$Bill {
-  factory Bill({
-    required int id,
-    required double total,
-    @JsonKey(name: 'staff_id') required int staffId,
-    @JsonKey(name: 'session_id') required int sessionId,
-    @JsonKey(name: 'reservation_id') required int reservationId,
-  }) = _Bill;
+class Bill {
+  Bill({
+    this.id,
+    this.total,
+    this.staffId,
+    this.sessionId,
+    this.reservationId,
+    this.createdDate,
+  });
 
-  factory Bill.fromJson(Map<String, dynamic> json) => _$BillFromJson(json);
+  final int? id;
+  final double? total;
+  final String? staffId;
+  final String? sessionId;
+  final String? reservationId;
+  final DateTime? createdDate;
+
+  Bill copyWith({
+    int? id,
+    double? total,
+    String? staffId,
+    String? sessionId,
+    String? reservationId,
+    DateTime? createdDate,
+  }) =>
+      Bill(
+        id: id ?? this.id,
+        total: total ?? this.total,
+        staffId: staffId ?? this.staffId,
+        sessionId: sessionId ?? this.sessionId,
+        reservationId: reservationId ?? this.reservationId,
+        createdDate: createdDate ?? this.createdDate,
+      );
+
+  factory Bill.fromMap(Map<String, dynamic> json) => Bill(
+        id: json["id"],
+        total: json["total"].toDouble(),
+        staffId: json["staff_id"],
+        sessionId: json["session_id"],
+        reservationId: json["reservation_id"],
+        createdDate: DateTime.tryParse(json["created_date"]),
+      );
+
+  Map<String, dynamic> toMap() => {
+        "id": id,
+        "total": total,
+        "staff_id": staffId,
+        "session_id": sessionId,
+        "reservation_id": reservationId,
+        "created_date": createdDate?.toIso8601String(),
+      };
 }

@@ -1,15 +1,39 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
+import 'dart:convert';
 
-part 'model.freezed.dart';
-part 'model.g.dart';
+Course courseFromMap(String str) => Course.fromMap(json.decode(str));
+String courseToMap(Course data) => json.encode(data.toMap());
 
-@freezed
-class Course with _$Course {
-  factory Course({
-    required int id,
-    required String name,
-    required double rate,
-  }) = _Course;
+class Course {
+  Course({
+    this.id,
+    this.name,
+    this.rate,
+  });
 
-  factory Course.fromJson(Map<String, dynamic> json) => _$CourseFromJson(json);
+  final int? id;
+  final String? name;
+  final double? rate;
+
+  Course copyWith({
+    int? id,
+    String? name,
+    double? rate,
+  }) =>
+      Course(
+        id: id ?? this.id,
+        name: name ?? this.name,
+        rate: rate ?? this.rate,
+      );
+
+  factory Course.fromMap(Map<String, dynamic> json) => Course(
+        id: json["id"],
+        name: json["name"],
+        rate: json["rate"].toDouble(),
+      );
+
+  Map<String, dynamic> toMap() => {
+        "id": id,
+        "name": name,
+        "rate": rate,
+      };
 }

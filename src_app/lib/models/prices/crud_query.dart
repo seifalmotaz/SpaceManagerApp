@@ -4,11 +4,11 @@ import 'package:spacemanager/services/database.dart';
 extension CRUDQuery on Price {
   static Future<List<Price>> list(int id) async {
     List<Map<String, dynamic>> data = await DBService.to.db.query('prices');
-    return data.map((e) => Price.fromJson(e)).toList();
+    return data.map((e) => Price.fromMap(e)).toList();
   }
 
   Future<int> create() async {
-    var data = await DBService.to.db.insert('prices', toJson());
+    var data = await DBService.to.db.insert('prices', toMap());
     return data;
   }
 
@@ -18,13 +18,13 @@ extension CRUDQuery on Price {
       where: 'id = ?',
       whereArgs: [id],
     );
-    return Price.fromJson(data.first);
+    return Price.fromMap(data.first);
   }
 
   Future<int> update() async {
     int data = await DBService.to.db.update(
       'prices',
-      toJson(),
+      toMap(),
       where: 'id = ?',
       whereArgs: [id],
     );

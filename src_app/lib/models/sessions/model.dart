@@ -1,31 +1,77 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
+import 'dart:convert';
 
-part 'model.freezed.dart';
-part 'model.g.dart';
+Session sessionFromMap(String str) => Session.fromMap(json.decode(str));
 
-@freezed
-class Session with _$Session {
-  factory Session({
+String sessionToMap(Session data) => json.encode(data.toMap());
+
+class Session {
+  Session({
+    this.id,
+    this.startTime,
+    this.endTime,
+    this.guestId,
+    this.roomId,
+    this.priceId,
+    this.courseId,
+    this.reservationId,
+    this.guestsCount,
+  });
+
+  final int? id;
+  final DateTime? startTime;
+  final DateTime? endTime;
+  final int? guestId;
+  final int? roomId;
+  final int? priceId;
+  final int? courseId;
+  final int? reservationId;
+  final int? guestsCount;
+
+  Session copyWith({
     int? id,
-    @JsonKey(name: 'guests_count') int? guestsCount,
-    // Date time data
-    @JsonKey(name: 'start_time', fromJson: _fromJson, toJson: _toJson)
-        DateTime? startTime,
-    @JsonKey(name: 'end_time', fromJson: _fromJson, toJson: _toJson)
-        DateTime? endTime,
-    // Main references
-    @JsonKey(name: 'guest_id') required int guestId,
-    //  Pricing references
-    @JsonKey(name: 'room_id') int? roomId,
-    @JsonKey(name: 'price_id') int? priceId,
-    @JsonKey(name: 'course_id') int? courseId,
-    @JsonKey(name: 'reservation_id') int? reservationId,
-  }) = _Session;
+    int? rate,
+    DateTime? startTime,
+    DateTime? endTime,
+    int? guestId,
+    int? roomId,
+    int? priceId,
+    int? courseId,
+    int? reservationId,
+    int? guestsCount,
+  }) =>
+      Session(
+        id: id ?? this.id,
+        startTime: this.startTime,
+        endTime: endTime ?? this.endTime,
+        guestId: guestId ?? this.guestId,
+        roomId: roomId ?? this.roomId,
+        priceId: priceId ?? this.priceId,
+        courseId: courseId ?? this.courseId,
+        reservationId: reservationId ?? this.reservationId,
+        guestsCount: guestsCount ?? this.guestsCount,
+      );
 
-  factory Session.fromJson(Map<String, dynamic> json) =>
-      _$SessionFromJson(json);
+  factory Session.fromMap(Map<String, dynamic> json) => Session(
+        id: json["id"],
+        startTime: DateTime.tryParse(json["start_time"].toString()),
+        endTime: DateTime.tryParse(json["end_time"].toString()),
+        guestId: json["guest_id"],
+        roomId: json["room_id"],
+        priceId: json["price_id"],
+        courseId: json["course_id"],
+        reservationId: json["reservation_id"],
+        guestsCount: json["guests_count"],
+      );
 
-  // datetime
-  static DateTime _fromJson(String date) => DateTime.parse(date);
-  static String _toJson(DateTime date) => date.toIso8601String();
+  Map<String, dynamic> toMap() => {
+        "id": null,
+        "start_time": startTime?.toIso8601String(),
+        "end_time": endTime?.toIso8601String(),
+        "guest_id": guestId,
+        "room_id": roomId,
+        "price_id": priceId,
+        "course_id": courseId,
+        "reservation_id": reservationId,
+        "guests_count": guestsCount,
+      };
 }

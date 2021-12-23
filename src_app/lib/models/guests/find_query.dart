@@ -7,7 +7,7 @@ extension FindQuery on Guest {
     SELECT * FROM guests
     WHERE phone LIKE '%$phone%'
     """);
-    return data.map((e) => Guest.fromJson(e)).toList();
+    return data.map((e) => Guest.fromMap(e)).toList();
   }
 
   static Future<Guest?> findOneByPhone(String phone) async {
@@ -16,7 +16,7 @@ extension FindQuery on Guest {
     WHERE phone = '%$phone%'
     LIMIT 1
     """);
-    return data.isNotEmpty ? Guest.fromJson(data.first) : null;
+    return data.isNotEmpty ? Guest.fromMap(data.first) : null;
   }
 
   static Future<List<Guest>> findByEmail(String email) async {
@@ -24,7 +24,7 @@ extension FindQuery on Guest {
     SELECT * FROM guests
     WHERE email LIKE '%$email%'
     """);
-    return data.map((e) => Guest.fromJson(e)).toList();
+    return data.map((e) => Guest.fromMap(e)).toList();
   }
 
   static Future<Guest?> findOneByEmail(String email) async {
@@ -33,7 +33,7 @@ extension FindQuery on Guest {
     WHERE email = '%$email%'
     LIMIT 1
     """);
-    return data.isNotEmpty ? Guest.fromJson(data.first) : null;
+    return data.isNotEmpty ? Guest.fromMap(data.first) : null;
   }
 
   /// Find all users with this phone number and

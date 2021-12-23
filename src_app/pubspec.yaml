@@ -30,6 +30,7 @@ dependencies:
   flutter:
     sdk: flutter
   # generator
+  json_annotation: ^4.4.0
   freezed_annotation: ^1.1.0
   # State management
   get: ^4.3.8

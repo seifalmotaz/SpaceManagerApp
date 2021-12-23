@@ -1,36 +1,101 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
+import 'dart:convert';
 
-part 'model.freezed.dart';
-part 'model.g.dart';
+Guest guestFromMap(String str) => Guest.fromMap(json.decode(str));
+String guestToMap(Guest data) => json.encode(data.toMap());
 
-@freezed
-class Guest with _$Guest {
-  factory Guest({
+class Guest {
+  Guest({
+    this.id,
+    this.name,
+    this.email,
+    this.phone,
+    this.password,
+    this.gender,
+    this.career,
+    this.nationalId,
+    this.nationalIdPic,
+    this.isAdmin,
+    this.isStaff,
+    this.createdDate,
+  });
+
+  final int? id;
+  final String? name;
+  final String? email;
+  final String? phone;
+  final String? password;
+  final String? gender;
+  final String? career;
+  final String? nationalId;
+  final String? nationalIdPic;
+  final bool? isAdmin;
+  final bool? isStaff;
+  final DateTime? createdDate;
+
+  Guest copyWith({
     int? id,
-    // Info data
     String? name,
-    String? phone,
     String? email,
+    String? phone,
+    String? password,
     String? gender,
     String? career,
-    // Extra data
     String? nationalId,
     String? nationalIdPic,
-    // Auth data
-    String? password,
-    @JsonKey(fromJson: _fromBoolJsone, toJson: _toBoolJsone) bool? isAdmin,
-    @JsonKey(fromJson: _fromBoolJsone, toJson: _toBoolJsone) bool? isStaff,
-    // Date time data
-    @JsonKey(name: 'created_date', fromJson: _fromDateJson, toJson: _toDateJson)
-        DateTime? createdDate,
-  }) = _Guest;
+    bool? isAdmin,
+    bool? isStaff,
+    DateTime? createdDate,
+  }) =>
+      Guest(
+        id: id ?? this.id,
+        name: name ?? this.name,
+        email: email ?? this.email,
+        phone: phone ?? this.phone,
+        password: password ?? this.password,
+        gender: gender ?? this.gender,
+        career: career ?? this.career,
+        nationalId: nationalId ?? this.nationalId,
+        nationalIdPic: nationalIdPic ?? this.nationalIdPic,
+        isAdmin: isAdmin ?? this.isAdmin,
+        isStaff: isStaff ?? this.isStaff,
+        createdDate: createdDate ?? this.createdDate,
+      );
 
-  factory Guest.fromJson(Map<String, dynamic> json) => _$GuestFromJson(json);
+  factory Guest.fromMap(Map<String, dynamic> json) => Guest(
+        id: json["id"],
+        name: json["name"],
+        email: json["email"],
+        phone: json["phone"],
+        password: json["password"],
+        gender: json["gender"],
+        career: json["career"],
+        nationalId: json["national_id"],
+        nationalIdPic: json["national_id_pic"],
+        isAdmin: json["is_admin"] == 1 ? true : false,
+        isStaff: json["is_staff"] == 1 ? true : false,
+        createdDate: DateTime.tryParse(json["created_date"]),
+      );
 
-  // datetime
-  static DateTime _fromDateJson(String date) => DateTime.parse(date);
-  static String _toDateJson(DateTime date) => date.toIso8601String();
-
-  static bool _fromBoolJsone(int i) => i == 1 ? true : false;
-  static int _toBoolJsone(bool i) => i == true ? 1 : 0;
+  Map<String, dynamic> toMap() => {
+        "id": id,
+        "name": name,
+        "email": email,
+        "phone": phone,
+        "password": password,
+        "gender": gender,
+        "career": career,
+        "national_id": nationalId,
+        "national_id_pic": nationalIdPic,
+        "is_admin": isAdmin == null
+            ? null
+            : isAdmin!
+                ? 1
+                : 0,
+        "is_staff": isStaff == null
+            ? null
+            : isStaff!
+                ? 1
+                : 0,
+        "created_date": createdDate?.toIso8601String(),
+      };
 }

@@ -1,17 +1,45 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
+import 'dart:convert';
 
-part 'model.freezed.dart';
-part 'model.g.dart';
+Room roomFromMap(String str) => Room.fromMap(json.decode(str));
+String roomToMap(Room data) => json.encode(data.toMap());
 
-@freezed
-class Room with _$Room {
-  factory Room({
-    required int id,
-    // Info data
+class Room {
+  Room({
+    this.id,
+    this.name,
+    this.capacity,
+    this.rate,
+  });
+
+  final int? id;
+  final String? name;
+  final int? capacity;
+  final double? rate;
+
+  Room copyWith({
+    int? id,
     String? name,
-    required int capacity,
-    required double? rate,
-  }) = _Room;
+    int? capacity,
+    double? rate,
+  }) =>
+      Room(
+        id: id ?? this.id,
+        name: name ?? this.name,
+        capacity: capacity ?? this.capacity,
+        rate: rate ?? this.rate,
+      );
 
-  factory Room.fromJson(Map<String, dynamic> json) => _$RoomFromJson(json);
+  factory Room.fromMap(Map<String, dynamic> json) => Room(
+        id: json["id"],
+        name: json["name"],
+        capacity: json["capacity"],
+        rate: json["rate"].toDouble(),
+      );
+
+  Map<String, dynamic> toMap() => {
+        "id": id,
+        "name": name,
+        "capacity": capacity,
+        "rate": rate,
+      };
 }

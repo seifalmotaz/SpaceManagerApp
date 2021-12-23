@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:spacemanager/pages/wrapper.dart';
 import 'package:window_manager/window_manager.dart';
 
 Future<void> main() async {
@@ -20,9 +21,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
+    return const GetMaterialApp(
       title: 'Space Manager',
-      home: Container(),
+      home: WrapperPage(),
     );
   }
 }

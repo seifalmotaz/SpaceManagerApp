@@ -48,6 +48,7 @@ CREATE TABLE reservations (
     guest_id INTEGER NULL,
     course_id INTEGER NULL,
     is_pre_paid BOOLEAN DEFAULT TRUE,
+    created_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_room_id FOREIGN KEY (room_id) REFERENCES rooms(id),
     CONSTRAINT fk_guest_id FOREIGN KEY (guest_id) REFERENCES guests(id),
     CONSTRAINT fk_course_id FOREIGN KEY (course_id) REFERENCES courses(id)

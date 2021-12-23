@@ -1,4 +1,4 @@
-class UserCareers {
+class GuestCareers {
   static const admin = 'ADMIN';
   static const staff = 'STAFF';
   static const student = 'STUDENT';

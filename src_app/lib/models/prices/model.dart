@@ -1,21 +1,49 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
+import 'dart:convert';
 
-part 'model.freezed.dart';
-part 'model.g.dart';
+Price priceFromMap(String str) => Price.fromMap(json.decode(str));
+String priceToMap(Price data) => json.encode(data.toMap());
 
-@freezed
-class Price with _$Price {
-  factory Price({
-    required int id,
-    // Info data
-    required double rate,
-    required String description,
-    @JsonKey(name: 'is_default', fromJson: _fromBoolJsone, toJson: _toBoolJsone)
-        required bool isDefault,
-  }) = _Price;
+class Price {
+  Price({
+    this.id,
+    this.description,
+    this.rate,
+    this.isDefault,
+  });
 
-  factory Price.fromJson(Map<String, dynamic> json) => _$PriceFromJson(json);
+  final int? id;
+  final bool? description;
+  final double? rate;
+  final bool? isDefault;
 
-  static bool _fromBoolJsone(int i) => i == 1 ? true : false;
-  static int _toBoolJsone(bool i) => i == true ? 1 : 0;
+  Price copyWith({
+    int? id,
+    bool? description,
+    double? rate,
+    bool? isDefault,
+  }) =>
+      Price(
+        id: id ?? this.id,
+        description: description ?? this.description,
+        rate: rate ?? this.rate,
+        isDefault: isDefault ?? this.isDefault,
+      );
+
+  factory Price.fromMap(Map<String, dynamic> json) => Price(
+        id: json["id"],
+        description: json["description"],
+        rate: json["rate"].toDouble(),
+        isDefault: json["is_default"] == 1 ? true : false,
+      );
+
+  Map<String, dynamic> toMap() => {
+        "id": id,
+        "description": description,
+        "rate": rate,
+        "is_default": isDefault == null
+            ? null
+            : isDefault!
+                ? 1
+                : 0,
+      };
 }

@@ -9,6 +9,6 @@ extension Query on Reservation {
       where: 'room_id = ?',
       whereArgs: [i],
     );
-    return data.map((e) => Reservation.fromJson(e)).toList();
+    return data.map((e) => Reservation.fromMap(e)).toList();
   }
 }

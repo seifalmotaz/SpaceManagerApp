@@ -4,13 +4,13 @@ import 'package:spacemanager/services/database.dart';
 extension Query on Session {
   static Future<List<Session>> list(int id) async {
     List<Map<String, dynamic>> data = await DBService.to.db.query('sessions');
-    return data.map((e) => Session.fromJson(e)).toList();
+    return data.map((e) => Session.fromMap(e)).toList();
   }
 
   /// start session
   /// this create new session
   Future<int> start() async {
-    var data = await DBService.to.db.insert('sessions', toJson());
+    var data = await DBService.to.db.insert('sessions', toMap());
     return data;
   }
 
@@ -31,13 +31,13 @@ extension Query on Session {
       where: 'id = ?',
       whereArgs: [id],
     );
-    return Session.fromJson(data.first);
+    return Session.fromMap(data.first);
   }
 
   Future<int> update() async {
     int data = await DBService.to.db.update(
       'sessions',
-      toJson(),
+      toMap(),
       where: 'id = ?',
       whereArgs: [id],
     );

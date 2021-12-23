@@ -5,11 +5,11 @@ extension CRUDQuery on Reservation {
   static Future<List<Reservation>> list(int id) async {
     List<Map<String, dynamic>> data =
         await DBService.to.db.query('reservations');
-    return data.map((e) => Reservation.fromJson(e)).toList();
+    return data.map((e) => Reservation.fromMap(e)).toList();
   }
 
   Future<int> create() async {
-    var data = await DBService.to.db.insert('reservations', toJson());
+    var data = await DBService.to.db.insert('reservations', toMap());
     return data;
   }
 
@@ -19,13 +19,13 @@ extension CRUDQuery on Reservation {
       where: 'id = ?',
       whereArgs: [id],
     );
-    return Reservation.fromJson(data.first);
+    return Reservation.fromMap(data.first);
   }
 
   Future<int> update() async {
     int data = await DBService.to.db.update(
       'reservations',
-      toJson(),
+      toMap(),
       where: 'id = ?',
       whereArgs: [id],
     );

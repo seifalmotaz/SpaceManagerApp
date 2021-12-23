@@ -39,7 +39,7 @@ extension JoinsQuery on Reservation {
 
     return data
         .map((e) => ReservationWithSession(
-              reservation: Reservation.fromJson(e),
+              reservation: Reservation.fromMap(e),
               sessionId: e['session_id'],
             ))
         .toList();

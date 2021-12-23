@@ -1,32 +1,79 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
+// To parse this JSON data, do
+//
+//     final reservation = reservationFromMap(jsonString);
 
-part 'model.freezed.dart';
-part 'model.g.dart';
+import 'dart:convert';
 
-@freezed
-class Reservation with _$Reservation {
-  factory Reservation({
+Reservation reservationFromMap(String str) =>
+    Reservation.fromMap(json.decode(str));
+
+String reservationToMap(Reservation data) => json.encode(data.toMap());
+
+class Reservation {
+  Reservation({
+    this.id,
+    this.isPrePaid,
+    this.startTime,
+    this.endTime,
+    this.roomId,
+    this.courseId,
+    this.guestId,
+    this.createdDate,
+  });
+
+  final int? id;
+  final bool? isPrePaid;
+  final DateTime? startTime;
+  final DateTime? endTime;
+  final DateTime? createdDate;
+  final double? roomId;
+  final double? courseId;
+  final double? guestId;
+
+  Reservation copyWith({
     int? id,
-    @JsonKey(name: 'is_pre_paid', fromJson: _fromBoolJsone, toJson: _toBoolJsone)
-        bool? isPrePaId,
-    // Date time data
-    @JsonKey(name: 'start_time', fromJson: _fromJson, toJson: _toJson)
-        DateTime? startTime,
-    @JsonKey(name: 'end_time', fromJson: _fromJson, toJson: _toJson)
-        DateTime? endTime,
-    // Refrensaces
-    @JsonKey(name: 'room_id') required int roomId,
-    @JsonKey(name: 'course_id') int? courseId,
-    @JsonKey(name: 'guest_id') required int guestId,
-  }) = _Reservation;
+    bool? isPrePaid,
+    DateTime? startTime,
+    DateTime? endTime,
+    double? roomId,
+    double? courseId,
+    double? guestId,
+    DateTime? createdDate,
+  }) =>
+      Reservation(
+        id: id ?? this.id,
+        isPrePaid: isPrePaid ?? this.isPrePaid,
+        startTime: startTime ?? this.startTime,
+        endTime: endTime ?? this.endTime,
+        roomId: roomId ?? this.roomId,
+        createdDate: createdDate ?? this.createdDate,
+        courseId: courseId ?? this.courseId,
+        guestId: guestId ?? this.guestId,
+      );
 
-  factory Reservation.fromJson(Map<String, dynamic> json) =>
-      _$ReservationFromJson(json);
+  factory Reservation.fromMap(Map<String, dynamic> json) => Reservation(
+        id: json["id"],
+        isPrePaid: json["is_pre_paid"] == 1 ? true : false,
+        startTime: DateTime.tryParse(json["start_time"].toString()),
+        endTime: DateTime.tryParse(json["end_time"].toString()),
+        createdDate: DateTime.tryParse(json["created_date"].toString()),
+        roomId: json["room_id"].toDouble(),
+        courseId: json["course_id"].toDouble(),
+        guestId: json["guest_id"].toDouble(),
+      );
 
-  // datetime
-  static DateTime _fromJson(String date) => DateTime.parse(date);
-  static String _toJson(DateTime date) => date.toIso8601String();
-
-  static bool _fromBoolJsone(int i) => i == 1 ? true : false;
-  static int _toBoolJsone(bool i) => i == true ? 1 : 0;
+  Map<String, dynamic> toMap() => {
+        "id": id,
+        "start_time": startTime?.toIso8601String(),
+        "end_time": endTime?.toIso8601String(),
+        "created_date": createdDate?.toIso8601String(),
+        "room_id": roomId,
+        "course_id": courseId,
+        "guest_id": guestId,
+        "is_pre_paid": isPrePaid == null
+            ? null
+            : isPrePaid!
+                ? 1
+                : 0,
+      };
 }
