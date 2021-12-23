@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
+import 'package:spacemanager/constants/careers.dart';
+import 'package:spacemanager/models/guests/src.dart';
+import 'package:spacemanager/models/sessions/src.dart';
+import 'package:spacemanager/pages/home/home.dart';
 import 'package:spacemanager/pages/login/login.dart';
 import 'package:spacemanager/services/auth.dart';
 import 'package:spacemanager/services/database.dart';
@@ -29,25 +33,37 @@ class _WrapperPageState extends State<WrapperPage> {
     // create db if first time open the app
     bool isFirstRun = await storage.isFirstRun;
     if (isFirstRun) {
-      db.createSchema();
+      await db.createSchema();
+      Guest g = Guest(
+        career: GuestCareers.admin,
+        name: 'Space Admin',
+        isAdmin: true,
+        isStaff: true,
+        password: '101SpaceAdmin',
+        phone: '101SpaceAdmin',
+      );
+      await g.create();
+      await storage.setFirstRun(false);
     }
 
     // create auth service
     await Get.putAsync<AuthService>(() async => AuthService());
-    await Future.delayed(const Duration(seconds: 3));
+    await Future.delayed(const Duration(seconds: 2));
 
-    // if (session != null) {
-    // AuthService.to.isAuthenticated.value = true;
-    // AuthService.to.guestData.value =
-    //     await dbService.db.getGuest(session.guestId);
-    // AuthService.to.sessionData.value = session;
-    // Get.offUntil(
-    //   GetPageRoute(
-    //     page: () => const HomePage(),
-    //   ),
-    //   (route) => false,
-    // );
-    // }
+    Session? session = await SessionFindQuery.findNotEndedForStaff();
+
+    if (session != null) {
+      AuthService.to.isAuthenticated.value = true;
+      AuthService.to.guestData.value = await session.guest();
+      AuthService.to.sessionData.value = session;
+      Get.offUntil(
+        GetPageRoute(
+          page: () => const HomePage(),
+        ),
+        (route) => false,
+      );
+      return;
+    }
 
     Get.offUntil(
       GetPageRoute(
@@ -55,6 +71,7 @@ class _WrapperPageState extends State<WrapperPage> {
       ),
       (route) => false,
     );
+    return;
   }
 
   @override

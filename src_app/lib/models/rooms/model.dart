@@ -37,7 +37,6 @@ class Room {
       );
 
   Map<String, dynamic> toMap() => {
-        "id": id,
         "name": name,
         "capacity": capacity,
         "rate": rate,

@@ -4,6 +4,7 @@ DROP TABLE IF EXISTS rooms;
 DROP TABLE IF EXISTS reservations;
 DROP TABLE IF EXISTS sessions;
 DROP TABLE IF EXISTS courses;
+DROP TABLE IF EXISTS bills;
 
 CREATE TABLE guests (
     id INTEGER NOT NULL PRIMARY KEY,
@@ -81,7 +82,7 @@ CREATE TABLE bills (
     CONSTRAINT fk_staff_id FOREIGN KEY (staff_id) REFERENCES guests(id),
     CONSTRAINT fk_session_id FOREIGN KEY (session_id) REFERENCES sessions(id),
     CONSTRAINT fk_reservation_id FOREIGN KEY (reservation_id) REFERENCES reservations(id)
-)
+);
 
 CREATE UNIQUE INDEX guest_id on guests (id);
 CREATE UNIQUE INDEX price_id on prices (id);

@@ -1,7 +1,7 @@
 import 'package:spacemanager/models/reservations/model.dart';
 import 'package:spacemanager/services/database.dart';
 
-extension CRUDQuery on Reservation {
+extension ReservationCRUDQuery on Reservation {
   static Future<List<Reservation>> list(int id) async {
     List<Map<String, dynamic>> data =
         await DBService.to.db.query('reservations');

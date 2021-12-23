@@ -1,7 +1,7 @@
 import 'package:spacemanager/models/courses/model.dart';
 import 'package:spacemanager/services/database.dart';
 
-extension CRUDQuery on Course {
+extension CourseCRUDQuery on Course {
   static Future<List<Course>> list(int id) async {
     List<Map<String, dynamic>> data = await DBService.to.db.query('courses');
     return data.map((e) => Course.fromMap(e)).toList();

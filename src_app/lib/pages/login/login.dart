@@ -78,7 +78,7 @@ class LogInPage extends StatelessWidget {
                   elevation: 0,
                   hoverElevation: 0,
                   color: Colors.white,
-                  onPressed: () {},
+                  onPressed: controller.login,
                 ),
               ),
             ],

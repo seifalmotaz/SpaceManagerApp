@@ -1,7 +1,7 @@
 import 'package:spacemanager/models/sessions/model.dart';
 import 'package:spacemanager/services/database.dart';
 
-extension Query on Session {
+extension SessionQuery on Session {
   static Future<List<Session>> list(int id) async {
     List<Map<String, dynamic>> data = await DBService.to.db.query('sessions');
     return data.map((e) => Session.fromMap(e)).toList();

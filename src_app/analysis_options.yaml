@@ -11,16 +11,13 @@ include: package:flutter_lints/flutter.yaml
 
 analyzer:
   exclude:
-    - "**/*.g.dart"
-    - "**/*.freezed.dart"
-    # - "**/models/**/model.dart"
-    # - "**/models/**/query.dart"
-    # - "**/models/**/crud_query.dart"
-    # - "**/models/**/find_query.dart"
-    # - "**/models/**/joins_query.dart"
-    # - "**/models/**/join_classes.dart"
-  errors:
-    invalid_annotation_target: ignore
+    - "**/models/**/model.dart"
+    - "**/models/**/query.dart"
+    - "**/models/**/crud_query.dart"
+    - "**/models/**/find_query.dart"
+    - "**/models/**/joins_query.dart"
+    - "**/models/**/join_classes.dart"
+    - "**/models/**/ref.dart"
 
 linter:
   # The lint rules applied to this project can be customized in the

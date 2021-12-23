@@ -3,7 +3,7 @@ import 'package:spacemanager/models/sessions/joins_classes.dart';
 import 'package:spacemanager/models/sessions/model.dart';
 import 'package:spacemanager/services/database.dart';
 
-extension FindQuery on Session {
+extension SessionFindQuery on Session {
   /// find last session not ended for guest
   static Future<Session?> findNotEndedForGuest(int userId) async {
     List<Map<String, dynamic>> data = await DBService.to.db.query(
@@ -18,7 +18,7 @@ extension FindQuery on Session {
     List<Map<String, dynamic>> data = await DBService.to.db.rawQuery("""
     SELECT sessions.*
     FROM sessions
-    INNER JOIN users ON sessions.guest_id = guests.id
+    INNER JOIN guests ON sessions.guest_id = guests.id
     WHERE end_time IS NULL AND guests.is_staff = true 
     LIMIT 1
     """);

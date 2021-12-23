@@ -47,7 +47,6 @@ class Bill {
       );
 
   Map<String, dynamic> toMap() => {
-        "id": id,
         "total": total,
         "staff_id": staffId,
         "session_id": sessionId,

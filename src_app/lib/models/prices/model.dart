@@ -37,7 +37,6 @@ class Price {
       );
 
   Map<String, dynamic> toMap() => {
-        "id": id,
         "description": description,
         "rate": rate,
         "is_default": isDefault == null

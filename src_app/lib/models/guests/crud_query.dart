@@ -3,7 +3,7 @@ import 'package:spacemanager/constants/careers.dart';
 import 'package:spacemanager/models/guests/model.dart';
 import 'package:spacemanager/services/database.dart';
 
-extension CRUDQuery on Guest {
+extension GuestCRUDQuery on Guest {
   static Future<List<Guest>> list(int id) async {
     List<Map<String, dynamic>> data = await DBService.to.db.query('guests');
     return data.map((e) => Guest.fromMap(e)).toList();

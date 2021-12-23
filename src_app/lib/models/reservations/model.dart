@@ -63,7 +63,6 @@ class Reservation {
       );
 
   Map<String, dynamic> toMap() => {
-        "id": id,
         "start_time": startTime?.toIso8601String(),
         "end_time": endTime?.toIso8601String(),
         "created_date": createdDate?.toIso8601String(),

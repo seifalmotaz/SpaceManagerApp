@@ -3,7 +3,7 @@ import 'package:spacemanager/services/database.dart';
 
 import 'joins_classes.dart';
 
-extension JoinsQuery on Reservation {
+extension ReservationJoinsQuery on Reservation {
   /// Get spacific room reservation for today
   /// return reservation and session id
   static Future<List<ReservationWithSession>> getByDateAndRoom(int roomId,

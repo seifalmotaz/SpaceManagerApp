@@ -21,8 +21,8 @@ class DBService extends GetxService {
     dbDatabase.value = sConnect;
   }
 
-  createSchema() async {
-    String sql = await rootBundle.loadString('assets/database/createDB.sql');
+  Future createSchema() async {
+    String sql = await rootBundle.loadString('assets/db/createDB.sql');
     dbDatabase.value!.execute(sql);
   }
 

@@ -64,8 +64,6 @@ class Session {
       );
 
   Map<String, dynamic> toMap() => {
-        "id": null,
-        "start_time": startTime?.toIso8601String(),
         "end_time": endTime?.toIso8601String(),
         "guest_id": guestId,
         "room_id": roomId,

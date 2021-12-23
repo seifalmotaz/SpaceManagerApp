@@ -1,7 +1,7 @@
 import 'package:spacemanager/models/guests/src.dart';
 import 'package:spacemanager/services/database.dart';
 
-extension FindQuery on Guest {
+extension GuestFindQuery on Guest {
   static Future<List<Guest>> findByPhone(String phone) async {
     List<Map<String, dynamic>> data = await DBService.to.db.rawQuery("""
     SELECT * FROM guests
@@ -10,10 +10,10 @@ extension FindQuery on Guest {
     return data.map((e) => Guest.fromMap(e)).toList();
   }
 
-  static Future<Guest?> findOneByPhone(String phone) async {
+  static Future<Guest?> getOneByPhone(String phone) async {
     List<Map<String, dynamic>> data = await DBService.to.db.rawQuery("""
     SELECT * FROM guests
-    WHERE phone = '%$phone%'
+    WHERE phone = '$phone'
     LIMIT 1
     """);
     return data.isNotEmpty ? Guest.fromMap(data.first) : null;
@@ -27,7 +27,7 @@ extension FindQuery on Guest {
     return data.map((e) => Guest.fromMap(e)).toList();
   }
 
-  static Future<Guest?> findOneByEmail(String email) async {
+  static Future<Guest?> getOneByEmail(String email) async {
     List<Map<String, dynamic>> data = await DBService.to.db.rawQuery("""
     SELECT * FROM guests
     WHERE email = '%$email%'
