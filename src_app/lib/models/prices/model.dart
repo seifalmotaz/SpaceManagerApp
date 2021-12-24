@@ -12,13 +12,13 @@ class Price {
   });
 
   final int? id;
-  final bool? description;
+  final String? description;
   final double? rate;
   final bool? isDefault;
 
   Price copyWith({
     int? id,
-    bool? description,
+    String? description,
     double? rate,
     bool? isDefault,
   }) =>
@@ -37,12 +37,13 @@ class Price {
       );
 
   Map<String, dynamic> toMap() => {
-        "description": description,
-        "rate": rate,
-        "is_default": isDefault == null
-            ? null
-            : isDefault!
-                ? 1
-                : 0,
+        if (description != null) "description": description,
+        if (rate != null) "rate": rate,
+        if (isDefault != null)
+          "is_default": isDefault == null
+              ? null
+              : isDefault!
+                  ? 1
+                  : 0,
       };
 }

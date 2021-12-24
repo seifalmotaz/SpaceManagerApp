@@ -77,23 +77,25 @@ class Guest {
       );
 
   Map<String, dynamic> toMap() => {
-        "name": name,
-        "email": email,
-        "phone": phone,
-        "password": password,
-        "gender": gender,
-        "career": career,
-        "national_id": nationalId,
-        "national_id_pic": nationalIdPic,
-        "is_admin": isAdmin == null
-            ? null
-            : isAdmin!
-                ? 1
-                : 0,
-        "is_staff": isStaff == null
-            ? null
-            : isStaff!
-                ? 1
-                : 0,
+        if (name != null) "name": name,
+        if (email != null) "email": email,
+        if (phone != null) "phone": phone,
+        if (password != null) "password": password,
+        if (gender != null) "gender": gender,
+        if (career != null) "career": career,
+        if (nationalId != null) "national_id": nationalId,
+        if (nationalIdPic != null) "national_id_pic": nationalIdPic,
+        if (isAdmin != null)
+          "is_admin": isAdmin == null
+              ? null
+              : isAdmin!
+                  ? 1
+                  : 0,
+        if (isStaff != null)
+          "is_staff": isStaff == null
+              ? null
+              : isStaff!
+                  ? 1
+                  : 0,
       };
 }

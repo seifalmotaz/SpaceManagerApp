@@ -18,6 +18,8 @@ analyzer:
     - "**/models/**/joins_query.dart"
     - "**/models/**/join_classes.dart"
     - "**/models/**/ref.dart"
+  errors:
+    todo: ignore
 
 linter:
   # The lint rules applied to this project can be customized in the
