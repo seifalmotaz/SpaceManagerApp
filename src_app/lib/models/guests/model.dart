@@ -17,6 +17,7 @@ class Guest {
     this.isAdmin,
     this.isStaff,
     this.createdDate,
+    this.isExpired,
   });
 
   final int? id;
@@ -30,6 +31,7 @@ class Guest {
   final String? nationalIdPic;
   final bool? isAdmin;
   final bool? isStaff;
+  final bool? isExpired;
   final DateTime? createdDate;
 
   Guest copyWith({
@@ -44,6 +46,7 @@ class Guest {
     String? nationalIdPic,
     bool? isAdmin,
     bool? isStaff,
+    bool? isExpired,
     DateTime? createdDate,
   }) =>
       Guest(
@@ -59,6 +62,7 @@ class Guest {
         isAdmin: isAdmin ?? this.isAdmin,
         isStaff: isStaff ?? this.isStaff,
         createdDate: createdDate ?? this.createdDate,
+        isExpired: isExpired ?? this.isExpired,
       );
 
   factory Guest.fromMap(Map<String, dynamic> json) => Guest(
@@ -73,6 +77,7 @@ class Guest {
         nationalIdPic: json["national_id_pic"],
         isAdmin: json["is_admin"] == 1 ? true : false,
         isStaff: json["is_staff"] == 1 ? true : false,
+        isExpired: json["is_expired"] == 1 ? true : false,
         createdDate: DateTime.tryParse(json["created_date"]),
       );
 
@@ -85,6 +90,12 @@ class Guest {
         if (career != null) "career": career,
         if (nationalId != null) "national_id": nationalId,
         if (nationalIdPic != null) "national_id_pic": nationalIdPic,
+        if (isExpired != null)
+          "is_expired": isExpired == null
+              ? null
+              : isExpired!
+                  ? 1
+                  : 0,
         if (isAdmin != null)
           "is_admin": isAdmin == null
               ? null

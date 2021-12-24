@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:spacemanager/pages/home/controller.dart';
 import 'package:spacemanager/pages/home/widgets/side.dart';
 
 class HomePage extends StatelessWidget {
@@ -6,6 +8,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Get.put(HomeController());
     return Scaffold(
       body: Row(
         children: [

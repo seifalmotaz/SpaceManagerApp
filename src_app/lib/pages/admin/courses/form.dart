@@ -2,30 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:spacemanager/constants/base_colors.dart';
-import 'package:spacemanager/models/prices/src.dart';
+import 'package:spacemanager/models/courses/src.dart';
 
 TextStyle basicStyle = const TextStyle(
   fontWeight: FontWeight.w600,
   color: Colors.black,
 );
 
-class PriceForm extends StatefulWidget {
-  const PriceForm({
+class CourseForm extends StatefulWidget {
+  const CourseForm({
     Key? key,
     this.onCreate,
-    this.firstDefault,
   }) : super(key: key);
 
   final Function? onCreate;
-  final bool? firstDefault;
 
   @override
-  State<PriceForm> createState() => _PriceFormState();
+  State<CourseForm> createState() => _CourseFormState();
 }
 
-class _PriceFormState extends State<PriceForm> {
+class _CourseFormState extends State<CourseForm> {
   GlobalKey<FormState> form = GlobalKey<FormState>();
-  bool isDefault = false;
   FocusNode priceFocus = FocusNode();
   FocusNode disFocus = FocusNode();
   TextEditingController price = TextEditingController();
@@ -33,11 +30,10 @@ class _PriceFormState extends State<PriceForm> {
 
   check() async {
     if (form.currentState!.validate()) {
-      late Price p;
+      late Course p;
       try {
-        p = Price(
-          description: dis.text.isEmpty ? null : dis.text,
-          isDefault: isDefault,
+        p = Course(
+          name: dis.text.isEmpty ? null : dis.text,
           rate: double.parse(price.text),
         );
       } catch (e) {
@@ -53,28 +49,14 @@ class _PriceFormState extends State<PriceForm> {
         );
         return;
       }
-      if (isDefault) {
-        Price defaultPrice = await PriceCRUDQuery.readDefault();
-        Price editedPrice = defaultPrice.copyWith(isDefault: false);
-        await editedPrice.update();
-      }
       await p.create();
       setState(() {
         price.text = '';
         dis.text = '';
-        isDefault = false;
         priceFocus.requestFocus();
       });
     }
     if (widget.onCreate != null) widget.onCreate!();
-  }
-
-  @override
-  void initState() {
-    setState(() {
-      isDefault = widget.firstDefault ?? false;
-    });
-    super.initState();
   }
 
   @override
@@ -87,7 +69,7 @@ class _PriceFormState extends State<PriceForm> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              'Add price to list:',
+              'Add course to list:',
               style: TextStyle(
                 fontSize: 27,
                 fontWeight: FontWeight.bold,
@@ -153,18 +135,17 @@ class _PriceFormState extends State<PriceForm> {
                               vertical: 5,
                             ),
                             border: InputBorder.none,
-                            hintText: 'Description',
+                            hintText: 'Name',
                             hintStyle: basicStyle.copyWith(color: Colors.grey),
                           ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Not valid';
+                            }
+                          },
                         ),
                       ),
                       const SizedBox(height: 11),
-                      SwitchListTile.adaptive(
-                        value: isDefault,
-                        title: const Text('Is the default price'),
-                        onChanged: (value) => setState(() => isDefault = value),
-                      ),
-                      const SizedBox(height: 9),
                       GFButton(
                         text: 'Add',
                         fullWidthButton: true,

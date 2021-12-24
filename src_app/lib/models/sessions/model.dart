@@ -64,12 +64,12 @@ class Session {
       );
 
   Map<String, dynamic> toMap() => {
-        "end_time": endTime?.toIso8601String(),
-        "guest_id": guestId,
-        "room_id": roomId,
-        "price_id": priceId,
-        "course_id": courseId,
-        "reservation_id": reservationId,
-        "guests_count": guestsCount,
+        if (endTime != null) "end_time": endTime?.toIso8601String(),
+        if (guestId != null) "guest_id": guestId,
+        if (roomId != null) "room_id": roomId,
+        if (priceId != null) "price_id": priceId,
+        if (courseId != null) "course_id": courseId,
+        if (reservationId != null) "reservation_id": reservationId,
+        if (guestsCount != null) "guests_count": guestsCount,
       };
 }

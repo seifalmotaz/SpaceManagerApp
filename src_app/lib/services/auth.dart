@@ -13,4 +13,8 @@ class AuthService extends GetxService {
   //
   Rx<Session?> sessionData = Rx<Session?>(null);
   Session? get session => sessionData.value;
+
+  updateGuestData() async {
+    guestData.value = await GuestCRUDQuery.read(guest!.id!);
+  }
 }

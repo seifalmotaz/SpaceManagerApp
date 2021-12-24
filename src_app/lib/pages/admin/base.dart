@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:spacemanager/constants/base_colors.dart';
+import 'package:spacemanager/pages/admin/courses/courses.dart';
 import 'package:spacemanager/pages/admin/prices/prices.dart';
+import 'package:spacemanager/pages/admin/staff/staff.dart';
 
 class AdminBaseLayout extends StatelessWidget {
   const AdminBaseLayout(this.body, {Key? key}) : super(key: key);
@@ -17,7 +19,7 @@ class AdminBaseLayout extends StatelessWidget {
         title: const Text('Space admin'),
         actions: [
           TextButton(
-            onPressed: () => Get.off(() => const EditPricesPage()),
+            onPressed: () => Get.off(() => const EditStaffPage()),
             child: const Text(
               'Staff',
               style: TextStyle(color: Colors.white),
@@ -31,7 +33,7 @@ class AdminBaseLayout extends StatelessWidget {
             ),
           ),
           TextButton(
-            onPressed: () => Get.off(() => const EditPricesPage()),
+            onPressed: () => Get.off(() => const EditCoursesPage()),
             child: const Text(
               'Courses',
               style: TextStyle(color: Colors.white),

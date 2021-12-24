@@ -7,20 +7,21 @@ import 'package:spacemanager/models/guests/src.dart';
 import 'package:spacemanager/models/sessions/src.dart';
 import 'package:spacemanager/screens/guests/mini/label_field.dart';
 
-class StaffCardSessionWidget extends StatefulWidget {
-  const StaffCardSessionWidget({
+class GuestSessionCardWidget extends StatefulWidget {
+  const GuestSessionCardWidget({
     Key? key,
-    required this.guest,
-    required this.session,
+    required this.guestWithSession,
   }) : super(key: key);
 
-  final Guest guest;
-  final Session session;
+  final GuestWithSession guestWithSession;
+
   @override
-  _StaffCardSessionWidgetState createState() => _StaffCardSessionWidgetState();
+  _GuestSessionCardWidgetState createState() => _GuestSessionCardWidgetState();
 }
 
-class _StaffCardSessionWidgetState extends State<StaffCardSessionWidget> {
+class _GuestSessionCardWidgetState extends State<GuestSessionCardWidget> {
+  late Guest guest;
+  late Session? session;
   Duration? time;
   String timeInHour = '';
   String timeInMin = '';
@@ -57,14 +58,18 @@ class _StaffCardSessionWidgetState extends State<StaffCardSessionWidget> {
   @override
   void initState() {
     setState(() {
-      DateTimeRange t = DateTimeRange(
-        start: widget.session.startTime!,
-        end: DateTime.now(),
-      );
-      time = t.duration;
-      startTimer();
-      timeInMin = tInM();
-      timeInHour = tInH();
+      guest = widget.guestWithSession.guest;
+      session = widget.guestWithSession.session;
+      if (widget.guestWithSession.sessionId != null) {
+        DateTimeRange t = DateTimeRange(
+          start: session!.startTime!,
+          end: DateTime.now(),
+        );
+        time = t.duration;
+        startTimer();
+        timeInMin = tInM();
+        timeInHour = tInH();
+      }
     });
     super.initState();
   }
@@ -82,7 +87,7 @@ class _StaffCardSessionWidgetState extends State<StaffCardSessionWidget> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                '@' + (widget.guest.name ?? 'Unknown'),
+                '@' + (guest.name ?? 'Unknown'),
                 style: TextStyle(
                   color: Colors.blueGrey.shade900,
                   fontWeight: FontWeight.bold,
@@ -97,26 +102,26 @@ class _StaffCardSessionWidgetState extends State<StaffCardSessionWidget> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     labelField(
-                      widget.guest.email ?? 'No email',
+                      guest.email ?? 'No email',
                       Icons.email_outlined,
                     ),
                     const SizedBox(height: 5),
                     labelField(
-                      widget.guest.phone ?? 'No phone',
+                      guest.phone ?? 'No phone',
                       Icons.phone_outlined,
                     ),
                     const SizedBox(height: 5),
                     labelField(
-                      widget.guest.gender ?? 'Undefined',
-                      widget.guest.gender == null
+                      guest.gender ?? 'Undefined',
+                      guest.gender == null
                           ? FontAwesomeIcons.genderless
-                          : widget.guest.gender == 'Male'
+                          : guest.gender == 'Male'
                               ? FontAwesomeIcons.mars
                               : FontAwesomeIcons.venus,
                     ),
                     const SizedBox(height: 5),
                     labelField(
-                      widget.guest.career ?? 'Not specified',
+                      guest.career ?? 'Not specified',
                       FontAwesomeIcons.user,
                     ),
                   ],
@@ -125,53 +130,54 @@ class _StaffCardSessionWidgetState extends State<StaffCardSessionWidget> {
             ],
           ),
           const SizedBox(height: 7),
-          SizedBox(
-            width: double.infinity,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Working duration',
-                  style: TextStyle(
-                    color: Colors.blueGrey.shade800,
-                    fontSize: 17,
-                    fontWeight: FontWeight.bold,
+          if (widget.guestWithSession.sessionId != null)
+            SizedBox(
+              width: double.infinity,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Session duration',
+                    style: TextStyle(
+                      color: Colors.blueGrey.shade800,
+                      fontSize: 17,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-                Wrap(
-                  runSpacing: 13,
-                  spacing: 13,
-                  crossAxisAlignment: WrapCrossAlignment.end,
-                  alignment: WrapAlignment.end,
-                  children: [
-                    Chip(
-                      backgroundColor: BaseColors.lightPrimary,
-                      label: Text(
-                        timeInHour,
-                        style: TextStyle(
-                          color: Colors.blueGrey.shade900.withOpacity(.81),
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15,
+                  Wrap(
+                    runSpacing: 13,
+                    spacing: 13,
+                    crossAxisAlignment: WrapCrossAlignment.end,
+                    alignment: WrapAlignment.end,
+                    children: [
+                      Chip(
+                        backgroundColor: BaseColors.lightPrimary,
+                        label: Text(
+                          timeInHour,
+                          style: TextStyle(
+                            color: Colors.blueGrey.shade900.withOpacity(.81),
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15,
+                          ),
                         ),
                       ),
-                    ),
-                    Chip(
-                      backgroundColor: BaseColors.lightPrimary,
-                      label: Text(
-                        timeInMin,
-                        style: TextStyle(
-                          color: Colors.blueGrey.shade900.withOpacity(.81),
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15,
+                      Chip(
+                        backgroundColor: BaseColors.lightPrimary,
+                        label: Text(
+                          timeInMin,
+                          style: TextStyle(
+                            color: Colors.blueGrey.shade900.withOpacity(.81),
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15,
+                          ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          )
+                    ],
+                  ),
+                ],
+              ),
+            )
         ],
       ),
     );

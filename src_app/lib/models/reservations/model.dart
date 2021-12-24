@@ -19,6 +19,7 @@ class Reservation {
     this.courseId,
     this.guestId,
     this.createdDate,
+    this.isCancelled,
   });
 
   final int? id;
@@ -29,6 +30,7 @@ class Reservation {
   final double? roomId;
   final double? courseId;
   final double? guestId;
+  final bool? isCancelled;
 
   Reservation copyWith({
     int? id,
@@ -39,6 +41,7 @@ class Reservation {
     double? courseId,
     double? guestId,
     DateTime? createdDate,
+    bool? isCancelled;
   }) =>
       Reservation(
         id: id ?? this.id,
@@ -49,6 +52,7 @@ class Reservation {
         createdDate: createdDate ?? this.createdDate,
         courseId: courseId ?? this.courseId,
         guestId: guestId ?? this.guestId,
+        isCancelled: isCancelled??this.isCancelled
       );
 
   factory Reservation.fromMap(Map<String, dynamic> json) => Reservation(
@@ -60,6 +64,7 @@ class Reservation {
         roomId: json["room_id"].toDouble(),
         courseId: json["course_id"].toDouble(),
         guestId: json["guest_id"].toDouble(),
+        isCancelled: json["is_cancelled"] == 1 ? true : false,
       );
 
   Map<String, dynamic> toMap() => {
@@ -72,6 +77,11 @@ class Reservation {
         "is_pre_paid": isPrePaid == null
             ? null
             : isPrePaid!
+                ? 1
+                : 0,
+        "is_cancelled": isCancelled == null
+            ? null
+            : isCancelled!
                 ? 1
                 : 0,
       };

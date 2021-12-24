@@ -18,7 +18,8 @@ CREATE TABLE guests (
     gender VARCHAR(7) NULL,
     created_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     is_staff BOOLEAN DEFAULT FALSE,
-    is_admin BOOLEAN DEFAULT FALSE
+    is_admin BOOLEAN DEFAULT FALSE,
+    is_expired BOOLEAN DEFAULT FALSE,
 );
 
 CREATE TABLE prices (
@@ -49,6 +50,7 @@ CREATE TABLE reservations (
     guest_id INTEGER NULL,
     course_id INTEGER NULL,
     is_pre_paid BOOLEAN DEFAULT TRUE,
+    is_cancelled BOOLEAN DEFAULT FALSE,
     created_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_room_id FOREIGN KEY (room_id) REFERENCES rooms(id),
     CONSTRAINT fk_guest_id FOREIGN KEY (guest_id) REFERENCES guests(id),

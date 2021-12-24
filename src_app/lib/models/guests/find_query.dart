@@ -3,6 +3,15 @@ import 'package:spacemanager/models/sessions/src.dart';
 import 'package:spacemanager/services/database.dart';
 
 extension GuestFindQuery on Guest {
+  static Future<List<Guest>> getAllStaff() async {
+    List<Map<String, dynamic>> data = await DBService.to.db.query(
+      'guests',
+      where: 'is_staff = ?',
+      whereArgs: [1],
+    );
+    return data.map((e) => Guest.fromMap(e)).toList();
+  }
+
   static Future<List<Guest>> findByPhone(String phone) async {
     List<Map<String, dynamic>> data = await DBService.to.db.rawQuery("""
     SELECT * FROM guests
@@ -41,20 +50,22 @@ extension GuestFindQuery on Guest {
   /// join sesssion.
   /// Session can be null if not exist.
   /// Excluding admin and staff guests.
-  Future<List<GuestWithSession>> findByPhoneJoinSession(String phone) async {
+  static Future<List<GuestWithSession>> findByPhoneJoinSession(
+      String phone) async {
     List<Map<String, dynamic>> data = await DBService.to.db.rawQuery("""
-    SELECT users.*, sessions.id AS 'session_id', sessions.start_time AS 'session_start_time' FROM users
+    SELECT guests.*, sessions.id AS 'session_id', sessions.start_time AS 'session_start_time' FROM guests
     LEFT JOIN (
-      SELECT id, start_time, end_time FROM sessions WHERE end_time IS NULL
-    ) sessions ON users.id=sessions.user_id
+      SELECT id, start_time, end_time, guest_id FROM sessions WHERE end_time IS NULL
+    ) sessions ON guests.id=sessions.guest_id
     WHERE phone LIKE '%$phone%' AND is_staff = false
     """);
     return data
         .map(
           (e) => GuestWithSession(
             guest: Guest.fromMap(e),
+            sessionId: e['session_id'],
             session: Session(
-              startTime: e['session_start_time'],
+              startTime: DateTime.tryParse(e['session_start_time'] ?? ''),
               id: e['session_id'],
             ),
           ),

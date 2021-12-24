@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:spacemanager/constants/base_colors.dart';
 import 'package:spacemanager/pages/admin/prices/prices.dart';
+import 'package:spacemanager/pages/home/controller.dart';
 import 'package:spacemanager/pages/home/widgets/side/side_button.dart';
 
 class MiniSide extends StatelessWidget {
@@ -41,7 +42,10 @@ class MiniSide extends StatelessWidget {
               const SizedBox(height: 23),
               SideButton(
                 icon: Icons.search,
-                onTap: () {},
+                onTap: () {
+                  bool v = HomeController.to.guestsSearching.value;
+                  HomeController.to.guestsSearching.value = !v;
+                },
               ),
               const SizedBox(height: 17),
               SideButton(

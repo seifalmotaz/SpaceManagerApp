@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:spacemanager/constants/base_colors.dart';
-import 'package:spacemanager/screens/guests/widgets/staff_card_session.dart';
-import 'package:spacemanager/services/auth.dart';
+import 'package:spacemanager/pages/home/controller.dart';
+import 'package:spacemanager/pages/home/widgets/side/widgets/guests_searching.dart';
+import 'package:spacemanager/pages/home/widgets/side/widgets/staff_content.dart';
 
 class MainSide extends StatelessWidget {
   const MainSide({
@@ -10,6 +12,7 @@ class MainSide extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    HomeController controller = Get.find<HomeController>();
     return Container(
       decoration: BoxDecoration(
         color: BaseColors.white,
@@ -20,53 +23,13 @@ class MainSide extends StatelessWidget {
           ),
         ),
       ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          StaffCardSessionWidget(
-            guest: AuthService.to.guest!,
-            session: AuthService.to.session!,
-          ),
-          SizedBox(
-            height: kToolbarHeight,
-            child: Row(
-              children: [
-                Flexible(
-                  flex: 3,
-                  child: Material(
-                    color: BaseColors.primary.withOpacity(.91),
-                    child: InkWell(
-                      onTap: () {},
-                      child: const SizedBox.expand(
-                        child: Icon(
-                          Icons.change_circle,
-                          size: 27,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                Flexible(
-                  child: Material(
-                    color: BaseColors.primary,
-                    child: InkWell(
-                      onTap: () {},
-                      child: const SizedBox.expand(
-                        child: Icon(
-                          Icons.change_circle,
-                          size: 27,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          )
-        ],
+      child: Obx(
+        () => AnimatedSwitcher(
+          duration: const Duration(milliseconds: 300),
+          child: controller.guestsSearching.value
+              ? const GuestsSearchingWidget()
+              : const StaffContentWidget(),
+        ),
       ),
     );
   }
