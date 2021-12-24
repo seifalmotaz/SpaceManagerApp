@@ -54,9 +54,11 @@ class _PriceFormState extends State<PriceForm> {
         return;
       }
       if (isDefault) {
-        Price defaultPrice = await PriceCRUDQuery.readDefault();
-        Price editedPrice = defaultPrice.copyWith(isDefault: false);
-        await editedPrice.update();
+        Price? defaultPrice = await PriceCRUDQuery.readDefault();
+        if (defaultPrice != null) {
+          Price editedPrice = defaultPrice.copyWith(isDefault: false);
+          await editedPrice.update();
+        }
       }
       await p.create();
       setState(() {

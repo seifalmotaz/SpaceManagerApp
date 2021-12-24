@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:spacemanager/models/guests/src.dart';
 import 'package:spacemanager/pages/home/controller.dart';
 import 'package:spacemanager/screens/guests/widgets/guest_session_card.dart';
+import 'package:spacemanager/screens/sessions/end_session/end_session.dart';
 import 'package:spacemanager/screens/sessions/start_session/start_session.dart';
 
 class GuestsSearchingWidget extends StatefulWidget {
@@ -75,6 +76,10 @@ class _GuestsSearchingWidgetState extends State<GuestsSearchingWidget> {
             if (gs.sessionId == null) {
               Guest guest = await gs.guest.checkGuestByPhone();
               await Get.bottomSheet(StartSessionScreen(guest));
+              HomeController.to.restart();
+            } else {
+              GuestWithSession gs = guestsSuggestions.first;
+              await Get.bottomSheet(EndSessionScreen(gs));
               HomeController.to.restart();
             }
           },

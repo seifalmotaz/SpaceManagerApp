@@ -11,14 +11,14 @@ include: package:flutter_lints/flutter.yaml
 
 analyzer:
   exclude:
-    - "**/models/**/model.dart"
-    - "**/models/**/query.dart"
-    - "**/models/**/crud_query.dart"
-    - "**/models/**/find_query.dart"
-    - "**/models/**/joins_query.dart"
-    - "**/models/**/joins_classes.dart"
-    - "**/models/**/ref.dart"
-    - "**/models/**/options.dart"
+    # - "**/models/**/model.dart"
+    # - "**/models/**/query.dart"
+    # - "**/models/**/crud_query.dart"
+    # - "**/models/**/find_query.dart"
+    # - "**/models/**/joins_query.dart"
+    # - "**/models/**/joins_classes.dart"
+    # - "**/models/**/ref.dart"
+    # - "**/models/**/options.dart"
   errors:
     todo: ignore
 

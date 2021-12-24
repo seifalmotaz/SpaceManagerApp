@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:spacemanager/constants/from_date_db.dart';
+
 Session sessionFromMap(String str) => Session.fromMap(json.decode(str));
 
 String sessionToMap(Session data) => json.encode(data.toMap());
@@ -53,8 +55,8 @@ class Session {
 
   factory Session.fromMap(Map<String, dynamic> json) => Session(
         id: json["id"],
-        startTime: DateTime.tryParse(json["start_time"].toString()),
-        endTime: DateTime.tryParse(json["end_time"].toString()),
+        startTime: fromDateDB(json["start_time"]),
+        endTime: fromDateDB(json["end_time"]),
         guestId: json["guest_id"],
         roomId: json["room_id"],
         priceId: json["price_id"],
@@ -64,7 +66,7 @@ class Session {
       );
 
   Map<String, dynamic> toMap() => {
-        if (endTime != null) "end_time": endTime?.toIso8601String(),
+        if (endTime != null) "end_time": endTime?.toUtc().toIso8601String(),
         if (guestId != null) "guest_id": guestId,
         if (roomId != null) "room_id": roomId,
         if (priceId != null) "price_id": priceId,

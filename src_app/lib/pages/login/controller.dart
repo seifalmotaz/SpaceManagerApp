@@ -29,7 +29,11 @@ class LoginController extends GetxController {
 
     try {
       AuthService.to.guestData.value = guest;
-      Session sessionId = Session(guestId: guest.id);
+      Session sessionId = Session(
+        guestId: guest.id,
+        guestsCount: 1,
+        startTime: DateTime.now(),
+      );
       int start = await sessionId.start();
       AuthService.to.sessionData.value = await SessionQuery.read(start);
       AuthService.to.isAuthenticated.value = true;

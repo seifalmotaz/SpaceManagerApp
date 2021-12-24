@@ -1,3 +1,4 @@
+import 'package:spacemanager/constants/from_date_db.dart';
 import 'package:spacemanager/models/guests/src.dart';
 import 'package:spacemanager/models/sessions/src.dart';
 import 'package:spacemanager/services/database.dart';
@@ -65,7 +66,7 @@ extension GuestFindQuery on Guest {
             guest: Guest.fromMap(e),
             sessionId: e['session_id'],
             session: Session(
-              startTime: DateTime.tryParse(e['session_start_time'] ?? ''),
+              startTime: fromDateDB(e['session_start_time']),
               id: e['session_id'],
             ),
           ),

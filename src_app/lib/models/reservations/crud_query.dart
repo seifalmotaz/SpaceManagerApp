@@ -9,7 +9,8 @@ extension ReservationCRUDQuery on Reservation {
   }
 
   Future<int> create() async {
-    var data = await DBService.to.db.insert('reservations', toMap());
+    var data = await DBService.to.db
+        .insert('reservations', copyWith(createdDate: DateTime.now()).toMap());
     return data;
   }
 

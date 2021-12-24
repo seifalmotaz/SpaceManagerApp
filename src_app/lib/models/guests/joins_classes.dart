@@ -10,4 +10,7 @@ class GuestWithSession {
     this.sessionId,
     required this.guest,
   });
+
+  Future<Session> get fullSession async =>
+      await SessionQuery.read(sessionId ?? session!.id!);
 }

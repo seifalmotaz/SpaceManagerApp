@@ -78,7 +78,7 @@ class Guest {
         isAdmin: json["is_admin"] == 1 ? true : false,
         isStaff: json["is_staff"] == 1 ? true : false,
         isExpired: json["is_expired"] == 1 ? true : false,
-        createdDate: DateTime.tryParse(json["created_date"]),
+        createdDate: DateTime.tryParse(json["created_date"] + 'Z')?.toLocal(),
       );
 
   Map<String, dynamic> toMap() => {

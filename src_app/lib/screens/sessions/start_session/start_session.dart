@@ -9,7 +9,7 @@ import 'package:spacemanager/models/prices/src.dart';
 import 'package:spacemanager/models/sessions/src.dart';
 import 'package:spacemanager/screens/guests/widgets/guest_form_card.dart';
 import 'package:spacemanager/screens/sessions/start_session/price_tile.dart';
-import 'package:spacemanager/screens/sessions/start_session/shortcuts/just_submit.dart';
+import 'package:spacemanager/screens/sessions/start_session/shortcuts.dart';
 import 'package:spacemanager/widgets/form_field.dart';
 
 /// Dialog
@@ -25,7 +25,7 @@ class StartSessionScreen extends StatefulWidget {
 class _StartSessionScreenState extends State<StartSessionScreen> {
   FocusNode shortcutChildFocus = FocusNode();
   List<Price> prices = [];
-  int selectedPrice = 0;
+  int? selectedPrice;
   TextEditingController arrivalsCount = TextEditingController();
 
   getData() async {

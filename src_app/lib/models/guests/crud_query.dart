@@ -13,6 +13,7 @@ extension GuestCRUDQuery on Guest {
     Guest g = copyWith(
       career: career ?? GuestCareers.student,
       password: password == null ? null : Crypt.sha256(password!).toString(),
+      createdDate: DateTime.now(),
     );
     var data = await DBService.to.db.insert('guests', g.toMap());
     return data;

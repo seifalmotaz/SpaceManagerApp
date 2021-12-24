@@ -2,10 +2,14 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/get.dart';
 import 'package:spacemanager/constants/base_colors.dart';
 import 'package:spacemanager/models/guests/src.dart';
 import 'package:spacemanager/models/sessions/src.dart';
+import 'package:spacemanager/pages/home/controller.dart';
 import 'package:spacemanager/screens/guests/mini/label_field.dart';
+import 'package:spacemanager/screens/sessions/end_session/end_session.dart';
+import 'package:spacemanager/screens/sessions/start_session/start_session.dart';
 
 class GuestSessionCardWidget extends StatefulWidget {
   const GuestSessionCardWidget({
@@ -25,6 +29,16 @@ class _GuestSessionCardWidgetState extends State<GuestSessionCardWidget> {
   Duration? time;
   String timeInHour = '';
   String timeInMin = '';
+
+  TextStyle btnTextStyle = const TextStyle(
+    fontWeight: FontWeight.w700,
+    fontSize: 13,
+  );
+
+  BoxDecoration btnDecoration = BoxDecoration(
+    color: BaseColors.lightPrimary,
+    borderRadius: BorderRadius.circular(13),
+  );
 
   String tInH() {
     return ((time!.inHours < 10
@@ -63,7 +77,7 @@ class _GuestSessionCardWidgetState extends State<GuestSessionCardWidget> {
       if (widget.guestWithSession.sessionId != null) {
         DateTimeRange t = DateTimeRange(
           start: session!.startTime!,
-          end: DateTime.now(),
+          end: DateTime.now().toUtc(),
         );
         time = t.duration;
         startTimer();
@@ -76,8 +90,9 @@ class _GuestSessionCardWidgetState extends State<GuestSessionCardWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 27, vertical: 27),
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 27),
+      margin: const EdgeInsets.only(top: 27),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
@@ -177,7 +192,89 @@ class _GuestSessionCardWidgetState extends State<GuestSessionCardWidget> {
                   ),
                 ],
               ),
-            )
+            ),
+          const SizedBox(height: 13),
+          Row(
+            children: [
+              if (widget.guestWithSession.sessionId == null)
+                Flexible(
+                  flex: 2,
+                  child: InkWell(
+                    onTap: () async {
+                      GuestWithSession gs = widget.guestWithSession;
+                      Guest guest = await gs.guest.checkGuestByPhone();
+                      await Get.bottomSheet(StartSessionScreen(guest));
+                      HomeController.to.restart();
+                    },
+                    child: Container(
+                      height: 27,
+                      width: double.infinity,
+                      decoration: btnDecoration,
+                      child: Center(
+                        child: Text(
+                          'Start session',
+                          style: btnTextStyle,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              if (widget.guestWithSession.sessionId != null)
+                Flexible(
+                  flex: 2,
+                  child: InkWell(
+                    onTap: () async {
+                      await Get.bottomSheet(
+                          EndSessionScreen(widget.guestWithSession));
+                      HomeController.to.restart();
+                    },
+                    child: Container(
+                      height: 27,
+                      width: double.infinity,
+                      decoration:
+                          btnDecoration.copyWith(color: BaseColors.primary),
+                      child: Center(
+                        child: Text(
+                          'End session',
+                          style: btnTextStyle.copyWith(color: Colors.white),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              const SizedBox(width: 3),
+              Flexible(
+                flex: 2,
+                child: Container(
+                  height: 27,
+                  width: double.infinity,
+                  decoration: btnDecoration,
+                  child: Center(
+                    child: Text(
+                      'Rooms',
+                      style: btnTextStyle,
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 3),
+              if (widget.guestWithSession.sessionId == null)
+                Flexible(
+                  flex: 2,
+                  child: Container(
+                    height: 27,
+                    width: double.infinity,
+                    decoration: btnDecoration,
+                    child: Center(
+                      child: Text(
+                        'Start course',
+                        style: btnTextStyle,
+                      ),
+                    ),
+                  ),
+                ),
+            ],
+          ),
         ],
       ),
     );

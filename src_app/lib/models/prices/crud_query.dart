@@ -21,13 +21,13 @@ extension PriceCRUDQuery on Price {
     return Price.fromMap(data.first);
   }
 
-  static Future<Price> readDefault() async {
+  static Future<Price?> readDefault() async {
     List<Map<String, dynamic>> data = await DBService.to.db.query(
       'prices',
       where: 'is_default = ?',
       whereArgs: [1],
     );
-    return Price.fromMap(data.first);
+    return data.isEmpty ? null : Price.fromMap(data.first);
   }
 
   Future<int> update() async {

@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:spacemanager/constants/from_date_db.dart';
+
 Bill billFromMap(String str) => Bill.fromMap(json.decode(str));
 String billToMap(Bill data) => json.encode(data.toMap());
 
@@ -15,17 +17,17 @@ class Bill {
 
   final int? id;
   final double? total;
-  final String? staffId;
-  final String? sessionId;
-  final String? reservationId;
+  final int? staffId;
+  final int? sessionId;
+  final int? reservationId;
   final DateTime? createdDate;
 
   Bill copyWith({
     int? id,
     double? total,
-    String? staffId,
-    String? sessionId,
-    String? reservationId,
+    int? staffId,
+    int? sessionId,
+    int? reservationId,
     DateTime? createdDate,
   }) =>
       Bill(
@@ -43,14 +45,13 @@ class Bill {
         staffId: json["staff_id"],
         sessionId: json["session_id"],
         reservationId: json["reservation_id"],
-        createdDate: DateTime.tryParse(json["created_date"]),
+        createdDate: fromDateDB(json["created_date"]),
       );
 
   Map<String, dynamic> toMap() => {
-        "total": total,
-        "staff_id": staffId,
-        "session_id": sessionId,
-        "reservation_id": reservationId,
-        "created_date": createdDate?.toIso8601String(),
+        if (total != null) "total": total,
+        if (staffId != null) "staff_id": staffId,
+        if (sessionId != null) "session_id": sessionId,
+        if (reservationId != null) "reservation_id": reservationId,
       };
 }
