@@ -15,7 +15,7 @@ class MainSide extends StatelessWidget {
     HomeController controller = Get.find<HomeController>();
     return Container(
       decoration: BoxDecoration(
-        color: BaseColors.white,
+        color: BaseColors.lightPrimary,
         border: Border(
           right: BorderSide(
             color: Colors.grey.shade300,

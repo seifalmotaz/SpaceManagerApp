@@ -109,7 +109,7 @@ class _CourseFormState extends State<CourseForm> {
                             contentPadding:
                                 const EdgeInsets.symmetric(horizontal: 11),
                             border: InputBorder.none,
-                            hintText: 'Price/hour/user',
+                            hintText: 'Price/hour/guest',
                             hintStyle: basicStyle.copyWith(color: Colors.grey),
                             prefixIcon: const Icon(
                               Icons.price_change_outlined,

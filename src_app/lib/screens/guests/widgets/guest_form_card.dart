@@ -67,7 +67,7 @@ class _EditGuestFormCardWidgetState extends State<EditGuestFormCardWidget> {
                 borderRadius: BorderRadius.circular(13),
                 clipBehavior: Clip.antiAlias,
                 child: InkWell(
-                  child: Icon(
+                  child: const Icon(
                     Icons.delete_forever,
                     color: BaseColors.darkPrimary,
                   ),

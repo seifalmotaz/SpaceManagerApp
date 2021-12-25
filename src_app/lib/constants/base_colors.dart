@@ -10,9 +10,11 @@ class BaseColorss {
 }
 
 class BaseColors {
-  static Color white = Colors.white;
-  static Color whiteBased = const Color(0xFFe4e6eb);
-  static Color primary = const Color(0xFFfa735a);
-  static Color lightPrimary = const Color(0xFFf8e9e1);
-  static Color darkPrimary = const Color(0xFF981804);
+  static const Color white = Colors.white;
+  static const Color whiteBased = Color(0xFFe4e6eb);
+  static const Color primary = Color(0xFFfa735a);
+  static const Color lightPrimary = Color(0xFFf8e9e1);
+  static const Color darkPrimary = Color(0xFF981804);
+  static const textColor = Color(0xFF37474F);
+  static const semiTextColor = Color(0xFF455A64);
 }

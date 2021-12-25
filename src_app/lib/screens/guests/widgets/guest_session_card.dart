@@ -7,6 +7,7 @@ import 'package:spacemanager/constants/base_colors.dart';
 import 'package:spacemanager/models/guests/src.dart';
 import 'package:spacemanager/models/sessions/src.dart';
 import 'package:spacemanager/pages/home/controller.dart';
+import 'package:spacemanager/pages/rooms/rooms.dart';
 import 'package:spacemanager/screens/guests/mini/label_field.dart';
 import 'package:spacemanager/screens/sessions/end_session/end_session.dart';
 import 'package:spacemanager/screens/sessions/start_session/start_session.dart';
@@ -32,11 +33,12 @@ class _GuestSessionCardWidgetState extends State<GuestSessionCardWidget> {
 
   TextStyle btnTextStyle = const TextStyle(
     fontWeight: FontWeight.w700,
+    color: Colors.white,
     fontSize: 13,
   );
 
   BoxDecoration btnDecoration = BoxDecoration(
-    color: BaseColors.lightPrimary,
+    color: BaseColors.primary,
     borderRadius: BorderRadius.circular(13),
   );
 
@@ -167,22 +169,22 @@ class _GuestSessionCardWidgetState extends State<GuestSessionCardWidget> {
                     alignment: WrapAlignment.end,
                     children: [
                       Chip(
-                        backgroundColor: BaseColors.lightPrimary,
+                        backgroundColor: BaseColors.primary,
                         label: Text(
                           timeInHour,
-                          style: TextStyle(
-                            color: Colors.blueGrey.shade900.withOpacity(.81),
+                          style: const TextStyle(
+                            color: Colors.white,
                             fontWeight: FontWeight.bold,
                             fontSize: 15,
                           ),
                         ),
                       ),
                       Chip(
-                        backgroundColor: BaseColors.lightPrimary,
+                        backgroundColor: BaseColors.primary,
                         label: Text(
                           timeInMin,
-                          style: TextStyle(
-                            color: Colors.blueGrey.shade900.withOpacity(.81),
+                          style: const TextStyle(
+                            color: Colors.white,
                             fontWeight: FontWeight.bold,
                             fontSize: 15,
                           ),
@@ -232,11 +234,14 @@ class _GuestSessionCardWidgetState extends State<GuestSessionCardWidget> {
                       height: 27,
                       width: double.infinity,
                       decoration:
-                          btnDecoration.copyWith(color: BaseColors.primary),
+                          btnDecoration.copyWith(color: Colors.transparent),
                       child: Center(
                         child: Text(
                           'End session',
-                          style: btnTextStyle.copyWith(color: Colors.white),
+                          style: btnTextStyle.copyWith(
+                            color: Colors.black,
+                            fontSize: 15,
+                          ),
                         ),
                       ),
                     ),
@@ -245,14 +250,20 @@ class _GuestSessionCardWidgetState extends State<GuestSessionCardWidget> {
               const SizedBox(width: 3),
               Flexible(
                 flex: 2,
-                child: Container(
-                  height: 27,
-                  width: double.infinity,
-                  decoration: btnDecoration,
-                  child: Center(
-                    child: Text(
-                      'Rooms',
-                      style: btnTextStyle,
+                child: InkWell(
+                  onTap: () async {
+                    await Get.to(() => RoomsPage(widget.guestWithSession));
+                    HomeController.to.restart();
+                  },
+                  child: Container(
+                    height: 27,
+                    width: double.infinity,
+                    decoration: btnDecoration,
+                    child: Center(
+                      child: Text(
+                        'Rooms',
+                        style: btnTextStyle,
+                      ),
                     ),
                   ),
                 ),

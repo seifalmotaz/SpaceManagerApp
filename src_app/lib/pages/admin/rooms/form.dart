@@ -1,44 +1,44 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:spacemanager/constants/base_colors.dart';
-import 'package:spacemanager/models/prices/src.dart';
+import 'package:spacemanager/models/rooms/src.dart';
 
 TextStyle basicStyle = const TextStyle(
   fontWeight: FontWeight.w600,
   color: Colors.black,
 );
 
-class PriceForm extends StatefulWidget {
-  const PriceForm({
+class RoomForm extends StatefulWidget {
+  const RoomForm({
     Key? key,
     this.onCreate,
-    this.firstDefault,
   }) : super(key: key);
 
   final Function? onCreate;
-  final bool? firstDefault;
 
   @override
-  State<PriceForm> createState() => _PriceFormState();
+  State<RoomForm> createState() => _RoomFormState();
 }
 
-class _PriceFormState extends State<PriceForm> {
+class _RoomFormState extends State<RoomForm> {
   GlobalKey<FormState> form = GlobalKey<FormState>();
-  bool isDefault = false;
   FocusNode priceFocus = FocusNode();
   FocusNode disFocus = FocusNode();
+  FocusNode capacityFocus = FocusNode();
   TextEditingController price = TextEditingController();
   TextEditingController dis = TextEditingController();
+  TextEditingController capacity = TextEditingController();
 
   check() async {
     if (form.currentState!.validate()) {
-      late Price p;
+      late Room p;
       try {
-        p = Price(
-          description: dis.text.isEmpty ? null : dis.text,
-          isDefault: isDefault,
+        p = Room(
+          name: dis.text.isEmpty ? null : dis.text,
           rate: double.parse(price.text),
+          capacity: int.parse(capacity.text),
         );
       } catch (e) {
         Get.snackbar(
@@ -53,30 +53,15 @@ class _PriceFormState extends State<PriceForm> {
         );
         return;
       }
-      if (isDefault) {
-        Price? defaultPrice = await PriceCRUDQuery.readDefault();
-        if (defaultPrice != null) {
-          Price editedPrice = defaultPrice.copyWith(isDefault: false);
-          await editedPrice.update();
-        }
-      }
       await p.create();
       setState(() {
         price.text = '';
         dis.text = '';
-        isDefault = false;
+        capacity.text = '';
         priceFocus.requestFocus();
       });
     }
     if (widget.onCreate != null) widget.onCreate!();
-  }
-
-  @override
-  void initState() {
-    setState(() {
-      isDefault = widget.firstDefault ?? false;
-    });
-    super.initState();
   }
 
   @override
@@ -89,7 +74,7 @@ class _PriceFormState extends State<PriceForm> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              'Add price to list:',
+              'Add room to list:',
               style: TextStyle(
                 fontSize: 27,
                 fontWeight: FontWeight.bold,
@@ -111,6 +96,9 @@ class _PriceFormState extends State<PriceForm> {
                           style: basicStyle,
                           focusNode: priceFocus,
                           controller: price,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
                           onFieldSubmitted: (String string) =>
                               disFocus.requestFocus(),
                           validator: (String? value) {
@@ -129,7 +117,7 @@ class _PriceFormState extends State<PriceForm> {
                             contentPadding:
                                 const EdgeInsets.symmetric(horizontal: 11),
                             border: InputBorder.none,
-                            hintText: 'Price/hour/guest',
+                            hintText: 'Price/hour',
                             hintStyle: basicStyle.copyWith(color: Colors.grey),
                             prefixIcon: const Icon(
                               Icons.price_change_outlined,
@@ -146,7 +134,8 @@ class _PriceFormState extends State<PriceForm> {
                           focusNode: disFocus,
                           controller: dis,
                           textAlignVertical: TextAlignVertical.top,
-                          onFieldSubmitted: (String string) => check(),
+                          onFieldSubmitted: (String string) =>
+                              capacityFocus.requestFocus(),
                           decoration: InputDecoration(
                             filled: true,
                             fillColor: const Color(0xFFe4e6eb),
@@ -155,16 +144,44 @@ class _PriceFormState extends State<PriceForm> {
                               vertical: 5,
                             ),
                             border: InputBorder.none,
-                            hintText: 'Description',
+                            hintText: 'Name',
                             hintStyle: basicStyle.copyWith(color: Colors.grey),
                           ),
                         ),
                       ),
                       const SizedBox(height: 11),
-                      SwitchListTile.adaptive(
-                        value: isDefault,
-                        title: const Text('Is the default price'),
-                        onChanged: (value) => setState(() => isDefault = value),
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(13),
+                        child: TextFormField(
+                          style: basicStyle,
+                          focusNode: capacityFocus,
+                          controller: capacity,
+                          onFieldSubmitted: (String string) => check(),
+                          textAlignVertical: TextAlignVertical.top,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
+                          validator: (String? value) {
+                            if (value!.isEmpty) {
+                              return 'Type capacity of the room.';
+                            }
+                            double? d = double.tryParse(value);
+                            if (d == null) {
+                              return 'Just numbers';
+                            }
+                          },
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: const Color(0xFFe4e6eb),
+                            contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 11,
+                              vertical: 5,
+                            ),
+                            border: InputBorder.none,
+                            hintText: 'Capacity',
+                            hintStyle: basicStyle.copyWith(color: Colors.grey),
+                          ),
+                        ),
                       ),
                       const SizedBox(height: 9),
                       GFButton(

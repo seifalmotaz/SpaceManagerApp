@@ -5,16 +5,16 @@ Widget labelField(String string, IconData icon) {
     children: [
       Icon(
         icon,
-        color: const Color(0xFFA2ADBA),
-        size: 15,
+        color: Colors.grey,
+        size: 17,
       ),
       const SizedBox(width: 5),
       Text(
         string,
         style: const TextStyle(
-          color: Color(0xFF7e8ba2),
+          color: Colors.grey,
           fontWeight: FontWeight.w500,
-          fontSize: 13,
+          fontSize: 20,
         ),
       ),
     ],

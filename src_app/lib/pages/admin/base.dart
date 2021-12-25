@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:spacemanager/constants/base_colors.dart';
 import 'package:spacemanager/pages/admin/courses/courses.dart';
 import 'package:spacemanager/pages/admin/prices/prices.dart';
+import 'package:spacemanager/pages/admin/rooms/rooms.dart';
 import 'package:spacemanager/pages/admin/staff/staff.dart';
 
 class AdminBaseLayout extends StatelessWidget {
@@ -36,6 +37,13 @@ class AdminBaseLayout extends StatelessWidget {
             onPressed: () => Get.off(() => const EditCoursesPage()),
             child: const Text(
               'Courses',
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+          TextButton(
+            onPressed: () => Get.off(() => const EditRoomsPage()),
+            child: const Text(
+              'Rooms',
               style: TextStyle(color: Colors.white),
             ),
           ),

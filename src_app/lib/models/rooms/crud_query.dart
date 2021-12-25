@@ -2,7 +2,7 @@ import 'package:spacemanager/models/rooms/model.dart';
 import 'package:spacemanager/services/database.dart';
 
 extension RoomCRUDQuery on Room {
-  static Future<List<Room>> list(int id) async {
+  static Future<List<Room>> list() async {
     List<Map<String, dynamic>> data = await DBService.to.db.query('rooms');
     return data.map((e) => Room.fromMap(e)).toList();
   }

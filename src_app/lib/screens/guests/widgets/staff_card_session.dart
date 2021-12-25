@@ -146,22 +146,22 @@ class _StaffCardSessionWidgetState extends State<StaffCardSessionWidget> {
                   alignment: WrapAlignment.end,
                   children: [
                     Chip(
-                      backgroundColor: BaseColors.lightPrimary,
+                      backgroundColor: BaseColors.primary,
                       label: Text(
                         timeInHour,
-                        style: TextStyle(
-                          color: Colors.blueGrey.shade900.withOpacity(.81),
+                        style: const TextStyle(
+                          color: Colors.white,
                           fontWeight: FontWeight.bold,
                           fontSize: 15,
                         ),
                       ),
                     ),
                     Chip(
-                      backgroundColor: BaseColors.lightPrimary,
+                      backgroundColor: BaseColors.primary,
                       label: Text(
                         timeInMin,
-                        style: TextStyle(
-                          color: Colors.blueGrey.shade900.withOpacity(.81),
+                        style: const TextStyle(
+                          color: Colors.white,
                           fontWeight: FontWeight.bold,
                           fontSize: 15,
                         ),

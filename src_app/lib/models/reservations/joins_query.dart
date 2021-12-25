@@ -6,7 +6,7 @@ import 'joins_classes.dart';
 extension ReservationJoinsQuery on Reservation {
   /// Get spacific room reservation for today
   /// return reservation and session id
-  static Future<List<ReservationWithSession>> getByDateAndRoom(int roomId,
+  static Future<List<Reservation>> getByDateAndRoom(int roomId,
       [int? limit]) async {
     DateTime afterDateTime = DateTime.now();
     DateTime beforeDateTime = DateTime(
@@ -37,11 +37,6 @@ extension ReservationJoinsQuery on Reservation {
     ${limit == null ? '' : 'LIMIT $limit'}   
     """);
 
-    return data
-        .map((e) => ReservationWithSession(
-              reservation: Reservation.fromMap(e),
-              sessionId: e['session_id'],
-            ))
-        .toList();
+    return data.map((e) => Reservation.fromMap(e)).toList();
   }
 }

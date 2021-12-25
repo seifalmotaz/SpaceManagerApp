@@ -13,7 +13,7 @@ class MiniSide extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: kToolbarHeight * 1.51,
+      width: kToolbarHeight * 2,
       height: double.infinity,
       color: BaseColors.primary,
       padding: const EdgeInsets.symmetric(vertical: 13),
@@ -30,7 +30,7 @@ class MiniSide extends StatelessWidget {
                   color: BaseColors.white,
                   borderRadius: BorderRadius.circular(13),
                 ),
-                child: Text(
+                child: const Text(
                   'SM',
                   style: TextStyle(
                     color: BaseColors.primary,

@@ -1,13 +1,12 @@
-import 'package:spacemanager/models/reservations/model.dart';
-import 'package:spacemanager/models/sessions/model.dart';
+import 'model.dart';
+import 'package:spacemanager/models/guests/src.dart';
+import 'package:spacemanager/models/sessions/joins_classes.dart';
 
-class ReservationWithSession {
-  int? sessionId;
-  Session? session;
-  Reservation reservation;
-  ReservationWithSession({
-    this.sessionId,
-    this.session,
+class ReservationWithSessionWithGuest {
+  final SessionWithGuest? session;
+  final Reservation reservation;
+  ReservationWithSessionWithGuest({
     required this.reservation,
+    this.session,
   });
 }
