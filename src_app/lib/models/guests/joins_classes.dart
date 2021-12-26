@@ -2,9 +2,9 @@ import 'package:spacemanager/models/guests/src.dart';
 import 'package:spacemanager/models/sessions/src.dart';
 
 class GuestWithSession {
-  final int? sessionId;
-  final Session? session;
-  final Guest guest;
+  int? sessionId;
+  Session? session;
+  Guest guest;
   GuestWithSession({
     this.session,
     this.sessionId,

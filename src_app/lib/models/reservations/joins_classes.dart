@@ -10,3 +10,12 @@ class ReservationWithSessionWithGuest {
     this.session,
   });
 }
+
+class ReservationWithGuest {
+  final Guest guest;
+  final Reservation reservation;
+  ReservationWithGuest({
+    required this.reservation,
+    required this.guest,
+  });
+}

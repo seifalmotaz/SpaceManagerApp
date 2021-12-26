@@ -13,11 +13,21 @@ class EditGuestFormCardWidget extends StatefulWidget {
     this.onDelete,
     this.validDelete = true,
     this.enablePass = true,
+    this.bg,
+    this.fieldColor,
+    this.hintColor,
+    this.textColor,
+    this.titleColor,
   }) : super(key: key);
   final Guest guest;
   final Function? onDelete;
   final bool validDelete;
   final bool enablePass;
+  final Color? fieldColor;
+  final Color? textColor;
+  final Color? hintColor;
+  final Color? titleColor;
+  final Color? bg;
 
   @override
   _EditGuestFormCardWidgetState createState() =>
@@ -50,7 +60,7 @@ class _EditGuestFormCardWidgetState extends State<EditGuestFormCardWidget> {
       width: Get.width * .23,
       padding: const EdgeInsets.all(27),
       decoration: BoxDecoration(
-        color: BaseColorss.darkLight,
+        color: widget.bg ?? BaseColorss.darkLight,
         borderRadius: BorderRadius.circular(21),
       ),
       child: Stack(
@@ -110,8 +120,8 @@ class _EditGuestFormCardWidgetState extends State<EditGuestFormCardWidget> {
               const SizedBox(height: 13),
               Text(
                 'Guest: @${name.text.isEmpty ? "Unknown" : name.text}',
-                style: const TextStyle(
-                  color: Colors.white,
+                style: TextStyle(
+                  color: widget.titleColor ?? Colors.white,
                   fontWeight: FontWeight.bold,
                   fontSize: 27,
                 ),
@@ -120,8 +130,9 @@ class _EditGuestFormCardWidgetState extends State<EditGuestFormCardWidget> {
               TextCustomField(
                 hint: 'Name',
                 controller: name,
-                textColor: Colors.white70,
-                color: Colors.white10,
+                color: widget.fieldColor ?? Colors.white10,
+                textColor: widget.textColor ?? Colors.white70,
+                hintColor: widget.hintColor,
                 onFieldSubmitted: (string) async {
                   if (string.isNotEmpty) {
                     Guest g = Guest(id: widget.guest.id, name: string);
@@ -133,8 +144,9 @@ class _EditGuestFormCardWidgetState extends State<EditGuestFormCardWidget> {
               TextCustomField(
                 hint: 'Email',
                 controller: email,
-                textColor: Colors.white70,
-                color: Colors.white10,
+                color: widget.fieldColor ?? Colors.white10,
+                textColor: widget.textColor ?? Colors.white70,
+                hintColor: widget.hintColor,
                 onFieldSubmitted: (string) async {
                   if (string.isNotEmpty && string.isEmail) {
                     Guest g = Guest(id: widget.guest.id, email: string);
@@ -148,8 +160,9 @@ class _EditGuestFormCardWidgetState extends State<EditGuestFormCardWidget> {
               TextCustomField(
                 hint: 'Phone',
                 controller: phone,
-                textColor: Colors.white70,
-                color: Colors.white10,
+                color: widget.fieldColor ?? Colors.white10,
+                textColor: widget.textColor ?? Colors.white70,
+                hintColor: widget.hintColor,
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                 onFieldSubmitted: (string) async {
                   if (string.isNotEmpty) {
@@ -162,8 +175,9 @@ class _EditGuestFormCardWidgetState extends State<EditGuestFormCardWidget> {
               TextCustomField(
                 hint: 'National ID',
                 controller: nationalId,
-                textColor: Colors.white70,
-                color: Colors.white10,
+                color: widget.fieldColor ?? Colors.white10,
+                textColor: widget.textColor ?? Colors.white70,
+                hintColor: widget.hintColor,
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                 onFieldSubmitted: (string) async {
                   if (string.isNotEmpty) {
@@ -177,8 +191,10 @@ class _EditGuestFormCardWidgetState extends State<EditGuestFormCardWidget> {
                 TextCustomField(
                   hint: 'Password',
                   controller: pass,
-                  textColor: Colors.white70,
-                  color: Colors.white10,
+                  obscureText: true,
+                  color: widget.fieldColor ?? Colors.white10,
+                  textColor: widget.textColor ?? Colors.white70,
+                  hintColor: widget.hintColor,
                   onFieldSubmitted: (string) async {
                     if (string.isNotEmpty) {
                       Guest g = Guest(id: widget.guest.id, password: string);

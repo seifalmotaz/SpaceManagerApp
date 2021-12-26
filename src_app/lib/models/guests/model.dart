@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:spacemanager/constants/func.dart';
 
 Guest guestFromMap(String str) => Guest.fromMap(json.decode(str));
 String guestToMap(Guest data) => json.encode(data.toMap());
@@ -78,7 +79,7 @@ class Guest {
         isAdmin: json["is_admin"] == 1 ? true : false,
         isStaff: json["is_staff"] == 1 ? true : false,
         isExpired: json["is_expired"] == 1 ? true : false,
-        createdDate: DateTime.tryParse(json["created_date"] + 'Z')?.toLocal(),
+        createdDate: fromDateDB(json["created_date"]),
       );
 
   Map<String, dynamic> toMap() => {

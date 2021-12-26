@@ -6,7 +6,7 @@ import 'package:spacemanager/models/rooms/model.dart';
 class RoomWithReservations {
   final Room room;
   final ReservationWithSessionWithGuest? running;
-  final List<Reservation>? reservations;
+  final List<ReservationWithGuest>? reservations;
 
   RoomWithReservations({
     required this.room,

@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:spacemanager/constants/from_date_db.dart';
+import 'package:spacemanager/constants/func.dart';
 
 Session sessionFromMap(String str) => Session.fromMap(json.decode(str));
 

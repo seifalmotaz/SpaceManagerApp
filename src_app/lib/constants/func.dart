@@ -12,7 +12,7 @@ Map<String, dynamic> getDataStartWithString_(String string, Map data) {
   Map<String, dynamic> newData = {};
   for (String key in data.keys.toList()) {
     if (key.startsWith(string)) {
-      String k = key.split('_')[1];
+      String k = key.substring(string.length + 1);
       newData.addAll({k: data[key]});
     }
   }

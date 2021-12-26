@@ -23,6 +23,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const GetMaterialApp(
       title: 'Space Manager',
+      debugShowCheckedModeBanner: false,
       home: WrapperPage(),
     );
   }

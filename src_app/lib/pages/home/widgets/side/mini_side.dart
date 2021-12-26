@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:spacemanager/constants/base_colors.dart';
 import 'package:spacemanager/pages/admin/prices/prices.dart';
 import 'package:spacemanager/pages/home/controller.dart';
-import 'package:spacemanager/pages/home/widgets/side/side_button.dart';
+import 'package:spacemanager/pages/side_button.dart';
 
 class MiniSide extends StatelessWidget {
   const MiniSide({
@@ -40,7 +40,7 @@ class MiniSide extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 23),
-              SideButton(
+              SideButtonWidget(
                 icon: Icons.search,
                 onTap: () {
                   bool v = HomeController.to.guestsSearching.value;
@@ -48,14 +48,14 @@ class MiniSide extends StatelessWidget {
                 },
               ),
               const SizedBox(height: 17),
-              SideButton(
+              SideButtonWidget(
                 icon: Icons.room_preferences,
                 onTap: () {},
               ),
               const SizedBox(height: 17),
             ],
           ),
-          SideButton(
+          SideButtonWidget(
             icon: Icons.settings,
             onTap: () => Get.to(() => const EditPricesPage()),
           ),

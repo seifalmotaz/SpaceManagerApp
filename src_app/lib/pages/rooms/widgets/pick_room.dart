@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:spacemanager/constants/base_colors.dart';
 import 'package:spacemanager/pages/rooms/controller.dart';
 import 'package:spacemanager/screens/rooms/widgets/room_reservations/room_reservations.dart';
 
@@ -28,15 +29,41 @@ class _PickRoomWidgetState extends State<PickRoomWidget> {
         ),
         const SizedBox(height: 21),
         Obx(
-          () => Wrap(
-            spacing: 27,
-            runSpacing: 27,
-            children: controller.rooms
-                .map((element) => GestureDetector(
-                      onTap: () {},
-                      child: RoomReservations(element),
-                    ))
-                .toList(),
+          () => SizedBox(
+            width: double.infinity,
+            child: Wrap(
+              spacing: 27,
+              runSpacing: 27,
+              alignment: WrapAlignment.center,
+              children: controller.rooms.map((element) {
+                if (controller.room.value != null) {
+                  if (element.room.id == controller.room.value!.id) {
+                    return GestureDetector(
+                      onTap: () {
+                        controller.room.value = element.room;
+                        controller.selectedAppointment.value = 0;
+                        controller.appointmentsList.value = {};
+                      },
+                      child: RoomReservations(
+                        element,
+                        bg: BaseColorss.darkLighter,
+                        nameTextColor: Colors.white,
+                        semiTextColor: Colors.white,
+                        titlesTextColor: Colors.grey.shade200,
+                      ),
+                    );
+                  }
+                }
+                return GestureDetector(
+                  onTap: () {
+                    controller.room.value = element.room;
+                    controller.selectedAppointment.value = 0;
+                    controller.appointmentsList.value = {};
+                  },
+                  child: RoomReservations(element),
+                );
+              }).toList(),
+            ),
           ),
         ),
       ],

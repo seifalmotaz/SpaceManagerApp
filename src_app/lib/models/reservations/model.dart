@@ -4,7 +4,7 @@
 
 import 'dart:convert';
 
-import 'package:spacemanager/constants/from_date_db.dart';
+import 'package:spacemanager/constants/func.dart';
 
 Reservation reservationFromMap(String str) =>
     Reservation.fromMap(json.decode(str));
@@ -29,9 +29,9 @@ class Reservation {
   final DateTime? startTime;
   final DateTime? endTime;
   final DateTime? createdDate;
-  final double? roomId;
+  final int? roomId;
   final double? courseId;
-  final double? guestId;
+  final int? guestId;
   final bool? isCancelled;
 
   double get prePaidPersent => .25;
@@ -41,9 +41,9 @@ class Reservation {
     bool? isPrePaid,
     DateTime? startTime,
     DateTime? endTime,
-    double? roomId,
+    int? roomId,
     double? courseId,
-    double? guestId,
+    int? guestId,
     DateTime? createdDate,
     bool? isCancelled,
   }) =>
@@ -64,9 +64,9 @@ class Reservation {
         startTime: fromDateDB(json["start_time"]),
         endTime: fromDateDB(json["end_time"]),
         createdDate: fromDateDB(json["created_date"]),
-        roomId: json["room_id"].toDouble(),
-        courseId: json["course_id"].toDouble(),
-        guestId: json["guest_id"].toDouble(),
+        roomId: json["room_id"],
+        courseId: json["course_id"],
+        guestId: json["guest_id"],
         isCancelled: json["is_cancelled"] == 1 ? true : false,
       );
 

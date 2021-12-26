@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 
 class BaseColorss {
-  static Color primary = const Color(0xFFf85668);
-  static Color primaryDark = const Color(0xFF342425);
+  static Color white = Colors.white;
+  static Color whiteBased = const Color(0xFFe4e6eb);
+  static Color primary = const Color(0xFFffea37);
+  static Color secondPrimary = const Color(0xFFf85668);
+  static Color secondPrimaryDark = const Color(0xFF342425);
   static Color dark = const Color(0xFF1e1e1e);
   static Color darkLight = const Color(0xFF252525);
   static Color darkLighter = const Color(0xFF303030);

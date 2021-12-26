@@ -56,16 +56,15 @@ extension SessionFindQuery on Session {
     SELECT sessions.*, 
     guests.phone AS guest_phone, guests.name AS guest_name,
     reservations.start_time AS reservation_start_time,
-    reservations.start_time AS reservation_start_end,
-    reservations.start_time AS reservation_id,
-    reservations.start_time AS reservation_course_id,
+    reservations.end_time AS reservation_end_time,
+    reservations.course_id AS reservation_course_id
     FROM sessions
     INNER JOIN guests ON sessions.guest_id = guests.id
     INNER JOIN rooms ON sessions.room_id = rooms.id
     LEFT JOIN reservations ON sessions.reservation_id = reservations.id
-    WHERE end_time IS NULL
+    WHERE sessions.end_time IS NULL
     AND guests.is_staff = false
-    AND room_id = $roomId
+    AND sessions.room_id = $roomId
     LIMIT 1
     """);
     if (data.isNotEmpty) {

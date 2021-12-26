@@ -51,7 +51,7 @@ class TextCustomField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: width,
+      width: width ?? double.infinity,
       child: ClipRRect(
         borderRadius: BorderRadius.circular(border ?? 13),
         child: TextFormField(

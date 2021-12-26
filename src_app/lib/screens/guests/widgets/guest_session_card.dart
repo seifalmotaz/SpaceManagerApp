@@ -252,7 +252,9 @@ class _GuestSessionCardWidgetState extends State<GuestSessionCardWidget> {
                 flex: 2,
                 child: InkWell(
                   onTap: () async {
-                    await Get.to(() => RoomsPage(widget.guestWithSession));
+                    GuestWithSession gs = widget.guestWithSession;
+                    gs.guest = await gs.guest.checkGuestByPhone();
+                    await Get.to(() => RoomsPage(gs));
                     HomeController.to.restart();
                   },
                   child: Container(
