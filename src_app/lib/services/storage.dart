@@ -34,7 +34,7 @@ class StorageService extends GetxService {
       await store.record('isFirstRun').put(storage, i);
 
   Future<int> get capacity async =>
-      await store.record('capacity').get(storage) as int;
+      await store.record('capacity').get(storage) ?? 0;
   Future<void> setCapacity(int i) async =>
       await store.record('capacity').put(storage, i);
 }

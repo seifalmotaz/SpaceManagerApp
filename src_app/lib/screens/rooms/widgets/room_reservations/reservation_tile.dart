@@ -1,38 +1,150 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:getwidget/components/button/gf_button.dart';
 
 import 'package:jiffy/jiffy.dart';
 import 'package:spacemanager/constants/base_colors.dart';
+import 'package:spacemanager/constants/error_snack.dart';
+import 'package:spacemanager/models/guests/src.dart';
 import 'package:spacemanager/models/reservations/src.dart';
+import 'package:spacemanager/models/sessions/src.dart';
+import 'package:spacemanager/screens/guests/widgets/guest_form_card.dart';
+import 'package:spacemanager/screens/sessions/end_session/end_session.dart';
 
 class ReservationTileWidget extends StatefulWidget {
-  const ReservationTileWidget(this.index, this.reservation, {Key? key})
-      : super(key: key);
+  const ReservationTileWidget(
+    this.index,
+    this.reservation,
+    this.roomCapacity, {
+    Key? key,
+    this.onUpdate,
+  }) : super(key: key);
 
   final int index;
   final ReservationWithGuest reservation;
+  final Function? onUpdate;
+  final int? roomCapacity;
 
   @override
   State<ReservationTileWidget> createState() => _ReservationTileWidgetState();
 }
 
 class _ReservationTileWidgetState extends State<ReservationTileWidget> {
-  Future taped() async {
-    // if (widget.session != null) {
-    //   Get.find<HomeController>().endUserSession({'session': widget.session!['id']});
-    // } else {
-    //   SessionTable sessionTable = SessionTable();
-    //   RoomsTable roomsTable = RoomsTable();
-    //   Map? room = await roomsTable.get(widget.reservation!['room_id']);
-    //   if (room != null) {
-    //     sessionTable.start(
-    //       id: widget.reservation!['user_id'],
-    //       room: widget.reservation!['room_id'],
-    //       reservation: widget.reservation!['id'],
-    //       arrivalsCount: room['capacity'],
-    //     );
-    //     Get.find<HomeController>().restart();
-    //   }
-    // }
+  taped() {
+    Get.dialog(
+      GestureDetector(
+        onTap: () => Get.back(),
+        child: Scaffold(
+          backgroundColor: Colors.transparent,
+          body: Center(
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(21),
+              clipBehavior: Clip.antiAlias,
+              child: Container(
+                width: 500,
+                height: 500,
+                color: BaseColorss.darkLight,
+                child: Column(
+                  children: [
+                    EditGuestFormCardWidget(
+                      widget.reservation.guest,
+                      enablePass: false,
+                      validDelete: false,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Row(
+                          children: [
+                            const Text(
+                              'From:  ',
+                              style: TextStyle(
+                                color: Colors.white38,
+                              ),
+                            ),
+                            Text(
+                              Jiffy(widget.reservation.reservation.startTime)
+                                  .jm,
+                              style: const TextStyle(
+                                color: Colors.white70,
+                                fontSize: 23,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            const Text(
+                              'To:  ',
+                              style: TextStyle(
+                                color: Colors.white38,
+                              ),
+                            ),
+                            Text(
+                              Jiffy(widget.reservation.reservation.endTime).jm,
+                              style: const TextStyle(
+                                color: Colors.white70,
+                                fontSize: 23,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 33),
+                      child: GFButton(
+                        fullWidthButton: true,
+                        text: 'Start session',
+                        onPressed: () async {
+                          ReservationWithGuest res = widget.reservation;
+                          Session? lateSession =
+                              await SessionFindQuery.findNotEndedForGuest(
+                                  res.guest.id!);
+                          try {
+                            bool? wait;
+                            if (lateSession != null) {
+                              wait = await Get.bottomSheet(
+                                  EndSessionScreen(GuestWithSession(
+                                session: lateSession,
+                                guest: await lateSession.guest(),
+                                sessionId: lateSession.id,
+                              )));
+                            }
+                            wait ??= false;
+                            if ((lateSession != null && wait) ||
+                                lateSession == null) {
+                              Session session = Session(
+                                reservationId: res.reservation.id,
+                                guestId: res.guest.id,
+                                guestsCount: widget.roomCapacity,
+                                roomId: res.reservation.roomId,
+                              );
+                              try {
+                                await session.start();
+                                if (widget.onUpdate != null) widget.onUpdate!();
+                                Get.back();
+                              } catch (e) {
+                                errorSnack(
+                                    'Session create error', e.toString());
+                              }
+                            }
+                          } catch (e) {
+                            errorSnack('Session create error', e.toString());
+                          }
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
   }
 
   @override

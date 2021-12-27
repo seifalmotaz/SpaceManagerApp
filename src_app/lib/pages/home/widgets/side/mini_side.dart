@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:spacemanager/constants/base_colors.dart';
 import 'package:spacemanager/pages/admin/prices/prices.dart';
 import 'package:spacemanager/pages/home/controller.dart';
+import 'package:spacemanager/pages/rooms/rooms.dart';
 import 'package:spacemanager/pages/side_button.dart';
 
 class MiniSide extends StatelessWidget {
@@ -13,7 +14,7 @@ class MiniSide extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: kToolbarHeight * 2,
+      width: kToolbarHeight * 1.51,
       height: double.infinity,
       color: BaseColors.primary,
       padding: const EdgeInsets.symmetric(vertical: 13),
@@ -50,7 +51,7 @@ class MiniSide extends StatelessWidget {
               const SizedBox(height: 17),
               SideButtonWidget(
                 icon: Icons.room_preferences,
-                onTap: () {},
+                onTap: () => Get.to(() => const RoomsPage(null)),
               ),
               const SizedBox(height: 17),
             ],

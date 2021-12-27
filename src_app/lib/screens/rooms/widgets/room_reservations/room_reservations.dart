@@ -17,6 +17,7 @@ class RoomReservations extends StatelessWidget {
     this.semiTextColor = BaseColors.semiTextColor,
     this.titlesTextColor = Colors.grey,
     this.hideNextReservation = false,
+    this.onUpdate,
   }) : super(key: key);
 
   final RoomWithReservations room;
@@ -26,6 +27,7 @@ class RoomReservations extends StatelessWidget {
   final Color semiTextColor;
   final Color titlesTextColor;
   final bool hideNextReservation;
+  final Function? onUpdate;
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +41,7 @@ class RoomReservations extends StatelessWidget {
             spreadRadius: 3,
             blurRadius: 3,
             color: Colors.grey.shade200,
-          )
+          ),
         ],
       ),
       child: Column(
@@ -62,7 +64,7 @@ class RoomReservations extends StatelessWidget {
                   right: 21,
                   top: 13,
                 ),
-                child: RunningReservationTile(room.running!),
+                child: RunningReservationTile(room.running!, onUpdate),
               ),
           if (!hideNextReservation)
             if (room.reservations != null && room.reservations!.isNotEmpty)
@@ -75,7 +77,12 @@ class RoomReservations extends StatelessWidget {
                     : room.reservations!.length,
                 itemBuilder: (context, index) {
                   ReservationWithGuest res = room.reservations![index];
-                  return ReservationTileWidget(index, res);
+                  return ReservationTileWidget(
+                    index,
+                    res,
+                    room.room.capacity,
+                    onUpdate: onUpdate,
+                  );
                 },
               ),
         ],

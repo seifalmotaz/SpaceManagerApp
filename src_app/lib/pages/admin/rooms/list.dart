@@ -103,10 +103,10 @@ class _RoomsListState extends State<RoomsList> {
                                 fontSize: 41,
                               ),
                             ),
-                            const Text(
-                              '/guest/hour',
+                            Text(
+                              '/hour/${price.capacity}',
                               textAlign: TextAlign.center,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: Colors.grey,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 11,

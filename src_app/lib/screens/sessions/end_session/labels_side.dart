@@ -86,7 +86,7 @@ class LabelsSideWidget extends StatelessWidget {
           label(
             index: 1,
             title: 'Price rate/hour',
-            value: '${room!.rate! * room!.capacity!}\$',
+            value: '${room!.rate!.round()}\$',
           ),
         label(
           index: 2,

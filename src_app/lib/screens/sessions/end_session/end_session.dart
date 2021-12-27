@@ -75,15 +75,25 @@ class _EndSessionScreenState extends State<EndSessionScreen> {
   }
 
   endSession() async {
-    Bill bill = Bill(
-      sessionId: session.id!,
-      staffId: AuthService.to.guest!.id,
-      total: double.parse(total),
-    );
+    Bill? bill;
+    if (session.reservationId != null) {
+      bill = await BillQuery.lastReservation(session.reservationId!);
+    }
     try {
       await session.end();
-      await bill.create();
-      Get.back();
+      if (bill == null) {
+        bill = Bill(
+          sessionId: session.id!,
+          staffId: AuthService.to.guest!.id,
+          total: double.parse(total),
+          reservationId: session.reservationId,
+        );
+        if (double.parse(total) > 0) await bill.create();
+      } else {
+        bill.total = double.parse(total);
+        await bill.update();
+      }
+      Get.back(result: true);
     } catch (e) {
       errorSnack('Code error', e.toString());
     }

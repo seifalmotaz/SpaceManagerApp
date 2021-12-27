@@ -15,12 +15,12 @@ class Bill {
     this.createdDate,
   });
 
-  final int? id;
-  final double? total;
-  final int? staffId;
-  final int? sessionId;
-  final int? reservationId;
-  final DateTime? createdDate;
+  int? id;
+  double? total;
+  int? staffId;
+  int? sessionId;
+  int? reservationId;
+  DateTime? createdDate;
 
   Bill copyWith({
     int? id,

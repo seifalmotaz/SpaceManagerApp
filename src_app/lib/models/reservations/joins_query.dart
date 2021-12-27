@@ -16,9 +16,9 @@ extension ReservationJoinsQuery on Reservation {
   }) async {
     DateTime now = DateTime.now();
     DateTime afterDateTime = selectedAfterDateTime?.toUtc() ??
-        DateTime(now.year, now.month, now.day).toUtc();
+        DateTime(now.year, now.month, now.day, now.hour, now.minute).toUtc();
     DateTime beforeDateTime = selectedBeforeDateTime?.toUtc() ??
-        afterDateTime.add(Duration(hours: 2, days: 1)).toUtc();
+        afterDateTime.add(const Duration(hours: 2, days: 1)).toUtc();
 
     List<Map<String, dynamic>> data = await DBService.to.db.rawQuery("""
     SELECT 
@@ -26,7 +26,9 @@ extension ReservationJoinsQuery on Reservation {
     sessions.session_id,
     guests.id AS guest_id,
     guests.email AS guest_email,
-    guests.phone AS guest_phone
+    guests.phone AS guest_phone,
+    guests.name AS guest_name,
+    guests.national_id AS guest_national_id
     FROM reservations
     LEFT JOIN guests ON reservations.guest_id = guests.id
     LEFT JOIN (

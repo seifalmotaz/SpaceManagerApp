@@ -22,6 +22,15 @@ extension BillQuery on Bill {
     return Bill.fromMap(data.first);
   }
 
+  static Future<Bill?> lastReservation(int resId) async {
+    List<Map<String, dynamic>> data = await DBService.to.db.query(
+      'bills',
+      where: 'reservation_id = ?',
+      whereArgs: [resId],
+    );
+    return data.isEmpty ? null : Bill.fromMap(data.first);
+  }
+
   Future<int> update() async {
     int data = await DBService.to.db.update(
       'bills',

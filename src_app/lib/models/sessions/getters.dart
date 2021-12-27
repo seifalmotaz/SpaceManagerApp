@@ -43,7 +43,7 @@ extension SessionGetters on Session {
     double _totalPrice = 0;
     double i = time.inMinutes % 60;
 
-    if (i <= 5) {
+    if (i < 5) {
       for (var i = 0; i < guestsCount!; i++) {
         _totalPrice = _totalPrice + (time.inHours * rate);
       }
@@ -67,7 +67,7 @@ extension SessionGetters on Session {
     double _totalPrice = 0;
     double i = time.inMinutes % 60;
 
-    if (i <= 15 || hourly) {
+    if (i < 15 || hourly) {
       for (var i = 0; i < guestsCount!; i++) {
         _totalPrice = _totalPrice + (time.inHours * rate);
       }
@@ -76,6 +76,7 @@ extension SessionGetters on Session {
         _totalPrice = _totalPrice + ((time.inHours + 1) * rate);
       }
     }
+
     return _totalPrice.round();
   }
 
@@ -92,13 +93,9 @@ extension SessionGetters on Session {
     double i = time.inMinutes % 60;
 
     if (i <= 10) {
-      for (var i = 0; i < r.capacity!; i++) {
-        _totalPrice = _totalPrice + (time.inHours * rate);
-      }
+      _totalPrice = _totalPrice + (time.inHours * rate);
     } else {
-      for (var i = 0; i < r.capacity!; i++) {
-        _totalPrice = _totalPrice + ((time.inHours + 1) * rate);
-      }
+      _totalPrice = _totalPrice + ((time.inHours + 1) * rate);
     }
     return _totalPrice.round();
   }
@@ -119,27 +116,21 @@ extension SessionGetters on Session {
     Duration currentTime = _currentTime.duration;
 
     double rate = ro.rate!;
-    int gc = ro.capacity!;
 
     double _totalPrice = 0;
     int i = currentTime.inMinutes - resTime.inMinutes;
 
     if (i <= 10 || hourly) {
-      for (var i = 0; i < gc; i++) {
-        _totalPrice = _totalPrice + (resTime.inHours * rate);
-      }
+      _totalPrice = _totalPrice + (resTime.inHours * rate);
     } else {
-      for (var i = 0; i < gc; i++) {
-        _totalPrice = _totalPrice + ((currentTime.inHours + 1) * rate);
-      }
+      _totalPrice = _totalPrice + ((currentTime.inHours + 1) * rate);
     }
 
     if (res.isPrePaid!) {
       double reservationPrePaidPrice = 0;
-      for (var i = 0; i < gc; i++) {
-        reservationPrePaidPrice =
-            reservationPrePaidPrice + (resTime.inHours * rate);
-      }
+      reservationPrePaidPrice =
+          reservationPrePaidPrice + (resTime.inHours * rate);
+
       _totalPrice =
           _totalPrice - (reservationPrePaidPrice * res.prePaidPersent);
     }

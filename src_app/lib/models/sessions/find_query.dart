@@ -27,27 +27,17 @@ extension SessionFindQuery on Session {
     return data.isEmpty ? null : Session.fromMap(data.first);
   }
 
-  static Future<List<SessionWithGuest>> findAllNotEndedWithGuest() async {
+  static Future<int> findAllNotEndedWithGuestNum() async {
     List<Map<String, dynamic>> data = await DBService.to.db.rawQuery("""
-    SELECT sessions.*,
-    guests.phone AS guest_phone,
-    guests.email AS guest_email,
-    guests.id AS guest_id,
+    SELECT sessions.guests_count
     FROM sessions
-    INNER JOIN users ON sessions.guest_id = guests.id
-    WHERE end_time IS NULL AND guests.is_staff = false AND room_id IS NULL AND course_id IS NULL
+    WHERE end_time IS NULL
     """);
-    return data
-        .map((e) => SessionWithGuest(
-              session: Session.fromMap(e),
-              guestId: e['guest_id'],
-              guest: Guest(
-                id: e['guest_id'],
-                phone: e['guest_phone'],
-                email: e['guest_email'],
-              ),
-            ))
-        .toList();
+    int _total = 0;
+    for (var item in data) {
+      _total += item['guests_count'] as int;
+    }
+    return _total;
   }
 
   static Future<ReservationWithSessionWithGuest?> findNotEndedWithRoom(

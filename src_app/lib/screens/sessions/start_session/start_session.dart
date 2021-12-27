@@ -165,9 +165,14 @@ class _StartSessionScreenState extends State<StartSessionScreen> {
                                     runSpacing: 21,
                                     children: [
                                       for (Price price in prices)
-                                        PriceTileWidget(
-                                          price,
-                                          selectedPrice == price.id,
+                                        GestureDetector(
+                                          onTap: () => setState(() {
+                                            selectedPrice = price.id;
+                                          }),
+                                          child: PriceTileWidget(
+                                            price,
+                                            selectedPrice == price.id,
+                                          ),
                                         ),
                                     ],
                                   ),

@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:getwidget/components/button/gf_button.dart';
 import 'package:spacemanager/constants/base_colors.dart';
+import 'package:spacemanager/constants/error_snack.dart';
 import 'package:spacemanager/models/guests/src.dart';
+import 'package:spacemanager/models/sessions/src.dart';
 import 'package:spacemanager/pages/base_nav.dart';
+import 'package:spacemanager/pages/home/controller.dart';
 import 'package:spacemanager/pages/rooms/controller.dart';
 import 'package:spacemanager/pages/rooms/sheet/checkout.dart';
 import 'package:spacemanager/pages/rooms/widgets/freq.dart';
@@ -75,11 +78,33 @@ class RoomsPage extends StatelessWidget {
             bottom: [
               XButtonData(
                 iconData: Icons.date_range,
-                ontap: () => Get.bottomSheet(const CheckOutSheet()),
+                ontap: () {
+                  if (controller.guest.value != null &&
+                      controller.room.value != null &&
+                      controller.appointmentsList.isNotEmpty) {
+                    Get.bottomSheet(const CheckOutSheet());
+                  }
+                },
               ),
               XButtonData(
                 iconData: Icons.watch_later_outlined,
-                ontap: () {},
+                ontap: () async {
+                  if (controller.guest.value != null &&
+                      controller.room.value != null) {
+                    Session session = Session(
+                      guestId: controller.guest.value!.guest.id,
+                      guestsCount: controller.room.value!.capacity!,
+                      roomId: controller.room.value!.id,
+                    );
+                    try {
+                      await session.start();
+                      HomeController.to.restart();
+                      Get.back(closeOverlays: true);
+                    } catch (e) {
+                      errorSnack('Code error', e.toString());
+                    }
+                  }
+                },
               ),
             ],
           ),

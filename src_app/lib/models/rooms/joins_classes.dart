@@ -1,5 +1,3 @@
-import 'package:spacemanager/models/reservations/model.dart';
-import 'package:spacemanager/models/sessions/joins_classes.dart';
 import 'package:spacemanager/models/reservations/joins_classes.dart';
 import 'package:spacemanager/models/rooms/model.dart';
 
