@@ -49,4 +49,47 @@ extension BillQuery on Bill {
     );
     return data;
   }
+
+  static Future<List<Bill>> getBillsByDate(
+      {required DateTime afterDateTime,
+      required DateTime beforeDateTime}) async {
+    afterDateTime = afterDateTime.toUtc();
+    beforeDateTime = beforeDateTime.toUtc();
+
+    List<Map<String, dynamic>> data = await DBService.to.db.query(
+      'bills',
+      where: 'created_date BETWEEN ? AND ?',
+      orderBy: 'created_date ASC',
+      whereArgs: [
+        afterDateTime.toIso8601String(),
+        beforeDateTime.toIso8601String()
+      ],
+    );
+
+    return data.map((e) => Bill.fromMap(e)).toList();
+  }
+
+  static Future<double> getTotalBillsByDate(
+      {required DateTime afterDateTime,
+      required DateTime beforeDateTime}) async {
+    afterDateTime = afterDateTime.toUtc();
+    beforeDateTime = beforeDateTime.toUtc();
+
+    List<Map<String, dynamic>> data = await DBService.to.db.query(
+      'bills',
+      where: 'created_date BETWEEN ? AND ?',
+      whereArgs: [
+        afterDateTime.toIso8601String(),
+        beforeDateTime.toIso8601String()
+      ],
+    );
+
+    double total = 0;
+
+    for (Map item in data) {
+      total += item['total'];
+    }
+
+    return total;
+  }
 }

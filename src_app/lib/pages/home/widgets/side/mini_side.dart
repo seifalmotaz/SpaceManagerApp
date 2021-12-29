@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:spacemanager/constants/base_colors.dart';
-import 'package:spacemanager/pages/admin/prices/prices.dart';
+import 'package:spacemanager/pages/admin/home/home_admin.dart';
 import 'package:spacemanager/pages/home/controllers/controller.dart';
 import 'package:spacemanager/pages/rooms/home/rooms.dart';
 import 'package:spacemanager/pages/side_button.dart';
@@ -60,7 +60,7 @@ class MiniSide extends StatelessWidget {
           if (AuthService.to.guest!.isAdmin!)
             SideButtonWidget(
               icon: Icons.settings,
-              onTap: () => Get.to(() => const EditPricesPage()),
+              onTap: () => Get.to(() => const HomeAdminPage()),
             ),
         ],
       ),
