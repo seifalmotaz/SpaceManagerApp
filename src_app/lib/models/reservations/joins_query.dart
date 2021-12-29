@@ -1,3 +1,4 @@
+import 'package:spacemanager/models/courses/model.dart';
 import 'package:spacemanager/models/reservations/model.dart';
 import 'package:spacemanager/models/guests/model.dart';
 import 'package:spacemanager/services/database.dart';
@@ -11,6 +12,7 @@ extension ReservationJoinsQuery on Reservation {
   static Future<List<ReservationWithGuest>> getByDateAndRoom(
     int roomId, {
     int? limit,
+    bool isCourse = true,
     DateTime? selectedAfterDateTime,
     DateTime? selectedBeforeDateTime,
   }) async {
@@ -18,7 +20,9 @@ extension ReservationJoinsQuery on Reservation {
     DateTime afterDateTime = selectedAfterDateTime?.toUtc() ??
         DateTime(now.year, now.month, now.day, now.hour, now.minute).toUtc();
     DateTime beforeDateTime = selectedBeforeDateTime?.toUtc() ??
-        afterDateTime.add(const Duration(hours: 2, days: 1)).toUtc();
+        DateTime(now.year, now.month, now.day)
+            .add(const Duration(hours: 24))
+            .toUtc();
 
     List<Map<String, dynamic>> data = await DBService.to.db.rawQuery("""
     SELECT 
@@ -46,6 +50,7 @@ extension ReservationJoinsQuery on Reservation {
     reservations.room_id = $roomId
     AND
     reservations.is_cancelled = false
+    ${!isCourse ? 'AND reservations.course_id IS NULL' : ''}
 
 
     ORDER BY start_time ASC
@@ -54,7 +59,58 @@ extension ReservationJoinsQuery on Reservation {
     List<ReservationWithGuest> list = data
         .map((e) => ReservationWithGuest(
             reservation: Reservation.fromMap(e),
-            guest: Guest.fromMap(getDataStartWithString_('guest', data.first))))
+            guest: Guest.fromMap(getDataStartWithString_('guest', e))))
+        .toList();
+    return list;
+  }
+
+  static Future<List<ReservationWithCourse>> getByTodayCourses() async {
+    DateTime now = DateTime.now();
+    DateTime afterDateTime =
+        DateTime(now.year, now.month, now.day, now.hour, now.minute).toUtc();
+
+    DateTime beforeDateTime = DateTime(now.year, now.month, now.day)
+        .add(const Duration(hours: 24))
+        .toUtc();
+
+    List<Map<String, dynamic>> data = await DBService.to.db.rawQuery("""
+    SELECT
+    reservations.*,
+    sessions.session_id,
+    courses.id AS course_id,
+    courses.rate AS course_rate,
+    courses.name AS course_name,
+    courses.capacity AS course_capacity,
+    rooms.id AS room_id,
+    rooms.name AS room_name
+    FROM reservations
+    INNER JOIN courses ON reservations.course_id = courses.id
+    INNER JOIN rooms ON reservations.room_id = rooms.id
+    LEFT JOIN (
+      SELECT id AS session_id, reservation_id, end_time AS endTime FROM sessions
+    ) sessions ON reservations.id = sessions.reservation_id
+    WHERE
+    reservations.course_id IS NOT NULL
+    AND
+    sessions.session_id IS NULL
+    AND
+    reservations.is_cancelled = false
+    AND
+    (
+      start_time BETWEEN "${afterDateTime.toIso8601String()}" AND "${beforeDateTime.toIso8601String()}"
+      OR
+      end_time BETWEEN "${afterDateTime.toIso8601String()}" AND "${beforeDateTime.toIso8601String()}"
+    )
+    ORDER BY start_time ASC 
+    """);
+    List<ReservationWithCourse> list = data
+        .map(
+          (e) => ReservationWithCourse(
+              reservation: Reservation.fromMap(e),
+              roomId: e['room_id'],
+              roomName: e['room_name'],
+              course: Course.fromMap(getDataStartWithString_('course', e))),
+        )
         .toList();
     return list;
   }

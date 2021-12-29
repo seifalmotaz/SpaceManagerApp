@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:spacemanager/pages/rooms/controller.dart';
+import 'package:spacemanager/pages/rooms/home/controller.dart';
 import 'package:spacemanager/widgets/form_field.dart';
 
 class ReservationHoursWidget extends StatelessWidget {

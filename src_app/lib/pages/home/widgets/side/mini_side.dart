@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:spacemanager/constants/base_colors.dart';
 import 'package:spacemanager/pages/admin/prices/prices.dart';
-import 'package:spacemanager/pages/home/controller.dart';
-import 'package:spacemanager/pages/rooms/rooms.dart';
+import 'package:spacemanager/pages/home/controllers/controller.dart';
+import 'package:spacemanager/pages/rooms/home/rooms.dart';
 import 'package:spacemanager/pages/side_button.dart';
+import 'package:spacemanager/services/auth.dart';
 
 class MiniSide extends StatelessWidget {
   const MiniSide({
@@ -51,15 +52,16 @@ class MiniSide extends StatelessWidget {
               const SizedBox(height: 17),
               SideButtonWidget(
                 icon: Icons.room_preferences,
-                onTap: () => Get.to(() => const RoomsPage(null)),
+                onTap: () => Get.to(() => const RoomsPage(null, null)),
               ),
               const SizedBox(height: 17),
             ],
           ),
-          SideButtonWidget(
-            icon: Icons.settings,
-            onTap: () => Get.to(() => const EditPricesPage()),
-          ),
+          if (AuthService.to.guest!.isAdmin!)
+            SideButtonWidget(
+              icon: Icons.settings,
+              onTap: () => Get.to(() => const EditPricesPage()),
+            ),
         ],
       ),
     );

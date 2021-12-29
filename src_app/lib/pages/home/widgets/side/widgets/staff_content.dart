@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:spacemanager/constants/base_colors.dart';
+import 'package:spacemanager/pages/home/widgets/content/guests_count.dart';
 import 'package:spacemanager/screens/guests/widgets/staff_card_session.dart';
 import 'package:spacemanager/services/auth.dart';
 
@@ -14,9 +15,14 @@ class StaffContentWidget extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        StaffCardSessionWidget(
-          guest: AuthService.to.guest!,
-          session: AuthService.to.session!,
+        Column(
+          children: [
+            StaffCardSessionWidget(
+              guest: AuthService.to.guest!,
+              session: AuthService.to.session!,
+            ),
+            const GuestsExist(),
+          ],
         ),
         SizedBox(
           height: kToolbarHeight,

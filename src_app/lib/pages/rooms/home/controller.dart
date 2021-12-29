@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:spacemanager/constants/error_snack.dart';
+import 'package:spacemanager/models/courses/src.dart';
 import 'package:spacemanager/models/guests/src.dart';
 import 'package:spacemanager/models/reservations/src.dart';
 import 'package:spacemanager/models/rooms/src.dart';
@@ -9,8 +10,9 @@ import 'package:spacemanager/models/sessions/src.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 class RoomsController extends GetxController {
-  RoomsController([GuestWithSession? u]) {
+  RoomsController([GuestWithSession? u, Course? c]) {
     guest.value = u;
+    course.value = c;
   }
 
   RxList<RoomWithReservations> rooms = <RoomWithReservations>[].obs;
@@ -24,6 +26,7 @@ class RoomsController extends GetxController {
 
   Rx<Room?> room = Rx<Room?>(null);
   Rx<GuestWithSession?> guest = Rx<GuestWithSession?>(null);
+  Rx<Course?> course = Rx<Course?>(null);
 
   RxInt selectedAppointment = 0.obs;
   RxMap<int, List<Appointment>> appointmentsList =

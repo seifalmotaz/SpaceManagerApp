@@ -14,3 +14,16 @@ errorSnack(t, m) {
     margin: const EdgeInsets.symmetric(vertical: 51),
   );
 }
+
+successSnack(t, m) {
+  return Get.snackbar(
+    t,
+    m,
+    isDismissible: false,
+    colorText: Colors.black,
+    maxWidth: Get.width * .3,
+    snackPosition: SnackPosition.BOTTOM,
+    backgroundColor: Colors.greenAccent,
+    margin: const EdgeInsets.symmetric(vertical: 51),
+  );
+}

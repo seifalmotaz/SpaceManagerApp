@@ -11,4 +11,46 @@ extension ReservationQuery on Reservation {
     );
     return data.map((e) => Reservation.fromMap(e)).toList();
   }
+
+  static Future<List<Reservation>> getByCourse(int i) async {
+    DateTime now = DateTime.now();
+    DateTime afterDateTime = DateTime(now.year, now.month).toUtc();
+    DateTime beforeDateTime = DateTime(now.year, now.month + 24).toUtc();
+    List<Map<String, dynamic>> data = await DBService.to.db.query(
+      'reservations',
+      where: """
+        course_id = ?
+        AND
+        (
+          start_time BETWEEN "${afterDateTime.toIso8601String()}" AND "${beforeDateTime.toIso8601String()}"
+          OR
+          end_time BETWEEN "${afterDateTime.toIso8601String()}" AND "${beforeDateTime.toIso8601String()}"
+        )
+      """,
+      whereArgs: [i],
+      orderBy: 'start_time ASC',
+    );
+    return data.map((e) => Reservation.fromMap(e)).toList();
+  }
+
+  static Future<List<Reservation>> getByGuest(int i) async {
+    DateTime now = DateTime.now();
+    DateTime afterDateTime = DateTime(now.year, now.month).toUtc();
+    DateTime beforeDateTime = DateTime(now.year, now.month + 24).toUtc();
+    List<Map<String, dynamic>> data = await DBService.to.db.query(
+      'reservations',
+      where: """
+      guest_id = ?
+      AND
+      (
+        start_time BETWEEN "${afterDateTime.toIso8601String()}" AND "${beforeDateTime.toIso8601String()}"
+        OR
+        end_time BETWEEN "${afterDateTime.toIso8601String()}" AND "${beforeDateTime.toIso8601String()}"
+      )
+      """,
+      whereArgs: [i],
+      orderBy: 'start_time ASC',
+    );
+    return data.map((e) => Reservation.fromMap(e)).toList();
+  }
 }

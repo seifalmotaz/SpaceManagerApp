@@ -88,6 +88,12 @@ class LabelsSideWidget extends StatelessWidget {
             title: 'Price rate/hour',
             value: '${room!.rate!.round()}\$',
           ),
+        if (course != null)
+          label(
+            index: 1,
+            title: 'Rate/hour',
+            value: course!.rate.toString(),
+          ),
         label(
           index: 2,
           title: 'Calculated time',

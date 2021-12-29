@@ -8,7 +8,7 @@ import 'package:spacemanager/pages/home/home.dart';
 import 'package:spacemanager/pages/login/login.dart';
 import 'package:spacemanager/services/auth.dart';
 import 'package:spacemanager/services/database.dart';
-import 'package:spacemanager/services/storage.dart';
+import 'package:spacemanager/services/storage/storage.dart';
 
 class WrapperPage extends StatefulWidget {
   const WrapperPage({Key? key}) : super(key: key);

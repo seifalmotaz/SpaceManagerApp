@@ -3,29 +3,32 @@ import 'package:get/get.dart';
 import 'package:getwidget/components/button/gf_button.dart';
 import 'package:spacemanager/constants/base_colors.dart';
 import 'package:spacemanager/constants/error_snack.dart';
+import 'package:spacemanager/models/courses/model.dart';
 import 'package:spacemanager/models/guests/src.dart';
+import 'package:spacemanager/models/reservations/src.dart';
 import 'package:spacemanager/models/sessions/src.dart';
 import 'package:spacemanager/pages/base_nav.dart';
-import 'package:spacemanager/pages/home/controller.dart';
-import 'package:spacemanager/pages/rooms/controller.dart';
-import 'package:spacemanager/pages/rooms/sheet/checkout.dart';
-import 'package:spacemanager/pages/rooms/widgets/freq.dart';
-import 'package:spacemanager/pages/rooms/widgets/hours.dart';
-import 'package:spacemanager/pages/rooms/widgets/pick_room.dart';
+import 'package:spacemanager/pages/home/controllers/controller.dart';
+import 'package:spacemanager/pages/rooms/home/controller.dart';
 import 'package:spacemanager/screens/guests/widgets/guest_form_card.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
+import 'sheet/checkout.dart';
+import 'widgets/freq.dart';
+import 'widgets/hours.dart';
 import 'widgets/mini_time_chip.dart';
+import 'widgets/pick_room.dart';
 import 'widgets/time.dart';
 
 class RoomsPage extends StatelessWidget {
-  const RoomsPage(this.guest, {Key? key}) : super(key: key);
+  const RoomsPage(this.guest, this.course, {Key? key}) : super(key: key);
 
   final GuestWithSession? guest;
+  final Course? course;
 
   @override
   Widget build(BuildContext context) {
-    RoomsController controller = Get.put(RoomsController(guest));
+    RoomsController controller = Get.put(RoomsController(guest, course));
     return Scaffold(
       appBar: AppBar(
         elevation: 0.51,
@@ -78,11 +81,33 @@ class RoomsPage extends StatelessWidget {
             bottom: [
               XButtonData(
                 iconData: Icons.date_range,
-                ontap: () {
+                ontap: () async {
                   if (controller.guest.value != null &&
                       controller.room.value != null &&
                       controller.appointmentsList.isNotEmpty) {
                     Get.bottomSheet(const CheckOutSheet());
+                  } else if (controller.room.value != null &&
+                      controller.course.value != null) {
+                    List list = [];
+                    for (List item in controller.appointmentsList.values) {
+                      list.addAll(item);
+                    }
+                    for (Appointment item in list) {
+                      Reservation res = Reservation(
+                        startTime: item.startTime,
+                        endTime: item.endTime,
+                        courseId: controller.course.value!.id!,
+                        isPrePaid: false,
+                        roomId: controller.room.value!.id!,
+                      );
+                      try {
+                        await res.create();
+                      } catch (e) {
+                        errorSnack('Code error', e.toString());
+                        return;
+                      }
+                    }
+                    Get.back(closeOverlays: true);
                   }
                 },
               ),
@@ -114,13 +139,17 @@ class RoomsPage extends StatelessWidget {
               width: double.infinity,
               height: double.infinity,
               color: BaseColors.lightPrimary,
-              child: guest == null
-                  ? const Text("You didn't choose guest.")
-                  : SingleChildScrollView(
-                      controller: controller.sideScrollController,
-                      child: Column(
-                        children: [
-                          EditGuestFormCardWidget(
+              child: SingleChildScrollView(
+                controller: controller.sideScrollController,
+                child: Column(
+                  children: [
+                    guest == null
+                        ? const Padding(
+                            padding: EdgeInsets.all(13),
+                            child:
+                                Center(child: Text("You didn't choose guest.")),
+                          )
+                        : EditGuestFormCardWidget(
                             guest!.guest,
                             enablePass: false,
                             validDelete: false,
@@ -130,45 +159,44 @@ class RoomsPage extends StatelessWidget {
                             hintColor: Colors.black38,
                             textColor: Colors.black,
                           ),
-                          GFButton(
-                            text: 'Add another time',
-                            hoverElevation: .23,
-                            color: BaseColors.lightPrimary,
-                            textStyle: const TextStyle(
-                              color: BaseColors.textColor,
-                              fontWeight: FontWeight.bold,
-                            ),
-                            onPressed: () {
-                              if ((controller.selectedAppointment.value ==
-                                      controller.appointmentsList.length - 1) ||
-                                  (controller.selectedAppointment.value == 0 &&
-                                      controller.appointmentsList.length > 1)) {
-                                controller.selectedAppointment.value =
-                                    controller.appointmentsList.length;
-                                controller.frequency.value = [];
-                              }
-                            },
-                          ),
-                          Obx(
-                            () => ListView.builder(
-                              shrinkWrap: true,
-                              itemCount: controller.appointmentsList.length,
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 21),
-                              itemBuilder: (context, index) {
-                                List<Appointment> list =
-                                    controller.appointmentsList[index]!;
-                                return GestureDetector(
-                                  onTap: () => controller
-                                      .selectedAppointment.value = index,
-                                  child: MiniTimeChipWidget(list),
-                                );
-                              },
-                            ),
-                          )
-                        ],
+                    GFButton(
+                      text: 'Add another time',
+                      hoverElevation: .23,
+                      color: BaseColors.lightPrimary,
+                      textStyle: const TextStyle(
+                        color: BaseColors.textColor,
+                        fontWeight: FontWeight.bold,
                       ),
+                      onPressed: () {
+                        if ((controller.selectedAppointment.value ==
+                                controller.appointmentsList.length - 1) ||
+                            (controller.selectedAppointment.value == 0 &&
+                                controller.appointmentsList.length > 1)) {
+                          controller.selectedAppointment.value =
+                              controller.appointmentsList.length;
+                          controller.frequency.value = [];
+                        }
+                      },
                     ),
+                    Obx(
+                      () => ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: controller.appointmentsList.length,
+                        padding: const EdgeInsets.symmetric(horizontal: 21),
+                        itemBuilder: (context, index) {
+                          List<Appointment> list =
+                              controller.appointmentsList[index]!;
+                          return GestureDetector(
+                            onTap: () =>
+                                controller.selectedAppointment.value = index,
+                            child: MiniTimeChipWidget(list),
+                          );
+                        },
+                      ),
+                    )
+                  ],
+                ),
+              ),
             ),
           ),
           Flexible(

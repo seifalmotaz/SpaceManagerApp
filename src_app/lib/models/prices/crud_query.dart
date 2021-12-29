@@ -3,7 +3,11 @@ import 'package:spacemanager/services/database.dart';
 
 extension PriceCRUDQuery on Price {
   static Future<List<Price>> list() async {
-    List<Map<String, dynamic>> data = await DBService.to.db.query('prices');
+    List<Map<String, dynamic>> data = await DBService.to.db.query(
+      'prices',
+      where: 'is_deleted = ?',
+      whereArgs: [0],
+    );
     return data.map((e) => Price.fromMap(e)).toList();
   }
 
@@ -41,8 +45,9 @@ extension PriceCRUDQuery on Price {
   }
 
   Future<int> delete() async {
-    int data = await DBService.to.db.delete(
+    int data = await DBService.to.db.update(
       'prices',
+      {'is_deleted': 1},
       where: 'id = ?',
       whereArgs: [id],
     );

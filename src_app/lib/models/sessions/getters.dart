@@ -12,14 +12,14 @@ extension SessionGetters on Session {
   Future<Reservation> get reservation async =>
       await ReservationCRUDQuery.read(reservationId!);
 
-  Future<int?> getTotal([bool hourly = false]) async {
+  Future<int?> getTotal() async {
     // Normal pricing
     if (priceId != null) {
       return await normalPricing();
     }
     // Course pricing
-    if (courseId != null) {
-      return await coursePricing(hourly);
+    if (courseId != null && reservationId != null) {
+      return await coursePricing();
     }
     // Room pricing
     if (roomId != null && reservationId == null) {
@@ -55,11 +55,11 @@ extension SessionGetters on Session {
     return _totalPrice.round();
   }
 
-  Future<int> coursePricing([bool hourly = false]) async {
+  Future<int> coursePricing() async {
     Course c = await course;
     DateTimeRange t = DateTimeRange(
       start: startTime!,
-      end: DateTime.now(),
+      end: endTime ?? DateTime.now(),
     );
     Duration time = t.duration;
 
@@ -67,14 +67,10 @@ extension SessionGetters on Session {
     double _totalPrice = 0;
     double i = time.inMinutes % 60;
 
-    if (i < 15 || hourly) {
-      for (var i = 0; i < guestsCount!; i++) {
-        _totalPrice = _totalPrice + (time.inHours * rate);
-      }
+    if (i < 10) {
+      _totalPrice = _totalPrice + (time.inHours * rate);
     } else {
-      for (var i = 0; i < guestsCount!; i++) {
-        _totalPrice = _totalPrice + ((time.inHours + 1) * rate);
-      }
+      _totalPrice = _totalPrice + ((time.inHours + 1) * rate);
     }
 
     return _totalPrice.round();

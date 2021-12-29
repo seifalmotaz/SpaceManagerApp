@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:spacemanager/constants/base_colors.dart';
-import 'package:spacemanager/pages/home/controller.dart';
+import 'package:spacemanager/pages/home/controllers/controller.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 
 class GuestsExist extends StatelessWidget {
@@ -13,12 +13,12 @@ class GuestsExist extends StatelessWidget {
   Widget build(BuildContext context) {
     final HomeController controller = Get.find<HomeController>();
     return Obx(() => SfRadialGauge(
-          title: const GaugeTitle(
+          title: GaugeTitle(
             text: 'Guests count in real time',
             textStyle: TextStyle(
               fontSize: 19,
-              color: Colors.black,
-              fontWeight: FontWeight.w500,
+              color: Colors.blueGrey.shade900,
+              fontWeight: FontWeight.bold,
             ),
           ),
           axes: [
@@ -36,7 +36,7 @@ class GuestsExist extends StatelessWidget {
                   value: controller.spaceCurrentCapacity.value.toDouble(),
                   width: 17,
                   cornerStyle: CornerStyle.bothCurve,
-                  color: BaseColorss.secondPrimary,
+                  color: BaseColors.primary.withOpacity(.81),
                 ),
               ],
               annotations: [

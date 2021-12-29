@@ -5,7 +5,10 @@ import 'package:jiffy/jiffy.dart';
 import 'package:spacemanager/constants/base_colors.dart';
 import 'package:spacemanager/models/guests/src.dart';
 import 'package:spacemanager/models/reservations/src.dart';
+import 'package:spacemanager/models/sessions/getters.dart';
+import 'package:spacemanager/models/sessions/joins_classes.dart';
 import 'package:spacemanager/models/sessions/ref.dart';
+import 'package:spacemanager/screens/sessions/end_course_sesstion/end_course_sesstion.dart';
 import 'package:spacemanager/screens/sessions/end_session/end_session.dart';
 
 class RunningReservationTile extends StatefulWidget {
@@ -60,15 +63,29 @@ class _RunningReservationTileState extends State<RunningReservationTile> {
             text: 'End it',
             color: BaseColors.primary,
             onPressed: () async {
-              bool? wait = await Get.bottomSheet(
-                EndSessionScreen(
-                  GuestWithSession(
-                    guest: await widget.session.session!.session.guest(),
-                    session: widget.session.session!.session,
-                    sessionId: widget.session.session!.session.id,
+              ReservationWithSessionWithGuest s = widget.session;
+              bool? wait;
+              if (s.session!.session.courseId != null) {
+                wait = await Get.bottomSheet(
+                  EndCourseSessionScreen(
+                    SessionWithCourse(
+                      course: await s.session!.session.course,
+                      session: s.session!.session,
+                      courseId: s.session!.session.courseId!,
+                    ),
                   ),
-                ),
-              );
+                );
+              } else {
+                wait = await Get.bottomSheet(
+                  EndSessionScreen(
+                    GuestWithSession(
+                      guest: await s.session!.session.guest(),
+                      session: s.session!.session,
+                      sessionId: s.session!.session.id,
+                    ),
+                  ),
+                );
+              }
               if (wait != null && wait) {
                 if (widget.onUpdate != null) {
                   widget.onUpdate!();

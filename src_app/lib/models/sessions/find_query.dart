@@ -1,3 +1,4 @@
+import 'package:spacemanager/models/courses/src.dart';
 import 'package:spacemanager/models/guests/src.dart';
 import 'package:spacemanager/models/reservations/src.dart';
 import 'package:spacemanager/models/sessions/joins_classes.dart';
@@ -49,11 +50,11 @@ extension SessionFindQuery on Session {
     reservations.end_time AS reservation_end_time,
     reservations.course_id AS reservation_course_id
     FROM sessions
-    INNER JOIN guests ON sessions.guest_id = guests.id
     INNER JOIN rooms ON sessions.room_id = rooms.id
+    LEFT JOIN guests ON sessions.guest_id = guests.id
     LEFT JOIN reservations ON sessions.reservation_id = reservations.id
-    WHERE sessions.end_time IS NULL
-    AND guests.is_staff = false
+    WHERE
+    sessions.end_time IS NULL
     AND sessions.room_id = $roomId
     LIMIT 1
     """);
@@ -62,16 +63,57 @@ extension SessionFindQuery on Session {
         session: SessionWithGuest(
           session: Session.fromMap(data.first),
           guestId: data.first['guest_id'],
-          guest: Guest(
-            phone: data.first['guest_phone'],
-            name: data.first['guest_name'],
-            id: data.first['guest_id'],
-          ),
+          guest: Guest.fromMap(getDataStartWithString_('guest', data.first)),
         ),
         reservation: Reservation.fromMap(
           getDataStartWithString_('reservation', data.first),
         ),
       );
     }
+  }
+
+  static Future<List<SessionWithCourse>> findCoursesThatJustEnded() async {
+    DateTime now = DateTime.now();
+    DateTime afterDateTime = DateTime(
+      now.year,
+      now.month,
+      now.day,
+      now.hour,
+      now.minute,
+    ).subtract(const Duration(minutes: 15)).toUtc();
+
+    DateTime beforeDateTime = DateTime(
+      now.year,
+      now.month,
+      now.day,
+      now.hour,
+      now.minute,
+    ).add(const Duration(minutes: 15)).toUtc();
+
+    List<Map<String, dynamic>> data = await DBService.to.db.rawQuery("""
+    SELECT sessions.*, 
+    courses.name AS course_name, 
+    courses.rate AS course_rate,
+    COUNT(bills.id) AS bills_count
+    FROM sessions
+    INNER JOIN courses ON sessions.course_id = courses.id
+    LEFT JOIN bills ON sessions.id = bills.session_id 
+    WHERE
+    sessions.end_time IS NOT NULL
+    AND sessions.course_id IS NOT NULL
+    AND
+    sessions.end_time BETWEEN "${afterDateTime.toIso8601String()}" AND "${beforeDateTime.toIso8601String()}"
+    GROUP BY sessions.id
+    HAVING  bills_count < sessions.guests_count
+    """);
+    return data
+        .map((e) => SessionWithCourse(
+              session: Session.fromMap(e),
+              course: Course.fromMap(getDataStartWithString_('course', e)),
+              courseId: e['course_id'],
+              roomId: e['room_id'],
+              billsCount: e['bills_count'],
+            ))
+        .toList();
   }
 }

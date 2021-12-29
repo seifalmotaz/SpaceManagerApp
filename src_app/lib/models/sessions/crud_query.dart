@@ -18,7 +18,7 @@ extension SessionQuery on Session {
   Future<int> end() async {
     var data = await DBService.to.db.update(
       'sessions',
-      {'end_time': DateTime.now().toIso8601String()},
+      {'end_time': DateTime.now().toUtc().toIso8601String()},
       where: 'id = ?',
       whereArgs: [id],
     );

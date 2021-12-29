@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:spacemanager/models/guests/src.dart';
-import 'package:spacemanager/pages/home/controller.dart';
+import 'package:spacemanager/pages/home/controllers/controller.dart';
 import 'package:spacemanager/screens/guests/widgets/guest_session_card.dart';
 import 'package:spacemanager/screens/sessions/end_session/end_session.dart';
 import 'package:spacemanager/screens/sessions/start_session/start_session.dart';

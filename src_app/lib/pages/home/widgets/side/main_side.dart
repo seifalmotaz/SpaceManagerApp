@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:spacemanager/constants/base_colors.dart';
-import 'package:spacemanager/pages/home/controller.dart';
+import 'package:spacemanager/pages/home/controllers/controller.dart';
 import 'package:spacemanager/pages/home/widgets/side/widgets/guests_searching.dart';
 import 'package:spacemanager/pages/home/widgets/side/widgets/staff_content.dart';
 

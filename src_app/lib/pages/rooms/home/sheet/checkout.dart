@@ -3,8 +3,8 @@ import 'package:get/get.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:spacemanager/constants/base_colors.dart';
 import 'package:spacemanager/models/rooms/src.dart';
-import 'package:spacemanager/pages/rooms/controller.dart';
-import 'package:spacemanager/pages/rooms/sheet/shortcuts.dart';
+import 'package:spacemanager/pages/rooms/home/controller.dart';
+import 'package:spacemanager/pages/rooms/home/sheet/shortcuts.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 import 'create_nopay.dart';

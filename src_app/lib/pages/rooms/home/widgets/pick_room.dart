@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:spacemanager/constants/base_colors.dart';
-import 'package:spacemanager/pages/rooms/controller.dart';
+import 'package:spacemanager/pages/rooms/home/controller.dart';
 import 'package:spacemanager/screens/rooms/widgets/room_reservations/room_reservations.dart';
 
 class PickRoomWidget extends StatefulWidget {

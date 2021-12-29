@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:spacemanager/constants/base_colors.dart';
@@ -25,8 +26,10 @@ class _CourseFormState extends State<CourseForm> {
   GlobalKey<FormState> form = GlobalKey<FormState>();
   FocusNode priceFocus = FocusNode();
   FocusNode disFocus = FocusNode();
+  FocusNode capacityFocus = FocusNode();
   TextEditingController price = TextEditingController();
   TextEditingController dis = TextEditingController();
+  TextEditingController capacity = TextEditingController();
 
   check() async {
     if (form.currentState!.validate()) {
@@ -35,6 +38,7 @@ class _CourseFormState extends State<CourseForm> {
         p = Course(
           name: dis.text.isEmpty ? null : dis.text,
           rate: double.parse(price.text),
+          capacity: int.tryParse(capacity.text),
         );
       } catch (e) {
         Get.snackbar(
@@ -53,6 +57,7 @@ class _CourseFormState extends State<CourseForm> {
       setState(() {
         price.text = '';
         dis.text = '';
+        capacity.text = '';
         priceFocus.requestFocus();
       });
     }
@@ -93,6 +98,9 @@ class _CourseFormState extends State<CourseForm> {
                           controller: price,
                           onFieldSubmitted: (String string) =>
                               disFocus.requestFocus(),
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
                           validator: (String? value) {
                             if (value!.isEmpty) {
                               return 'Type price';
@@ -126,7 +134,8 @@ class _CourseFormState extends State<CourseForm> {
                           focusNode: disFocus,
                           controller: dis,
                           textAlignVertical: TextAlignVertical.top,
-                          onFieldSubmitted: (String string) => check(),
+                          onFieldSubmitted: (String string) =>
+                              capacityFocus.requestFocus(),
                           decoration: InputDecoration(
                             filled: true,
                             fillColor: const Color(0xFFe4e6eb),
@@ -143,6 +152,40 @@ class _CourseFormState extends State<CourseForm> {
                               return 'Not valid';
                             }
                           },
+                        ),
+                      ),
+                      const SizedBox(height: 11),
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(13),
+                        child: TextFormField(
+                          style: basicStyle,
+                          focusNode: capacityFocus,
+                          controller: capacity,
+                          onFieldSubmitted: (String string) => check(),
+                          textAlignVertical: TextAlignVertical.top,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
+                          validator: (String? value) {
+                            if (value!.isEmpty) {
+                              return 'Type capacity of the room.';
+                            }
+                            double? d = double.tryParse(value);
+                            if (d == null) {
+                              return 'Just numbers';
+                            }
+                          },
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: const Color(0xFFe4e6eb),
+                            contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 11,
+                              vertical: 5,
+                            ),
+                            border: InputBorder.none,
+                            hintText: 'Capacity',
+                            hintStyle: basicStyle.copyWith(color: Colors.grey),
+                          ),
                         ),
                       ),
                       const SizedBox(height: 11),

@@ -83,7 +83,7 @@ class _EditGuestFormCardWidgetState extends State<EditGuestFormCardWidget> {
                   ),
                   onTap: () {
                     Get.snackbar(
-                      'Delete staff',
+                      'Delete guest',
                       'Are you sure that you want to delete price rate from list.',
                       isDismissible: false,
                       colorText: Colors.white,

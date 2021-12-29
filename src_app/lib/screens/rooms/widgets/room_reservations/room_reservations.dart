@@ -44,48 +44,50 @@ class RoomReservations extends StatelessWidget {
           ),
         ],
       ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          BasicRoomDataWidget(
-            room.room,
-            bg: bg,
-            nameTextColor: nameTextColor,
-            semiTextColor: semiTextColor,
-            titlesTextColor: titlesTextColor,
-          ),
-          if (!hideNextReservation)
-            if (room.running != null)
-              Padding(
-                padding: const EdgeInsets.only(
-                  left: 21,
-                  right: 21,
-                  top: 13,
+      child: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            BasicRoomDataWidget(
+              room.room,
+              bg: bg,
+              nameTextColor: nameTextColor,
+              semiTextColor: semiTextColor,
+              titlesTextColor: titlesTextColor,
+            ),
+            if (!hideNextReservation)
+              if (room.running != null)
+                Padding(
+                  padding: const EdgeInsets.only(
+                    left: 21,
+                    right: 21,
+                    top: 13,
+                  ),
+                  child: RunningReservationTile(room.running!, onUpdate),
                 ),
-                child: RunningReservationTile(room.running!, onUpdate),
-              ),
-          if (!hideNextReservation)
-            if (room.reservations != null && room.reservations!.isNotEmpty)
-              ListView.builder(
-                shrinkWrap: true,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 21, vertical: 7),
-                itemCount: room.reservations!.length > 2
-                    ? 3
-                    : room.reservations!.length,
-                itemBuilder: (context, index) {
-                  ReservationWithGuest res = room.reservations![index];
-                  return ReservationTileWidget(
-                    index,
-                    res,
-                    room.room.capacity,
-                    onUpdate: onUpdate,
-                  );
-                },
-              ),
-        ],
+            if (!hideNextReservation)
+              if (room.reservations != null && room.reservations!.isNotEmpty)
+                ListView.builder(
+                  shrinkWrap: true,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 21, vertical: 7),
+                  itemCount: room.reservations!.length > 2
+                      ? 3
+                      : room.reservations!.length,
+                  itemBuilder: (context, index) {
+                    ReservationWithGuest res = room.reservations![index];
+                    return ReservationTileWidget(
+                      index,
+                      res,
+                      room.room.capacity,
+                      onUpdate: onUpdate,
+                    );
+                  },
+                ),
+          ],
+        ),
       ),
     );
   }

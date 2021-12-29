@@ -13,10 +13,12 @@ class BaseNav extends StatelessWidget {
   const BaseNav({
     Key? key,
     this.canBack = true,
+    this.top = const [],
     this.bottom = const [],
   }) : super(key: key);
 
   final bool canBack;
+  final List<XButtonData> top;
   final List<XButtonData> bottom;
 
   @override
@@ -42,6 +44,11 @@ class BaseNav extends StatelessWidget {
                     color: BaseColors.primary,
                     onPressed: () => Get.back(),
                   ),
+                ),
+              for (XButtonData item in top)
+                SideButtonWidget(
+                  icon: item.iconData,
+                  onTap: item.ontap,
                 ),
             ],
           ),

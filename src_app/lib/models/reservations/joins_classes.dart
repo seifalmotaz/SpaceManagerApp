@@ -1,3 +1,5 @@
+import 'package:spacemanager/models/courses/src.dart';
+
 import 'model.dart';
 import 'package:spacemanager/models/guests/src.dart';
 import 'package:spacemanager/models/sessions/joins_classes.dart';
@@ -17,5 +19,18 @@ class ReservationWithGuest {
   ReservationWithGuest({
     required this.reservation,
     required this.guest,
+  });
+}
+
+class ReservationWithCourse {
+  Course course;
+  Reservation reservation;
+  int roomId;
+  String roomName;
+  ReservationWithCourse({
+    required this.reservation,
+    required this.course,
+    required this.roomId,
+    required this.roomName,
   });
 }

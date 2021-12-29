@@ -3,10 +3,9 @@ import 'package:get/get.dart';
 import 'package:spacemanager/constants/base_colors.dart';
 import 'package:spacemanager/models/reservations/src.dart';
 import 'package:spacemanager/models/rooms/src.dart';
-import 'package:spacemanager/pages/rooms/controller.dart';
+import 'package:spacemanager/pages/rooms/home/controller.dart';
+import 'package:spacemanager/pages/rooms/home/source.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
-
-import '../source.dart';
 
 class ReservationTimeWidget extends StatefulWidget {
   const ReservationTimeWidget(this.appointments,

@@ -24,7 +24,7 @@ class BasicRoomDataWidget extends StatelessWidget {
       padding: const EdgeInsets.all(23),
       decoration: BoxDecoration(
         color: bg,
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(21)),
+        borderRadius: const BorderRadius.all(Radius.circular(21)),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,

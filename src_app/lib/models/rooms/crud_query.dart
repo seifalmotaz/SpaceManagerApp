@@ -3,7 +3,11 @@ import 'package:spacemanager/services/database.dart';
 
 extension RoomCRUDQuery on Room {
   static Future<List<Room>> list() async {
-    List<Map<String, dynamic>> data = await DBService.to.db.query('rooms');
+    List<Map<String, dynamic>> data = await DBService.to.db.query(
+      'rooms',
+      where: 'is_deleted = ?',
+      whereArgs: [0],
+    );
     return data.map((e) => Room.fromMap(e)).toList();
   }
 
@@ -32,8 +36,9 @@ extension RoomCRUDQuery on Room {
   }
 
   Future<int> delete() async {
-    int data = await DBService.to.db.delete(
+    int data = await DBService.to.db.update(
       'rooms',
+      {'is_deleted': 1},
       where: 'id = ?',
       whereArgs: [id],
     );

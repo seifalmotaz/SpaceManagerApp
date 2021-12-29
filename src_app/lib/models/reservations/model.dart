@@ -25,14 +25,14 @@ class Reservation {
   });
 
   final int? id;
-  final bool? isPrePaid;
-  final DateTime? startTime;
-  final DateTime? endTime;
-  final DateTime? createdDate;
-  final int? roomId;
-  final double? courseId;
-  final int? guestId;
-  final bool? isCancelled;
+  bool? isPrePaid;
+  DateTime? startTime;
+  DateTime? endTime;
+  DateTime? createdDate;
+  int? roomId;
+  int? courseId;
+  int? guestId;
+  bool? isCancelled;
 
   double get prePaidPersent => .25;
 
@@ -42,7 +42,7 @@ class Reservation {
     DateTime? startTime,
     DateTime? endTime,
     int? roomId,
-    double? courseId,
+    int? courseId,
     int? guestId,
     DateTime? createdDate,
     bool? isCancelled,

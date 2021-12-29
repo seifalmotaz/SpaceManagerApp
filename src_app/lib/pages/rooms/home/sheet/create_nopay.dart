@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:spacemanager/constants/error_snack.dart';
 import 'package:spacemanager/models/reservations/src.dart';
-import 'package:spacemanager/pages/rooms/controller.dart';
+import 'package:spacemanager/pages/rooms/home/controller.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 class CreateReservationNoPayIntent extends Intent {}

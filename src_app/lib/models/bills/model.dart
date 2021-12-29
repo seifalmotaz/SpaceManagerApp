@@ -13,6 +13,7 @@ class Bill {
     this.sessionId,
     this.reservationId,
     this.createdDate,
+    this.courseSessionId,
   });
 
   int? id;
@@ -20,6 +21,7 @@ class Bill {
   int? staffId;
   int? sessionId;
   int? reservationId;
+  int? courseSessionId;
   DateTime? createdDate;
 
   Bill copyWith({
@@ -28,6 +30,7 @@ class Bill {
     int? staffId,
     int? sessionId,
     int? reservationId,
+    int? courseSessionId,
     DateTime? createdDate,
   }) =>
       Bill(
@@ -37,6 +40,7 @@ class Bill {
         sessionId: sessionId ?? this.sessionId,
         reservationId: reservationId ?? this.reservationId,
         createdDate: createdDate ?? this.createdDate,
+        courseSessionId: courseSessionId ?? this.courseSessionId,
       );
 
   factory Bill.fromMap(Map<String, dynamic> json) => Bill(
@@ -45,6 +49,7 @@ class Bill {
         staffId: json["staff_id"],
         sessionId: json["session_id"],
         reservationId: json["reservation_id"],
+        courseSessionId: json["course_session_id"],
         createdDate: fromDateDB(json["created_date"]),
       );
 
@@ -53,5 +58,6 @@ class Bill {
         if (staffId != null) "staff_id": staffId,
         if (sessionId != null) "session_id": sessionId,
         if (reservationId != null) "reservation_id": reservationId,
+        if (courseSessionId != null) "course_session_id": courseSessionId,
       };
 }

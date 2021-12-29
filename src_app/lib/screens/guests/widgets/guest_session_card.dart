@@ -6,8 +6,9 @@ import 'package:get/get.dart';
 import 'package:spacemanager/constants/base_colors.dart';
 import 'package:spacemanager/models/guests/src.dart';
 import 'package:spacemanager/models/sessions/src.dart';
-import 'package:spacemanager/pages/home/controller.dart';
-import 'package:spacemanager/pages/rooms/rooms.dart';
+import 'package:spacemanager/pages/home/controllers/controller.dart';
+import 'package:spacemanager/pages/rooms/home/rooms.dart';
+import 'package:spacemanager/pages/rooms/reservations/reservations.dart';
 import 'package:spacemanager/screens/guests/mini/label_field.dart';
 import 'package:spacemanager/screens/sessions/end_session/end_session.dart';
 import 'package:spacemanager/screens/sessions/start_session/start_session.dart';
@@ -92,120 +93,175 @@ class _GuestSessionCardWidgetState extends State<GuestSessionCardWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 27),
-      margin: const EdgeInsets.only(top: 27),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                '@' + (guest.name ?? 'Unknown'),
-                style: TextStyle(
-                  color: Colors.blueGrey.shade900,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 23,
+    return InkWell(
+      onTap: () async {
+        GuestWithSession gs = widget.guestWithSession;
+        gs.guest = await gs.guest.checkGuestByPhone();
+        Get.to(() => ReservationsPage(gs, null));
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 27),
+        margin: const EdgeInsets.only(top: 27),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '@' + (guest.name ?? 'Unknown'),
+                  style: TextStyle(
+                    color: Colors.blueGrey.shade900,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 23,
+                  ),
                 ),
-              ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 17, vertical: 11),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 17, vertical: 11),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      labelField(
+                        guest.email ?? 'No email',
+                        Icons.email_outlined,
+                      ),
+                      const SizedBox(height: 5),
+                      labelField(
+                        guest.phone ?? 'No phone',
+                        Icons.phone_outlined,
+                      ),
+                      const SizedBox(height: 5),
+                      labelField(
+                        guest.gender ?? 'Undefined',
+                        guest.gender == null
+                            ? FontAwesomeIcons.genderless
+                            : guest.gender == 'Male'
+                                ? FontAwesomeIcons.mars
+                                : FontAwesomeIcons.venus,
+                      ),
+                      const SizedBox(height: 5),
+                      labelField(
+                        guest.career ?? 'Not specified',
+                        FontAwesomeIcons.user,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 7),
+            if (widget.guestWithSession.sessionId != null)
+              SizedBox(
+                width: double.infinity,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    labelField(
-                      guest.email ?? 'No email',
-                      Icons.email_outlined,
+                    Text(
+                      'Session duration',
+                      style: TextStyle(
+                        color: Colors.blueGrey.shade800,
+                        fontSize: 17,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                    const SizedBox(height: 5),
-                    labelField(
-                      guest.phone ?? 'No phone',
-                      Icons.phone_outlined,
-                    ),
-                    const SizedBox(height: 5),
-                    labelField(
-                      guest.gender ?? 'Undefined',
-                      guest.gender == null
-                          ? FontAwesomeIcons.genderless
-                          : guest.gender == 'Male'
-                              ? FontAwesomeIcons.mars
-                              : FontAwesomeIcons.venus,
-                    ),
-                    const SizedBox(height: 5),
-                    labelField(
-                      guest.career ?? 'Not specified',
-                      FontAwesomeIcons.user,
+                    Wrap(
+                      runSpacing: 13,
+                      spacing: 13,
+                      crossAxisAlignment: WrapCrossAlignment.end,
+                      alignment: WrapAlignment.end,
+                      children: [
+                        Chip(
+                          backgroundColor: BaseColors.primary,
+                          label: Text(
+                            timeInHour,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15,
+                            ),
+                          ),
+                        ),
+                        Chip(
+                          backgroundColor: BaseColors.primary,
+                          label: Text(
+                            timeInMin,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
               ),
-            ],
-          ),
-          const SizedBox(height: 7),
-          if (widget.guestWithSession.sessionId != null)
-            SizedBox(
-              width: double.infinity,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Session duration',
-                    style: TextStyle(
-                      color: Colors.blueGrey.shade800,
-                      fontSize: 17,
-                      fontWeight: FontWeight.bold,
+            const SizedBox(height: 13),
+            Row(
+              children: [
+                if (widget.guestWithSession.sessionId == null)
+                  Flexible(
+                    flex: 2,
+                    child: InkWell(
+                      onTap: () async {
+                        GuestWithSession gs = widget.guestWithSession;
+                        Guest guest = await gs.guest.checkGuestByPhone();
+                        await Get.bottomSheet(StartSessionScreen(guest));
+                        HomeController.to.restart();
+                      },
+                      child: Container(
+                        height: 27,
+                        width: double.infinity,
+                        decoration: btnDecoration,
+                        child: Center(
+                          child: Text(
+                            'Start session',
+                            style: btnTextStyle,
+                          ),
+                        ),
+                      ),
                     ),
                   ),
-                  Wrap(
-                    runSpacing: 13,
-                    spacing: 13,
-                    crossAxisAlignment: WrapCrossAlignment.end,
-                    alignment: WrapAlignment.end,
-                    children: [
-                      Chip(
-                        backgroundColor: BaseColors.primary,
-                        label: Text(
-                          timeInHour,
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 15,
+                if (widget.guestWithSession.sessionId != null)
+                  Flexible(
+                    flex: 2,
+                    child: InkWell(
+                      onTap: () async {
+                        await Get.bottomSheet(
+                            EndSessionScreen(widget.guestWithSession));
+                        HomeController.to.restart();
+                      },
+                      child: Container(
+                        height: 27,
+                        width: double.infinity,
+                        decoration:
+                            btnDecoration.copyWith(color: Colors.transparent),
+                        child: Center(
+                          child: Text(
+                            'End session',
+                            style: btnTextStyle.copyWith(
+                              color: Colors.black,
+                              fontSize: 15,
+                            ),
                           ),
                         ),
                       ),
-                      Chip(
-                        backgroundColor: BaseColors.primary,
-                        label: Text(
-                          timeInMin,
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 15,
-                          ),
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
-                ],
-              ),
-            ),
-          const SizedBox(height: 13),
-          Row(
-            children: [
-              if (widget.guestWithSession.sessionId == null)
+                const SizedBox(width: 3),
                 Flexible(
                   flex: 2,
                   child: InkWell(
                     onTap: () async {
                       GuestWithSession gs = widget.guestWithSession;
-                      Guest guest = await gs.guest.checkGuestByPhone();
-                      await Get.bottomSheet(StartSessionScreen(guest));
+                      gs.guest = await gs.guest.checkGuestByPhone();
+                      await Get.to(() => RoomsPage(gs, null));
                       HomeController.to.restart();
                     },
                     child: Container(
@@ -214,81 +270,41 @@ class _GuestSessionCardWidgetState extends State<GuestSessionCardWidget> {
                       decoration: btnDecoration,
                       child: Center(
                         child: Text(
-                          'Start session',
+                          'Rooms',
                           style: btnTextStyle,
                         ),
                       ),
                     ),
                   ),
                 ),
-              if (widget.guestWithSession.sessionId != null)
-                Flexible(
-                  flex: 2,
-                  child: InkWell(
-                    onTap: () async {
-                      await Get.bottomSheet(
-                          EndSessionScreen(widget.guestWithSession));
-                      HomeController.to.restart();
-                    },
-                    child: Container(
-                      height: 27,
-                      width: double.infinity,
-                      decoration:
-                          btnDecoration.copyWith(color: Colors.transparent),
-                      child: Center(
-                        child: Text(
-                          'End session',
-                          style: btnTextStyle.copyWith(
-                            color: Colors.black,
-                            fontSize: 15,
+                const SizedBox(width: 3),
+                if (widget.guestWithSession.sessionId == null)
+                  Flexible(
+                    flex: 2,
+                    child: InkWell(
+                      onTap: () async {
+                        GuestWithSession gs = widget.guestWithSession;
+                        gs.guest = await gs.guest.checkGuestByPhone();
+                        HomeController.to.courseGuest.value = gs.guest;
+                        HomeController.to.guestsSearching.value = false;
+                      },
+                      child: Container(
+                        height: 27,
+                        width: double.infinity,
+                        decoration: btnDecoration,
+                        child: Center(
+                          child: Text(
+                            'Course',
+                            style: btnTextStyle,
                           ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              const SizedBox(width: 3),
-              Flexible(
-                flex: 2,
-                child: InkWell(
-                  onTap: () async {
-                    GuestWithSession gs = widget.guestWithSession;
-                    gs.guest = await gs.guest.checkGuestByPhone();
-                    await Get.to(() => RoomsPage(gs));
-                    HomeController.to.restart();
-                  },
-                  child: Container(
-                    height: 27,
-                    width: double.infinity,
-                    decoration: btnDecoration,
-                    child: Center(
-                      child: Text(
-                        'Rooms',
-                        style: btnTextStyle,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(width: 3),
-              if (widget.guestWithSession.sessionId == null)
-                Flexible(
-                  flex: 2,
-                  child: Container(
-                    height: 27,
-                    width: double.infinity,
-                    decoration: btnDecoration,
-                    child: Center(
-                      child: Text(
-                        'Start course',
-                        style: btnTextStyle,
-                      ),
-                    ),
-                  ),
-                ),
-            ],
-          ),
-        ],
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
