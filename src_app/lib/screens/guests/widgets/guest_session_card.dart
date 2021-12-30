@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:spacemanager/constants/base_colors.dart';
+import 'package:spacemanager/constants/error_snack.dart';
 import 'package:spacemanager/models/guests/src.dart';
 import 'package:spacemanager/models/sessions/src.dart';
 import 'package:spacemanager/pages/home/controllers/controller.dart';
@@ -210,10 +211,14 @@ class _GuestSessionCardWidgetState extends State<GuestSessionCardWidget> {
                     flex: 2,
                     child: InkWell(
                       onTap: () async {
-                        GuestWithSession gs = widget.guestWithSession;
-                        Guest guest = await gs.guest.checkGuestByPhone();
-                        await Get.bottomSheet(StartSessionScreen(guest));
-                        HomeController.to.restart();
+                        try {
+                          GuestWithSession gs = widget.guestWithSession;
+                          Guest guest = await gs.guest.checkGuestByPhone();
+                          await Get.bottomSheet(StartSessionScreen(guest));
+                          HomeController.to.restart();
+                        } catch (e) {
+                          errorSnack('Code error', e.toString());
+                        }
                       },
                       child: Container(
                         height: 27,
@@ -233,9 +238,13 @@ class _GuestSessionCardWidgetState extends State<GuestSessionCardWidget> {
                     flex: 2,
                     child: InkWell(
                       onTap: () async {
-                        await Get.bottomSheet(
-                            EndSessionScreen(widget.guestWithSession));
-                        HomeController.to.restart();
+                        try {
+                          await Get.bottomSheet(
+                              EndSessionScreen(widget.guestWithSession));
+                          HomeController.to.restart();
+                        } catch (e) {
+                          errorSnack('Code error', e.toString());
+                        }
                       },
                       child: Container(
                         height: 27,
@@ -283,10 +292,14 @@ class _GuestSessionCardWidgetState extends State<GuestSessionCardWidget> {
                     flex: 2,
                     child: InkWell(
                       onTap: () async {
-                        GuestWithSession gs = widget.guestWithSession;
-                        gs.guest = await gs.guest.checkGuestByPhone();
-                        HomeController.to.courseGuest.value = gs.guest;
-                        HomeController.to.guestsSearching.value = false;
+                        try {
+                          GuestWithSession gs = widget.guestWithSession;
+                          gs.guest = await gs.guest.checkGuestByPhone();
+                          HomeController.to.courseGuest.value = gs.guest;
+                          HomeController.to.guestsSearching.value = false;
+                        } catch (e) {
+                          errorSnack('Code error', e.toString());
+                        }
                       },
                       child: Container(
                         height: 27,

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get/get.dart';
 import 'package:getwidget/getwidget.dart';
-import 'package:spacemanager/constants/base_colors.dart';
+import 'package:spacemanager/constants/error_snack.dart';
 import 'package:spacemanager/models/courses/src.dart';
 
 TextStyle basicStyle = const TextStyle(
@@ -41,19 +40,22 @@ class _CourseFormState extends State<CourseForm> {
           capacity: int.tryParse(capacity.text),
         );
       } catch (e) {
-        Get.snackbar(
+        errorSnack(
           'Code error',
           e.toString(),
-          isDismissible: false,
-          colorText: Colors.white,
-          maxWidth: Get.width * .3,
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: BaseColors.primary,
-          margin: const EdgeInsets.symmetric(vertical: 51),
         );
         return;
       }
-      await p.create();
+      try {
+        await p.create();
+      } catch (e) {
+        errorSnack(
+          'Code error',
+          e.toString(),
+        );
+        return;
+      }
+
       setState(() {
         price.text = '';
         dis.text = '';

@@ -1,11 +1,42 @@
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:get/get.dart';
 import 'package:spacemanager/models/bills/src.dart';
+import 'package:spacemanager/models/guests/src.dart';
+import 'package:csv/csv.dart';
+
+List<List> toCSVList(List<Map<String, dynamic>> maps) {
+  List<List> list = [];
+  List keys = maps.first.keys.toList();
+  list.add(keys);
+  for (Map item in maps) {
+    List l = [];
+    for (String i in keys) {
+      l.add(item[i]);
+    }
+    list.add(l);
+  }
+  return list;
+}
 
 class HomeAdminController extends GetxController {
   RxList<Bill> bills = <Bill>[].obs;
   RxDouble weekTotal = 0.0.obs;
   RxDouble dayTotal = 0.0.obs;
   RxDouble monthTotal = 0.0.obs;
+
+  exportGuestsData() async {
+    List<Map<String, dynamic>> list = await GuestsExcel.getGuestsData();
+    String csv = const ListToCsvConverter().convert(toCSVList(list));
+    String? result = await FilePicker.platform.getDirectoryPath();
+
+    if (result != null) {
+      var file = File(result + 'guests.csv').openWrite();
+      file.write(csv);
+      file.close();
+    }
+  }
 
   getData() async {
     DateTime now = DateTime.now();

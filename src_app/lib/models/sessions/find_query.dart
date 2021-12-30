@@ -80,7 +80,7 @@ extension SessionFindQuery on Session {
       now.day,
       now.hour,
       now.minute,
-    ).subtract(const Duration(minutes: 15)).toUtc();
+    ).subtract(const Duration(minutes: 30)).toUtc();
 
     DateTime beforeDateTime = DateTime(
       now.year,

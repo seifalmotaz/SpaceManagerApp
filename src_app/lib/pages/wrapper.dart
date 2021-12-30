@@ -33,7 +33,6 @@ class _WrapperPageState extends State<WrapperPage> {
     // create db if first time open the app
     bool isFirstRun = await storage.isFirstRun;
     if (isFirstRun) {
-      await db.createSchema();
       Guest g = Guest(
         career: GuestCareers.admin,
         name: 'Space Admin',

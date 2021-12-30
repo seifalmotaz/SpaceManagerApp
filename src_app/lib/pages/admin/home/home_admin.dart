@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:getwidget/components/button/gf_button.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:spacemanager/constants/base_colors.dart';
 import 'package:spacemanager/models/bills/src.dart';
@@ -74,6 +75,11 @@ class HomeAdminPage extends StatelessWidget {
               ],
             ),
           ),
+        ),
+        GFButton(
+          onPressed: () {
+            controller.exportGuestsData();
+          },
         )
       ],
     ));

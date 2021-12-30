@@ -15,7 +15,6 @@ class GuestsSearchingWidget extends StatefulWidget {
 }
 
 class _GuestsSearchingWidgetState extends State<GuestsSearchingWidget> {
-  FocusNode searchingFocus = FocusNode();
   TextEditingController searchingController = TextEditingController();
 
   ScrollController searchingScrollController = ScrollController();
@@ -48,8 +47,9 @@ class _GuestsSearchingWidgetState extends State<GuestsSearchingWidget> {
         });
       }
     } else {
+      var g = await GuestFindQuery.findNotEndedJoinSession();
       setState(() {
-        guestsSuggestions = [];
+        guestsSuggestions = g;
       });
     }
   }
@@ -67,7 +67,7 @@ class _GuestsSearchingWidgetState extends State<GuestsSearchingWidget> {
         TextFormField(
           autofocus: true,
           textAlign: TextAlign.center,
-          focusNode: searchingFocus,
+          focusNode: HomeController.to.searchingFocus,
           controller: searchingController,
           textAlignVertical: TextAlignVertical.center,
           inputFormatters: [FilteringTextInputFormatter.digitsOnly],

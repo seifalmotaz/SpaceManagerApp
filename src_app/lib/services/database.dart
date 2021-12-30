@@ -17,13 +17,20 @@ class DBService extends GetxService {
     Directory dbFolder = await getApplicationDocumentsDirectory();
     File dir = File(join(dbFolder.path, 'SpaceData', 'database.sqlite3'));
     DatabaseFactory sFactory = databaseFactoryFfi;
-    var sConnect = await sFactory.openDatabase(dir.path);
+    var sConnect = await sFactory.openDatabase(
+      dir.path,
+      options: OpenDatabaseOptions(
+        onCreate: createSchema,
+        readOnly: false,
+        version: 1,
+      ),
+    );
     dbDatabase.value = sConnect;
   }
 
-  Future createSchema() async {
+  Future createSchema(Database db, int version) async {
     String sql = await rootBundle.loadString('assets/db/createDB.sql');
-    dbDatabase.value!.execute(sql);
+    db.execute(sql);
   }
 
   @override

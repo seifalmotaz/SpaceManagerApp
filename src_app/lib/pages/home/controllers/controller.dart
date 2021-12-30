@@ -21,6 +21,7 @@ class HomeController extends GetxController {
   //
   RxBool guestsSearching = false.obs;
   FocusNode shortcutChildFocus = FocusNode();
+  FocusNode searchingFocus = FocusNode();
 
   //
   RxList<RoomWithReservations> rooms = <RoomWithReservations>[].obs;

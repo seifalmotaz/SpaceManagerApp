@@ -55,6 +55,7 @@ dependencies:
   jiffy: ^5.0.0
   # Native plugins
   window_manager: ^0.1.1
+  csv: ^5.0.1
   # Syncfusion packages
   syncfusion_flutter_datepicker: ^19.4.40
   syncfusion_flutter_gauges: ^19.4.40

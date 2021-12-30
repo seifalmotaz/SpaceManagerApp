@@ -73,4 +73,26 @@ extension GuestFindQuery on Guest {
         )
         .toList();
   }
+
+  static Future<List<GuestWithSession>> findNotEndedJoinSession() async {
+    List<Map<String, dynamic>> data = await DBService.to.db.rawQuery("""
+    SELECT guests.*, sessions.id AS 'session_id', sessions.start_time AS 'session_start_time' FROM guests
+    LEFT JOIN (
+      SELECT id, start_time, end_time, guest_id FROM sessions WHERE end_time IS NULL
+    ) sessions ON guests.id=sessions.guest_id
+    WHERE is_staff = false AND session_id IS NOT NULL
+    """);
+    return data
+        .map(
+          (e) => GuestWithSession(
+            guest: Guest.fromMap(e),
+            sessionId: e['session_id'],
+            session: Session(
+              startTime: fromDateDB(e['session_start_time']),
+              id: e['session_id'],
+            ),
+          ),
+        )
+        .toList();
+  }
 }

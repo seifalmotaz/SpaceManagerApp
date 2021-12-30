@@ -128,6 +128,8 @@ class RoomsPage extends StatelessWidget {
                     } catch (e) {
                       errorSnack('Code error', e.toString());
                     }
+                  } else {
+                    errorSnack('Invalid data', 'Must choose guest and room');
                   }
                 },
               ),

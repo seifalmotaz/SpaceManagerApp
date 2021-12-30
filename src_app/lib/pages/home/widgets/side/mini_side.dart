@@ -33,7 +33,7 @@ class MiniSide extends StatelessWidget {
                   borderRadius: BorderRadius.circular(13),
                 ),
                 child: const Text(
-                  'SM',
+                  'FT',
                   style: TextStyle(
                     color: BaseColors.primary,
                     fontWeight: FontWeight.bold,

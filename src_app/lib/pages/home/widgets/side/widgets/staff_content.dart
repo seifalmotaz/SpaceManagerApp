@@ -1,6 +1,14 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:getwidget/components/button/gf_button.dart';
 import 'package:spacemanager/constants/base_colors.dart';
+import 'package:spacemanager/constants/error_snack.dart';
+import 'package:spacemanager/models/sessions/crud_query.dart';
+import 'package:spacemanager/pages/home/controllers/controller.dart';
 import 'package:spacemanager/pages/home/widgets/content/guests_count.dart';
+import 'package:spacemanager/pages/login/login.dart';
 import 'package:spacemanager/screens/guests/widgets/staff_card_session.dart';
 import 'package:spacemanager/services/auth.dart';
 
@@ -33,10 +41,10 @@ class StaffContentWidget extends StatelessWidget {
                 child: Material(
                   color: BaseColors.primary.withOpacity(.91),
                   child: InkWell(
-                    onTap: () {},
+                    onTap: () => HomeController.to.restart(),
                     child: const SizedBox.expand(
                       child: Icon(
-                        Icons.change_circle,
+                        Icons.refresh_rounded,
                         size: 27,
                         color: Colors.white,
                       ),
@@ -48,10 +56,50 @@ class StaffContentWidget extends StatelessWidget {
                 child: Material(
                   color: BaseColors.primary,
                   child: InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      Get.bottomSheet(Container(
+                        color: Colors.white,
+                        width: Get.width * .3,
+                        padding: const EdgeInsets.all(13),
+                        margin: const EdgeInsets.all(23),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Flexible(
+                              flex: 3,
+                              child: GFButton(
+                                text: 'Change staff',
+                                fullWidthButton: true,
+                                onPressed: () async {
+                                  try {
+                                    AuthService.to.guestData.value = null;
+                                    await AuthService.to.session!.end();
+                                    Get.offAll(() => const LogInPage());
+                                  } catch (e) {
+                                    errorSnack('Code error', e.toString());
+                                  }
+                                },
+                              ),
+                            ),
+                            const Spacer(),
+                            Flexible(
+                              flex: 3,
+                              child: GFButton(
+                                text: 'Close',
+                                fullWidthButton: true,
+                                onPressed: () async {
+                                  await Get.deleteAll(force: true);
+                                  exit(0);
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      ));
+                    },
                     child: const SizedBox.expand(
                       child: Icon(
-                        Icons.change_circle,
+                        Icons.more_vert_rounded,
                         size: 27,
                         color: Colors.white,
                       ),
