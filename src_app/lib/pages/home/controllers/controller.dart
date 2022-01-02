@@ -53,6 +53,7 @@ class HomeController extends GetxController {
 
   restart() {
     guestsSearching.value = false;
+    shortcutChildFocus.requestFocus();
     getRoomsReservations();
     getHowManyInSpace();
     getCoursesReservations();

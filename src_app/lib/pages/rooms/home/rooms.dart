@@ -78,7 +78,7 @@ class RoomsPage extends StatelessWidget {
         children: [
           BaseNav(
             canBack: false,
-            bottom: [
+            top: [
               XButtonData(
                 iconData: Icons.date_range,
                 ontap: () async {
@@ -111,6 +111,8 @@ class RoomsPage extends StatelessWidget {
                   }
                 },
               ),
+            ],
+            bottom: [
               XButtonData(
                 iconData: Icons.watch_later_outlined,
                 ontap: () async {

@@ -26,7 +26,7 @@ class HomePage extends StatelessWidget {
               child: Row(
                 children: [
                   Flexible(
-                    flex: 2,
+                    flex: 3,
                     child: Obx(
                       () => DarkOutWithIgnoreWidget(
                         widget: const Side(),
@@ -39,7 +39,7 @@ class HomePage extends StatelessWidget {
                     ),
                   ),
                   Flexible(
-                    flex: 6,
+                    flex: 7,
                     child: Container(
                       width: double.infinity,
                       color: Colors.white,
@@ -80,7 +80,9 @@ class HomePage extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 const Flexible(
-                                    flex: 3, child: CoursesSection()),
+                                  flex: 2,
+                                  child: CoursesSection(),
+                                ),
                                 Flexible(
                                   child: Obx(
                                     () => DarkOutWithIgnoreWidget(

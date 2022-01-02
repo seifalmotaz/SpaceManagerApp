@@ -15,7 +15,7 @@ class MiniSide extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: kToolbarHeight * 1.51,
+      width: kToolbarHeight * 1.17,
       height: double.infinity,
       color: BaseColors.primary,
       padding: const EdgeInsets.symmetric(vertical: 13),

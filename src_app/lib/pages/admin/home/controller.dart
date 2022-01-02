@@ -2,8 +2,9 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:get/get.dart';
+import 'package:jiffy/jiffy.dart';
 import 'package:spacemanager/models/bills/src.dart';
-import 'package:spacemanager/models/guests/src.dart';
+import 'package:spacemanager/models/excel.dart';
 import 'package:csv/csv.dart';
 
 List<List> toCSVList(List<Map<String, dynamic>> maps) {
@@ -13,7 +14,12 @@ List<List> toCSVList(List<Map<String, dynamic>> maps) {
   for (Map item in maps) {
     List l = [];
     for (String i in keys) {
-      l.add(item[i]);
+      DateTime? date = DateTime.tryParse(item[i]);
+      if (date != null) {
+        l.add(Jiffy(date).MMMMEEEEd);
+      } else {
+        l.add(item[i]);
+      }
     }
     list.add(l);
   }
@@ -27,7 +33,7 @@ class HomeAdminController extends GetxController {
   RxDouble monthTotal = 0.0.obs;
 
   exportGuestsData() async {
-    List<Map<String, dynamic>> list = await GuestsExcel.getGuestsData();
+    List<Map<String, dynamic>> list = await ExcelData.getGuestsData();
     String csv = const ListToCsvConverter().convert(toCSVList(list));
     String? result = await FilePicker.platform.getDirectoryPath();
 

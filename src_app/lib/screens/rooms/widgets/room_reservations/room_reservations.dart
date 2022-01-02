@@ -32,7 +32,7 @@ class RoomReservations extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: Get.width * .19,
+      width: Get.width * .21,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(21),

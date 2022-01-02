@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:spacemanager/constants/base_colors.dart';
 import 'package:spacemanager/pages/admin/courses/courses.dart';
 import 'package:spacemanager/pages/admin/prices/prices.dart';
 import 'package:spacemanager/pages/admin/rooms/rooms.dart';
 import 'package:spacemanager/pages/admin/staff/staff.dart';
+import 'package:spacemanager/pages/base_nav.dart';
 
 class AdminBaseLayout extends StatelessWidget {
   const AdminBaseLayout(this.body, {Key? key}) : super(key: key);
@@ -14,42 +14,31 @@ class AdminBaseLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: BaseColors.primary,
-        title: const Text('Space admin'),
-        actions: [
-          TextButton(
-            onPressed: () => Get.off(() => const EditStaffPage()),
-            child: const Text(
-              'Staff',
-              style: TextStyle(color: Colors.white),
-            ),
+      body: Row(
+        children: [
+          BaseNav(
+            top: [
+              XButtonData(
+                iconData: Icons.person_pin_rounded,
+                ontap: () => Get.off(() => const EditStaffPage()),
+              ),
+              XButtonData(
+                iconData: Icons.monetization_on_rounded,
+                ontap: () => Get.off(() => const EditPricesPage()),
+              ),
+              XButtonData(
+                iconData: Icons.school,
+                ontap: () => Get.off(() => const EditCoursesPage()),
+              ),
+              XButtonData(
+                iconData: Icons.room_preferences_outlined,
+                ontap: () => Get.off(() => const EditRoomsPage()),
+              ),
+            ],
           ),
-          TextButton(
-            onPressed: () => Get.off(() => const EditPricesPage()),
-            child: const Text(
-              'Prices',
-              style: TextStyle(color: Colors.white),
-            ),
-          ),
-          TextButton(
-            onPressed: () => Get.off(() => const EditCoursesPage()),
-            child: const Text(
-              'Courses',
-              style: TextStyle(color: Colors.white),
-            ),
-          ),
-          TextButton(
-            onPressed: () => Get.off(() => const EditRoomsPage()),
-            child: const Text(
-              'Rooms',
-              style: TextStyle(color: Colors.white),
-            ),
-          ),
+          Expanded(child: body),
         ],
       ),
-      body: body,
     );
   }
 }

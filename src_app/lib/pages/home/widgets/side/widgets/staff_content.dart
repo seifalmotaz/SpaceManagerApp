@@ -25,6 +25,15 @@ class StaffContentWidget extends StatelessWidget {
       children: [
         Column(
           children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                vertical: 13,
+                horizontal: 30,
+              ),
+              child: Image.asset(
+                'assets/logo.png',
+              ),
+            ),
             StaffCardSessionWidget(
               guest: AuthService.to.guest!,
               session: AuthService.to.session!,
@@ -88,8 +97,13 @@ class StaffContentWidget extends StatelessWidget {
                                 text: 'Close',
                                 fullWidthButton: true,
                                 onPressed: () async {
-                                  await Get.deleteAll(force: true);
-                                  exit(0);
+                                  try {
+                                    await AuthService.to.session!.end();
+                                    await Get.deleteAll(force: true);
+                                    exit(0);
+                                  } catch (e) {
+                                    errorSnack('Code error', e.toString());
+                                  }
                                 },
                               ),
                             ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:spacemanager/constants/careers.dart';
+import 'package:spacemanager/constants/error_snack.dart';
 import 'package:spacemanager/models/guests/src.dart';
 import 'package:spacemanager/models/sessions/src.dart';
 import 'package:spacemanager/pages/home/home.dart';
@@ -28,7 +29,11 @@ class _WrapperPageState extends State<WrapperPage> {
 
     // connect db
     DBService db = await Get.putAsync<DBService>(() async => DBService());
-    await db.connect();
+    try {
+      await db.connect();
+    } catch (e) {
+      errorSnack('Code error', e.toString(), const Duration(seconds: 120));
+    }
 
     // create db if first time open the app
     bool isFirstRun = await storage.isFirstRun;
