@@ -10,7 +10,6 @@ import 'package:spacemanager/models/prices/src.dart';
 import 'package:spacemanager/models/sessions/src.dart';
 import 'package:spacemanager/screens/guests/widgets/guest_form_card.dart';
 import 'package:spacemanager/screens/sessions/start_session/price_tile.dart';
-import 'package:spacemanager/screens/sessions/start_session/shortcuts.dart';
 import 'package:spacemanager/widgets/form_field.dart';
 
 /// Dialog
@@ -24,7 +23,6 @@ class StartSessionScreen extends StatefulWidget {
 }
 
 class _StartSessionScreenState extends State<StartSessionScreen> {
-  FocusNode shortcutChildFocus = FocusNode();
   List<Price> prices = [];
   List<Course> courses = [];
   int? selectedPrice;
@@ -68,117 +66,97 @@ class _StartSessionScreenState extends State<StartSessionScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => shortcutChildFocus.requestFocus(),
-      child: Shortcuts(
-        shortcuts: <LogicalKeySet, Intent>{
-          LogicalKeySet(LogicalKeyboardKey.enter):
-              JustSubmitFormWithDefaultIntent(),
-        },
-        child: Actions(
-          actions: {
-            JustSubmitFormWithDefaultIntent: CallbackAction(
-              onInvoke: (intent) => startSession(),
-            ),
-          },
-          child: Focus(
-            focusNode: shortcutChildFocus,
-            autofocus: true,
+    return Container(
+      clipBehavior: Clip.antiAlias,
+      margin: const EdgeInsets.symmetric(horizontal: 21, vertical: 17),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(23),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Flexible(
             child: Container(
-              clipBehavior: Clip.antiAlias,
-              margin: const EdgeInsets.symmetric(horizontal: 21, vertical: 17),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(23),
-              ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Flexible(
-                    child: Container(
-                      width: double.infinity,
-                      height: double.infinity,
-                      color: BaseColorss.darkLight,
-                      child: Center(
-                        child: EditGuestFormCardWidget(
-                          widget.guest,
-                          enablePass: false,
-                          validDelete: false,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Flexible(
-                    flex: 2,
-                    child: Padding(
-                      padding: const EdgeInsets.all(17),
-                      child: SizedBox.expand(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Start session:',
-                              style: TextStyle(
-                                color: Colors.blueGrey.shade900,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 27,
-                              ),
-                            ),
-                            const SizedBox(height: 13),
-                            SizedBox(
-                              child: TextCustomField(
-                                controller: arrivalsCount,
-                                hint: 'Arrivals count, default is 1',
-                                inputFormatters: [
-                                  FilteringTextInputFormatter.digitsOnly
-                                ],
-                              ),
-                            ),
-                            const SizedBox(height: 13),
-                            SizedBox(
-                              child: GFButton(
-                                text: 'Start session',
-                                textStyle: const TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                                size: GFSize.LARGE,
-                                fullWidthButton: true,
-                                color: BaseColors.whiteBased,
-                                onPressed: startSession,
-                              ),
-                            ),
-                            const SizedBox(height: 17),
-                            Wrap(
-                              spacing: 21,
-                              runSpacing: 21,
-                              children: [
-                                for (Price price in prices)
-                                  GestureDetector(
-                                    onTap: () => setState(() {
-                                      selectedPrice = price.id;
-                                    }),
-                                    child: PriceTileWidget(
-                                      price,
-                                      selectedPrice == price.id,
-                                    ),
-                                  ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  Flexible(
-                    child: Container(),
-                  ),
-                ],
+              width: double.infinity,
+              height: double.infinity,
+              color: BaseColorss.darkLight,
+              child: Center(
+                child: EditGuestFormCardWidget(
+                  widget.guest,
+                  enablePass: false,
+                  validDelete: false,
+                ),
               ),
             ),
           ),
-        ),
+          Flexible(
+            flex: 2,
+            child: Padding(
+              padding: const EdgeInsets.all(17),
+              child: SizedBox.expand(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Start session:',
+                      style: TextStyle(
+                        color: Colors.blueGrey.shade900,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 27,
+                      ),
+                    ),
+                    const SizedBox(height: 13),
+                    SizedBox(
+                      child: TextCustomField(
+                        controller: arrivalsCount,
+                        hint: 'Arrivals count, default is 1',
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 13),
+                    SizedBox(
+                      child: GFButton(
+                        text: 'Start session',
+                        textStyle: const TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        size: GFSize.LARGE,
+                        fullWidthButton: true,
+                        color: BaseColors.whiteBased,
+                        onPressed: startSession,
+                      ),
+                    ),
+                    const SizedBox(height: 17),
+                    Wrap(
+                      spacing: 21,
+                      runSpacing: 21,
+                      children: [
+                        for (Price price in prices)
+                          GestureDetector(
+                            onTap: () => setState(() {
+                              selectedPrice = price.id;
+                            }),
+                            child: PriceTileWidget(
+                              price,
+                              selectedPrice == price.id,
+                            ),
+                          ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          Flexible(
+            child: Container(),
+          ),
+        ],
       ),
     );
   }

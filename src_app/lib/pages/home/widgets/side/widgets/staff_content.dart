@@ -19,11 +19,10 @@ class StaffContentWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.start,
+    return Stack(
       children: [
-        Column(
+        ListView(
+          controller: ScrollController(),
           children: [
             Padding(
               padding: const EdgeInsets.symmetric(
@@ -39,9 +38,13 @@ class StaffContentWidget extends StatelessWidget {
               session: AuthService.to.session!,
             ),
             const GuestsExist(),
+            const SizedBox(height: kToolbarHeight * 1.5),
           ],
         ),
-        SizedBox(
+        Positioned(
+          bottom: 0,
+          right: 0,
+          left: 0,
           height: kToolbarHeight,
           child: Row(
             children: [
@@ -123,7 +126,7 @@ class StaffContentWidget extends StatelessWidget {
               ),
             ],
           ),
-        )
+        ),
       ],
     );
   }

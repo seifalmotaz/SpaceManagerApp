@@ -1,10 +1,17 @@
 DROP TABLE IF EXISTS guests;
+
 DROP TABLE IF EXISTS prices;
+
 DROP TABLE IF EXISTS rooms;
+
 DROP TABLE IF EXISTS reservations;
+
 DROP TABLE IF EXISTS sessions;
+
 DROP TABLE IF EXISTS courses;
+
 DROP TABLE IF EXISTS bills;
+
 DROP TABLE IF EXISTS course_sessions;
 
 CREATE TABLE guests (
@@ -35,7 +42,7 @@ CREATE TABLE courses (
     id INTEGER NOT NULL PRIMARY KEY,
     rate FLOAT NOT NULL,
     is_deleted BOOLEAN DEFAULT FALSE,
-    name  VARCHAR(200) NOT NULL,
+    name VARCHAR(200) NOT NULL,
     capacity INTEGER NOT NULL
 );
 
@@ -107,10 +114,17 @@ CREATE TABLE bills (
 );
 
 CREATE UNIQUE INDEX guest_id on guests (id);
+
 CREATE UNIQUE INDEX price_id on prices (id);
+
 CREATE UNIQUE INDEX course_id on courses (id);
+
 CREATE UNIQUE INDEX reservation_id on reservations (id);
+
 CREATE UNIQUE INDEX session_id on sessions (id);
+
 CREATE UNIQUE INDEX course_session_id on course_sessions (id);
+
 CREATE UNIQUE INDEX room_id on rooms (id);
+
 CREATE UNIQUE INDEX bill_id on bills (id);

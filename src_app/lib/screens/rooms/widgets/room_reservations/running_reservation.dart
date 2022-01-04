@@ -34,66 +34,71 @@ class _RunningReservationTileState extends State<RunningReservationTile> {
     });
   }
 
+  endSession() async {
+    ReservationWithSessionWithGuest s = widget.session;
+    bool? wait;
+    if (s.session!.session.courseId != null) {
+      wait = await Get.bottomSheet(
+        EndCourseSessionScreen(
+          SessionWithCourse(
+            course: await s.session!.session.course,
+            session: s.session!.session,
+            courseId: s.session!.session.courseId!,
+          ),
+        ),
+      );
+    } else {
+      wait = await Get.bottomSheet(
+        EndSessionScreen(
+          GuestWithSession(
+            guest: await s.session!.session.guest(),
+            session: s.session!.session,
+            sessionId: s.session!.session.id,
+          ),
+        ),
+      );
+    }
+    if (wait != null && wait) {
+      if (widget.onUpdate != null) {
+        widget.onUpdate!();
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Row(
-            children: [
-              const Text(
-                'From:  ',
-                style: TextStyle(
-                  color: Colors.grey,
-                ),
-              ),
-              Text(
-                startTime,
-                style: TextStyle(
-                  color: Colors.blueGrey.shade800,
-                  fontSize: 27,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-            ],
-          ),
-          GFButton(
-            text: 'End it',
-            color: BaseColors.primary,
-            onPressed: () async {
-              ReservationWithSessionWithGuest s = widget.session;
-              bool? wait;
-              if (s.session!.session.courseId != null) {
-                wait = await Get.bottomSheet(
-                  EndCourseSessionScreen(
-                    SessionWithCourse(
-                      course: await s.session!.session.course,
-                      session: s.session!.session,
-                      courseId: s.session!.session.courseId!,
-                    ),
+    return InkWell(
+      onTap: endSession,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              children: [
+                const Text(
+                  'From:  ',
+                  style: TextStyle(
+                    color: Colors.grey,
                   ),
-                );
-              } else {
-                wait = await Get.bottomSheet(
-                  EndSessionScreen(
-                    GuestWithSession(
-                      guest: await s.session!.session.guest(),
-                      session: s.session!.session,
-                      sessionId: s.session!.session.id,
-                    ),
+                ),
+                Text(
+                  startTime,
+                  style: TextStyle(
+                    color: Colors.blueGrey.shade800,
+                    fontSize: 27,
+                    fontWeight: FontWeight.w700,
                   ),
-                );
-              }
-              if (wait != null && wait) {
-                if (widget.onUpdate != null) {
-                  widget.onUpdate!();
-                }
-              }
-            },
-          ),
-        ],
+                ),
+              ],
+            ),
+            GFButton(
+              text: 'End it',
+              color: BaseColors.primary,
+              onPressed: endSession,
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:spacemanager/pages/home/widgets/side/main_side.dart';
 import 'package:spacemanager/pages/home/widgets/side/mini_side.dart';
 
@@ -9,11 +10,14 @@ class Side extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: const [
-        MiniSide(),
-        Expanded(child: MainSide()),
-      ],
+    return SizedBox(
+      width: Get.width * .51,
+      child: Row(
+        children: const [
+          MiniSide(),
+          Expanded(child: MainSide()),
+        ],
+      ),
     );
   }
 }

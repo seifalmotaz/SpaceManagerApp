@@ -10,6 +10,7 @@ class SearchUsersAction extends Action<SearchUsersIntent> {
   Future<Object?> invoke(covariant SearchUsersIntent intent) async {
     final HomeController controller = Get.find<HomeController>();
     if (!controller.guestsSearching.value) {
+      controller.scaffoldKey.currentState!.openDrawer();
       controller.guestsSearching.value = true;
       controller.searchingFocus.requestFocus();
     } else {
@@ -33,6 +34,7 @@ class HomeShortcuts extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         Get.focusScope!.unfocus();
+        controller.guestsSearching.value = false;
         controller.shortcutChildFocus.requestFocus();
       },
       child: Shortcuts(
