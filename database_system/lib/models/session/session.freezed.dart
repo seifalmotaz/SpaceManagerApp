@@ -23,18 +23,14 @@ class _$SessionTearOff {
   const _$SessionTearOff();
 
   _Session call(
-      {required int id,
-      @JsonKey(name: 'guest_id')
-          required int guestId,
-      @JsonKey(name: 'price_id')
-          required int priceId,
-      @JsonKey(name: 'paid_amount')
-          required double paidAmount,
-      @JsonKey(name: 'guest_count')
-          required int guestCount,
-      @JsonKey(name: 'time_in', fromJson: _fromDBDate, toJson: _toDBDate)
-          required DateTime timeIn,
-      @JsonKey(name: 'time_out', fromJson: _fromDBDate, toJson: _toDBDate)
+      {int? id,
+      int? guestId,
+      int? priceId,
+      double? paidAmount,
+      int? guestCount,
+      @JsonKey(fromJson: DataCompiler.fromDBDate, toJson: DataCompiler.toDBDate)
+          DateTime? timeIn,
+      @JsonKey(fromJson: DataCompiler.fromDBDate, toJson: DataCompiler.toDBDate)
           DateTime? timeOut}) {
     return _Session(
       id: id,
@@ -57,18 +53,14 @@ const $Session = _$SessionTearOff();
 
 /// @nodoc
 mixin _$Session {
-  int get id => throw _privateConstructorUsedError; // pricing data
-  @JsonKey(name: 'guest_id')
-  int get guestId => throw _privateConstructorUsedError;
-  @JsonKey(name: 'price_id')
-  int get priceId => throw _privateConstructorUsedError;
-  @JsonKey(name: 'paid_amount')
-  double get paidAmount => throw _privateConstructorUsedError; // extra info
-  @JsonKey(name: 'guest_count')
-  int get guestCount => throw _privateConstructorUsedError; // main data
-  @JsonKey(name: 'time_in', fromJson: _fromDBDate, toJson: _toDBDate)
-  DateTime get timeIn => throw _privateConstructorUsedError;
-  @JsonKey(name: 'time_out', fromJson: _fromDBDate, toJson: _toDBDate)
+  int? get id => throw _privateConstructorUsedError; // pricing data
+  int? get guestId => throw _privateConstructorUsedError;
+  int? get priceId => throw _privateConstructorUsedError;
+  double? get paidAmount => throw _privateConstructorUsedError; // extra info
+  int? get guestCount => throw _privateConstructorUsedError; // main data
+  @JsonKey(fromJson: DataCompiler.fromDBDate, toJson: DataCompiler.toDBDate)
+  DateTime? get timeIn => throw _privateConstructorUsedError;
+  @JsonKey(fromJson: DataCompiler.fromDBDate, toJson: DataCompiler.toDBDate)
   DateTime? get timeOut => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -81,18 +73,14 @@ abstract class $SessionCopyWith<$Res> {
   factory $SessionCopyWith(Session value, $Res Function(Session) then) =
       _$SessionCopyWithImpl<$Res>;
   $Res call(
-      {int id,
-      @JsonKey(name: 'guest_id')
-          int guestId,
-      @JsonKey(name: 'price_id')
-          int priceId,
-      @JsonKey(name: 'paid_amount')
-          double paidAmount,
-      @JsonKey(name: 'guest_count')
-          int guestCount,
-      @JsonKey(name: 'time_in', fromJson: _fromDBDate, toJson: _toDBDate)
-          DateTime timeIn,
-      @JsonKey(name: 'time_out', fromJson: _fromDBDate, toJson: _toDBDate)
+      {int? id,
+      int? guestId,
+      int? priceId,
+      double? paidAmount,
+      int? guestCount,
+      @JsonKey(fromJson: DataCompiler.fromDBDate, toJson: DataCompiler.toDBDate)
+          DateTime? timeIn,
+      @JsonKey(fromJson: DataCompiler.fromDBDate, toJson: DataCompiler.toDBDate)
           DateTime? timeOut});
 }
 
@@ -118,27 +106,27 @@ class _$SessionCopyWithImpl<$Res> implements $SessionCopyWith<$Res> {
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       guestId: guestId == freezed
           ? _value.guestId
           : guestId // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       priceId: priceId == freezed
           ? _value.priceId
           : priceId // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       paidAmount: paidAmount == freezed
           ? _value.paidAmount
           : paidAmount // ignore: cast_nullable_to_non_nullable
-              as double,
+              as double?,
       guestCount: guestCount == freezed
           ? _value.guestCount
           : guestCount // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       timeIn: timeIn == freezed
           ? _value.timeIn
           : timeIn // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+              as DateTime?,
       timeOut: timeOut == freezed
           ? _value.timeOut
           : timeOut // ignore: cast_nullable_to_non_nullable
@@ -153,18 +141,14 @@ abstract class _$SessionCopyWith<$Res> implements $SessionCopyWith<$Res> {
       __$SessionCopyWithImpl<$Res>;
   @override
   $Res call(
-      {int id,
-      @JsonKey(name: 'guest_id')
-          int guestId,
-      @JsonKey(name: 'price_id')
-          int priceId,
-      @JsonKey(name: 'paid_amount')
-          double paidAmount,
-      @JsonKey(name: 'guest_count')
-          int guestCount,
-      @JsonKey(name: 'time_in', fromJson: _fromDBDate, toJson: _toDBDate)
-          DateTime timeIn,
-      @JsonKey(name: 'time_out', fromJson: _fromDBDate, toJson: _toDBDate)
+      {int? id,
+      int? guestId,
+      int? priceId,
+      double? paidAmount,
+      int? guestCount,
+      @JsonKey(fromJson: DataCompiler.fromDBDate, toJson: DataCompiler.toDBDate)
+          DateTime? timeIn,
+      @JsonKey(fromJson: DataCompiler.fromDBDate, toJson: DataCompiler.toDBDate)
           DateTime? timeOut});
 }
 
@@ -191,27 +175,27 @@ class __$SessionCopyWithImpl<$Res> extends _$SessionCopyWithImpl<$Res>
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       guestId: guestId == freezed
           ? _value.guestId
           : guestId // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       priceId: priceId == freezed
           ? _value.priceId
           : priceId // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       paidAmount: paidAmount == freezed
           ? _value.paidAmount
           : paidAmount // ignore: cast_nullable_to_non_nullable
-              as double,
+              as double?,
       guestCount: guestCount == freezed
           ? _value.guestCount
           : guestCount // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       timeIn: timeIn == freezed
           ? _value.timeIn
           : timeIn // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+              as DateTime?,
       timeOut: timeOut == freezed
           ? _value.timeOut
           : timeOut // ignore: cast_nullable_to_non_nullable
@@ -221,45 +205,38 @@ class __$SessionCopyWithImpl<$Res> extends _$SessionCopyWithImpl<$Res>
 }
 
 /// @nodoc
-@JsonSerializable()
+
+@JsonSerializable(fieldRename: FieldRename.snake)
 class _$_Session implements _Session {
   _$_Session(
-      {required this.id,
-      @JsonKey(name: 'guest_id')
-          required this.guestId,
-      @JsonKey(name: 'price_id')
-          required this.priceId,
-      @JsonKey(name: 'paid_amount')
-          required this.paidAmount,
-      @JsonKey(name: 'guest_count')
-          required this.guestCount,
-      @JsonKey(name: 'time_in', fromJson: _fromDBDate, toJson: _toDBDate)
-          required this.timeIn,
-      @JsonKey(name: 'time_out', fromJson: _fromDBDate, toJson: _toDBDate)
+      {this.id,
+      this.guestId,
+      this.priceId,
+      this.paidAmount,
+      this.guestCount,
+      @JsonKey(fromJson: DataCompiler.fromDBDate, toJson: DataCompiler.toDBDate)
+          this.timeIn,
+      @JsonKey(fromJson: DataCompiler.fromDBDate, toJson: DataCompiler.toDBDate)
           this.timeOut});
 
   factory _$_Session.fromJson(Map<String, dynamic> json) =>
       _$$_SessionFromJson(json);
 
   @override
-  final int id;
+  final int? id;
   @override // pricing data
-  @JsonKey(name: 'guest_id')
-  final int guestId;
+  final int? guestId;
   @override
-  @JsonKey(name: 'price_id')
-  final int priceId;
+  final int? priceId;
   @override
-  @JsonKey(name: 'paid_amount')
-  final double paidAmount;
+  final double? paidAmount;
   @override // extra info
-  @JsonKey(name: 'guest_count')
-  final int guestCount;
+  final int? guestCount;
   @override // main data
-  @JsonKey(name: 'time_in', fromJson: _fromDBDate, toJson: _toDBDate)
-  final DateTime timeIn;
+  @JsonKey(fromJson: DataCompiler.fromDBDate, toJson: DataCompiler.toDBDate)
+  final DateTime? timeIn;
   @override
-  @JsonKey(name: 'time_out', fromJson: _fromDBDate, toJson: _toDBDate)
+  @JsonKey(fromJson: DataCompiler.fromDBDate, toJson: DataCompiler.toDBDate)
   final DateTime? timeOut;
 
   @override
@@ -307,41 +284,33 @@ class _$_Session implements _Session {
 
 abstract class _Session implements Session {
   factory _Session(
-      {required int id,
-      @JsonKey(name: 'guest_id')
-          required int guestId,
-      @JsonKey(name: 'price_id')
-          required int priceId,
-      @JsonKey(name: 'paid_amount')
-          required double paidAmount,
-      @JsonKey(name: 'guest_count')
-          required int guestCount,
-      @JsonKey(name: 'time_in', fromJson: _fromDBDate, toJson: _toDBDate)
-          required DateTime timeIn,
-      @JsonKey(name: 'time_out', fromJson: _fromDBDate, toJson: _toDBDate)
+      {int? id,
+      int? guestId,
+      int? priceId,
+      double? paidAmount,
+      int? guestCount,
+      @JsonKey(fromJson: DataCompiler.fromDBDate, toJson: DataCompiler.toDBDate)
+          DateTime? timeIn,
+      @JsonKey(fromJson: DataCompiler.fromDBDate, toJson: DataCompiler.toDBDate)
           DateTime? timeOut}) = _$_Session;
 
   factory _Session.fromJson(Map<String, dynamic> json) = _$_Session.fromJson;
 
   @override
-  int get id;
+  int? get id;
   @override // pricing data
-  @JsonKey(name: 'guest_id')
-  int get guestId;
+  int? get guestId;
   @override
-  @JsonKey(name: 'price_id')
-  int get priceId;
+  int? get priceId;
   @override
-  @JsonKey(name: 'paid_amount')
-  double get paidAmount;
+  double? get paidAmount;
   @override // extra info
-  @JsonKey(name: 'guest_count')
-  int get guestCount;
+  int? get guestCount;
   @override // main data
-  @JsonKey(name: 'time_in', fromJson: _fromDBDate, toJson: _toDBDate)
-  DateTime get timeIn;
+  @JsonKey(fromJson: DataCompiler.fromDBDate, toJson: DataCompiler.toDBDate)
+  DateTime? get timeIn;
   @override
-  @JsonKey(name: 'time_out', fromJson: _fromDBDate, toJson: _toDBDate)
+  @JsonKey(fromJson: DataCompiler.fromDBDate, toJson: DataCompiler.toDBDate)
   DateTime? get timeOut;
   @override
   @JsonKey(ignore: true)

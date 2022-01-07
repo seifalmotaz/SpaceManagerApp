@@ -1,3 +1,5 @@
+import 'package:database_system/generators/src/engine_sql.dart';
+import 'package:database_system/models/func.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'guest.freezed.dart';
@@ -5,30 +7,40 @@ part 'guest.g.dart';
 
 @freezed
 class Guest with _$Guest {
+  @JsonSerializable(fieldRename: FieldRename.snake)
   factory Guest({
     // Main data
-    required int id,
-    @JsonKey(name: 'created_date', fromJson: _fromDBDate, toJson: _toDBDate)
-        required DateTime createdDate,
-    @JsonKey(name: 'is_expired') required bool isExpired,
+    int? id,
+    @JsonKey(fromJson: DataCompiler.fromDBDate, toJson: DataCompiler.toDBDate)
+        DateTime? createdDate,
+    bool? isExpired,
     // main info data
     String? name,
     String? email,
     String? phone,
     // auth data
     String? password,
-    @JsonKey(name: 'is_admin') required bool isAdmin,
-    @JsonKey(name: 'is_staff') required bool isStaff,
+    bool? isAdmin,
+    bool? isStaff,
     // National ID data
-    @JsonKey(name: 'national_id') String? nationalID,
-    @JsonKey(name: 'national_id_pic') String? nationalIdPic,
+    String? nationalID,
+    String? nationalIdPic,
   }) = _Guest;
 
   factory Guest.fromJson(Map<String, dynamic> json) => _$GuestFromJson(json);
+}
 
-  static DateTime _fromDBDate(int datetime) =>
-      DateTime.fromMillisecondsSinceEpoch(datetime * 1000);
-
-  static int _toDBDate(DateTime datetime) =>
-      (datetime.millisecondsSinceEpoch / 1000) as int;
+@EngineSQL('guest')
+class GuestFields {
+  static String id = 'id';
+  static String name = 'name';
+  static String email = 'email';
+  static String phone = 'phone';
+  static String password = 'password';
+  static String nationalID = 'national_id';
+  static String nationalIdPic = 'national_id_pic';
+  static String isAdmin = 'is_admin';
+  static String isStaff = 'is_staff';
+  static String isExpired = 'is_expired';
+  static String createdDate = 'created_date';
 }

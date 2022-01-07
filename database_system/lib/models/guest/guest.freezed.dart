@@ -23,23 +23,18 @@ class _$GuestTearOff {
   const _$GuestTearOff();
 
   _Guest call(
-      {required int id,
-      @JsonKey(name: 'created_date', fromJson: _fromDBDate, toJson: _toDBDate)
-          required DateTime createdDate,
-      @JsonKey(name: 'is_expired')
-          required bool isExpired,
+      {int? id,
+      @JsonKey(fromJson: DataCompiler.fromDBDate, toJson: DataCompiler.toDBDate)
+          DateTime? createdDate,
+      bool? isExpired,
       String? name,
       String? email,
       String? phone,
       String? password,
-      @JsonKey(name: 'is_admin')
-          required bool isAdmin,
-      @JsonKey(name: 'is_staff')
-          required bool isStaff,
-      @JsonKey(name: 'national_id')
-          String? nationalID,
-      @JsonKey(name: 'national_id_pic')
-          String? nationalIdPic}) {
+      bool? isAdmin,
+      bool? isStaff,
+      String? nationalID,
+      String? nationalIdPic}) {
     return _Guest(
       id: id,
       createdDate: createdDate,
@@ -66,22 +61,17 @@ const $Guest = _$GuestTearOff();
 /// @nodoc
 mixin _$Guest {
 // Main data
-  int get id => throw _privateConstructorUsedError;
-  @JsonKey(name: 'created_date', fromJson: _fromDBDate, toJson: _toDBDate)
-  DateTime get createdDate => throw _privateConstructorUsedError;
-  @JsonKey(name: 'is_expired')
-  bool get isExpired => throw _privateConstructorUsedError; // main info data
+  int? get id => throw _privateConstructorUsedError;
+  @JsonKey(fromJson: DataCompiler.fromDBDate, toJson: DataCompiler.toDBDate)
+  DateTime? get createdDate => throw _privateConstructorUsedError;
+  bool? get isExpired => throw _privateConstructorUsedError; // main info data
   String? get name => throw _privateConstructorUsedError;
   String? get email => throw _privateConstructorUsedError;
   String? get phone => throw _privateConstructorUsedError; // auth data
   String? get password => throw _privateConstructorUsedError;
-  @JsonKey(name: 'is_admin')
-  bool get isAdmin => throw _privateConstructorUsedError;
-  @JsonKey(name: 'is_staff')
-  bool get isStaff => throw _privateConstructorUsedError; // National ID data
-  @JsonKey(name: 'national_id')
+  bool? get isAdmin => throw _privateConstructorUsedError;
+  bool? get isStaff => throw _privateConstructorUsedError; // National ID data
   String? get nationalID => throw _privateConstructorUsedError;
-  @JsonKey(name: 'national_id_pic')
   String? get nationalIdPic => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -94,23 +84,18 @@ abstract class $GuestCopyWith<$Res> {
   factory $GuestCopyWith(Guest value, $Res Function(Guest) then) =
       _$GuestCopyWithImpl<$Res>;
   $Res call(
-      {int id,
-      @JsonKey(name: 'created_date', fromJson: _fromDBDate, toJson: _toDBDate)
-          DateTime createdDate,
-      @JsonKey(name: 'is_expired')
-          bool isExpired,
+      {int? id,
+      @JsonKey(fromJson: DataCompiler.fromDBDate, toJson: DataCompiler.toDBDate)
+          DateTime? createdDate,
+      bool? isExpired,
       String? name,
       String? email,
       String? phone,
       String? password,
-      @JsonKey(name: 'is_admin')
-          bool isAdmin,
-      @JsonKey(name: 'is_staff')
-          bool isStaff,
-      @JsonKey(name: 'national_id')
-          String? nationalID,
-      @JsonKey(name: 'national_id_pic')
-          String? nationalIdPic});
+      bool? isAdmin,
+      bool? isStaff,
+      String? nationalID,
+      String? nationalIdPic});
 }
 
 /// @nodoc
@@ -139,15 +124,15 @@ class _$GuestCopyWithImpl<$Res> implements $GuestCopyWith<$Res> {
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       createdDate: createdDate == freezed
           ? _value.createdDate
           : createdDate // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+              as DateTime?,
       isExpired: isExpired == freezed
           ? _value.isExpired
           : isExpired // ignore: cast_nullable_to_non_nullable
-              as bool,
+              as bool?,
       name: name == freezed
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -167,11 +152,11 @@ class _$GuestCopyWithImpl<$Res> implements $GuestCopyWith<$Res> {
       isAdmin: isAdmin == freezed
           ? _value.isAdmin
           : isAdmin // ignore: cast_nullable_to_non_nullable
-              as bool,
+              as bool?,
       isStaff: isStaff == freezed
           ? _value.isStaff
           : isStaff // ignore: cast_nullable_to_non_nullable
-              as bool,
+              as bool?,
       nationalID: nationalID == freezed
           ? _value.nationalID
           : nationalID // ignore: cast_nullable_to_non_nullable
@@ -190,23 +175,18 @@ abstract class _$GuestCopyWith<$Res> implements $GuestCopyWith<$Res> {
       __$GuestCopyWithImpl<$Res>;
   @override
   $Res call(
-      {int id,
-      @JsonKey(name: 'created_date', fromJson: _fromDBDate, toJson: _toDBDate)
-          DateTime createdDate,
-      @JsonKey(name: 'is_expired')
-          bool isExpired,
+      {int? id,
+      @JsonKey(fromJson: DataCompiler.fromDBDate, toJson: DataCompiler.toDBDate)
+          DateTime? createdDate,
+      bool? isExpired,
       String? name,
       String? email,
       String? phone,
       String? password,
-      @JsonKey(name: 'is_admin')
-          bool isAdmin,
-      @JsonKey(name: 'is_staff')
-          bool isStaff,
-      @JsonKey(name: 'national_id')
-          String? nationalID,
-      @JsonKey(name: 'national_id_pic')
-          String? nationalIdPic});
+      bool? isAdmin,
+      bool? isStaff,
+      String? nationalID,
+      String? nationalIdPic});
 }
 
 /// @nodoc
@@ -236,15 +216,15 @@ class __$GuestCopyWithImpl<$Res> extends _$GuestCopyWithImpl<$Res>
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       createdDate: createdDate == freezed
           ? _value.createdDate
           : createdDate // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+              as DateTime?,
       isExpired: isExpired == freezed
           ? _value.isExpired
           : isExpired // ignore: cast_nullable_to_non_nullable
-              as bool,
+              as bool?,
       name: name == freezed
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -264,11 +244,11 @@ class __$GuestCopyWithImpl<$Res> extends _$GuestCopyWithImpl<$Res>
       isAdmin: isAdmin == freezed
           ? _value.isAdmin
           : isAdmin // ignore: cast_nullable_to_non_nullable
-              as bool,
+              as bool?,
       isStaff: isStaff == freezed
           ? _value.isStaff
           : isStaff // ignore: cast_nullable_to_non_nullable
-              as bool,
+              as bool?,
       nationalID: nationalID == freezed
           ? _value.nationalID
           : nationalID // ignore: cast_nullable_to_non_nullable
@@ -282,38 +262,33 @@ class __$GuestCopyWithImpl<$Res> extends _$GuestCopyWithImpl<$Res>
 }
 
 /// @nodoc
-@JsonSerializable()
+
+@JsonSerializable(fieldRename: FieldRename.snake)
 class _$_Guest implements _Guest {
   _$_Guest(
-      {required this.id,
-      @JsonKey(name: 'created_date', fromJson: _fromDBDate, toJson: _toDBDate)
-          required this.createdDate,
-      @JsonKey(name: 'is_expired')
-          required this.isExpired,
+      {this.id,
+      @JsonKey(fromJson: DataCompiler.fromDBDate, toJson: DataCompiler.toDBDate)
+          this.createdDate,
+      this.isExpired,
       this.name,
       this.email,
       this.phone,
       this.password,
-      @JsonKey(name: 'is_admin')
-          required this.isAdmin,
-      @JsonKey(name: 'is_staff')
-          required this.isStaff,
-      @JsonKey(name: 'national_id')
-          this.nationalID,
-      @JsonKey(name: 'national_id_pic')
-          this.nationalIdPic});
+      this.isAdmin,
+      this.isStaff,
+      this.nationalID,
+      this.nationalIdPic});
 
   factory _$_Guest.fromJson(Map<String, dynamic> json) =>
       _$$_GuestFromJson(json);
 
   @override // Main data
-  final int id;
+  final int? id;
   @override
-  @JsonKey(name: 'created_date', fromJson: _fromDBDate, toJson: _toDBDate)
-  final DateTime createdDate;
+  @JsonKey(fromJson: DataCompiler.fromDBDate, toJson: DataCompiler.toDBDate)
+  final DateTime? createdDate;
   @override
-  @JsonKey(name: 'is_expired')
-  final bool isExpired;
+  final bool? isExpired;
   @override // main info data
   final String? name;
   @override
@@ -323,16 +298,12 @@ class _$_Guest implements _Guest {
   @override // auth data
   final String? password;
   @override
-  @JsonKey(name: 'is_admin')
-  final bool isAdmin;
+  final bool? isAdmin;
   @override
-  @JsonKey(name: 'is_staff')
-  final bool isStaff;
+  final bool? isStaff;
   @override // National ID data
-  @JsonKey(name: 'national_id')
   final String? nationalID;
   @override
-  @JsonKey(name: 'national_id_pic')
   final String? nationalIdPic;
 
   @override
@@ -389,34 +360,28 @@ class _$_Guest implements _Guest {
 
 abstract class _Guest implements Guest {
   factory _Guest(
-      {required int id,
-      @JsonKey(name: 'created_date', fromJson: _fromDBDate, toJson: _toDBDate)
-          required DateTime createdDate,
-      @JsonKey(name: 'is_expired')
-          required bool isExpired,
+      {int? id,
+      @JsonKey(fromJson: DataCompiler.fromDBDate, toJson: DataCompiler.toDBDate)
+          DateTime? createdDate,
+      bool? isExpired,
       String? name,
       String? email,
       String? phone,
       String? password,
-      @JsonKey(name: 'is_admin')
-          required bool isAdmin,
-      @JsonKey(name: 'is_staff')
-          required bool isStaff,
-      @JsonKey(name: 'national_id')
-          String? nationalID,
-      @JsonKey(name: 'national_id_pic')
-          String? nationalIdPic}) = _$_Guest;
+      bool? isAdmin,
+      bool? isStaff,
+      String? nationalID,
+      String? nationalIdPic}) = _$_Guest;
 
   factory _Guest.fromJson(Map<String, dynamic> json) = _$_Guest.fromJson;
 
   @override // Main data
-  int get id;
+  int? get id;
   @override
-  @JsonKey(name: 'created_date', fromJson: _fromDBDate, toJson: _toDBDate)
-  DateTime get createdDate;
+  @JsonKey(fromJson: DataCompiler.fromDBDate, toJson: DataCompiler.toDBDate)
+  DateTime? get createdDate;
   @override
-  @JsonKey(name: 'is_expired')
-  bool get isExpired;
+  bool? get isExpired;
   @override // main info data
   String? get name;
   @override
@@ -426,16 +391,12 @@ abstract class _Guest implements Guest {
   @override // auth data
   String? get password;
   @override
-  @JsonKey(name: 'is_admin')
-  bool get isAdmin;
+  bool? get isAdmin;
   @override
-  @JsonKey(name: 'is_staff')
-  bool get isStaff;
+  bool? get isStaff;
   @override // National ID data
-  @JsonKey(name: 'national_id')
   String? get nationalID;
   @override
-  @JsonKey(name: 'national_id_pic')
   String? get nationalIdPic;
   @override
   @JsonKey(ignore: true)

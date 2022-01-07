@@ -23,17 +23,17 @@ class _$PriceTearOff {
   const _$PriceTearOff();
 
   _Price call(
-      {required int id,
-      required double rate,
-      required String description,
-      @JsonKey(name: 'is_default', fromJson: _fromDBool, toJson: _toDBool)
-          required bool isDefault,
-      @JsonKey(name: 'is_deleted', fromJson: _fromDBool, toJson: _toDBool)
-          required bool isDeleted,
-      @JsonKey(name: 'is_per_day', fromJson: _fromDBool, toJson: _toDBool)
-          required bool isPerDay,
-      @JsonKey(name: 'created_date', fromJson: _fromDBDate, toJson: _toDBDate)
-          required DateTime createdDate}) {
+      {int? id,
+      double? rate,
+      String? description,
+      @JsonKey(fromJson: DataCompiler.fromDBool, toJson: DataCompiler.toDBool)
+          bool? isDefault,
+      @JsonKey(fromJson: DataCompiler.fromDBool, toJson: DataCompiler.toDBool)
+          bool? isDeleted,
+      @JsonKey(fromJson: DataCompiler.fromDBool, toJson: DataCompiler.toDBool)
+          bool? isPerDay,
+      @JsonKey(fromJson: DataCompiler.fromDBDate, toJson: DataCompiler.toDBDate)
+          DateTime? createdDate}) {
     return _Price(
       id: id,
       rate: rate,
@@ -55,17 +55,17 @@ const $Price = _$PriceTearOff();
 
 /// @nodoc
 mixin _$Price {
-  int get id => throw _privateConstructorUsedError;
-  double get rate => throw _privateConstructorUsedError;
-  String get description => throw _privateConstructorUsedError;
-  @JsonKey(name: 'is_default', fromJson: _fromDBool, toJson: _toDBool)
-  bool get isDefault => throw _privateConstructorUsedError;
-  @JsonKey(name: 'is_deleted', fromJson: _fromDBool, toJson: _toDBool)
-  bool get isDeleted => throw _privateConstructorUsedError;
-  @JsonKey(name: 'is_per_day', fromJson: _fromDBool, toJson: _toDBool)
-  bool get isPerDay => throw _privateConstructorUsedError;
-  @JsonKey(name: 'created_date', fromJson: _fromDBDate, toJson: _toDBDate)
-  DateTime get createdDate => throw _privateConstructorUsedError;
+  int? get id => throw _privateConstructorUsedError;
+  double? get rate => throw _privateConstructorUsedError;
+  String? get description => throw _privateConstructorUsedError;
+  @JsonKey(fromJson: DataCompiler.fromDBool, toJson: DataCompiler.toDBool)
+  bool? get isDefault => throw _privateConstructorUsedError;
+  @JsonKey(fromJson: DataCompiler.fromDBool, toJson: DataCompiler.toDBool)
+  bool? get isDeleted => throw _privateConstructorUsedError;
+  @JsonKey(fromJson: DataCompiler.fromDBool, toJson: DataCompiler.toDBool)
+  bool? get isPerDay => throw _privateConstructorUsedError;
+  @JsonKey(fromJson: DataCompiler.fromDBDate, toJson: DataCompiler.toDBDate)
+  DateTime? get createdDate => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -77,17 +77,17 @@ abstract class $PriceCopyWith<$Res> {
   factory $PriceCopyWith(Price value, $Res Function(Price) then) =
       _$PriceCopyWithImpl<$Res>;
   $Res call(
-      {int id,
-      double rate,
-      String description,
-      @JsonKey(name: 'is_default', fromJson: _fromDBool, toJson: _toDBool)
-          bool isDefault,
-      @JsonKey(name: 'is_deleted', fromJson: _fromDBool, toJson: _toDBool)
-          bool isDeleted,
-      @JsonKey(name: 'is_per_day', fromJson: _fromDBool, toJson: _toDBool)
-          bool isPerDay,
-      @JsonKey(name: 'created_date', fromJson: _fromDBDate, toJson: _toDBDate)
-          DateTime createdDate});
+      {int? id,
+      double? rate,
+      String? description,
+      @JsonKey(fromJson: DataCompiler.fromDBool, toJson: DataCompiler.toDBool)
+          bool? isDefault,
+      @JsonKey(fromJson: DataCompiler.fromDBool, toJson: DataCompiler.toDBool)
+          bool? isDeleted,
+      @JsonKey(fromJson: DataCompiler.fromDBool, toJson: DataCompiler.toDBool)
+          bool? isPerDay,
+      @JsonKey(fromJson: DataCompiler.fromDBDate, toJson: DataCompiler.toDBDate)
+          DateTime? createdDate});
 }
 
 /// @nodoc
@@ -112,31 +112,31 @@ class _$PriceCopyWithImpl<$Res> implements $PriceCopyWith<$Res> {
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       rate: rate == freezed
           ? _value.rate
           : rate // ignore: cast_nullable_to_non_nullable
-              as double,
+              as double?,
       description: description == freezed
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       isDefault: isDefault == freezed
           ? _value.isDefault
           : isDefault // ignore: cast_nullable_to_non_nullable
-              as bool,
+              as bool?,
       isDeleted: isDeleted == freezed
           ? _value.isDeleted
           : isDeleted // ignore: cast_nullable_to_non_nullable
-              as bool,
+              as bool?,
       isPerDay: isPerDay == freezed
           ? _value.isPerDay
           : isPerDay // ignore: cast_nullable_to_non_nullable
-              as bool,
+              as bool?,
       createdDate: createdDate == freezed
           ? _value.createdDate
           : createdDate // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+              as DateTime?,
     ));
   }
 }
@@ -147,17 +147,17 @@ abstract class _$PriceCopyWith<$Res> implements $PriceCopyWith<$Res> {
       __$PriceCopyWithImpl<$Res>;
   @override
   $Res call(
-      {int id,
-      double rate,
-      String description,
-      @JsonKey(name: 'is_default', fromJson: _fromDBool, toJson: _toDBool)
-          bool isDefault,
-      @JsonKey(name: 'is_deleted', fromJson: _fromDBool, toJson: _toDBool)
-          bool isDeleted,
-      @JsonKey(name: 'is_per_day', fromJson: _fromDBool, toJson: _toDBool)
-          bool isPerDay,
-      @JsonKey(name: 'created_date', fromJson: _fromDBDate, toJson: _toDBDate)
-          DateTime createdDate});
+      {int? id,
+      double? rate,
+      String? description,
+      @JsonKey(fromJson: DataCompiler.fromDBool, toJson: DataCompiler.toDBool)
+          bool? isDefault,
+      @JsonKey(fromJson: DataCompiler.fromDBool, toJson: DataCompiler.toDBool)
+          bool? isDeleted,
+      @JsonKey(fromJson: DataCompiler.fromDBool, toJson: DataCompiler.toDBool)
+          bool? isPerDay,
+      @JsonKey(fromJson: DataCompiler.fromDBDate, toJson: DataCompiler.toDBDate)
+          DateTime? createdDate});
 }
 
 /// @nodoc
@@ -183,72 +183,73 @@ class __$PriceCopyWithImpl<$Res> extends _$PriceCopyWithImpl<$Res>
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       rate: rate == freezed
           ? _value.rate
           : rate // ignore: cast_nullable_to_non_nullable
-              as double,
+              as double?,
       description: description == freezed
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       isDefault: isDefault == freezed
           ? _value.isDefault
           : isDefault // ignore: cast_nullable_to_non_nullable
-              as bool,
+              as bool?,
       isDeleted: isDeleted == freezed
           ? _value.isDeleted
           : isDeleted // ignore: cast_nullable_to_non_nullable
-              as bool,
+              as bool?,
       isPerDay: isPerDay == freezed
           ? _value.isPerDay
           : isPerDay // ignore: cast_nullable_to_non_nullable
-              as bool,
+              as bool?,
       createdDate: createdDate == freezed
           ? _value.createdDate
           : createdDate // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+              as DateTime?,
     ));
   }
 }
 
 /// @nodoc
-@JsonSerializable()
+
+@JsonSerializable(fieldRename: FieldRename.snake)
 class _$_Price implements _Price {
   _$_Price(
-      {required this.id,
-      required this.rate,
-      required this.description,
-      @JsonKey(name: 'is_default', fromJson: _fromDBool, toJson: _toDBool)
-          required this.isDefault,
-      @JsonKey(name: 'is_deleted', fromJson: _fromDBool, toJson: _toDBool)
-          required this.isDeleted,
-      @JsonKey(name: 'is_per_day', fromJson: _fromDBool, toJson: _toDBool)
-          required this.isPerDay,
-      @JsonKey(name: 'created_date', fromJson: _fromDBDate, toJson: _toDBDate)
-          required this.createdDate});
+      {this.id,
+      this.rate,
+      this.description,
+      @JsonKey(fromJson: DataCompiler.fromDBool, toJson: DataCompiler.toDBool)
+          this.isDefault,
+      @JsonKey(fromJson: DataCompiler.fromDBool, toJson: DataCompiler.toDBool)
+          this.isDeleted,
+      @JsonKey(fromJson: DataCompiler.fromDBool, toJson: DataCompiler.toDBool)
+          this.isPerDay,
+      @JsonKey(fromJson: DataCompiler.fromDBDate, toJson: DataCompiler.toDBDate)
+          this.createdDate});
 
   factory _$_Price.fromJson(Map<String, dynamic> json) =>
       _$$_PriceFromJson(json);
 
   @override
-  final int id;
+  final int? id;
   @override
-  final double rate;
+  final double? rate;
   @override
-  final String description;
+  final String? description;
   @override
-  @JsonKey(name: 'is_default', fromJson: _fromDBool, toJson: _toDBool)
-  final bool isDefault;
+  @JsonKey(fromJson: DataCompiler.fromDBool, toJson: DataCompiler.toDBool)
+  final bool? isDefault;
   @override
-  @JsonKey(name: 'is_deleted', fromJson: _fromDBool, toJson: _toDBool)
-  final bool isDeleted;
+  @JsonKey(fromJson: DataCompiler.fromDBool, toJson: DataCompiler.toDBool)
+  final bool? isDeleted;
   @override
-  @JsonKey(name: 'is_per_day', fromJson: _fromDBool, toJson: _toDBool)
-  final bool isPerDay;
+  @JsonKey(fromJson: DataCompiler.fromDBool, toJson: DataCompiler.toDBool)
+  final bool? isPerDay;
   @override
-  @JsonKey(name: 'created_date', fromJson: _fromDBDate, toJson: _toDBDate)
-  final DateTime createdDate;
+  @JsonKey(fromJson: DataCompiler.fromDBDate, toJson: DataCompiler.toDBDate)
+  final DateTime? createdDate;
 
   @override
   String toString() {
@@ -295,38 +296,38 @@ class _$_Price implements _Price {
 
 abstract class _Price implements Price {
   factory _Price(
-      {required int id,
-      required double rate,
-      required String description,
-      @JsonKey(name: 'is_default', fromJson: _fromDBool, toJson: _toDBool)
-          required bool isDefault,
-      @JsonKey(name: 'is_deleted', fromJson: _fromDBool, toJson: _toDBool)
-          required bool isDeleted,
-      @JsonKey(name: 'is_per_day', fromJson: _fromDBool, toJson: _toDBool)
-          required bool isPerDay,
-      @JsonKey(name: 'created_date', fromJson: _fromDBDate, toJson: _toDBDate)
-          required DateTime createdDate}) = _$_Price;
+      {int? id,
+      double? rate,
+      String? description,
+      @JsonKey(fromJson: DataCompiler.fromDBool, toJson: DataCompiler.toDBool)
+          bool? isDefault,
+      @JsonKey(fromJson: DataCompiler.fromDBool, toJson: DataCompiler.toDBool)
+          bool? isDeleted,
+      @JsonKey(fromJson: DataCompiler.fromDBool, toJson: DataCompiler.toDBool)
+          bool? isPerDay,
+      @JsonKey(fromJson: DataCompiler.fromDBDate, toJson: DataCompiler.toDBDate)
+          DateTime? createdDate}) = _$_Price;
 
   factory _Price.fromJson(Map<String, dynamic> json) = _$_Price.fromJson;
 
   @override
-  int get id;
+  int? get id;
   @override
-  double get rate;
+  double? get rate;
   @override
-  String get description;
+  String? get description;
   @override
-  @JsonKey(name: 'is_default', fromJson: _fromDBool, toJson: _toDBool)
-  bool get isDefault;
+  @JsonKey(fromJson: DataCompiler.fromDBool, toJson: DataCompiler.toDBool)
+  bool? get isDefault;
   @override
-  @JsonKey(name: 'is_deleted', fromJson: _fromDBool, toJson: _toDBool)
-  bool get isDeleted;
+  @JsonKey(fromJson: DataCompiler.fromDBool, toJson: DataCompiler.toDBool)
+  bool? get isDeleted;
   @override
-  @JsonKey(name: 'is_per_day', fromJson: _fromDBool, toJson: _toDBool)
-  bool get isPerDay;
+  @JsonKey(fromJson: DataCompiler.fromDBool, toJson: DataCompiler.toDBool)
+  bool? get isPerDay;
   @override
-  @JsonKey(name: 'created_date', fromJson: _fromDBDate, toJson: _toDBDate)
-  DateTime get createdDate;
+  @JsonKey(fromJson: DataCompiler.fromDBDate, toJson: DataCompiler.toDBDate)
+  DateTime? get createdDate;
   @override
   @JsonKey(ignore: true)
   _$PriceCopyWith<_Price> get copyWith => throw _privateConstructorUsedError;

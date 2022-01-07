@@ -23,16 +23,13 @@ class _$RSessionTearOff {
   const _$RSessionTearOff();
 
   _RSession call(
-      {required int id,
-      @JsonKey(name: 'guest_id')
-          required int guestId,
-      @JsonKey(name: 'room_id')
-          required int roomId,
-      @JsonKey(name: 'paid_amount')
-          required double paidAmount,
-      @JsonKey(name: 'time_in', fromJson: _fromDBDate, toJson: _toDBDate)
-          required DateTime timeIn,
-      @JsonKey(name: 'time_out', fromJson: _fromDBDate, toJson: _toDBDate)
+      {int? id,
+      int? guestId,
+      int? roomId,
+      double? paidAmount,
+      @JsonKey(fromJson: DataCompiler.fromDBDate, toJson: DataCompiler.toDBDate)
+          DateTime? timeIn,
+      @JsonKey(fromJson: DataCompiler.fromDBDate, toJson: DataCompiler.toDBDate)
           DateTime? timeOut}) {
     return _RSession(
       id: id,
@@ -54,16 +51,13 @@ const $RSession = _$RSessionTearOff();
 
 /// @nodoc
 mixin _$RSession {
-  int get id => throw _privateConstructorUsedError; // pricing data
-  @JsonKey(name: 'guest_id')
-  int get guestId => throw _privateConstructorUsedError;
-  @JsonKey(name: 'room_id')
-  int get roomId => throw _privateConstructorUsedError;
-  @JsonKey(name: 'paid_amount')
-  double get paidAmount => throw _privateConstructorUsedError; // main data
-  @JsonKey(name: 'time_in', fromJson: _fromDBDate, toJson: _toDBDate)
-  DateTime get timeIn => throw _privateConstructorUsedError;
-  @JsonKey(name: 'time_out', fromJson: _fromDBDate, toJson: _toDBDate)
+  int? get id => throw _privateConstructorUsedError; // pricing data
+  int? get guestId => throw _privateConstructorUsedError;
+  int? get roomId => throw _privateConstructorUsedError;
+  double? get paidAmount => throw _privateConstructorUsedError; // main data
+  @JsonKey(fromJson: DataCompiler.fromDBDate, toJson: DataCompiler.toDBDate)
+  DateTime? get timeIn => throw _privateConstructorUsedError;
+  @JsonKey(fromJson: DataCompiler.fromDBDate, toJson: DataCompiler.toDBDate)
   DateTime? get timeOut => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -77,16 +71,13 @@ abstract class $RSessionCopyWith<$Res> {
   factory $RSessionCopyWith(RSession value, $Res Function(RSession) then) =
       _$RSessionCopyWithImpl<$Res>;
   $Res call(
-      {int id,
-      @JsonKey(name: 'guest_id')
-          int guestId,
-      @JsonKey(name: 'room_id')
-          int roomId,
-      @JsonKey(name: 'paid_amount')
-          double paidAmount,
-      @JsonKey(name: 'time_in', fromJson: _fromDBDate, toJson: _toDBDate)
-          DateTime timeIn,
-      @JsonKey(name: 'time_out', fromJson: _fromDBDate, toJson: _toDBDate)
+      {int? id,
+      int? guestId,
+      int? roomId,
+      double? paidAmount,
+      @JsonKey(fromJson: DataCompiler.fromDBDate, toJson: DataCompiler.toDBDate)
+          DateTime? timeIn,
+      @JsonKey(fromJson: DataCompiler.fromDBDate, toJson: DataCompiler.toDBDate)
           DateTime? timeOut});
 }
 
@@ -111,23 +102,23 @@ class _$RSessionCopyWithImpl<$Res> implements $RSessionCopyWith<$Res> {
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       guestId: guestId == freezed
           ? _value.guestId
           : guestId // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       roomId: roomId == freezed
           ? _value.roomId
           : roomId // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       paidAmount: paidAmount == freezed
           ? _value.paidAmount
           : paidAmount // ignore: cast_nullable_to_non_nullable
-              as double,
+              as double?,
       timeIn: timeIn == freezed
           ? _value.timeIn
           : timeIn // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+              as DateTime?,
       timeOut: timeOut == freezed
           ? _value.timeOut
           : timeOut // ignore: cast_nullable_to_non_nullable
@@ -142,16 +133,13 @@ abstract class _$RSessionCopyWith<$Res> implements $RSessionCopyWith<$Res> {
       __$RSessionCopyWithImpl<$Res>;
   @override
   $Res call(
-      {int id,
-      @JsonKey(name: 'guest_id')
-          int guestId,
-      @JsonKey(name: 'room_id')
-          int roomId,
-      @JsonKey(name: 'paid_amount')
-          double paidAmount,
-      @JsonKey(name: 'time_in', fromJson: _fromDBDate, toJson: _toDBDate)
-          DateTime timeIn,
-      @JsonKey(name: 'time_out', fromJson: _fromDBDate, toJson: _toDBDate)
+      {int? id,
+      int? guestId,
+      int? roomId,
+      double? paidAmount,
+      @JsonKey(fromJson: DataCompiler.fromDBDate, toJson: DataCompiler.toDBDate)
+          DateTime? timeIn,
+      @JsonKey(fromJson: DataCompiler.fromDBDate, toJson: DataCompiler.toDBDate)
           DateTime? timeOut});
 }
 
@@ -177,23 +165,23 @@ class __$RSessionCopyWithImpl<$Res> extends _$RSessionCopyWithImpl<$Res>
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       guestId: guestId == freezed
           ? _value.guestId
           : guestId // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       roomId: roomId == freezed
           ? _value.roomId
           : roomId // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       paidAmount: paidAmount == freezed
           ? _value.paidAmount
           : paidAmount // ignore: cast_nullable_to_non_nullable
-              as double,
+              as double?,
       timeIn: timeIn == freezed
           ? _value.timeIn
           : timeIn // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+              as DateTime?,
       timeOut: timeOut == freezed
           ? _value.timeOut
           : timeOut // ignore: cast_nullable_to_non_nullable
@@ -203,40 +191,35 @@ class __$RSessionCopyWithImpl<$Res> extends _$RSessionCopyWithImpl<$Res>
 }
 
 /// @nodoc
-@JsonSerializable()
+
+@JsonSerializable(fieldRename: FieldRename.snake)
 class _$_RSession implements _RSession {
   _$_RSession(
-      {required this.id,
-      @JsonKey(name: 'guest_id')
-          required this.guestId,
-      @JsonKey(name: 'room_id')
-          required this.roomId,
-      @JsonKey(name: 'paid_amount')
-          required this.paidAmount,
-      @JsonKey(name: 'time_in', fromJson: _fromDBDate, toJson: _toDBDate)
-          required this.timeIn,
-      @JsonKey(name: 'time_out', fromJson: _fromDBDate, toJson: _toDBDate)
+      {this.id,
+      this.guestId,
+      this.roomId,
+      this.paidAmount,
+      @JsonKey(fromJson: DataCompiler.fromDBDate, toJson: DataCompiler.toDBDate)
+          this.timeIn,
+      @JsonKey(fromJson: DataCompiler.fromDBDate, toJson: DataCompiler.toDBDate)
           this.timeOut});
 
   factory _$_RSession.fromJson(Map<String, dynamic> json) =>
       _$$_RSessionFromJson(json);
 
   @override
-  final int id;
+  final int? id;
   @override // pricing data
-  @JsonKey(name: 'guest_id')
-  final int guestId;
+  final int? guestId;
   @override
-  @JsonKey(name: 'room_id')
-  final int roomId;
+  final int? roomId;
   @override
-  @JsonKey(name: 'paid_amount')
-  final double paidAmount;
+  final double? paidAmount;
   @override // main data
-  @JsonKey(name: 'time_in', fromJson: _fromDBDate, toJson: _toDBDate)
-  final DateTime timeIn;
+  @JsonKey(fromJson: DataCompiler.fromDBDate, toJson: DataCompiler.toDBDate)
+  final DateTime? timeIn;
   @override
-  @JsonKey(name: 'time_out', fromJson: _fromDBDate, toJson: _toDBDate)
+  @JsonKey(fromJson: DataCompiler.fromDBDate, toJson: DataCompiler.toDBDate)
   final DateTime? timeOut;
 
   @override
@@ -281,36 +264,30 @@ class _$_RSession implements _RSession {
 
 abstract class _RSession implements RSession {
   factory _RSession(
-      {required int id,
-      @JsonKey(name: 'guest_id')
-          required int guestId,
-      @JsonKey(name: 'room_id')
-          required int roomId,
-      @JsonKey(name: 'paid_amount')
-          required double paidAmount,
-      @JsonKey(name: 'time_in', fromJson: _fromDBDate, toJson: _toDBDate)
-          required DateTime timeIn,
-      @JsonKey(name: 'time_out', fromJson: _fromDBDate, toJson: _toDBDate)
+      {int? id,
+      int? guestId,
+      int? roomId,
+      double? paidAmount,
+      @JsonKey(fromJson: DataCompiler.fromDBDate, toJson: DataCompiler.toDBDate)
+          DateTime? timeIn,
+      @JsonKey(fromJson: DataCompiler.fromDBDate, toJson: DataCompiler.toDBDate)
           DateTime? timeOut}) = _$_RSession;
 
   factory _RSession.fromJson(Map<String, dynamic> json) = _$_RSession.fromJson;
 
   @override
-  int get id;
+  int? get id;
   @override // pricing data
-  @JsonKey(name: 'guest_id')
-  int get guestId;
+  int? get guestId;
   @override
-  @JsonKey(name: 'room_id')
-  int get roomId;
+  int? get roomId;
   @override
-  @JsonKey(name: 'paid_amount')
-  double get paidAmount;
+  double? get paidAmount;
   @override // main data
-  @JsonKey(name: 'time_in', fromJson: _fromDBDate, toJson: _toDBDate)
-  DateTime get timeIn;
+  @JsonKey(fromJson: DataCompiler.fromDBDate, toJson: DataCompiler.toDBDate)
+  DateTime? get timeIn;
   @override
-  @JsonKey(name: 'time_out', fromJson: _fromDBDate, toJson: _toDBDate)
+  @JsonKey(fromJson: DataCompiler.fromDBDate, toJson: DataCompiler.toDBDate)
   DateTime? get timeOut;
   @override
   @JsonKey(ignore: true)

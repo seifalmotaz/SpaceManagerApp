@@ -1,28 +1,26 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'reservation.dart';
+part of 'creservation.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_Reservation _$$_ReservationFromJson(Map<String, dynamic> json) =>
-    _$_Reservation(
+_$_CReservation _$$_CReservationFromJson(Map<String, dynamic> json) =>
+    _$_CReservation(
       id: json['id'] as int?,
-      guestId: json['guest_id'] as int?,
+      courseId: json['course_id'] as int?,
       roomId: json['room_id'] as int?,
-      paidAmount: (json['paid_amount'] as num?)?.toDouble(),
       timeIn: DataCompiler.fromDBDate(json['time_in'] as int?),
       timeOut: DataCompiler.fromDBDate(json['time_out'] as int?),
       createdDate: DataCompiler.fromDBDate(json['created_date'] as int?),
     );
 
-Map<String, dynamic> _$$_ReservationToJson(_$_Reservation instance) =>
+Map<String, dynamic> _$$_CReservationToJson(_$_CReservation instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'guest_id': instance.guestId,
+      'course_id': instance.courseId,
       'room_id': instance.roomId,
-      'paid_amount': instance.paidAmount,
       'time_in': DataCompiler.toDBDate(instance.timeIn),
       'time_out': DataCompiler.toDBDate(instance.timeOut),
       'created_date': DataCompiler.toDBDate(instance.createdDate),
@@ -32,7 +30,7 @@ Map<String, dynamic> _$$_ReservationToJson(_$_Reservation instance) =>
 // EngineSQLGenerator
 // **************************************************************************
 
-extension ReservationFieldsSQL on ReservationFields {
+extension CReservationFieldsSQL on CReservationFields {
   static Map<String, dynamic> getStartWithString_(String string, Map data) {
     Map<String, dynamic> newData = {};
     for (String key in data.keys.toList()) {
@@ -45,34 +43,30 @@ extension ReservationFieldsSQL on ReservationFields {
   }
 
 // \ // \ Start: id // \ // \
-  static String nativeId = 'reservation.id';
+  static String nativeId = 'creservation.id';
   static String id = 'id';
 // \ // \ End: id // \ // \
-// \ // \ Start: guestId // \ // \
-  static String nativeGuestId = 'reservation.guest_id';
-  static String guestId = 'guest_id';
-// \ // \ End: guestId // \ // \
+// \ // \ Start: courseId // \ // \
+  static String nativeCourseId = 'creservation.course_id';
+  static String courseId = 'course_id';
+// \ // \ End: courseId // \ // \
 // \ // \ Start: roomId // \ // \
-  static String nativeRoomId = 'reservation.room_id';
+  static String nativeRoomId = 'creservation.room_id';
   static String roomId = 'room_id';
 // \ // \ End: roomId // \ // \
-// \ // \ Start: paidAmount // \ // \
-  static String nativePaidAmount = 'reservation.paid_amount';
-  static String paidAmount = 'paid_amount';
-// \ // \ End: paidAmount // \ // \
 // \ // \ Start: timeIn // \ // \
-  static String nativeTimeIn = 'reservation.time_in';
+  static String nativeTimeIn = 'creservation.time_in';
   static String timeIn = 'time_in';
 // \ // \ End: timeIn // \ // \
 // \ // \ Start: timeOut // \ // \
-  static String nativeTimeOut = 'reservation.time_out';
+  static String nativeTimeOut = 'creservation.time_out';
   static String timeOut = 'time_out';
 // \ // \ End: timeOut // \ // \
 // \ // \ Start: createdDate // \ // \
-  static String nativeCreatedDate = 'reservation.created_date';
+  static String nativeCreatedDate = 'creservation.created_date';
   static String createdDate = 'created_date';
 // \ // \ End: createdDate // \ // \
 
   static fromJson(Map<String, dynamic> json) =>
-      _$$_ReservationFromJson(getStartWithString_('reservation', json));
+      _$$_CReservationFromJson(getStartWithString_('creservation', json));
 }

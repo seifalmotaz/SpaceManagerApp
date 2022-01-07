@@ -1,3 +1,5 @@
+import 'package:database_system/generators/src/engine_sql.dart';
+import 'package:database_system/models/func.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'session.freezed.dart';
@@ -5,27 +7,33 @@ part 'session.g.dart';
 
 @freezed
 class Session with _$Session {
+  @JsonSerializable(fieldRename: FieldRename.snake)
   factory Session({
-    required int id,
+    int? id,
     // pricing data
-    @JsonKey(name: 'guest_id') required int guestId,
-    @JsonKey(name: 'price_id') required int priceId,
-    @JsonKey(name: 'paid_amount') required double paidAmount,
+    int? guestId,
+    int? priceId,
+    double? paidAmount,
     // extra info
-    @JsonKey(name: 'guest_count') required int guestCount,
+    int? guestCount,
     // main data
-    @JsonKey(name: 'time_in', fromJson: _fromDBDate, toJson: _toDBDate)
-        required DateTime timeIn,
-    @JsonKey(name: 'time_out', fromJson: _fromDBDate, toJson: _toDBDate)
+    @JsonKey(fromJson: DataCompiler.fromDBDate, toJson: DataCompiler.toDBDate)
+        DateTime? timeIn,
+    @JsonKey(fromJson: DataCompiler.fromDBDate, toJson: DataCompiler.toDBDate)
         DateTime? timeOut,
   }) = _Session;
 
   factory Session.fromJson(Map<String, dynamic> json) =>
       _$SessionFromJson(json);
+}
 
-  static DateTime _fromDBDate(int datetime) =>
-      DateTime.fromMillisecondsSinceEpoch(datetime * 1000);
-
-  static int _toDBDate(DateTime datetime) =>
-      (datetime.millisecondsSinceEpoch / 1000) as int;
+@EngineSQL('session')
+class SessionFields {
+  String? id;
+  String? guestId;
+  String? priceId;
+  String? paidAmount;
+  String? guestCount;
+  String? timeIn;
+  String? timeOut;
 }

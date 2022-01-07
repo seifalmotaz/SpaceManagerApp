@@ -2,18 +2,17 @@ import 'package:database_system/generators/src/engine_sql.dart';
 import 'package:database_system/models/func.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'reservation.freezed.dart';
-part 'reservation.g.dart';
+part 'creservation.freezed.dart';
+part 'creservation.g.dart';
 
 @freezed
-class Reservation with _$Reservation {
+class CReservation with _$CReservation {
   @JsonSerializable(fieldRename: FieldRename.snake)
-  factory Reservation({
+  factory CReservation({
     int? id,
     // pricing data
-    int? guestId,
+    int? courseId,
     int? roomId,
-    double? paidAmount,
     // main data
     @JsonKey(fromJson: DataCompiler.fromDBDate, toJson: DataCompiler.toDBDate)
         DateTime? timeIn,
@@ -21,19 +20,18 @@ class Reservation with _$Reservation {
         DateTime? timeOut,
     @JsonKey(fromJson: DataCompiler.fromDBDate, toJson: DataCompiler.toDBDate)
         DateTime? createdDate,
-  }) = _Reservation;
+  }) = _CReservation;
 
-  factory Reservation.fromJson(Map<String, dynamic> json) =>
-      _$ReservationFromJson(json);
+  factory CReservation.fromJson(Map<String, dynamic> json) =>
+      _$CReservationFromJson(json);
 }
 
-@EngineSQL('reservation')
-class ReservationFields {
-  String? id;
-  String? guestId;
-  String? roomId;
-  String? paidAmount;
-  String? timeIn;
-  String? timeOut;
-  String? createdDate;
+@EngineSQL('creservation')
+class CReservationFields {
+  static String id = 'id';
+  static String courseId = 'course_id';
+  static String roomId = 'room_id';
+  static String timeIn = 'time_in';
+  static String timeOut = 'time_out';
+  static String createdDate = 'created_date';
 }

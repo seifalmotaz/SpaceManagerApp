@@ -23,11 +23,11 @@ class _$RoomTearOff {
   const _$RoomTearOff();
 
   _Room call(
-      {required int id,
-      required double rate,
-      required String name,
-      @JsonKey(name: 'is_deleted', fromJson: _fromDBool, toJson: _toDBool)
-          required bool isDeleted}) {
+      {int? id,
+      double? rate,
+      String? name,
+      @JsonKey(fromJson: DataCompiler.fromDBool, toJson: DataCompiler.toDBool)
+          bool? isDeleted}) {
     return _Room(
       id: id,
       rate: rate,
@@ -46,11 +46,11 @@ const $Room = _$RoomTearOff();
 
 /// @nodoc
 mixin _$Room {
-  int get id => throw _privateConstructorUsedError;
-  double get rate => throw _privateConstructorUsedError;
-  String get name => throw _privateConstructorUsedError;
-  @JsonKey(name: 'is_deleted', fromJson: _fromDBool, toJson: _toDBool)
-  bool get isDeleted => throw _privateConstructorUsedError;
+  int? get id => throw _privateConstructorUsedError;
+  double? get rate => throw _privateConstructorUsedError;
+  String? get name => throw _privateConstructorUsedError;
+  @JsonKey(fromJson: DataCompiler.fromDBool, toJson: DataCompiler.toDBool)
+  bool? get isDeleted => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -62,11 +62,11 @@ abstract class $RoomCopyWith<$Res> {
   factory $RoomCopyWith(Room value, $Res Function(Room) then) =
       _$RoomCopyWithImpl<$Res>;
   $Res call(
-      {int id,
-      double rate,
-      String name,
-      @JsonKey(name: 'is_deleted', fromJson: _fromDBool, toJson: _toDBool)
-          bool isDeleted});
+      {int? id,
+      double? rate,
+      String? name,
+      @JsonKey(fromJson: DataCompiler.fromDBool, toJson: DataCompiler.toDBool)
+          bool? isDeleted});
 }
 
 /// @nodoc
@@ -88,19 +88,19 @@ class _$RoomCopyWithImpl<$Res> implements $RoomCopyWith<$Res> {
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       rate: rate == freezed
           ? _value.rate
           : rate // ignore: cast_nullable_to_non_nullable
-              as double,
+              as double?,
       name: name == freezed
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       isDeleted: isDeleted == freezed
           ? _value.isDeleted
           : isDeleted // ignore: cast_nullable_to_non_nullable
-              as bool,
+              as bool?,
     ));
   }
 }
@@ -111,11 +111,11 @@ abstract class _$RoomCopyWith<$Res> implements $RoomCopyWith<$Res> {
       __$RoomCopyWithImpl<$Res>;
   @override
   $Res call(
-      {int id,
-      double rate,
-      String name,
-      @JsonKey(name: 'is_deleted', fromJson: _fromDBool, toJson: _toDBool)
-          bool isDeleted});
+      {int? id,
+      double? rate,
+      String? name,
+      @JsonKey(fromJson: DataCompiler.fromDBool, toJson: DataCompiler.toDBool)
+          bool? isDeleted});
 }
 
 /// @nodoc
@@ -138,44 +138,45 @@ class __$RoomCopyWithImpl<$Res> extends _$RoomCopyWithImpl<$Res>
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       rate: rate == freezed
           ? _value.rate
           : rate // ignore: cast_nullable_to_non_nullable
-              as double,
+              as double?,
       name: name == freezed
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       isDeleted: isDeleted == freezed
           ? _value.isDeleted
           : isDeleted // ignore: cast_nullable_to_non_nullable
-              as bool,
+              as bool?,
     ));
   }
 }
 
 /// @nodoc
-@JsonSerializable()
+
+@JsonSerializable(fieldRename: FieldRename.snake)
 class _$_Room implements _Room {
   _$_Room(
-      {required this.id,
-      required this.rate,
-      required this.name,
-      @JsonKey(name: 'is_deleted', fromJson: _fromDBool, toJson: _toDBool)
-          required this.isDeleted});
+      {this.id,
+      this.rate,
+      this.name,
+      @JsonKey(fromJson: DataCompiler.fromDBool, toJson: DataCompiler.toDBool)
+          this.isDeleted});
 
   factory _$_Room.fromJson(Map<String, dynamic> json) => _$$_RoomFromJson(json);
 
   @override
-  final int id;
+  final int? id;
   @override
-  final double rate;
+  final double? rate;
   @override
-  final String name;
+  final String? name;
   @override
-  @JsonKey(name: 'is_deleted', fromJson: _fromDBool, toJson: _toDBool)
-  final bool isDeleted;
+  @JsonKey(fromJson: DataCompiler.fromDBool, toJson: DataCompiler.toDBool)
+  final bool? isDeleted;
 
   @override
   String toString() {
@@ -214,23 +215,23 @@ class _$_Room implements _Room {
 
 abstract class _Room implements Room {
   factory _Room(
-      {required int id,
-      required double rate,
-      required String name,
-      @JsonKey(name: 'is_deleted', fromJson: _fromDBool, toJson: _toDBool)
-          required bool isDeleted}) = _$_Room;
+      {int? id,
+      double? rate,
+      String? name,
+      @JsonKey(fromJson: DataCompiler.fromDBool, toJson: DataCompiler.toDBool)
+          bool? isDeleted}) = _$_Room;
 
   factory _Room.fromJson(Map<String, dynamic> json) = _$_Room.fromJson;
 
   @override
-  int get id;
+  int? get id;
   @override
-  double get rate;
+  double? get rate;
   @override
-  String get name;
+  String? get name;
   @override
-  @JsonKey(name: 'is_deleted', fromJson: _fromDBool, toJson: _toDBool)
-  bool get isDeleted;
+  @JsonKey(fromJson: DataCompiler.fromDBool, toJson: DataCompiler.toDBool)
+  bool? get isDeleted;
   @override
   @JsonKey(ignore: true)
   _$RoomCopyWith<_Room> get copyWith => throw _privateConstructorUsedError;
