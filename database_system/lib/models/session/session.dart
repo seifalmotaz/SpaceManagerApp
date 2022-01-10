@@ -1,39 +1,98 @@
-import 'package:database_system/generators/src/engine_sql.dart';
+import 'package:engine_sql/engine_sql.dart';
 import 'package:database_system/models/func.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:json_annotation/json_annotation.dart';
 
-part 'session.freezed.dart';
 part 'session.g.dart';
 
-@freezed
-class Session with _$Session {
-  @JsonSerializable(fieldRename: FieldRename.snake)
-  factory Session({
-    int? id,
-    // pricing data
-    int? guestId,
-    int? priceId,
-    double? paidAmount,
-    // extra info
-    int? guestCount,
-    // main data
-    @JsonKey(fromJson: DataCompiler.fromDBDate, toJson: DataCompiler.toDBDate)
-        DateTime? timeIn,
-    @JsonKey(fromJson: DataCompiler.fromDBDate, toJson: DataCompiler.toDBDate)
-        DateTime? timeOut,
-  }) = _Session;
-
-  factory Session.fromJson(Map<String, dynamic> json) =>
-      _$SessionFromJson(json);
+class Session {
+  int id;
+  // main data
+  @dateTimeKey
+  DateTime timeIn;
+  @dateTimeKey
+  DateTime timeOut;
+  Session({
+    required this.id,
+    required this.timeIn,
+    required this.timeOut,
+  });
 }
 
+@JsonSerializable(fieldRename: FieldRename.snake)
 @EngineSQL('session')
-class SessionFields {
-  String? id;
-  String? guestId;
-  String? priceId;
-  String? paidAmount;
-  String? guestCount;
-  String? timeIn;
-  String? timeOut;
+class GuestSession extends Session {
+  int guestCount;
+  int priceId;
+  double paidAmount;
+  int guestId;
+
+  GuestSession({
+    required this.guestCount,
+    required this.paidAmount,
+    required this.guestId,
+    required this.priceId,
+    required id,
+    required timeIn,
+    required timeOut,
+  }) : super(
+          id: id,
+          timeIn: timeIn,
+          timeOut: timeOut,
+        );
+
+  factory GuestSession.fromJson(Map<String, dynamic> json) =>
+      _$GuestSessionFromJson(json);
+  Map<String, dynamic> toJson() => _$GuestSessionToJson(this);
+}
+
+@JsonSerializable(fieldRename: FieldRename.snake)
+@EngineSQL('session')
+class RoomSession extends Session {
+  int roomId;
+  double paidAmount;
+  int guestId;
+  int reservationId;
+
+  RoomSession({
+    required this.paidAmount,
+    required this.guestId,
+    required this.roomId,
+    required this.reservationId,
+    required id,
+    required timeIn,
+    required timeOut,
+  }) : super(
+          id: id,
+          timeIn: timeIn,
+          timeOut: timeOut,
+        );
+
+  factory RoomSession.fromJson(Map<String, dynamic> json) =>
+      _$RoomSessionFromJson(json);
+  Map<String, dynamic> toJson() => _$RoomSessionToJson(this);
+}
+
+@JsonSerializable(fieldRename: FieldRename.snake)
+@EngineSQL('session')
+class CourseSession extends Session {
+  int courseId;
+  int guestCount;
+  int reservationId;
+
+  CourseSession({
+    required this.courseId,
+    required this.guestCount,
+    required this.reservationId,
+    required id,
+    required timeIn,
+    required timeOut,
+  }) : super(
+          id: id,
+          timeIn: timeIn,
+          timeOut: timeOut,
+        );
+
+  factory CourseSession.fromJson(Map<String, dynamic> json) =>
+      _$CourseSessionFromJson(json);
+  Map<String, dynamic> toJson() => _$CourseSessionToJson(this);
 }

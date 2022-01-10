@@ -1,32 +1,29 @@
-import 'package:database_system/generators/src/engine_sql.dart';
 import 'package:database_system/models/func.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:json_annotation/json_annotation.dart';
+import 'package:engine_sql/engine_sql.dart';
 
-part 'course_registration.freezed.dart';
 part 'course_registration.g.dart';
 
-@freezed
-class CourseRegistration with _$CourseRegistration {
-  @JsonSerializable(fieldRename: FieldRename.snake)
-  factory CourseRegistration({
-    int? id,
-    int? guestId,
-    int? courseId,
-    @JsonKey(fromJson: DataCompiler.fromDBool, toJson: DataCompiler.toDBool)
-        bool? isPaid,
-    @JsonKey(fromJson: DataCompiler.fromDBDate, toJson: DataCompiler.toDBDate)
-        DateTime? createdDate,
-  }) = _CourseRegistration;
+@JsonSerializable(fieldRename: FieldRename.snake)
+@EngineSQL('course_registration')
+class CourseRegistration {
+  int id;
+  int guestId;
+  int courseId;
+  @boolKey
+  bool isPaid;
+  @dateTimeKey
+  DateTime createdDate;
+
+  CourseRegistration({
+    required this.courseId,
+    required this.createdDate,
+    required this.guestId,
+    required this.id,
+    required this.isPaid,
+  });
 
   factory CourseRegistration.fromJson(Map<String, dynamic> json) =>
       _$CourseRegistrationFromJson(json);
-}
-
-@EngineSQL('course_registration')
-class CourseRegistrationFields {
-  String? id;
-  String? guestId;
-  String? courseId;
-  String? isPaid;
-  String? createdDate;
+  Map<String, dynamic> toJson() => _$CourseRegistrationToJson(this);
 }

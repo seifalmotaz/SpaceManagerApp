@@ -1,41 +1,35 @@
-import 'package:database_system/generators/src/engine_sql.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:json_annotation/json_annotation.dart';
+import 'package:engine_sql/engine_sql.dart';
 
 import '../func.dart';
-
-part 'course.freezed.dart';
 part 'course.g.dart';
 
-@freezed
-class Course with _$Course {
-  @JsonSerializable(fieldRename: FieldRename.snake)
-  factory Course({
-    int? id,
-    int? lecturerId,
-    double? totalPrice,
-    String? name,
-    String? description,
-    @JsonKey(fromJson: DataCompiler.fromDBDate, toJson: DataCompiler.toDBDate)
-        DateTime? startTime,
-    @JsonKey(fromJson: DataCompiler.fromDBDate, toJson: DataCompiler.toDBDate)
-        DateTime? endTime,
-    @JsonKey(fromJson: DataCompiler.fromDBool, toJson: DataCompiler.toDBool)
-        bool? isExpired,
-  }) = _Course;
+@JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
+@EngineSQL('course')
+class Course {
+  int id;
+  int lecturerId;
+  double totalPrice;
+  String name;
+  String description;
+  @dateTimeKey
+  DateTime startTime;
+  @dateTimeKey
+  DateTime endTime;
+  @boolKey
+  bool isExpired;
+
+  Course({
+    required this.id,
+    required this.description,
+    required this.endTime,
+    required this.isExpired,
+    required this.lecturerId,
+    required this.name,
+    required this.startTime,
+    required this.totalPrice,
+  });
 
   factory Course.fromJson(Map<String, dynamic> json) => _$CourseFromJson(json);
-  factory Course.fromJson_(Map<String, dynamic> json) =>
-      _$CourseFromJson(getStartWithString_('course', json));
-}
-
-@EngineSQL('course')
-class CourseFields {
-  String? id;
-  String? lecturerId;
-  String? totalPrice;
-  String? name;
-  String? description;
-  String? startTime;
-  String? endTime;
-  String? isExpired;
+  Map<String, dynamic> toJson() => _$CourseToJson(this);
 }

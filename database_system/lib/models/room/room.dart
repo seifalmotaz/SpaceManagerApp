@@ -1,28 +1,25 @@
-import 'package:database_system/generators/src/engine_sql.dart';
+import 'package:engine_sql/engine_sql.dart';
 import 'package:database_system/models/func.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:json_annotation/json_annotation.dart';
 
-part 'room.freezed.dart';
 part 'room.g.dart';
 
-@freezed
-class Room with _$Room {
-  @JsonSerializable(fieldRename: FieldRename.snake)
-  factory Room({
-    int? id,
-    double? rate,
-    String? name,
-    @JsonKey(fromJson: DataCompiler.fromDBool, toJson: DataCompiler.toDBool)
-        bool? isDeleted,
-  }) = _Room;
+@JsonSerializable(fieldRename: FieldRename.snake)
+@EngineSQL('room')
+class Room {
+  int id;
+  double rate;
+  String name;
+  @boolKey
+  bool isDeleted;
+
+  Room({
+    required this.id,
+    required this.isDeleted,
+    required this.name,
+    required this.rate,
+  });
 
   factory Room.fromJson(Map<String, dynamic> json) => _$RoomFromJson(json);
-}
-
-@EngineSQL('room')
-class RoomFields {
-  String? id;
-  String? rate;
-  String? name;
-  String? isDeleted;
+  Map<String, dynamic> toJson() => _$RoomToJson(this);
 }

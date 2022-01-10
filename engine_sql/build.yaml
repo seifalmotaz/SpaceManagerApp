@@ -1,0 +1,29 @@
+targets:
+  $default:
+    builders:
+      engine_sql|sqlFieldsGen:
+        enabled: True
+        generate_for:
+          - lib/**/*
+
+      engine_sql|queryGen:
+        enabled: True
+        generate_for:
+          - lib/**/*
+
+builders:
+  sqlFieldsGen:
+    import: 'package:engine_sql/engine_sql.dart'
+    builder_factories: ['sqlFieldsGen']
+    auto_apply: dependents
+    build_extensions: {".dart": [".sql_fields.gen"]}
+    build_to: cache
+    applies_builders: ["source_gen|combining_builder"]
+  
+  queryGen:
+    import: 'package:engine_sql/engine_sql.dart'
+    builder_factories: ['queryGen']
+    auto_apply: dependents
+    build_extensions: {".dart": [".query.gen"]}
+    build_to: cache
+    applies_builders: ["source_gen|combining_builder"]

@@ -6,17 +6,17 @@ part of 'price.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_Price _$$_PriceFromJson(Map<String, dynamic> json) => _$_Price(
-      id: json['id'] as int?,
-      rate: (json['rate'] as num?)?.toDouble(),
-      description: json['description'] as String?,
-      isDefault: DataCompiler.fromDBool(json['is_default'] as int?),
-      isDeleted: DataCompiler.fromDBool(json['is_deleted'] as int?),
-      isPerDay: DataCompiler.fromDBool(json['is_per_day'] as int?),
-      createdDate: DataCompiler.fromDBDate(json['created_date'] as int?),
+Price _$PriceFromJson(Map<String, dynamic> json) => Price(
+      createdDate: DataCompiler.fromDBDate(json['created_date'] as int),
+      description: json['description'] as String,
+      id: json['id'] as int,
+      isDefault: DataCompiler.fromDBool(json['is_default'] as int),
+      isDeleted: DataCompiler.fromDBool(json['is_deleted'] as int),
+      isPerDay: DataCompiler.fromDBool(json['is_per_day'] as int),
+      rate: (json['rate'] as num).toDouble(),
     );
 
-Map<String, dynamic> _$$_PriceToJson(_$_Price instance) => <String, dynamic>{
+Map<String, dynamic> _$PriceToJson(Price instance) => <String, dynamic>{
       'id': instance.id,
       'rate': instance.rate,
       'description': instance.description,
@@ -27,10 +27,16 @@ Map<String, dynamic> _$$_PriceToJson(_$_Price instance) => <String, dynamic>{
     };
 
 // **************************************************************************
-// EngineSQLGenerator
+// Generator: QuerysGen
 // **************************************************************************
 
-extension PriceFieldsSQL on PriceFields {
+// hello
+
+// **************************************************************************
+// Generator: SqlFieldsGen
+// **************************************************************************
+
+extension PriceTable on Price {
   static Map<String, dynamic> getStartWithString_(String string, Map data) {
     Map<String, dynamic> newData = {};
     for (String key in data.keys.toList()) {
@@ -42,35 +48,44 @@ extension PriceFieldsSQL on PriceFields {
     return newData;
   }
 
-// \ // \ Start: id // \ // \
-  static String nativeId = 'price.id';
+  /// Field data: field ///
   static String id = 'id';
-// \ // \ End: id // \ // \
-// \ // \ Start: rate // \ // \
-  static String nativeRate = 'price.rate';
+  static String nativeId = 'price.id';
+
+  /// Field data: field ///
   static String rate = 'rate';
-// \ // \ End: rate // \ // \
-// \ // \ Start: description // \ // \
-  static String nativeDescription = 'price.description';
+  static String nativeRate = 'price.rate';
+
+  /// Field data: field ///
   static String description = 'description';
-// \ // \ End: description // \ // \
-// \ // \ Start: isDefault // \ // \
-  static String nativeIsDefault = 'price.is_default';
+  static String nativeDescription = 'price.description';
+
+  /// Field data: field ///
   static String isDefault = 'is_default';
-// \ // \ End: isDefault // \ // \
-// \ // \ Start: isDeleted // \ // \
-  static String nativeIsDeleted = 'price.is_deleted';
+  static String nativeIsDefault = 'price.is_default';
+
+  /// Field data: field ///
   static String isDeleted = 'is_deleted';
-// \ // \ End: isDeleted // \ // \
-// \ // \ Start: isPerDay // \ // \
-  static String nativeIsPerDay = 'price.is_per_day';
+  static String nativeIsDeleted = 'price.is_deleted';
+
+  /// Field data: field ///
   static String isPerDay = 'is_per_day';
-// \ // \ End: isPerDay // \ // \
-// \ // \ Start: createdDate // \ // \
-  static String nativeCreatedDate = 'price.created_date';
+  static String nativeIsPerDay = 'price.is_per_day';
+
+  /// Field data: field ///
   static String createdDate = 'created_date';
-// \ // \ End: createdDate // \ // \
+  static String nativeCreatedDate = 'price.created_date';
+
+  static const String sqlSelect = """
+    price.id AS price_id,
+    price.rate AS price_rate,
+    price.description AS price_description,
+    price.is_default AS price_is_default,
+    price.is_deleted AS price_is_deleted,
+    price.is_per_day AS price_is_per_day,
+    price.created_date AS price_created_date,
+  """;
 
   static fromJson(Map<String, dynamic> json) =>
-      _$$_PriceFromJson(getStartWithString_('price', json));
+      _$PriceFromJson(getStartWithString_('price', json));
 }

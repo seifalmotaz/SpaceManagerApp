@@ -1,3 +1,15 @@
+import 'package:json_annotation/json_annotation.dart';
+
+const dateTimeKey = JsonKey(
+  fromJson: DataCompiler.fromDBDate,
+  toJson: DataCompiler.toDBDate,
+);
+
+const boolKey = JsonKey(
+  fromJson: DataCompiler.fromDBool,
+  toJson: DataCompiler.toDBool,
+);
+
 Map<String, dynamic> getStartWithString_(String string, Map data) {
   Map<String, dynamic> newData = {};
   for (String key in data.keys.toList()) {
@@ -10,20 +22,11 @@ Map<String, dynamic> getStartWithString_(String string, Map data) {
 }
 
 class DataCompiler {
-  static fromDBool(int? i) => i == null
-      ? null
-      : i == 1
-          ? true
-          : false;
-  static toDBool(bool? i) => i == null
-      ? null
-      : i == true
-          ? 1
-          : 0;
+  static fromDBool(int i) => i == 1 ? true : false;
+  static toDBool(bool i) => i == true ? 1 : 0;
 
-  static DateTime? fromDBDate(int? datetime) => datetime == null
-      ? null
-      : DateTime.fromMillisecondsSinceEpoch(datetime * 1000);
-  static int? toDBDate(DateTime? datetime) =>
-      datetime == null ? null : (datetime.millisecondsSinceEpoch / 1000) as int;
+  static DateTime fromDBDate(int datetime) =>
+      DateTime.fromMillisecondsSinceEpoch(datetime * 1000);
+  static int toDBDate(DateTime datetime) =>
+      (datetime.millisecondsSinceEpoch / 1000) as int;
 }

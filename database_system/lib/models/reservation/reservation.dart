@@ -1,39 +1,87 @@
-import 'package:database_system/generators/src/engine_sql.dart';
+import 'package:engine_sql/engine_sql.dart';
 import 'package:database_system/models/func.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:json_annotation/json_annotation.dart';
 
-part 'reservation.freezed.dart';
 part 'reservation.g.dart';
 
-@freezed
-class Reservation with _$Reservation {
-  @JsonSerializable(fieldRename: FieldRename.snake)
-  factory Reservation({
-    int? id,
-    // pricing data
-    int? guestId,
-    int? roomId,
-    double? paidAmount,
-    // main data
-    @JsonKey(fromJson: DataCompiler.fromDBDate, toJson: DataCompiler.toDBDate)
-        DateTime? timeIn,
-    @JsonKey(fromJson: DataCompiler.fromDBDate, toJson: DataCompiler.toDBDate)
-        DateTime? timeOut,
-    @JsonKey(fromJson: DataCompiler.fromDBDate, toJson: DataCompiler.toDBDate)
-        DateTime? createdDate,
-  }) = _Reservation;
+class Reservation {
+  int id;
+  int guestId;
+  int courseId;
 
-  factory Reservation.fromJson(Map<String, dynamic> json) =>
-      _$ReservationFromJson(json);
+  @boolKey
+  bool isCancelled;
+  // main data
+  @dateTimeKey
+  DateTime timeIn;
+  @dateTimeKey
+  DateTime timeOut;
+  @dateTimeKey
+  DateTime createdDate;
+
+  Reservation({
+    required this.createdDate,
+    required this.guestId,
+    required this.id,
+    required this.timeIn,
+    required this.timeOut,
+    required this.courseId,
+    this.isCancelled = false,
+  });
 }
 
+@JsonSerializable(fieldRename: FieldRename.snake)
 @EngineSQL('reservation')
-class ReservationFields {
-  String? id;
-  String? guestId;
-  String? roomId;
-  String? paidAmount;
-  String? timeIn;
-  String? timeOut;
-  String? createdDate;
+class CourseReservation extends Reservation {
+  int roomId;
+
+  CourseReservation({
+    required courseId,
+    required this.roomId,
+    required createdDate,
+    required guestId,
+    required id,
+    required timeIn,
+    required timeOut,
+    isCancelled = false,
+  }) : super(
+          courseId: courseId,
+          createdDate: createdDate,
+          guestId: guestId,
+          id: id,
+          timeIn: timeIn,
+          timeOut: timeOut,
+          isCancelled: isCancelled,
+        );
+  factory CourseReservation.fromJson(Map<String, dynamic> json) =>
+      _$CourseReservationFromJson(json);
+  Map<String, dynamic> toJson() => _$CourseReservationToJson(this);
+}
+
+@JsonSerializable(fieldRename: FieldRename.snake)
+@EngineSQL('reservation')
+class GuestReservation extends Reservation {
+  double paidAmount;
+
+  GuestReservation({
+    required courseId,
+    required this.paidAmount,
+    required createdDate,
+    required guestId,
+    required id,
+    required timeIn,
+    required timeOut,
+    isCancelled = false,
+  }) : super(
+          courseId: courseId,
+          createdDate: createdDate,
+          guestId: guestId,
+          id: id,
+          timeIn: timeIn,
+          timeOut: timeOut,
+          isCancelled: isCancelled,
+        );
+  factory GuestReservation.fromJson(Map<String, dynamic> json) =>
+      _$GuestReservationFromJson(json);
+  Map<String, dynamic> toJson() => _$GuestReservationToJson(this);
 }

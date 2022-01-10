@@ -1,37 +1,33 @@
-import 'package:database_system/generators/src/engine_sql.dart';
+import 'package:engine_sql/engine_sql.dart';
 import 'package:database_system/models/func.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:json_annotation/json_annotation.dart';
 
-part 'price.freezed.dart';
 part 'price.g.dart';
 
-@freezed
-class Price with _$Price {
-  @JsonSerializable(fieldRename: FieldRename.snake)
-  factory Price({
-    int? id,
-    double? rate,
-    String? description,
-    @JsonKey(fromJson: DataCompiler.fromDBool, toJson: DataCompiler.toDBool)
-        bool? isDefault,
-    @JsonKey(fromJson: DataCompiler.fromDBool, toJson: DataCompiler.toDBool)
-        bool? isDeleted,
-    @JsonKey(fromJson: DataCompiler.fromDBool, toJson: DataCompiler.toDBool)
-        bool? isPerDay,
-    @JsonKey(fromJson: DataCompiler.fromDBDate, toJson: DataCompiler.toDBDate)
-        DateTime? createdDate,
-  }) = _Price;
+@JsonSerializable(fieldRename: FieldRename.snake)
+@EngineSQL('price')
+class Price {
+  int id;
+  double rate;
+  String description;
+  @boolKey
+  bool isDefault;
+  @boolKey
+  bool isDeleted;
+  @boolKey
+  bool isPerDay;
+  @dateTimeKey
+  DateTime createdDate;
+  Price({
+    required this.createdDate,
+    required this.description,
+    required this.id,
+    required this.isDefault,
+    required this.isDeleted,
+    required this.isPerDay,
+    required this.rate,
+  });
 
   factory Price.fromJson(Map<String, dynamic> json) => _$PriceFromJson(json);
-}
-
-@EngineSQL('price')
-class PriceFields {
-  String? id;
-  String? rate;
-  String? description;
-  String? isDefault;
-  String? isDeleted;
-  String? isPerDay;
-  String? createdDate;
+  Map<String, dynamic> toJson() => _$PriceToJson(this);
 }
