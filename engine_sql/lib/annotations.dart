@@ -1,6 +1,10 @@
 class EngineSQL {
-  final String tableName;
-  const EngineSQL(this.tableName);
+  final String name;
+  final Object sqlite;
+  const EngineSQL({
+    required this.name,
+    required this.sqlite,
+  });
 }
 
 class FieldSQL {

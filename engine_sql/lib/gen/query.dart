@@ -21,24 +21,25 @@ class QuerysGen extends GeneratorForAnnotation<EngineSQL> {
     AnnoClassVisitor visitor = AnnoClassVisitor(element.name!);
     (element).visitChildren(visitor);
     // get table name
-    String tableName = annotation.read('tableName').stringValue;
+    String name = annotation.read('name').stringValue;
+    String sqlite = annotation.read('sqlite').stringValue;
 
     helper.curlyBrackets('class ${visitor.name}Query', () {
-      buf.writeln("final Database db;");
-      buf.writeln("${visitor.name}Query(this.db);");
+      // buf.writeln("final Database db;");
+      // buf.writeln("${visitor.name}Query(this.db);");
       buf.writeln();
       buf.writeln("""
       Future<int> create({
         ${getFuncParms(visitor.fields)}
-      }) async => await db.insert('$tableName', {
+      }) async => await $sqlite.insert('$name', {
         ${getFuncFields(visitor.fields)}
       });
       """);
       buf.writeln();
       buf.writeln("""
       Future<${visitor.name}> read(int id) async {
-        List<Map<String, dynamic>> data = await db.query(
-          '$tableName', 
+        List<Map<String, dynamic>> data = await $sqlite.query(
+          '$name', 
           where: 'id = ?', 
           whereArgs: [id],
         );
@@ -50,8 +51,8 @@ class QuerysGen extends GeneratorForAnnotation<EngineSQL> {
       Future<int> update({
         required int id,
         ${getFuncParms(visitor.fields)}
-      }) async => await db.update(
-        '$tableName',
+      }) async => await $sqlite.update(
+        '$name',
         {
           ${getFuncFields(visitor.fields)}
         },
@@ -62,8 +63,8 @@ class QuerysGen extends GeneratorForAnnotation<EngineSQL> {
       buf.writeln();
       buf.writeln("""
       Future<int> delete(int id
-      ) async => await db.delete(
-        '$tableName', 
+      ) async => await $sqlite.delete(
+        '$name', 
         where: 'id = ?', 
         whereArgs: [id],
       );
@@ -76,11 +77,11 @@ class QuerysGen extends GeneratorForAnnotation<EngineSQL> {
           String fieldName = getSnakeFieldName(field['element'].name);
           if (!moreThanOne) {
             stringBuffer.writeln(
-                '\${${field['element'].name} == null ? "" : "$tableName.$fieldName IS NOT NULL"}');
+                '\${${field['element'].name} == null ? "" : "$name.$fieldName IS NOT NULL"}');
             moreThanOne = true;
           } else {
             stringBuffer.writeln(
-                '          \${${field['element'].name} == null ? "" : "AND $tableName.$fieldName IS NOT NULL"}');
+                '          \${${field['element'].name} == null ? "" : "AND $name.$fieldName IS NOT NULL"}');
           }
         }
       }
@@ -88,8 +89,8 @@ class QuerysGen extends GeneratorForAnnotation<EngineSQL> {
       Future<List<${visitor.name}>> find({
         ${getFuncParms(visitor.fields)}
       }) async {
-        List<Map<String, dynamic>> data = await db.query(
-          '$tableName', 
+        List<Map<String, dynamic>> data = await $sqlite.query(
+          '$name', 
           where: '''
           ${stringBuffer.toString()}
           AND \${${visitor.name}Table.sqlFindSchema}

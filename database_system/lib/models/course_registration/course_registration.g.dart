@@ -38,16 +38,13 @@ Map<String, dynamic> _$CourseRegistrationToJson(CourseRegistration instance) {
 // **************************************************************************
 
 class CourseRegistrationQuery {
-  final Database db;
-  CourseRegistrationQuery(this.db);
-
   Future<int> create({
     int? guestId,
     int? courseId,
     bool? isPaid,
     DateTime? createdDate,
   }) async =>
-      await db.insert('course_registration', {
+      await DBService.to.db.insert('course_registration', {
         if (guestId != null) 'guest_id': guestId,
         if (courseId != null) 'course_id': courseId,
         if (isPaid != null) 'is_paid': isPaid,
@@ -55,7 +52,7 @@ class CourseRegistrationQuery {
       });
 
   Future<CourseRegistration> read(int id) async {
-    List<Map<String, dynamic>> data = await db.query(
+    List<Map<String, dynamic>> data = await DBService.to.db.query(
       'course_registration',
       where: 'id = ?',
       whereArgs: [id],
@@ -70,7 +67,7 @@ class CourseRegistrationQuery {
     bool? isPaid,
     DateTime? createdDate,
   }) async =>
-      await db.update(
+      await DBService.to.db.update(
         'course_registration',
         {
           if (guestId != null) 'guest_id': guestId,
@@ -82,7 +79,7 @@ class CourseRegistrationQuery {
         whereArgs: [id],
       );
 
-  Future<int> delete(int id) async => await db.delete(
+  Future<int> delete(int id) async => await DBService.to.db.delete(
         'course_registration',
         where: 'id = ?',
         whereArgs: [id],
@@ -94,7 +91,7 @@ class CourseRegistrationQuery {
     bool? isPaid,
     DateTime? createdDate,
   }) async {
-    List<Map<String, dynamic>> data = await db.query(
+    List<Map<String, dynamic>> data = await DBService.to.db.query(
       'course_registration',
       where: '''
           ${guestId == null ? "" : "course_registration.guest_id IS NOT NULL"}
@@ -193,4 +190,7 @@ extension CourseRegistrationTable on CourseRegistration {
       return _$CourseRegistrationFromJson(json);
     }
   }
+
+  static filterFromJson(Map<String, dynamic> json) =>
+      schemaToJson(getStartWithString_('course_registration', json));
 }

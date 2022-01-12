@@ -1,8 +1,8 @@
 import 'package:engine_sql/engine_sql.dart';
 import 'package:database_system/models/func.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:database_system/db/service.dart';
 
-import 'package:sqflite_common/sqlite_api.dart';
 part 'reservation.g.dart';
 
 class Reservation {
@@ -40,7 +40,7 @@ class Reservation {
 }
 
 @JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
-@EngineSQL('reservation')
+@EngineSQL(name: 'reservation', sqlite: 'DBService.to.db')
 class CourseReservation extends Reservation {
   int roomId;
 
@@ -68,7 +68,7 @@ class CourseReservation extends Reservation {
 }
 
 @JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
-@EngineSQL('reservation')
+@EngineSQL(name: 'reservation', sqlite: 'DBService.to.db')
 class GuestReservation extends Reservation {
   double paidAmount;
 

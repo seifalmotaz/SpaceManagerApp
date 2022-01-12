@@ -17,7 +17,7 @@ class SqlFieldsGen extends GeneratorForAnnotation<EngineSQL> {
     StringBuffer buf = StringBuffer();
     WritingHelper helper = WritingHelper(buf);
     // get table name
-    String tableName = annotation.read('tableName').stringValue;
+    String name = annotation.read('name').stringValue;
     // get element as class
     ClassElement classElement = element as ClassElement;
     // classes
@@ -33,13 +33,13 @@ class SqlFieldsGen extends GeneratorForAnnotation<EngineSQL> {
     String extentionName = 'extension ${element.name}Table on ${element.name}';
     helper.curlyBrackets(extentionName, () {
       stander(buf);
-      writeFields(buf, tableName, allFields.map((e) => e.name).toList());
+      writeFields(buf, name, allFields.map((e) => e.name).toList());
       //
       //* writing native fields to use in sql select statement
       buf.writeln('static const String sqlSelect = """');
       for (FieldElement field in allFields) {
         String fieldName = getSnakeFieldName(field.name);
-        buf.writeln("    $tableName.$fieldName AS ${tableName}_$fieldName,");
+        buf.writeln("    $name.$fieldName AS ${name}_$fieldName,");
       }
       buf.writeln('  """;');
       //
@@ -50,10 +50,10 @@ class SqlFieldsGen extends GeneratorForAnnotation<EngineSQL> {
         if (!field.type.toString().endsWith('?')) {
           String fieldName = getSnakeFieldName(field.name);
           if (!moreThanOne) {
-            buf.writeln("    $tableName.$fieldName IS NOT NULL");
+            buf.writeln("    $name.$fieldName IS NOT NULL");
             moreThanOne = true;
           } else {
-            buf.writeln("    AND $tableName.$fieldName IS NOT NULL");
+            buf.writeln("    AND $name.$fieldName IS NOT NULL");
           }
         }
       }
@@ -71,7 +71,7 @@ class SqlFieldsGen extends GeneratorForAnnotation<EngineSQL> {
       buf.writeln();
       //* writing from sql json data
       buf.writeln("""static fromJson(Map<String, dynamic> json) => 
-          _\$${element.name}FromJson(getStartWithString_('$tableName', json));""");
+          _\$${element.name}FromJson(getStartWithString_('$name', json));""");
       buf.writeln();
       String funcName =
           'static ${classElement.name}? schemaToJson(Map<String, dynamic> json)';
@@ -87,6 +87,9 @@ class SqlFieldsGen extends GeneratorForAnnotation<EngineSQL> {
           buf.writeln('return _\$${element.name}FromJson(json);');
         });
       });
+      buf.writeln();
+      buf.writeln("""static filterFromJson(Map<String, dynamic> json) => 
+          schemaToJson(getStartWithString_('$name', json));""");
     });
 
     return buf.toString();

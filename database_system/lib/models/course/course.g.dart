@@ -43,9 +43,6 @@ Map<String, dynamic> _$CourseToJson(Course instance) {
 // **************************************************************************
 
 class CourseQuery {
-  final Database db;
-  CourseQuery(this.db);
-
   Future<int> create({
     int? lecturerId,
     double? totalPrice,
@@ -55,7 +52,7 @@ class CourseQuery {
     DateTime? endTime,
     bool? isExpired,
   }) async =>
-      await db.insert('course', {
+      await DBService.to.db.insert('course', {
         if (lecturerId != null) 'lecturer_id': lecturerId,
         if (totalPrice != null) 'total_price': totalPrice,
         if (name != null) 'name': name,
@@ -66,7 +63,7 @@ class CourseQuery {
       });
 
   Future<Course> read(int id) async {
-    List<Map<String, dynamic>> data = await db.query(
+    List<Map<String, dynamic>> data = await DBService.to.db.query(
       'course',
       where: 'id = ?',
       whereArgs: [id],
@@ -84,7 +81,7 @@ class CourseQuery {
     DateTime? endTime,
     bool? isExpired,
   }) async =>
-      await db.update(
+      await DBService.to.db.update(
         'course',
         {
           if (lecturerId != null) 'lecturer_id': lecturerId,
@@ -99,7 +96,7 @@ class CourseQuery {
         whereArgs: [id],
       );
 
-  Future<int> delete(int id) async => await db.delete(
+  Future<int> delete(int id) async => await DBService.to.db.delete(
         'course',
         where: 'id = ?',
         whereArgs: [id],
@@ -114,7 +111,7 @@ class CourseQuery {
     DateTime? endTime,
     bool? isExpired,
   }) async {
-    List<Map<String, dynamic>> data = await db.query(
+    List<Map<String, dynamic>> data = await DBService.to.db.query(
       'course',
       where: '''
           ${lecturerId == null ? "" : "course.lecturer_id IS NOT NULL"}
@@ -240,4 +237,7 @@ extension CourseTable on Course {
       return _$CourseFromJson(json);
     }
   }
+
+  static filterFromJson(Map<String, dynamic> json) =>
+      schemaToJson(getStartWithString_('course', json));
 }

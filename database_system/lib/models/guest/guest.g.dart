@@ -49,9 +49,6 @@ Map<String, dynamic> _$GuestToJson(Guest instance) {
 // **************************************************************************
 
 class GuestQuery {
-  final Database db;
-  GuestQuery(this.db);
-
   Future<int> create({
     DateTime? createdDate,
     bool? isExpired,
@@ -64,7 +61,7 @@ class GuestQuery {
     String? nationalID,
     String? nationalIdPic,
   }) async =>
-      await db.insert('guest', {
+      await DBService.to.db.insert('guest', {
         if (createdDate != null) 'created_date': createdDate,
         if (isExpired != null) 'is_expired': isExpired,
         if (name != null) 'name': name,
@@ -78,7 +75,7 @@ class GuestQuery {
       });
 
   Future<Guest> read(int id) async {
-    List<Map<String, dynamic>> data = await db.query(
+    List<Map<String, dynamic>> data = await DBService.to.db.query(
       'guest',
       where: 'id = ?',
       whereArgs: [id],
@@ -99,7 +96,7 @@ class GuestQuery {
     String? nationalID,
     String? nationalIdPic,
   }) async =>
-      await db.update(
+      await DBService.to.db.update(
         'guest',
         {
           if (createdDate != null) 'created_date': createdDate,
@@ -117,7 +114,7 @@ class GuestQuery {
         whereArgs: [id],
       );
 
-  Future<int> delete(int id) async => await db.delete(
+  Future<int> delete(int id) async => await DBService.to.db.delete(
         'guest',
         where: 'id = ?',
         whereArgs: [id],
@@ -135,7 +132,7 @@ class GuestQuery {
     String? nationalID,
     String? nationalIdPic,
   }) async {
-    List<Map<String, dynamic>> data = await db.query(
+    List<Map<String, dynamic>> data = await DBService.to.db.query(
       'guest',
       where: '''
           ${createdDate == null ? "" : "guest.created_date IS NOT NULL"}
@@ -288,4 +285,7 @@ extension GuestTable on Guest {
       return _$GuestFromJson(json);
     }
   }
+
+  static filterFromJson(Map<String, dynamic> json) =>
+      schemaToJson(getStartWithString_('guest', json));
 }

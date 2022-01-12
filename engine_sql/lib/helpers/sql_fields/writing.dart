@@ -51,13 +51,13 @@ String getSnakeFieldName(String name) {
 /// ```dart
 /// static String fieldName = 'field_name'
 /// ```
-writeFields(StringBuffer buf, String tableName, List<String> allFields) {
+writeFields(StringBuffer buf, String name, List<String> allFields) {
   for (String field in allFields) {
     // fieldName to FieldName
     String varName = field[0].toUpperCase() + field.substring(1);
     // get other names
     String fieldSnakeName = getSnakeFieldName(field);
-    String fieldNativeName = getNative(tableName, fieldSnakeName);
+    String fieldNativeName = getNative(name, fieldSnakeName);
     //* writing
     buf.writeln('');
     buf.writeln("/// Field data: field ///");

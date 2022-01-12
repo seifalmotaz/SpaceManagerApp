@@ -43,9 +43,6 @@ Map<String, dynamic> _$PriceToJson(Price instance) {
 // **************************************************************************
 
 class PriceQuery {
-  final Database db;
-  PriceQuery(this.db);
-
   Future<int> create({
     double? rate,
     String? description,
@@ -55,7 +52,7 @@ class PriceQuery {
     bool? isPerDay,
     DateTime? createdDate,
   }) async =>
-      await db.insert('price', {
+      await DBService.to.db.insert('price', {
         if (rate != null) 'rate': rate,
         if (description != null) 'description': description,
         if (options != null) 'options': options,
@@ -66,7 +63,7 @@ class PriceQuery {
       });
 
   Future<Price> read(int id) async {
-    List<Map<String, dynamic>> data = await db.query(
+    List<Map<String, dynamic>> data = await DBService.to.db.query(
       'price',
       where: 'id = ?',
       whereArgs: [id],
@@ -84,7 +81,7 @@ class PriceQuery {
     bool? isPerDay,
     DateTime? createdDate,
   }) async =>
-      await db.update(
+      await DBService.to.db.update(
         'price',
         {
           if (rate != null) 'rate': rate,
@@ -99,7 +96,7 @@ class PriceQuery {
         whereArgs: [id],
       );
 
-  Future<int> delete(int id) async => await db.delete(
+  Future<int> delete(int id) async => await DBService.to.db.delete(
         'price',
         where: 'id = ?',
         whereArgs: [id],
@@ -114,7 +111,7 @@ class PriceQuery {
     bool? isPerDay,
     DateTime? createdDate,
   }) async {
-    List<Map<String, dynamic>> data = await db.query(
+    List<Map<String, dynamic>> data = await DBService.to.db.query(
       'price',
       where: '''
           ${rate == null ? "" : "price.rate IS NOT NULL"}
@@ -239,4 +236,7 @@ extension PriceTable on Price {
       return _$PriceFromJson(json);
     }
   }
+
+  static filterFromJson(Map<String, dynamic> json) =>
+      schemaToJson(getStartWithString_('price', json));
 }

@@ -35,22 +35,19 @@ Map<String, dynamic> _$RoomToJson(Room instance) {
 // **************************************************************************
 
 class RoomQuery {
-  final Database db;
-  RoomQuery(this.db);
-
   Future<int> create({
     double? rate,
     String? name,
     bool? isDeleted,
   }) async =>
-      await db.insert('room', {
+      await DBService.to.db.insert('room', {
         if (rate != null) 'rate': rate,
         if (name != null) 'name': name,
         if (isDeleted != null) 'is_deleted': isDeleted,
       });
 
   Future<Room> read(int id) async {
-    List<Map<String, dynamic>> data = await db.query(
+    List<Map<String, dynamic>> data = await DBService.to.db.query(
       'room',
       where: 'id = ?',
       whereArgs: [id],
@@ -64,7 +61,7 @@ class RoomQuery {
     String? name,
     bool? isDeleted,
   }) async =>
-      await db.update(
+      await DBService.to.db.update(
         'room',
         {
           if (rate != null) 'rate': rate,
@@ -75,7 +72,7 @@ class RoomQuery {
         whereArgs: [id],
       );
 
-  Future<int> delete(int id) async => await db.delete(
+  Future<int> delete(int id) async => await DBService.to.db.delete(
         'room',
         where: 'id = ?',
         whereArgs: [id],
@@ -86,7 +83,7 @@ class RoomQuery {
     String? name,
     bool? isDeleted,
   }) async {
-    List<Map<String, dynamic>> data = await db.query(
+    List<Map<String, dynamic>> data = await DBService.to.db.query(
       'room',
       where: '''
           ${rate == null ? "" : "room.rate IS NOT NULL"}
@@ -176,4 +173,7 @@ extension RoomTable on Room {
       return _$RoomFromJson(json);
     }
   }
+
+  static filterFromJson(Map<String, dynamic> json) =>
+      schemaToJson(getStartWithString_('room', json));
 }
