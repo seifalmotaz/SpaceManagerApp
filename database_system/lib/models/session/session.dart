@@ -2,10 +2,12 @@ import 'package:engine_sql/engine_sql.dart';
 import 'package:database_system/models/func.dart';
 import 'package:json_annotation/json_annotation.dart';
 
+import 'package:sqflite_common/sqlite_api.dart';
 part 'session.g.dart';
 
 class Session {
-  int id;
+  @FieldSQL(primary: true)
+  final int id;
   // main data
   @dateTimeKey
   DateTime timeIn;
@@ -16,9 +18,17 @@ class Session {
     required this.timeIn,
     required this.timeOut,
   });
+
+  factory Session.fromJson(Map<String, dynamic> json) {
+    dynamic session;
+    session ??= GuestSessionTable.schemaToJson(json);
+    session ??= RoomSessionTable.schemaToJson(json);
+    session ??= CourseSessionTable.schemaToJson(json);
+    return session!;
+  }
 }
 
-@JsonSerializable(fieldRename: FieldRename.snake)
+@JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
 @EngineSQL('session')
 class GuestSession extends Session {
   int guestCount;
@@ -45,22 +55,22 @@ class GuestSession extends Session {
   Map<String, dynamic> toJson() => _$GuestSessionToJson(this);
 }
 
-@JsonSerializable(fieldRename: FieldRename.snake)
+@JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
 @EngineSQL('session')
 class RoomSession extends Session {
   int roomId;
   double paidAmount;
   int guestId;
-  int reservationId;
+  int? reservationId;
 
   RoomSession({
     required this.paidAmount,
     required this.guestId,
     required this.roomId,
-    required this.reservationId,
     required id,
     required timeIn,
     required timeOut,
+    this.reservationId,
   }) : super(
           id: id,
           timeIn: timeIn,
@@ -72,14 +82,16 @@ class RoomSession extends Session {
   Map<String, dynamic> toJson() => _$RoomSessionToJson(this);
 }
 
-@JsonSerializable(fieldRename: FieldRename.snake)
+@JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
 @EngineSQL('session')
 class CourseSession extends Session {
+  int roomId;
   int courseId;
   int guestCount;
   int reservationId;
 
   CourseSession({
+    required this.roomId,
     required this.courseId,
     required this.guestCount,
     required this.reservationId,

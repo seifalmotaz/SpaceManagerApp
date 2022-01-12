@@ -13,18 +13,98 @@ Room _$RoomFromJson(Map<String, dynamic> json) => Room(
       rate: (json['rate'] as num).toDouble(),
     );
 
-Map<String, dynamic> _$RoomToJson(Room instance) => <String, dynamic>{
-      'id': instance.id,
-      'rate': instance.rate,
-      'name': instance.name,
-      'is_deleted': DataCompiler.toDBool(instance.isDeleted),
-    };
+Map<String, dynamic> _$RoomToJson(Room instance) {
+  final val = <String, dynamic>{
+    'id': instance.id,
+    'rate': instance.rate,
+    'name': instance.name,
+  };
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('is_deleted', DataCompiler.toDBool(instance.isDeleted));
+  return val;
+}
 
 // **************************************************************************
 // Generator: QuerysGen
 // **************************************************************************
 
-// hello
+class RoomQuery {
+  final Database db;
+  RoomQuery(this.db);
+
+  Future<int> create({
+    double? rate,
+    String? name,
+    bool? isDeleted,
+  }) async =>
+      await db.insert('room', {
+        if (rate != null) 'rate': rate,
+        if (name != null) 'name': name,
+        if (isDeleted != null) 'is_deleted': isDeleted,
+      });
+
+  Future<Room> read(int id) async {
+    List<Map<String, dynamic>> data = await db.query(
+      'room',
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+    return Room.fromJson(data.first);
+  }
+
+  Future<int> update({
+    required int id,
+    double? rate,
+    String? name,
+    bool? isDeleted,
+  }) async =>
+      await db.update(
+        'room',
+        {
+          if (rate != null) 'rate': rate,
+          if (name != null) 'name': name,
+          if (isDeleted != null) 'is_deleted': isDeleted,
+        },
+        where: 'id = ?',
+        whereArgs: [id],
+      );
+
+  Future<int> delete(int id) async => await db.delete(
+        'room',
+        where: 'id = ?',
+        whereArgs: [id],
+      );
+
+  Future<List<Room>> find({
+    double? rate,
+    String? name,
+    bool? isDeleted,
+  }) async {
+    List<Map<String, dynamic>> data = await db.query(
+      'room',
+      where: '''
+          ${rate == null ? "" : "room.rate IS NOT NULL"}
+          ${name == null ? "" : "AND room.name IS NOT NULL"}
+          ${isDeleted == null ? "" : "AND room.is_deleted IS NOT NULL"}
+
+          AND ${RoomTable.sqlFindSchema}
+          ''',
+      whereArgs: [
+        rate,
+        name,
+        isDeleted,
+      ],
+    );
+
+    return data.map((e) => Room.fromJson(e)).toList();
+  }
+}
 
 // **************************************************************************
 // Generator: SqlFieldsGen
@@ -65,6 +145,35 @@ extension RoomTable on Room {
     room.is_deleted AS room_is_deleted,
   """;
 
+  static const String sqlFindSchema = """
+    room.id IS NOT NULL
+    AND room.rate IS NOT NULL
+    AND room.name IS NOT NULL
+    AND room.is_deleted IS NOT NULL
+  """;
+
+  static const List schemaMap = [
+    'id',
+    'rate',
+    'name',
+    'is_deleted',
+  ];
+
   static fromJson(Map<String, dynamic> json) =>
       _$RoomFromJson(getStartWithString_('room', json));
+
+  static Room? schemaToJson(Map<String, dynamic> json) {
+    bool valid = true;
+
+    for (String i in json.keys) {
+      if (!schemaMap.contains(i)) {
+        valid = false;
+        break;
+      }
+    }
+
+    if (valid) {
+      return _$RoomFromJson(json);
+    }
+  }
 }

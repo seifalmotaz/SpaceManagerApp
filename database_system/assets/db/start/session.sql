@@ -9,6 +9,7 @@ DROP TABLE IF EXISTS price;
 CREATE TABLE price (
     id INTEGER NOT NULL PRIMARY KEY,
     rate FLOAT NOT NULL,
+    options TEXT NULL,
     description VARCHAR(200) NULL DEFAULT 'Workspace price rate',
     is_default BOOLEAN DEFAULT FALSE,
     is_deleted BOOLEAN DEFAULT FALSE,

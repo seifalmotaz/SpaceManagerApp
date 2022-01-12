@@ -2,10 +2,12 @@ import 'package:engine_sql/engine_sql.dart';
 import 'package:database_system/models/func.dart';
 import 'package:json_annotation/json_annotation.dart';
 
+import 'package:sqflite_common/sqlite_api.dart';
 part 'reservation.g.dart';
 
 class Reservation {
-  int id;
+  @FieldSQL(primary: true)
+  final int id;
   int guestId;
   int courseId;
 
@@ -28,9 +30,16 @@ class Reservation {
     required this.courseId,
     this.isCancelled = false,
   });
+
+  factory Reservation.fromJson(Map<String, dynamic> json) {
+    dynamic reservation;
+    reservation ??= CourseReservationTable.schemaToJson(json);
+    reservation ??= GuestReservationTable.schemaToJson(json);
+    return reservation!;
+  }
 }
 
-@JsonSerializable(fieldRename: FieldRename.snake)
+@JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
 @EngineSQL('reservation')
 class CourseReservation extends Reservation {
   int roomId;
@@ -58,7 +67,7 @@ class CourseReservation extends Reservation {
   Map<String, dynamic> toJson() => _$CourseReservationToJson(this);
 }
 
-@JsonSerializable(fieldRename: FieldRename.snake)
+@JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
 @EngineSQL('reservation')
 class GuestReservation extends Reservation {
   double paidAmount;

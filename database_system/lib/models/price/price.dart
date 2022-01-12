@@ -2,14 +2,18 @@ import 'package:engine_sql/engine_sql.dart';
 import 'package:database_system/models/func.dart';
 import 'package:json_annotation/json_annotation.dart';
 
+import 'package:sqflite_common/sqlite_api.dart';
 part 'price.g.dart';
 
-@JsonSerializable(fieldRename: FieldRename.snake)
+@JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
 @EngineSQL('price')
 class Price {
-  int id;
+  @FieldSQL(primary: true)
+  final int id;
   double rate;
   String description;
+  @jsonKey
+  Map? options;
   @boolKey
   bool isDefault;
   @boolKey
@@ -26,6 +30,7 @@ class Price {
     required this.isDeleted,
     required this.isPerDay,
     required this.rate,
+    this.options,
   });
 
   factory Price.fromJson(Map<String, dynamic> json) => _$PriceFromJson(json);

@@ -20,25 +20,154 @@ Guest _$GuestFromJson(Map<String, dynamic> json) => Guest(
       phone: json['phone'] as String,
     );
 
-Map<String, dynamic> _$GuestToJson(Guest instance) => <String, dynamic>{
-      'id': instance.id,
-      'created_date': DataCompiler.toDBDate(instance.createdDate),
-      'is_expired': instance.isExpired,
-      'name': instance.name,
-      'email': instance.email,
-      'phone': instance.phone,
-      'password': instance.password,
-      'is_admin': instance.isAdmin,
-      'is_staff': instance.isStaff,
-      'national_i_d': instance.nationalID,
-      'national_id_pic': instance.nationalIdPic,
-    };
+Map<String, dynamic> _$GuestToJson(Guest instance) {
+  final val = <String, dynamic>{
+    'id': instance.id,
+  };
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('created_date', DataCompiler.toDBDate(instance.createdDate));
+  val['is_expired'] = instance.isExpired;
+  val['name'] = instance.name;
+  val['email'] = instance.email;
+  val['phone'] = instance.phone;
+  val['password'] = instance.password;
+  val['is_admin'] = instance.isAdmin;
+  val['is_staff'] = instance.isStaff;
+  val['national_i_d'] = instance.nationalID;
+  val['national_id_pic'] = instance.nationalIdPic;
+  return val;
+}
 
 // **************************************************************************
 // Generator: QuerysGen
 // **************************************************************************
 
-// hello
+class GuestQuery {
+  final Database db;
+  GuestQuery(this.db);
+
+  Future<int> create({
+    DateTime? createdDate,
+    bool? isExpired,
+    String? name,
+    String? email,
+    String? phone,
+    String? password,
+    bool? isAdmin,
+    bool? isStaff,
+    String? nationalID,
+    String? nationalIdPic,
+  }) async =>
+      await db.insert('guest', {
+        if (createdDate != null) 'created_date': createdDate,
+        if (isExpired != null) 'is_expired': isExpired,
+        if (name != null) 'name': name,
+        if (email != null) 'email': email,
+        if (phone != null) 'phone': phone,
+        if (password != null) 'password': password,
+        if (isAdmin != null) 'is_admin': isAdmin,
+        if (isStaff != null) 'is_staff': isStaff,
+        if (nationalID != null) 'national_i_d': nationalID,
+        if (nationalIdPic != null) 'national_id_pic': nationalIdPic,
+      });
+
+  Future<Guest> read(int id) async {
+    List<Map<String, dynamic>> data = await db.query(
+      'guest',
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+    return Guest.fromJson(data.first);
+  }
+
+  Future<int> update({
+    required int id,
+    DateTime? createdDate,
+    bool? isExpired,
+    String? name,
+    String? email,
+    String? phone,
+    String? password,
+    bool? isAdmin,
+    bool? isStaff,
+    String? nationalID,
+    String? nationalIdPic,
+  }) async =>
+      await db.update(
+        'guest',
+        {
+          if (createdDate != null) 'created_date': createdDate,
+          if (isExpired != null) 'is_expired': isExpired,
+          if (name != null) 'name': name,
+          if (email != null) 'email': email,
+          if (phone != null) 'phone': phone,
+          if (password != null) 'password': password,
+          if (isAdmin != null) 'is_admin': isAdmin,
+          if (isStaff != null) 'is_staff': isStaff,
+          if (nationalID != null) 'national_i_d': nationalID,
+          if (nationalIdPic != null) 'national_id_pic': nationalIdPic,
+        },
+        where: 'id = ?',
+        whereArgs: [id],
+      );
+
+  Future<int> delete(int id) async => await db.delete(
+        'guest',
+        where: 'id = ?',
+        whereArgs: [id],
+      );
+
+  Future<List<Guest>> find({
+    DateTime? createdDate,
+    bool? isExpired,
+    String? name,
+    String? email,
+    String? phone,
+    String? password,
+    bool? isAdmin,
+    bool? isStaff,
+    String? nationalID,
+    String? nationalIdPic,
+  }) async {
+    List<Map<String, dynamic>> data = await db.query(
+      'guest',
+      where: '''
+          ${createdDate == null ? "" : "guest.created_date IS NOT NULL"}
+          ${isExpired == null ? "" : "AND guest.is_expired IS NOT NULL"}
+          ${name == null ? "" : "AND guest.name IS NOT NULL"}
+          ${email == null ? "" : "AND guest.email IS NOT NULL"}
+          ${phone == null ? "" : "AND guest.phone IS NOT NULL"}
+          ${password == null ? "" : "AND guest.password IS NOT NULL"}
+          ${isAdmin == null ? "" : "AND guest.is_admin IS NOT NULL"}
+          ${isStaff == null ? "" : "AND guest.is_staff IS NOT NULL"}
+          ${nationalID == null ? "" : "AND guest.national_i_d IS NOT NULL"}
+          ${nationalIdPic == null ? "" : "AND guest.national_id_pic IS NOT NULL"}
+
+          AND ${GuestTable.sqlFindSchema}
+          ''',
+      whereArgs: [
+        createdDate,
+        isExpired,
+        name,
+        email,
+        phone,
+        password,
+        isAdmin,
+        isStaff,
+        nationalID,
+        nationalIdPic,
+      ],
+    );
+
+    return data.map((e) => Guest.fromJson(e)).toList();
+  }
+}
 
 // **************************************************************************
 // Generator: SqlFieldsGen
@@ -114,6 +243,49 @@ extension GuestTable on Guest {
     guest.national_id_pic AS guest_national_id_pic,
   """;
 
+  static const String sqlFindSchema = """
+    guest.id IS NOT NULL
+    AND guest.created_date IS NOT NULL
+    AND guest.is_expired IS NOT NULL
+    AND guest.name IS NOT NULL
+    AND guest.email IS NOT NULL
+    AND guest.phone IS NOT NULL
+    AND guest.password IS NOT NULL
+    AND guest.is_admin IS NOT NULL
+    AND guest.is_staff IS NOT NULL
+    AND guest.national_i_d IS NOT NULL
+    AND guest.national_id_pic IS NOT NULL
+  """;
+
+  static const List schemaMap = [
+    'id',
+    'created_date',
+    'is_expired',
+    'name',
+    'email',
+    'phone',
+    'password',
+    'is_admin',
+    'is_staff',
+    'national_i_d',
+    'national_id_pic',
+  ];
+
   static fromJson(Map<String, dynamic> json) =>
       _$GuestFromJson(getStartWithString_('guest', json));
+
+  static Guest? schemaToJson(Map<String, dynamic> json) {
+    bool valid = true;
+
+    for (String i in json.keys) {
+      if (!schemaMap.contains(i)) {
+        valid = false;
+        break;
+      }
+    }
+
+    if (valid) {
+      return _$GuestFromJson(json);
+    }
+  }
 }

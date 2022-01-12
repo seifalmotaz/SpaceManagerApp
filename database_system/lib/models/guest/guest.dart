@@ -2,13 +2,16 @@ import 'package:engine_sql/engine_sql.dart';
 import 'package:database_system/models/func.dart';
 import 'package:json_annotation/json_annotation.dart';
 
+import 'package:sqflite_common/sqlite_api.dart';
 part 'guest.g.dart';
 
-@JsonSerializable(fieldRename: FieldRename.snake)
+@JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
 @EngineSQL('guest')
 class Guest {
   // Main data
-  int id;
+
+  @FieldSQL(primary: true)
+  final int id;
   @dateTimeKey
   DateTime createdDate;
   bool isExpired;

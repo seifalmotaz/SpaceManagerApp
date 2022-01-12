@@ -20,17 +20,26 @@ CourseReservation _$CourseReservationFromJson(Map<String, dynamic> json) =>
           : DataCompiler.fromDBool(json['is_cancelled'] as int),
     );
 
-Map<String, dynamic> _$CourseReservationToJson(CourseReservation instance) =>
-    <String, dynamic>{
-      'id': instance.id,
-      'guest_id': instance.guestId,
-      'course_id': instance.courseId,
-      'is_cancelled': DataCompiler.toDBool(instance.isCancelled),
-      'time_in': DataCompiler.toDBDate(instance.timeIn),
-      'time_out': DataCompiler.toDBDate(instance.timeOut),
-      'created_date': DataCompiler.toDBDate(instance.createdDate),
-      'room_id': instance.roomId,
-    };
+Map<String, dynamic> _$CourseReservationToJson(CourseReservation instance) {
+  final val = <String, dynamic>{
+    'id': instance.id,
+    'guest_id': instance.guestId,
+    'course_id': instance.courseId,
+  };
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('is_cancelled', DataCompiler.toDBool(instance.isCancelled));
+  writeNotNull('time_in', DataCompiler.toDBDate(instance.timeIn));
+  writeNotNull('time_out', DataCompiler.toDBDate(instance.timeOut));
+  writeNotNull('created_date', DataCompiler.toDBDate(instance.createdDate));
+  val['room_id'] = instance.roomId;
+  return val;
+}
 
 GuestReservation _$GuestReservationFromJson(Map<String, dynamic> json) =>
     GuestReservation(
@@ -46,23 +55,146 @@ GuestReservation _$GuestReservationFromJson(Map<String, dynamic> json) =>
           : DataCompiler.fromDBool(json['is_cancelled'] as int),
     );
 
-Map<String, dynamic> _$GuestReservationToJson(GuestReservation instance) =>
-    <String, dynamic>{
-      'id': instance.id,
-      'guest_id': instance.guestId,
-      'course_id': instance.courseId,
-      'is_cancelled': DataCompiler.toDBool(instance.isCancelled),
-      'time_in': DataCompiler.toDBDate(instance.timeIn),
-      'time_out': DataCompiler.toDBDate(instance.timeOut),
-      'created_date': DataCompiler.toDBDate(instance.createdDate),
-      'paid_amount': instance.paidAmount,
-    };
+Map<String, dynamic> _$GuestReservationToJson(GuestReservation instance) {
+  final val = <String, dynamic>{
+    'id': instance.id,
+    'guest_id': instance.guestId,
+    'course_id': instance.courseId,
+  };
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('is_cancelled', DataCompiler.toDBool(instance.isCancelled));
+  writeNotNull('time_in', DataCompiler.toDBDate(instance.timeIn));
+  writeNotNull('time_out', DataCompiler.toDBDate(instance.timeOut));
+  writeNotNull('created_date', DataCompiler.toDBDate(instance.createdDate));
+  val['paid_amount'] = instance.paidAmount;
+  return val;
+}
 
 // **************************************************************************
 // Generator: QuerysGen
 // **************************************************************************
 
-// hello
+class CourseReservationQuery {
+  final Database db;
+  CourseReservationQuery(this.db);
+
+  Future<int> create({
+    int? roomId,
+  }) async =>
+      await db.insert('reservation', {
+        if (roomId != null) 'room_id': roomId,
+      });
+
+  Future<CourseReservation> read(int id) async {
+    List<Map<String, dynamic>> data = await db.query(
+      'reservation',
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+    return CourseReservation.fromJson(data.first);
+  }
+
+  Future<int> update({
+    required int id,
+    int? roomId,
+  }) async =>
+      await db.update(
+        'reservation',
+        {
+          if (roomId != null) 'room_id': roomId,
+        },
+        where: 'id = ?',
+        whereArgs: [id],
+      );
+
+  Future<int> delete(int id) async => await db.delete(
+        'reservation',
+        where: 'id = ?',
+        whereArgs: [id],
+      );
+
+  Future<List<CourseReservation>> find({
+    int? roomId,
+  }) async {
+    List<Map<String, dynamic>> data = await db.query(
+      'reservation',
+      where: '''
+          ${roomId == null ? "" : "reservation.room_id IS NOT NULL"}
+
+          AND ${CourseReservationTable.sqlFindSchema}
+          ''',
+      whereArgs: [
+        roomId,
+      ],
+    );
+
+    return data.map((e) => CourseReservation.fromJson(e)).toList();
+  }
+}
+
+class GuestReservationQuery {
+  final Database db;
+  GuestReservationQuery(this.db);
+
+  Future<int> create({
+    double? paidAmount,
+  }) async =>
+      await db.insert('reservation', {
+        if (paidAmount != null) 'paid_amount': paidAmount,
+      });
+
+  Future<GuestReservation> read(int id) async {
+    List<Map<String, dynamic>> data = await db.query(
+      'reservation',
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+    return GuestReservation.fromJson(data.first);
+  }
+
+  Future<int> update({
+    required int id,
+    double? paidAmount,
+  }) async =>
+      await db.update(
+        'reservation',
+        {
+          if (paidAmount != null) 'paid_amount': paidAmount,
+        },
+        where: 'id = ?',
+        whereArgs: [id],
+      );
+
+  Future<int> delete(int id) async => await db.delete(
+        'reservation',
+        where: 'id = ?',
+        whereArgs: [id],
+      );
+
+  Future<List<GuestReservation>> find({
+    double? paidAmount,
+  }) async {
+    List<Map<String, dynamic>> data = await db.query(
+      'reservation',
+      where: '''
+          ${paidAmount == null ? "" : "reservation.paid_amount IS NOT NULL"}
+
+          AND ${GuestReservationTable.sqlFindSchema}
+          ''',
+      whereArgs: [
+        paidAmount,
+      ],
+    );
+
+    return data.map((e) => GuestReservation.fromJson(e)).toList();
+  }
+}
 
 // **************************************************************************
 // Generator: SqlFieldsGen
@@ -123,8 +255,45 @@ extension CourseReservationTable on CourseReservation {
     reservation.created_date AS reservation_created_date,
   """;
 
+  static const String sqlFindSchema = """
+    reservation.room_id IS NOT NULL
+    AND reservation.id IS NOT NULL
+    AND reservation.guest_id IS NOT NULL
+    AND reservation.course_id IS NOT NULL
+    AND reservation.is_cancelled IS NOT NULL
+    AND reservation.time_in IS NOT NULL
+    AND reservation.time_out IS NOT NULL
+    AND reservation.created_date IS NOT NULL
+  """;
+
+  static const List schemaMap = [
+    'room_id',
+    'id',
+    'guest_id',
+    'course_id',
+    'is_cancelled',
+    'time_in',
+    'time_out',
+    'created_date',
+  ];
+
   static fromJson(Map<String, dynamic> json) =>
       _$CourseReservationFromJson(getStartWithString_('reservation', json));
+
+  static CourseReservation? schemaToJson(Map<String, dynamic> json) {
+    bool valid = true;
+
+    for (String i in json.keys) {
+      if (!schemaMap.contains(i)) {
+        valid = false;
+        break;
+      }
+    }
+
+    if (valid) {
+      return _$CourseReservationFromJson(json);
+    }
+  }
 }
 
 extension GuestReservationTable on GuestReservation {
@@ -182,6 +351,43 @@ extension GuestReservationTable on GuestReservation {
     reservation.created_date AS reservation_created_date,
   """;
 
+  static const String sqlFindSchema = """
+    reservation.paid_amount IS NOT NULL
+    AND reservation.id IS NOT NULL
+    AND reservation.guest_id IS NOT NULL
+    AND reservation.course_id IS NOT NULL
+    AND reservation.is_cancelled IS NOT NULL
+    AND reservation.time_in IS NOT NULL
+    AND reservation.time_out IS NOT NULL
+    AND reservation.created_date IS NOT NULL
+  """;
+
+  static const List schemaMap = [
+    'paid_amount',
+    'id',
+    'guest_id',
+    'course_id',
+    'is_cancelled',
+    'time_in',
+    'time_out',
+    'created_date',
+  ];
+
   static fromJson(Map<String, dynamic> json) =>
       _$GuestReservationFromJson(getStartWithString_('reservation', json));
+
+  static GuestReservation? schemaToJson(Map<String, dynamic> json) {
+    bool valid = true;
+
+    for (String i in json.keys) {
+      if (!schemaMap.contains(i)) {
+        valid = false;
+        break;
+      }
+    }
+
+    if (valid) {
+      return _$GuestReservationFromJson(json);
+    }
+  }
 }

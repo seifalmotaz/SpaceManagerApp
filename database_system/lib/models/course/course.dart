@@ -1,5 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:engine_sql/engine_sql.dart';
+import 'package:sqflite_common/sqlite_api.dart';
 
 import '../func.dart';
 part 'course.g.dart';
@@ -7,7 +8,9 @@ part 'course.g.dart';
 @JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
 @EngineSQL('course')
 class Course {
-  int id;
+  @FieldSQL(primary: true)
+  final int id;
+
   int lecturerId;
   double totalPrice;
   String name;
