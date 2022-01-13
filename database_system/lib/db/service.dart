@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:database_system/models/guest/guest.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:path/path.dart';
@@ -17,7 +18,7 @@ class DBService extends GetxService {
     Directory dbFolder = await getApplicationDocumentsDirectory();
     File dir = File(join(dbFolder.path, 'SpaceManager', 'database.sqlite3'));
     DatabaseFactory sFactory = databaseFactoryFfi;
-    var sConnect = await sFactory.openDatabase(
+    var connect = await sFactory.openDatabase(
       dir.path,
       options: OpenDatabaseOptions(
         onCreate: createSchema,
@@ -25,16 +26,24 @@ class DBService extends GetxService {
         version: 1,
       ),
     );
-    dbDatabase.value = sConnect;
+    dbDatabase.value = connect;
   }
 
   Future createSchema(Database db, int version) async {
     String sql = await rootBundle.loadString('assets/db/start/guest.sql');
-    db.execute(sql);
+    await db.execute(sql);
     sql = await rootBundle.loadString('assets/db/start/course.sql');
-    db.execute(sql);
+    await db.execute(sql);
     sql = await rootBundle.loadString('assets/db/start/session.sql');
-    db.execute(sql);
+    await db.execute(sql);
+    await GuestQuery(db).create(
+      email: 'admin@admin.com',
+      isAdmin: true,
+      isStaff: true,
+      name: 'Space Admin',
+      phone: 'spaceadmin',
+      password: 'spaceadmin',
+    );
   }
 
   @override

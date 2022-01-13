@@ -1,8 +1,8 @@
-import 'package:engine_sql/annotations.dart';
 import 'package:engine_sql/helpers/helper.dart';
 import 'package:engine_sql/helpers/query/func.dart';
 import 'package:engine_sql/helpers/sql_fields/writing.dart';
 import 'package:engine_sql/visitor/anno_class.dart';
+import 'package:engine_sql_annotation/engine_sql_annotation.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
@@ -22,23 +22,22 @@ class QuerysGen extends GeneratorForAnnotation<EngineSQL> {
     (element).visitChildren(visitor);
     // get table name
     String name = annotation.read('name').stringValue;
-    String sqlite = annotation.read('sqlite').stringValue;
 
     helper.curlyBrackets('class ${visitor.name}Query', () {
-      // buf.writeln("final Database db;");
-      // buf.writeln("${visitor.name}Query(this.db);");
+      buf.writeln("final Database db;");
+      buf.writeln("${visitor.name}Query(this.db);");
       buf.writeln();
       buf.writeln("""
       Future<int> create({
         ${getFuncParms(visitor.fields)}
-      }) async => await $sqlite.insert('$name', {
+      }) async => await db.insert('$name', {
         ${getFuncFields(visitor.fields)}
       });
       """);
       buf.writeln();
       buf.writeln("""
       Future<${visitor.name}> read(int id) async {
-        List<Map<String, dynamic>> data = await $sqlite.query(
+        List<Map<String, dynamic>> data = await db.query(
           '$name', 
           where: 'id = ?', 
           whereArgs: [id],
@@ -51,7 +50,7 @@ class QuerysGen extends GeneratorForAnnotation<EngineSQL> {
       Future<int> update({
         required int id,
         ${getFuncParms(visitor.fields)}
-      }) async => await $sqlite.update(
+      }) async => await db.update(
         '$name',
         {
           ${getFuncFields(visitor.fields)}
@@ -63,7 +62,7 @@ class QuerysGen extends GeneratorForAnnotation<EngineSQL> {
       buf.writeln();
       buf.writeln("""
       Future<int> delete(int id
-      ) async => await $sqlite.delete(
+      ) async => await db.delete(
         '$name', 
         where: 'id = ?', 
         whereArgs: [id],
@@ -89,7 +88,7 @@ class QuerysGen extends GeneratorForAnnotation<EngineSQL> {
       Future<List<${visitor.name}>> find({
         ${getFuncParms(visitor.fields)}
       }) async {
-        List<Map<String, dynamic>> data = await $sqlite.query(
+        List<Map<String, dynamic>> data = await db.query(
           '$name', 
           where: '''
           ${stringBuffer.toString()}

@@ -8,7 +8,7 @@ CREATE TABLE guest (
     national_id VARCHAR(15) NULL UNIQUE,
     national_id_pic VARCHAR(255) NULL UNIQUE,
     password VARCHAR(150) NULL,
-    created_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created_date INTEGER NOT NULL DEFAULT (strftime('%s', 'now')),
     is_staff BOOLEAN DEFAULT FALSE,
     is_admin BOOLEAN DEFAULT FALSE,
     is_expired BOOLEAN DEFAULT FALSE,

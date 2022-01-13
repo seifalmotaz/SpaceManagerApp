@@ -102,13 +102,16 @@ Map<String, dynamic> _$CourseSessionToJson(CourseSession instance) {
 // **************************************************************************
 
 class GuestSessionQuery {
+  final Database db;
+  GuestSessionQuery(this.db);
+
   Future<int> create({
     int? guestCount,
     int? priceId,
     double? paidAmount,
     int? guestId,
   }) async =>
-      await DBService.to.db.insert('session', {
+      await db.insert('session', {
         if (guestCount != null) 'guest_count': guestCount,
         if (priceId != null) 'price_id': priceId,
         if (paidAmount != null) 'paid_amount': paidAmount,
@@ -116,7 +119,7 @@ class GuestSessionQuery {
       });
 
   Future<GuestSession> read(int id) async {
-    List<Map<String, dynamic>> data = await DBService.to.db.query(
+    List<Map<String, dynamic>> data = await db.query(
       'session',
       where: 'id = ?',
       whereArgs: [id],
@@ -131,7 +134,7 @@ class GuestSessionQuery {
     double? paidAmount,
     int? guestId,
   }) async =>
-      await DBService.to.db.update(
+      await db.update(
         'session',
         {
           if (guestCount != null) 'guest_count': guestCount,
@@ -143,7 +146,7 @@ class GuestSessionQuery {
         whereArgs: [id],
       );
 
-  Future<int> delete(int id) async => await DBService.to.db.delete(
+  Future<int> delete(int id) async => await db.delete(
         'session',
         where: 'id = ?',
         whereArgs: [id],
@@ -155,7 +158,7 @@ class GuestSessionQuery {
     double? paidAmount,
     int? guestId,
   }) async {
-    List<Map<String, dynamic>> data = await DBService.to.db.query(
+    List<Map<String, dynamic>> data = await db.query(
       'session',
       where: '''
           ${guestCount == null ? "" : "session.guest_count IS NOT NULL"}
@@ -178,13 +181,16 @@ class GuestSessionQuery {
 }
 
 class RoomSessionQuery {
+  final Database db;
+  RoomSessionQuery(this.db);
+
   Future<int> create({
     int? roomId,
     double? paidAmount,
     int? guestId,
     int? reservationId,
   }) async =>
-      await DBService.to.db.insert('session', {
+      await db.insert('session', {
         if (roomId != null) 'room_id': roomId,
         if (paidAmount != null) 'paid_amount': paidAmount,
         if (guestId != null) 'guest_id': guestId,
@@ -192,7 +198,7 @@ class RoomSessionQuery {
       });
 
   Future<RoomSession> read(int id) async {
-    List<Map<String, dynamic>> data = await DBService.to.db.query(
+    List<Map<String, dynamic>> data = await db.query(
       'session',
       where: 'id = ?',
       whereArgs: [id],
@@ -207,7 +213,7 @@ class RoomSessionQuery {
     int? guestId,
     int? reservationId,
   }) async =>
-      await DBService.to.db.update(
+      await db.update(
         'session',
         {
           if (roomId != null) 'room_id': roomId,
@@ -219,7 +225,7 @@ class RoomSessionQuery {
         whereArgs: [id],
       );
 
-  Future<int> delete(int id) async => await DBService.to.db.delete(
+  Future<int> delete(int id) async => await db.delete(
         'session',
         where: 'id = ?',
         whereArgs: [id],
@@ -231,7 +237,7 @@ class RoomSessionQuery {
     int? guestId,
     int? reservationId,
   }) async {
-    List<Map<String, dynamic>> data = await DBService.to.db.query(
+    List<Map<String, dynamic>> data = await db.query(
       'session',
       where: '''
           ${roomId == null ? "" : "session.room_id IS NOT NULL"}
@@ -254,13 +260,16 @@ class RoomSessionQuery {
 }
 
 class CourseSessionQuery {
+  final Database db;
+  CourseSessionQuery(this.db);
+
   Future<int> create({
     int? roomId,
     int? courseId,
     int? guestCount,
     int? reservationId,
   }) async =>
-      await DBService.to.db.insert('session', {
+      await db.insert('session', {
         if (roomId != null) 'room_id': roomId,
         if (courseId != null) 'course_id': courseId,
         if (guestCount != null) 'guest_count': guestCount,
@@ -268,7 +277,7 @@ class CourseSessionQuery {
       });
 
   Future<CourseSession> read(int id) async {
-    List<Map<String, dynamic>> data = await DBService.to.db.query(
+    List<Map<String, dynamic>> data = await db.query(
       'session',
       where: 'id = ?',
       whereArgs: [id],
@@ -283,7 +292,7 @@ class CourseSessionQuery {
     int? guestCount,
     int? reservationId,
   }) async =>
-      await DBService.to.db.update(
+      await db.update(
         'session',
         {
           if (roomId != null) 'room_id': roomId,
@@ -295,7 +304,7 @@ class CourseSessionQuery {
         whereArgs: [id],
       );
 
-  Future<int> delete(int id) async => await DBService.to.db.delete(
+  Future<int> delete(int id) async => await db.delete(
         'session',
         where: 'id = ?',
         whereArgs: [id],
@@ -307,7 +316,7 @@ class CourseSessionQuery {
     int? guestCount,
     int? reservationId,
   }) async {
-    List<Map<String, dynamic>> data = await DBService.to.db.query(
+    List<Map<String, dynamic>> data = await db.query(
       'session',
       where: '''
           ${roomId == null ? "" : "session.room_id IS NOT NULL"}

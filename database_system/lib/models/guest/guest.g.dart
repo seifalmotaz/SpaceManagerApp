@@ -49,6 +49,9 @@ Map<String, dynamic> _$GuestToJson(Guest instance) {
 // **************************************************************************
 
 class GuestQuery {
+  final Database db;
+  GuestQuery(this.db);
+
   Future<int> create({
     DateTime? createdDate,
     bool? isExpired,
@@ -61,21 +64,22 @@ class GuestQuery {
     String? nationalID,
     String? nationalIdPic,
   }) async =>
-      await DBService.to.db.insert('guest', {
-        if (createdDate != null) 'created_date': createdDate,
-        if (isExpired != null) 'is_expired': isExpired,
+      await db.insert('guest', {
+        if (createdDate != null)
+          'created_date': (createdDate.millisecondsSinceEpoch / 1000) as int,
+        if (isExpired != null) 'is_expired': isExpired ? 1 : 0,
         if (name != null) 'name': name,
         if (email != null) 'email': email,
         if (phone != null) 'phone': phone,
         if (password != null) 'password': password,
-        if (isAdmin != null) 'is_admin': isAdmin,
-        if (isStaff != null) 'is_staff': isStaff,
+        if (isAdmin != null) 'is_admin': isAdmin ? 1 : 0,
+        if (isStaff != null) 'is_staff': isStaff ? 1 : 0,
         if (nationalID != null) 'national_i_d': nationalID,
         if (nationalIdPic != null) 'national_id_pic': nationalIdPic,
       });
 
   Future<Guest> read(int id) async {
-    List<Map<String, dynamic>> data = await DBService.to.db.query(
+    List<Map<String, dynamic>> data = await db.query(
       'guest',
       where: 'id = ?',
       whereArgs: [id],
@@ -96,17 +100,18 @@ class GuestQuery {
     String? nationalID,
     String? nationalIdPic,
   }) async =>
-      await DBService.to.db.update(
+      await db.update(
         'guest',
         {
-          if (createdDate != null) 'created_date': createdDate,
-          if (isExpired != null) 'is_expired': isExpired,
+          if (createdDate != null)
+            'created_date': (createdDate.millisecondsSinceEpoch / 1000) as int,
+          if (isExpired != null) 'is_expired': isExpired ? 1 : 0,
           if (name != null) 'name': name,
           if (email != null) 'email': email,
           if (phone != null) 'phone': phone,
           if (password != null) 'password': password,
-          if (isAdmin != null) 'is_admin': isAdmin,
-          if (isStaff != null) 'is_staff': isStaff,
+          if (isAdmin != null) 'is_admin': isAdmin ? 1 : 0,
+          if (isStaff != null) 'is_staff': isStaff ? 1 : 0,
           if (nationalID != null) 'national_i_d': nationalID,
           if (nationalIdPic != null) 'national_id_pic': nationalIdPic,
         },
@@ -114,7 +119,7 @@ class GuestQuery {
         whereArgs: [id],
       );
 
-  Future<int> delete(int id) async => await DBService.to.db.delete(
+  Future<int> delete(int id) async => await db.delete(
         'guest',
         where: 'id = ?',
         whereArgs: [id],
@@ -132,7 +137,7 @@ class GuestQuery {
     String? nationalID,
     String? nationalIdPic,
   }) async {
-    List<Map<String, dynamic>> data = await DBService.to.db.query(
+    List<Map<String, dynamic>> data = await db.query(
       'guest',
       where: '''
           ${createdDate == null ? "" : "guest.created_date IS NOT NULL"}

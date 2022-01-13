@@ -14,7 +14,7 @@ CREATE TABLE price (
     is_default BOOLEAN DEFAULT FALSE,
     is_deleted BOOLEAN DEFAULT FALSE,
     is_per_day BOOLEAN DEFAULT FALSE,
-    created_date INTEGER NOT NULL DEFAULT strftime('%s', 'now')
+    created_date INTEGER NOT NULL DEFAULT (strftime('%s', 'now'))
 );
 
 CREATE TABLE room (
@@ -31,7 +31,7 @@ CREATE TABLE reservation (
     room_id INTEGER NOT NULL,
     time_in INTEGER NOT NULL,
     time_out INTEGER NOT NULL,
-    created_date INTEGER NOT NULL DEFAULT strftime('%s', 'now'),
+    created_date INTEGER NOT NULL DEFAULT (strftime('%s', 'now')),
     paid_amount FLOAT NULL,
     is_cancelled BOOLEAN DEFAULT FALSE,
     CONSTRAINT fk_guest_id FOREIGN KEY (guest_id) REFERENCES guest(id),
@@ -46,7 +46,7 @@ CREATE TABLE session (
     course_id INTEGER NULL,
     room_id INTEGER NULL,
     reservation_id INTEGER NULL,
-    time_in INTEGER NOT NULL DEFAULT strftime('%s', 'now'),
+    time_in INTEGER NOT NULL DEFAULT (strftime('%s', 'now')),
     time_out INTEGER NULL,
     paid_amount FLOAT NULL,
     guest_count INTEGER NULL,

@@ -4,7 +4,8 @@ include: package:flutter_lints/flutter.yaml
 # https://dart.dev/guides/language/analysis-options
 analyzer:
   exclude:
-    # - "**/*.g.dart"
-    - "**/*.freezed.dart"
+    - "**/*.g.dart"
+    # - "**/models/**/*.dart"
+    # - "**/db/**/*.dart"
   errors:
     invalid_annotation_target: ignore

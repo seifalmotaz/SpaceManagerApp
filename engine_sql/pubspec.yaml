@@ -1,6 +1,7 @@
 name: engine_sql
 description: A new Flutter package project.
 version: 0.0.1
+publish_to: none
 homepage:
 
 environment:
@@ -10,6 +11,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  engine_sql_annotation:
+    path: ../engine_sql_annotation/
 
 dev_dependencies:
   flutter_test:

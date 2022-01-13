@@ -43,6 +43,9 @@ Map<String, dynamic> _$PriceToJson(Price instance) {
 // **************************************************************************
 
 class PriceQuery {
+  final Database db;
+  PriceQuery(this.db);
+
   Future<int> create({
     double? rate,
     String? description,
@@ -52,18 +55,19 @@ class PriceQuery {
     bool? isPerDay,
     DateTime? createdDate,
   }) async =>
-      await DBService.to.db.insert('price', {
+      await db.insert('price', {
         if (rate != null) 'rate': rate,
         if (description != null) 'description': description,
         if (options != null) 'options': options,
-        if (isDefault != null) 'is_default': isDefault,
-        if (isDeleted != null) 'is_deleted': isDeleted,
-        if (isPerDay != null) 'is_per_day': isPerDay,
-        if (createdDate != null) 'created_date': createdDate,
+        if (isDefault != null) 'is_default': isDefault ? 1 : 0,
+        if (isDeleted != null) 'is_deleted': isDeleted ? 1 : 0,
+        if (isPerDay != null) 'is_per_day': isPerDay ? 1 : 0,
+        if (createdDate != null)
+          'created_date': (createdDate.millisecondsSinceEpoch / 1000) as int,
       });
 
   Future<Price> read(int id) async {
-    List<Map<String, dynamic>> data = await DBService.to.db.query(
+    List<Map<String, dynamic>> data = await db.query(
       'price',
       where: 'id = ?',
       whereArgs: [id],
@@ -81,22 +85,23 @@ class PriceQuery {
     bool? isPerDay,
     DateTime? createdDate,
   }) async =>
-      await DBService.to.db.update(
+      await db.update(
         'price',
         {
           if (rate != null) 'rate': rate,
           if (description != null) 'description': description,
           if (options != null) 'options': options,
-          if (isDefault != null) 'is_default': isDefault,
-          if (isDeleted != null) 'is_deleted': isDeleted,
-          if (isPerDay != null) 'is_per_day': isPerDay,
-          if (createdDate != null) 'created_date': createdDate,
+          if (isDefault != null) 'is_default': isDefault ? 1 : 0,
+          if (isDeleted != null) 'is_deleted': isDeleted ? 1 : 0,
+          if (isPerDay != null) 'is_per_day': isPerDay ? 1 : 0,
+          if (createdDate != null)
+            'created_date': (createdDate.millisecondsSinceEpoch / 1000) as int,
         },
         where: 'id = ?',
         whereArgs: [id],
       );
 
-  Future<int> delete(int id) async => await DBService.to.db.delete(
+  Future<int> delete(int id) async => await db.delete(
         'price',
         where: 'id = ?',
         whereArgs: [id],
@@ -111,7 +116,7 @@ class PriceQuery {
     bool? isPerDay,
     DateTime? createdDate,
   }) async {
-    List<Map<String, dynamic>> data = await DBService.to.db.query(
+    List<Map<String, dynamic>> data = await db.query(
       'price',
       where: '''
           ${rate == null ? "" : "price.rate IS NOT NULL"}

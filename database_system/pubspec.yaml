@@ -1,6 +1,7 @@
 name: database_system
 description: A new Flutter package project.
 version: 0.0.1
+publish_to: none
 homepage:
 
 environment:
@@ -14,6 +15,8 @@ dependencies:
   json_annotation: ^4.4.0
   get: ^4.6.1
   path_provider: ^2.0.8
+  engine_sql_annotation:
+    path: ../engine_sql_annotation/
 
 dev_dependencies:
   flutter_test:

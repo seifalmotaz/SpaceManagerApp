@@ -1,9 +1,9 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
-import 'package:engine_sql/annotations.dart';
 import 'package:engine_sql/helpers/sql_fields/writing.dart';
 import 'package:engine_sql/helpers/helper.dart';
 import 'package:engine_sql/visitor/basic_class.dart';
+import 'package:engine_sql_annotation/engine_sql_annotation.dart';
 import 'package:source_gen/source_gen.dart';
 
 class SqlFieldsGen extends GeneratorForAnnotation<EngineSQL> {

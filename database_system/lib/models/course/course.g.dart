@@ -43,6 +43,9 @@ Map<String, dynamic> _$CourseToJson(Course instance) {
 // **************************************************************************
 
 class CourseQuery {
+  final Database db;
+  CourseQuery(this.db);
+
   Future<int> create({
     int? lecturerId,
     double? totalPrice,
@@ -52,18 +55,20 @@ class CourseQuery {
     DateTime? endTime,
     bool? isExpired,
   }) async =>
-      await DBService.to.db.insert('course', {
+      await db.insert('course', {
         if (lecturerId != null) 'lecturer_id': lecturerId,
         if (totalPrice != null) 'total_price': totalPrice,
         if (name != null) 'name': name,
         if (description != null) 'description': description,
-        if (startTime != null) 'start_time': startTime,
-        if (endTime != null) 'end_time': endTime,
-        if (isExpired != null) 'is_expired': isExpired,
+        if (startTime != null)
+          'start_time': (startTime.millisecondsSinceEpoch / 1000) as int,
+        if (endTime != null)
+          'end_time': (endTime.millisecondsSinceEpoch / 1000) as int,
+        if (isExpired != null) 'is_expired': isExpired ? 1 : 0,
       });
 
   Future<Course> read(int id) async {
-    List<Map<String, dynamic>> data = await DBService.to.db.query(
+    List<Map<String, dynamic>> data = await db.query(
       'course',
       where: 'id = ?',
       whereArgs: [id],
@@ -81,22 +86,24 @@ class CourseQuery {
     DateTime? endTime,
     bool? isExpired,
   }) async =>
-      await DBService.to.db.update(
+      await db.update(
         'course',
         {
           if (lecturerId != null) 'lecturer_id': lecturerId,
           if (totalPrice != null) 'total_price': totalPrice,
           if (name != null) 'name': name,
           if (description != null) 'description': description,
-          if (startTime != null) 'start_time': startTime,
-          if (endTime != null) 'end_time': endTime,
-          if (isExpired != null) 'is_expired': isExpired,
+          if (startTime != null)
+            'start_time': (startTime.millisecondsSinceEpoch / 1000) as int,
+          if (endTime != null)
+            'end_time': (endTime.millisecondsSinceEpoch / 1000) as int,
+          if (isExpired != null) 'is_expired': isExpired ? 1 : 0,
         },
         where: 'id = ?',
         whereArgs: [id],
       );
 
-  Future<int> delete(int id) async => await DBService.to.db.delete(
+  Future<int> delete(int id) async => await db.delete(
         'course',
         where: 'id = ?',
         whereArgs: [id],
@@ -111,7 +118,7 @@ class CourseQuery {
     DateTime? endTime,
     bool? isExpired,
   }) async {
-    List<Map<String, dynamic>> data = await DBService.to.db.query(
+    List<Map<String, dynamic>> data = await db.query(
       'course',
       where: '''
           ${lecturerId == null ? "" : "course.lecturer_id IS NOT NULL"}

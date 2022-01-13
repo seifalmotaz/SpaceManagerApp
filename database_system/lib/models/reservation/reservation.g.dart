@@ -81,15 +81,18 @@ Map<String, dynamic> _$GuestReservationToJson(GuestReservation instance) {
 // **************************************************************************
 
 class CourseReservationQuery {
+  final Database db;
+  CourseReservationQuery(this.db);
+
   Future<int> create({
     int? roomId,
   }) async =>
-      await DBService.to.db.insert('reservation', {
+      await db.insert('reservation', {
         if (roomId != null) 'room_id': roomId,
       });
 
   Future<CourseReservation> read(int id) async {
-    List<Map<String, dynamic>> data = await DBService.to.db.query(
+    List<Map<String, dynamic>> data = await db.query(
       'reservation',
       where: 'id = ?',
       whereArgs: [id],
@@ -101,7 +104,7 @@ class CourseReservationQuery {
     required int id,
     int? roomId,
   }) async =>
-      await DBService.to.db.update(
+      await db.update(
         'reservation',
         {
           if (roomId != null) 'room_id': roomId,
@@ -110,7 +113,7 @@ class CourseReservationQuery {
         whereArgs: [id],
       );
 
-  Future<int> delete(int id) async => await DBService.to.db.delete(
+  Future<int> delete(int id) async => await db.delete(
         'reservation',
         where: 'id = ?',
         whereArgs: [id],
@@ -119,7 +122,7 @@ class CourseReservationQuery {
   Future<List<CourseReservation>> find({
     int? roomId,
   }) async {
-    List<Map<String, dynamic>> data = await DBService.to.db.query(
+    List<Map<String, dynamic>> data = await db.query(
       'reservation',
       where: '''
           ${roomId == null ? "" : "reservation.room_id IS NOT NULL"}
@@ -136,15 +139,18 @@ class CourseReservationQuery {
 }
 
 class GuestReservationQuery {
+  final Database db;
+  GuestReservationQuery(this.db);
+
   Future<int> create({
     double? paidAmount,
   }) async =>
-      await DBService.to.db.insert('reservation', {
+      await db.insert('reservation', {
         if (paidAmount != null) 'paid_amount': paidAmount,
       });
 
   Future<GuestReservation> read(int id) async {
-    List<Map<String, dynamic>> data = await DBService.to.db.query(
+    List<Map<String, dynamic>> data = await db.query(
       'reservation',
       where: 'id = ?',
       whereArgs: [id],
@@ -156,7 +162,7 @@ class GuestReservationQuery {
     required int id,
     double? paidAmount,
   }) async =>
-      await DBService.to.db.update(
+      await db.update(
         'reservation',
         {
           if (paidAmount != null) 'paid_amount': paidAmount,
@@ -165,7 +171,7 @@ class GuestReservationQuery {
         whereArgs: [id],
       );
 
-  Future<int> delete(int id) async => await DBService.to.db.delete(
+  Future<int> delete(int id) async => await db.delete(
         'reservation',
         where: 'id = ?',
         whereArgs: [id],
@@ -174,7 +180,7 @@ class GuestReservationQuery {
   Future<List<GuestReservation>> find({
     double? paidAmount,
   }) async {
-    List<Map<String, dynamic>> data = await DBService.to.db.query(
+    List<Map<String, dynamic>> data = await db.query(
       'reservation',
       where: '''
           ${paidAmount == null ? "" : "reservation.paid_amount IS NOT NULL"}

@@ -1,12 +1,12 @@
-import 'package:database_system/db/service.dart';
+import 'package:engine_sql_annotation/engine_sql_annotation.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:engine_sql/engine_sql.dart';
+import 'package:sqflite_common/sqlite_api.dart';
 
 import '../func.dart';
 part 'course.g.dart';
 
 @JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
-@EngineSQL(name: 'course', sqlite: 'DBService.to.db')
+@EngineSQL(name: 'course')
 class Course {
   @FieldSQL(primary: true)
   final int id;

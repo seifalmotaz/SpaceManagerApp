@@ -38,21 +38,25 @@ Map<String, dynamic> _$CourseRegistrationToJson(CourseRegistration instance) {
 // **************************************************************************
 
 class CourseRegistrationQuery {
+  final Database db;
+  CourseRegistrationQuery(this.db);
+
   Future<int> create({
     int? guestId,
     int? courseId,
     bool? isPaid,
     DateTime? createdDate,
   }) async =>
-      await DBService.to.db.insert('course_registration', {
+      await db.insert('course_registration', {
         if (guestId != null) 'guest_id': guestId,
         if (courseId != null) 'course_id': courseId,
-        if (isPaid != null) 'is_paid': isPaid,
-        if (createdDate != null) 'created_date': createdDate,
+        if (isPaid != null) 'is_paid': isPaid ? 1 : 0,
+        if (createdDate != null)
+          'created_date': (createdDate.millisecondsSinceEpoch / 1000) as int,
       });
 
   Future<CourseRegistration> read(int id) async {
-    List<Map<String, dynamic>> data = await DBService.to.db.query(
+    List<Map<String, dynamic>> data = await db.query(
       'course_registration',
       where: 'id = ?',
       whereArgs: [id],
@@ -67,19 +71,20 @@ class CourseRegistrationQuery {
     bool? isPaid,
     DateTime? createdDate,
   }) async =>
-      await DBService.to.db.update(
+      await db.update(
         'course_registration',
         {
           if (guestId != null) 'guest_id': guestId,
           if (courseId != null) 'course_id': courseId,
-          if (isPaid != null) 'is_paid': isPaid,
-          if (createdDate != null) 'created_date': createdDate,
+          if (isPaid != null) 'is_paid': isPaid ? 1 : 0,
+          if (createdDate != null)
+            'created_date': (createdDate.millisecondsSinceEpoch / 1000) as int,
         },
         where: 'id = ?',
         whereArgs: [id],
       );
 
-  Future<int> delete(int id) async => await DBService.to.db.delete(
+  Future<int> delete(int id) async => await db.delete(
         'course_registration',
         where: 'id = ?',
         whereArgs: [id],
@@ -91,7 +96,7 @@ class CourseRegistrationQuery {
     bool? isPaid,
     DateTime? createdDate,
   }) async {
-    List<Map<String, dynamic>> data = await DBService.to.db.query(
+    List<Map<String, dynamic>> data = await db.query(
       'course_registration',
       where: '''
           ${guestId == null ? "" : "course_registration.guest_id IS NOT NULL"}

@@ -1,6 +1,6 @@
 import 'package:analyzer/dart/element/visitor.dart';
 import 'package:analyzer/dart/element/element.dart';
-import 'package:engine_sql/annotations.dart';
+import 'package:engine_sql_annotation/engine_sql_annotation.dart';
 import 'package:source_gen/source_gen.dart';
 
 const coreChecker = TypeChecker.fromRuntime(FieldSQL);

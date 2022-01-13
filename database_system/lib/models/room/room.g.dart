@@ -35,19 +35,22 @@ Map<String, dynamic> _$RoomToJson(Room instance) {
 // **************************************************************************
 
 class RoomQuery {
+  final Database db;
+  RoomQuery(this.db);
+
   Future<int> create({
     double? rate,
     String? name,
     bool? isDeleted,
   }) async =>
-      await DBService.to.db.insert('room', {
+      await db.insert('room', {
         if (rate != null) 'rate': rate,
         if (name != null) 'name': name,
-        if (isDeleted != null) 'is_deleted': isDeleted,
+        if (isDeleted != null) 'is_deleted': isDeleted ? 1 : 0,
       });
 
   Future<Room> read(int id) async {
-    List<Map<String, dynamic>> data = await DBService.to.db.query(
+    List<Map<String, dynamic>> data = await db.query(
       'room',
       where: 'id = ?',
       whereArgs: [id],
@@ -61,18 +64,18 @@ class RoomQuery {
     String? name,
     bool? isDeleted,
   }) async =>
-      await DBService.to.db.update(
+      await db.update(
         'room',
         {
           if (rate != null) 'rate': rate,
           if (name != null) 'name': name,
-          if (isDeleted != null) 'is_deleted': isDeleted,
+          if (isDeleted != null) 'is_deleted': isDeleted ? 1 : 0,
         },
         where: 'id = ?',
         whereArgs: [id],
       );
 
-  Future<int> delete(int id) async => await DBService.to.db.delete(
+  Future<int> delete(int id) async => await db.delete(
         'room',
         where: 'id = ?',
         whereArgs: [id],
@@ -83,7 +86,7 @@ class RoomQuery {
     String? name,
     bool? isDeleted,
   }) async {
-    List<Map<String, dynamic>> data = await DBService.to.db.query(
+    List<Map<String, dynamic>> data = await db.query(
       'room',
       where: '''
           ${rate == null ? "" : "room.rate IS NOT NULL"}
