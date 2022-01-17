@@ -8,9 +8,10 @@ part of 'room.dart';
 
 Room _$RoomFromJson(Map<String, dynamic> json) => Room(
       id: json['id'] as int,
-      isDeleted: DataCompiler.fromDBool(json['is_deleted'] as int),
       name: json['name'] as String,
       rate: (json['rate'] as num).toDouble(),
+      capacity: json['capacity'] as int,
+      isDeleted: DataCompiler.fromDBoolNull(json['is_deleted'] as int?),
     );
 
 Map<String, dynamic> _$RoomToJson(Room instance) {
@@ -18,6 +19,7 @@ Map<String, dynamic> _$RoomToJson(Room instance) {
     'id': instance.id,
     'rate': instance.rate,
     'name': instance.name,
+    'capacity': instance.capacity,
   };
 
   void writeNotNull(String key, dynamic value) {
@@ -26,7 +28,7 @@ Map<String, dynamic> _$RoomToJson(Room instance) {
     }
   }
 
-  writeNotNull('is_deleted', DataCompiler.toDBool(instance.isDeleted));
+  writeNotNull('is_deleted', DataCompiler.toDBoolNull(instance.isDeleted));
   return val;
 }
 
@@ -39,13 +41,15 @@ class RoomQuery {
   RoomQuery(this.db);
 
   Future<int> create({
-    double? rate,
-    String? name,
+    required double rate,
+    required String name,
+    required int capacity,
     bool? isDeleted,
   }) async =>
       await db.insert('room', {
         if (rate != null) 'rate': rate,
         if (name != null) 'name': name,
+        if (capacity != null) 'capacity': capacity,
         if (isDeleted != null) 'is_deleted': isDeleted ? 1 : 0,
       });
 
@@ -62,6 +66,7 @@ class RoomQuery {
     required int id,
     double? rate,
     String? name,
+    int? capacity,
     bool? isDeleted,
   }) async =>
       await db.update(
@@ -69,6 +74,7 @@ class RoomQuery {
         {
           if (rate != null) 'rate': rate,
           if (name != null) 'name': name,
+          if (capacity != null) 'capacity': capacity,
           if (isDeleted != null) 'is_deleted': isDeleted ? 1 : 0,
         },
         where: 'id = ?',
@@ -84,21 +90,40 @@ class RoomQuery {
   Future<List<Room>> find({
     double? rate,
     String? name,
+    int? capacity,
     bool? isDeleted,
   }) async {
+    List<String> searchFields = [];
+    if (rate != null) {
+      searchFields.add("room.rate = ?");
+    }
+    if (name != null) {
+      searchFields.add("room.name = ?");
+    }
+    if (capacity != null) {
+      searchFields.add("room.capacity = ?");
+    }
+    if (isDeleted != null) {
+      searchFields.add("room.is_deleted = ?");
+    }
+
+    StringBuffer buf = StringBuffer();
+    for (int i = 0; i < searchFields.length; i++) {
+      if (i == 0) buf.writeln(searchFields[i]);
+      if (i != 0) buf.writeln("AND " + searchFields[i]);
+    }
+
     List<Map<String, dynamic>> data = await db.query(
       'room',
       where: '''
-          ${rate == null ? "" : "room.rate IS NOT NULL"}
-          ${name == null ? "" : "AND room.name IS NOT NULL"}
-          ${isDeleted == null ? "" : "AND room.is_deleted IS NOT NULL"}
-
+          ${buf.toString()}
           AND ${RoomTable.sqlFindSchema}
           ''',
       whereArgs: [
-        rate,
-        name,
-        isDeleted,
+        if (rate != null) rate,
+        if (name != null) name,
+        if (capacity != null) capacity,
+        if (isDeleted != null) isDeleted,
       ],
     );
 
@@ -135,6 +160,10 @@ extension RoomTable on Room {
   static String nativeName = 'room.name';
 
   /// Field data: field ///
+  static String capacity = 'capacity';
+  static String nativeCapacity = 'room.capacity';
+
+  /// Field data: field ///
   static String isDeleted = 'is_deleted';
   static String nativeIsDeleted = 'room.is_deleted';
 
@@ -142,20 +171,22 @@ extension RoomTable on Room {
     room.id AS room_id,
     room.rate AS room_rate,
     room.name AS room_name,
-    room.is_deleted AS room_is_deleted,
+    room.capacity AS room_capacity,
+    room.is_deleted AS room_is_deleted
   """;
 
   static const String sqlFindSchema = """
     room.id IS NOT NULL
     AND room.rate IS NOT NULL
     AND room.name IS NOT NULL
-    AND room.is_deleted IS NOT NULL
+    AND room.capacity IS NOT NULL
   """;
 
   static const List schemaMap = [
     'id',
     'rate',
     'name',
+    'capacity',
     'is_deleted',
   ];
 
@@ -177,6 +208,6 @@ extension RoomTable on Room {
     }
   }
 
-  static filterFromJson(Map<String, dynamic> json) =>
+  static Room? filterFromJson(Map<String, dynamic> json) =>
       schemaToJson(getStartWithString_('room', json));
 }

@@ -12,14 +12,17 @@ class Room {
   final int id;
   double rate;
   String name;
-  @boolKey
-  bool isDeleted;
+  int capacity;
+  @boolNullKey
+  @FieldSQL(haveDefault: true)
+  bool? isDeleted;
 
   Room({
     required this.id,
-    required this.isDeleted,
     required this.name,
     required this.rate,
+    required this.capacity,
+    this.isDeleted,
   });
 
   factory Room.fromJson(Map<String, dynamic> json) => _$RoomFromJson(json);

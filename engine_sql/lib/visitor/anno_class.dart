@@ -20,10 +20,13 @@ class AnnoClassVisitor extends SimpleElementVisitor {
         var anno = coreChecker.firstAnnotationOfExact(element);
         if (anno != null) {
           var includeOnCreate = anno.getField('primary');
-          field['primary'] = includeOnCreate!.toBoolValue()!;
+          field['primary'] = includeOnCreate?.toBoolValue()!;
+          var haveDefault = anno.getField('haveDefault');
+          field['haveDefault'] = haveDefault?.toBoolValue()!;
         }
       }
       field['primary'] ??= false;
+      field['haveDefault'] ??= false;
       fields.add(field);
     }
   }

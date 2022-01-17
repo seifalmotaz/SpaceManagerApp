@@ -37,9 +37,14 @@ class SqlFieldsGen extends GeneratorForAnnotation<EngineSQL> {
       //
       //* writing native fields to use in sql select statement
       buf.writeln('static const String sqlSelect = """');
-      for (FieldElement field in allFields) {
+      for (var i = 0; i < allFields.length; i++) {
+        FieldElement field = allFields[i];
         String fieldName = getSnakeFieldName(field.name);
-        buf.writeln("    $name.$fieldName AS ${name}_$fieldName,");
+        if (i == (allFields.length - 1)) {
+          buf.writeln("    $name.$fieldName AS ${name}_$fieldName");
+        } else {
+          buf.writeln("    $name.$fieldName AS ${name}_$fieldName,");
+        }
       }
       buf.writeln('  """;');
       //
@@ -88,7 +93,8 @@ class SqlFieldsGen extends GeneratorForAnnotation<EngineSQL> {
         });
       });
       buf.writeln();
-      buf.writeln("""static filterFromJson(Map<String, dynamic> json) => 
+      buf.writeln(
+          """static ${classElement.name}? filterFromJson(Map<String, dynamic> json) => 
           schemaToJson(getStartWithString_('$name', json));""");
     });
 

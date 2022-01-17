@@ -1,6 +1,8 @@
-import 'package:database_system/db/service.dart';
+import 'package:database_system/database_system.dart';
 import 'package:spaceapp/helpers/snacks.dart';
 import 'package:spaceapp/pages/auth/login.dart';
+import 'package:spaceapp/pages/dashboard/controllers/binding.dart';
+import 'package:spaceapp/pages/dashboard/dashboard.dart';
 import 'package:spaceapp/services/auth.dart';
 import 'package:spaceapp/services/storage.dart';
 import 'package:flutter/material.dart';
@@ -36,20 +38,16 @@ class _WrapperState extends State<Wrapper> {
     await Get.putAsync<AuthService>(() async => AuthService());
     await Future.delayed(const Duration(seconds: 2));
 
-    // Session? session = await SessionFindQuery.findNotEndedForStaff();
-
-    // if (session != null) {
-    //   AuthService.to.isAuthenticated.value = true;
-    //   AuthService.to.guestData.value = await session.guest();
-    //   AuthService.to.sessionData.value = session;
-    //   Get.offUntil(
-    //     GetPageRoute(
-    //       page: () => const HomePage(),
-    //     ),
-    //     (route) => false,
-    //   );
-    //   return;
-    // }
+    StaffSession? session = await staffSessionQuery.lastLogin();
+    if (session != null) {
+      AuthService.to.guestData.value = session.guest;
+      AuthService.to.sessionData.value = session;
+      Get.offAll(
+        () => const DashboardPage(),
+        binding: DashboardBinding(),
+      );
+      return;
+    }
 
     Get.offAll(() => const LoginPage());
     return;

@@ -20,6 +20,9 @@ class QuerysGen extends GeneratorForAnnotation<EngineSQL> {
     // get element as class
     AnnoClassVisitor visitor = AnnoClassVisitor(element.name!);
     (element).visitChildren(visitor);
+    AnnoClassVisitor extendedClass = AnnoClassVisitor('extended class');
+    (element as ClassElement).supertype?.element.visitChildren(extendedClass);
+    List<Map> totalFields = visitor.fields + extendedClass.fields;
     // get table name
     String name = annotation.read('name').stringValue;
 
@@ -29,9 +32,9 @@ class QuerysGen extends GeneratorForAnnotation<EngineSQL> {
       buf.writeln();
       buf.writeln("""
       Future<int> create({
-        ${getFuncParms(visitor.fields)}
+        ${getFuncParmsSchema(totalFields)}
       }) async => await db.insert('$name', {
-        ${getFuncFields(visitor.fields)}
+        ${getFuncFields(totalFields)}
       });
       """);
       buf.writeln();
@@ -49,11 +52,11 @@ class QuerysGen extends GeneratorForAnnotation<EngineSQL> {
       buf.writeln("""
       Future<int> update({
         required int id,
-        ${getFuncParms(visitor.fields)}
+        ${getFuncParms(totalFields)}
       }) async => await db.update(
         '$name',
         {
-          ${getFuncFields(visitor.fields)}
+          ${getFuncFields(totalFields)}
         },
         where: 'id = ?',
         whereArgs: [id],
@@ -70,31 +73,49 @@ class QuerysGen extends GeneratorForAnnotation<EngineSQL> {
       """);
       buf.writeln();
       StringBuffer stringBuffer = StringBuffer();
-      bool moreThanOne = false;
-      for (Map field in visitor.fields) {
+      // bool moreThanOne = false;
+      stringBuffer.writeln('List<String> searchFields = [];');
+      for (Map field in totalFields) {
         if (!field['primary']) {
           String fieldName = getSnakeFieldName(field['element'].name);
-          if (!moreThanOne) {
-            stringBuffer.writeln(
-                '\${${field['element'].name} == null ? "" : "$name.$fieldName IS NOT NULL"}');
-            moreThanOne = true;
-          } else {
-            stringBuffer.writeln(
-                '          \${${field['element'].name} == null ? "" : "AND $name.$fieldName IS NOT NULL"}');
-          }
+          stringBuffer.writeln('if (${field['element'].name} != null) {');
+          stringBuffer.writeln('searchFields.add("$name.$fieldName = ?");');
+          stringBuffer.writeln('}');
         }
       }
+      stringBuffer.writeln();
+      stringBuffer.writeln('StringBuffer buf = StringBuffer();');
+      stringBuffer.writeln('for (int i=0; i < searchFields.length; i++) {');
+      stringBuffer.writeln('if (i == 0) buf.writeln(searchFields[i]);');
+      stringBuffer
+          .writeln('if (i != 0) buf.writeln("AND " + searchFields[i]);');
+      stringBuffer.writeln('}');
+      // for (Map field in totalFields) {
+      //   if (!field['primary']) {
+      //     String fieldName = getSnakeFieldName(field['element'].name);
+      //     if (!moreThanOne) {
+      //       stringBuffer.writeln(
+      //           "\${${field['element'].name} == null ? '' : '$name.$fieldName = \${field['element'].name}'}");
+      //       moreThanOne = true;
+      //     } else {
+      //       stringBuffer.writeln(
+      //           "          \${${field['element'].name} == null ? '' : 'AND $name.$fieldName = \${field['element'].name}'}'}");
+      //     }
+      //   }
+      // }
       buf.writeln("""
       Future<List<${visitor.name}>> find({
-        ${getFuncParms(visitor.fields)}
+        ${getFuncParms(totalFields)}
       }) async {
+        ${stringBuffer.toString()}
+
         List<Map<String, dynamic>> data = await db.query(
           '$name', 
           where: '''
-          ${stringBuffer.toString()}
+          \${buf.toString()}
           AND \${${visitor.name}Table.sqlFindSchema}
           ''', 
-          whereArgs: [${getFuncFieldNames(visitor.fields)}],
+          whereArgs: [${getFuncFieldNames(totalFields)}],
         );
 
         return data.map((e) => ${visitor.name}.fromJson(e)).toList();

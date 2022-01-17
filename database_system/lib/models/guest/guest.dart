@@ -9,23 +9,33 @@ part 'guest.g.dart';
 @EngineSQL(name: 'guest')
 class Guest {
   // Main data
-
   @FieldSQL(primary: true)
   final int id;
+
   @dateTimeKey
+  @FieldSQL(haveDefault: true)
   DateTime createdDate;
+
+  @boolKey
+  @FieldSQL(haveDefault: true)
   bool isExpired;
   // main info data
-  String name;
-  String email;
-  String phone;
+  String? name;
+  String? email;
+  String? phone;
   // auth data
-  String password;
+  String? password;
+
+  @boolKey
+  @FieldSQL(haveDefault: true)
   bool isAdmin;
+
+  @boolKey
+  @FieldSQL(haveDefault: true)
   bool isStaff;
   // National ID data
-  String nationalID;
-  String nationalIdPic;
+  String? nationalId;
+  String? nationalIdPic;
   Guest({
     required this.createdDate,
     required this.email,
@@ -34,7 +44,7 @@ class Guest {
     required this.isExpired,
     required this.isStaff,
     required this.name,
-    required this.nationalID,
+    required this.nationalId,
     required this.nationalIdPic,
     required this.password,
     required this.phone,

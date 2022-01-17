@@ -47,13 +47,13 @@ class CourseQuery {
   CourseQuery(this.db);
 
   Future<int> create({
-    int? lecturerId,
-    double? totalPrice,
-    String? name,
-    String? description,
-    DateTime? startTime,
-    DateTime? endTime,
-    bool? isExpired,
+    required int lecturerId,
+    required double totalPrice,
+    required String name,
+    required String description,
+    required DateTime startTime,
+    required DateTime endTime,
+    required bool isExpired,
   }) async =>
       await db.insert('course', {
         if (lecturerId != null) 'lecturer_id': lecturerId,
@@ -118,27 +118,49 @@ class CourseQuery {
     DateTime? endTime,
     bool? isExpired,
   }) async {
+    List<String> searchFields = [];
+    if (lecturerId != null) {
+      searchFields.add("course.lecturer_id = ?");
+    }
+    if (totalPrice != null) {
+      searchFields.add("course.total_price = ?");
+    }
+    if (name != null) {
+      searchFields.add("course.name = ?");
+    }
+    if (description != null) {
+      searchFields.add("course.description = ?");
+    }
+    if (startTime != null) {
+      searchFields.add("course.start_time = ?");
+    }
+    if (endTime != null) {
+      searchFields.add("course.end_time = ?");
+    }
+    if (isExpired != null) {
+      searchFields.add("course.is_expired = ?");
+    }
+
+    StringBuffer buf = StringBuffer();
+    for (int i = 0; i < searchFields.length; i++) {
+      if (i == 0) buf.writeln(searchFields[i]);
+      if (i != 0) buf.writeln("AND " + searchFields[i]);
+    }
+
     List<Map<String, dynamic>> data = await db.query(
       'course',
       where: '''
-          ${lecturerId == null ? "" : "course.lecturer_id IS NOT NULL"}
-          ${totalPrice == null ? "" : "AND course.total_price IS NOT NULL"}
-          ${name == null ? "" : "AND course.name IS NOT NULL"}
-          ${description == null ? "" : "AND course.description IS NOT NULL"}
-          ${startTime == null ? "" : "AND course.start_time IS NOT NULL"}
-          ${endTime == null ? "" : "AND course.end_time IS NOT NULL"}
-          ${isExpired == null ? "" : "AND course.is_expired IS NOT NULL"}
-
+          ${buf.toString()}
           AND ${CourseTable.sqlFindSchema}
           ''',
       whereArgs: [
-        lecturerId,
-        totalPrice,
-        name,
-        description,
-        startTime,
-        endTime,
-        isExpired,
+        if (lecturerId != null) lecturerId,
+        if (totalPrice != null) totalPrice,
+        if (name != null) name,
+        if (description != null) description,
+        if (startTime != null) startTime,
+        if (endTime != null) endTime,
+        if (isExpired != null) isExpired,
       ],
     );
 
@@ -202,7 +224,7 @@ extension CourseTable on Course {
     course.description AS course_description,
     course.start_time AS course_start_time,
     course.end_time AS course_end_time,
-    course.is_expired AS course_is_expired,
+    course.is_expired AS course_is_expired
   """;
 
   static const String sqlFindSchema = """
@@ -245,6 +267,6 @@ extension CourseTable on Course {
     }
   }
 
-  static filterFromJson(Map<String, dynamic> json) =>
+  static Course? filterFromJson(Map<String, dynamic> json) =>
       schemaToJson(getStartWithString_('course', json));
 }

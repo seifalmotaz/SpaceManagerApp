@@ -42,10 +42,10 @@ class CourseRegistrationQuery {
   CourseRegistrationQuery(this.db);
 
   Future<int> create({
-    int? guestId,
-    int? courseId,
-    bool? isPaid,
-    DateTime? createdDate,
+    required int guestId,
+    required int courseId,
+    required bool isPaid,
+    required DateTime createdDate,
   }) async =>
       await db.insert('course_registration', {
         if (guestId != null) 'guest_id': guestId,
@@ -96,21 +96,37 @@ class CourseRegistrationQuery {
     bool? isPaid,
     DateTime? createdDate,
   }) async {
+    List<String> searchFields = [];
+    if (guestId != null) {
+      searchFields.add("course_registration.guest_id = ?");
+    }
+    if (courseId != null) {
+      searchFields.add("course_registration.course_id = ?");
+    }
+    if (isPaid != null) {
+      searchFields.add("course_registration.is_paid = ?");
+    }
+    if (createdDate != null) {
+      searchFields.add("course_registration.created_date = ?");
+    }
+
+    StringBuffer buf = StringBuffer();
+    for (int i = 0; i < searchFields.length; i++) {
+      if (i == 0) buf.writeln(searchFields[i]);
+      if (i != 0) buf.writeln("AND " + searchFields[i]);
+    }
+
     List<Map<String, dynamic>> data = await db.query(
       'course_registration',
       where: '''
-          ${guestId == null ? "" : "course_registration.guest_id IS NOT NULL"}
-          ${courseId == null ? "" : "AND course_registration.course_id IS NOT NULL"}
-          ${isPaid == null ? "" : "AND course_registration.is_paid IS NOT NULL"}
-          ${createdDate == null ? "" : "AND course_registration.created_date IS NOT NULL"}
-
+          ${buf.toString()}
           AND ${CourseRegistrationTable.sqlFindSchema}
           ''',
       whereArgs: [
-        guestId,
-        courseId,
-        isPaid,
-        createdDate,
+        if (guestId != null) guestId,
+        if (courseId != null) courseId,
+        if (isPaid != null) isPaid,
+        if (createdDate != null) createdDate,
       ],
     );
 
@@ -159,7 +175,7 @@ extension CourseRegistrationTable on CourseRegistration {
     course_registration.guest_id AS course_registration_guest_id,
     course_registration.course_id AS course_registration_course_id,
     course_registration.is_paid AS course_registration_is_paid,
-    course_registration.created_date AS course_registration_created_date,
+    course_registration.created_date AS course_registration_created_date
   """;
 
   static const String sqlFindSchema = """
@@ -196,6 +212,6 @@ extension CourseRegistrationTable on CourseRegistration {
     }
   }
 
-  static filterFromJson(Map<String, dynamic> json) =>
+  static CourseRegistration? filterFromJson(Map<String, dynamic> json) =>
       schemaToJson(getStartWithString_('course_registration', json));
 }

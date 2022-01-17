@@ -1,6 +1,27 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:engine_sql/helpers/sql_fields/writing.dart';
 
+String getFuncParmsSchema(List<Map> fields) {
+  StringBuffer createParameters = StringBuffer();
+  for (Map field in fields) {
+    FieldElement element = field['element'];
+    if (!field['primary']) {
+      late String type;
+      if (!element.type.toString().endsWith('?')) {
+        if (!field['haveDefault']) {
+          type = 'required ${element.type}';
+        } else {
+          type = '${element.type}?';
+        }
+      } else {
+        type = '${element.type}';
+      }
+      createParameters.writeln("$type ${element.name},");
+    }
+  }
+  return createParameters.toString();
+}
+
 String getFuncParms(List<Map> fields) {
   StringBuffer createParameters = StringBuffer();
   for (Map field in fields) {
@@ -50,7 +71,7 @@ String getFuncFieldNames(List<Map> fields) {
   for (Map field in fields) {
     FieldElement element = field['element'];
     if (!field['primary']) {
-      createParameters.writeln("${element.name},");
+      createParameters.writeln("if (${element.name} !=null) ${element.name},");
     }
   }
   return createParameters.toString();

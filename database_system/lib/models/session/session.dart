@@ -1,3 +1,4 @@
+import 'package:database_system/database_system.dart';
 import 'package:engine_sql_annotation/engine_sql_annotation.dart';
 import 'package:sqflite_common/sqlite_api.dart';
 import 'package:database_system/models/func.dart';
@@ -6,18 +7,26 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'session.g.dart';
 
+mixin Joins {
+  Guest? guest;
+  Room? room;
+  Reservation? reservation;
+  Course? course;
+}
+
 class Session {
   @FieldSQL(primary: true)
   final int id;
   // main data
   @dateTimeKey
+  @FieldSQL(haveDefault: true)
   DateTime timeIn;
-  @dateTimeKey
-  DateTime timeOut;
+  @dateNullTimeKey
+  DateTime? timeOut;
   Session({
     required this.id,
     required this.timeIn,
-    required this.timeOut,
+    this.timeOut,
   });
 
   factory Session.fromJson(Map<String, dynamic> json) {
@@ -31,7 +40,28 @@ class Session {
 
 @JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
 @EngineSQL(name: 'session')
-class GuestSession extends Session {
+class StaffSession extends Session with Joins {
+  int guestId;
+
+  StaffSession({
+    required this.guestId,
+    required id,
+    required timeIn,
+    required timeOut,
+  }) : super(
+          id: id,
+          timeIn: timeIn,
+          timeOut: timeOut,
+        );
+
+  factory StaffSession.fromJson(Map<String, dynamic> json) =>
+      _$StaffSessionFromJson(json);
+  Map<String, dynamic> toJson() => _$StaffSessionToJson(this);
+}
+
+@JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
+@EngineSQL(name: 'session')
+class GuestSession extends Session with Joins {
   int guestCount;
   int priceId;
   double paidAmount;
@@ -58,11 +88,37 @@ class GuestSession extends Session {
 
 @JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
 @EngineSQL(name: 'session')
-class RoomSession extends Session {
+class ReservationSession extends Session with Joins {
   int roomId;
   double paidAmount;
   int guestId;
-  int? reservationId;
+  int reservationId;
+
+  ReservationSession({
+    required this.paidAmount,
+    required this.guestId,
+    required this.roomId,
+    required id,
+    required timeIn,
+    required timeOut,
+    required this.reservationId,
+  }) : super(
+          id: id,
+          timeIn: timeIn,
+          timeOut: timeOut,
+        );
+
+  factory ReservationSession.fromJson(Map<String, dynamic> json) =>
+      _$ReservationSessionFromJson(json);
+  Map<String, dynamic> toJson() => _$ReservationSessionToJson(this);
+}
+
+@JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
+@EngineSQL(name: 'session')
+class RoomSession extends Session with Joins {
+  int roomId;
+  double paidAmount;
+  int guestId;
 
   RoomSession({
     required this.paidAmount,
@@ -71,7 +127,6 @@ class RoomSession extends Session {
     required id,
     required timeIn,
     required timeOut,
-    this.reservationId,
   }) : super(
           id: id,
           timeIn: timeIn,
@@ -85,7 +140,7 @@ class RoomSession extends Session {
 
 @JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
 @EngineSQL(name: 'session')
-class CourseSession extends Session {
+class CourseSession extends Session with Joins {
   int roomId;
   int courseId;
   int guestCount;

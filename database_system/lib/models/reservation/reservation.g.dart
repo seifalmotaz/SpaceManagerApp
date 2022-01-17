@@ -85,10 +85,25 @@ class CourseReservationQuery {
   CourseReservationQuery(this.db);
 
   Future<int> create({
-    int? roomId,
+    required int roomId,
+    required int guestId,
+    required int courseId,
+    required bool isCancelled,
+    required DateTime timeIn,
+    required DateTime timeOut,
+    required DateTime createdDate,
   }) async =>
       await db.insert('reservation', {
         if (roomId != null) 'room_id': roomId,
+        if (guestId != null) 'guest_id': guestId,
+        if (courseId != null) 'course_id': courseId,
+        if (isCancelled != null) 'is_cancelled': isCancelled ? 1 : 0,
+        if (timeIn != null)
+          'time_in': (timeIn.millisecondsSinceEpoch / 1000) as int,
+        if (timeOut != null)
+          'time_out': (timeOut.millisecondsSinceEpoch / 1000) as int,
+        if (createdDate != null)
+          'created_date': (createdDate.millisecondsSinceEpoch / 1000) as int,
       });
 
   Future<CourseReservation> read(int id) async {
@@ -103,11 +118,26 @@ class CourseReservationQuery {
   Future<int> update({
     required int id,
     int? roomId,
+    int? guestId,
+    int? courseId,
+    bool? isCancelled,
+    DateTime? timeIn,
+    DateTime? timeOut,
+    DateTime? createdDate,
   }) async =>
       await db.update(
         'reservation',
         {
           if (roomId != null) 'room_id': roomId,
+          if (guestId != null) 'guest_id': guestId,
+          if (courseId != null) 'course_id': courseId,
+          if (isCancelled != null) 'is_cancelled': isCancelled ? 1 : 0,
+          if (timeIn != null)
+            'time_in': (timeIn.millisecondsSinceEpoch / 1000) as int,
+          if (timeOut != null)
+            'time_out': (timeOut.millisecondsSinceEpoch / 1000) as int,
+          if (createdDate != null)
+            'created_date': (createdDate.millisecondsSinceEpoch / 1000) as int,
         },
         where: 'id = ?',
         whereArgs: [id],
@@ -121,16 +151,56 @@ class CourseReservationQuery {
 
   Future<List<CourseReservation>> find({
     int? roomId,
+    int? guestId,
+    int? courseId,
+    bool? isCancelled,
+    DateTime? timeIn,
+    DateTime? timeOut,
+    DateTime? createdDate,
   }) async {
+    List<String> searchFields = [];
+    if (roomId != null) {
+      searchFields.add("reservation.room_id = ?");
+    }
+    if (guestId != null) {
+      searchFields.add("reservation.guest_id = ?");
+    }
+    if (courseId != null) {
+      searchFields.add("reservation.course_id = ?");
+    }
+    if (isCancelled != null) {
+      searchFields.add("reservation.is_cancelled = ?");
+    }
+    if (timeIn != null) {
+      searchFields.add("reservation.time_in = ?");
+    }
+    if (timeOut != null) {
+      searchFields.add("reservation.time_out = ?");
+    }
+    if (createdDate != null) {
+      searchFields.add("reservation.created_date = ?");
+    }
+
+    StringBuffer buf = StringBuffer();
+    for (int i = 0; i < searchFields.length; i++) {
+      if (i == 0) buf.writeln(searchFields[i]);
+      if (i != 0) buf.writeln("AND " + searchFields[i]);
+    }
+
     List<Map<String, dynamic>> data = await db.query(
       'reservation',
       where: '''
-          ${roomId == null ? "" : "reservation.room_id IS NOT NULL"}
-
+          ${buf.toString()}
           AND ${CourseReservationTable.sqlFindSchema}
           ''',
       whereArgs: [
-        roomId,
+        if (roomId != null) roomId,
+        if (guestId != null) guestId,
+        if (courseId != null) courseId,
+        if (isCancelled != null) isCancelled,
+        if (timeIn != null) timeIn,
+        if (timeOut != null) timeOut,
+        if (createdDate != null) createdDate,
       ],
     );
 
@@ -143,10 +213,25 @@ class GuestReservationQuery {
   GuestReservationQuery(this.db);
 
   Future<int> create({
-    double? paidAmount,
+    required double paidAmount,
+    required int guestId,
+    required int courseId,
+    required bool isCancelled,
+    required DateTime timeIn,
+    required DateTime timeOut,
+    required DateTime createdDate,
   }) async =>
       await db.insert('reservation', {
         if (paidAmount != null) 'paid_amount': paidAmount,
+        if (guestId != null) 'guest_id': guestId,
+        if (courseId != null) 'course_id': courseId,
+        if (isCancelled != null) 'is_cancelled': isCancelled ? 1 : 0,
+        if (timeIn != null)
+          'time_in': (timeIn.millisecondsSinceEpoch / 1000) as int,
+        if (timeOut != null)
+          'time_out': (timeOut.millisecondsSinceEpoch / 1000) as int,
+        if (createdDate != null)
+          'created_date': (createdDate.millisecondsSinceEpoch / 1000) as int,
       });
 
   Future<GuestReservation> read(int id) async {
@@ -161,11 +246,26 @@ class GuestReservationQuery {
   Future<int> update({
     required int id,
     double? paidAmount,
+    int? guestId,
+    int? courseId,
+    bool? isCancelled,
+    DateTime? timeIn,
+    DateTime? timeOut,
+    DateTime? createdDate,
   }) async =>
       await db.update(
         'reservation',
         {
           if (paidAmount != null) 'paid_amount': paidAmount,
+          if (guestId != null) 'guest_id': guestId,
+          if (courseId != null) 'course_id': courseId,
+          if (isCancelled != null) 'is_cancelled': isCancelled ? 1 : 0,
+          if (timeIn != null)
+            'time_in': (timeIn.millisecondsSinceEpoch / 1000) as int,
+          if (timeOut != null)
+            'time_out': (timeOut.millisecondsSinceEpoch / 1000) as int,
+          if (createdDate != null)
+            'created_date': (createdDate.millisecondsSinceEpoch / 1000) as int,
         },
         where: 'id = ?',
         whereArgs: [id],
@@ -179,16 +279,56 @@ class GuestReservationQuery {
 
   Future<List<GuestReservation>> find({
     double? paidAmount,
+    int? guestId,
+    int? courseId,
+    bool? isCancelled,
+    DateTime? timeIn,
+    DateTime? timeOut,
+    DateTime? createdDate,
   }) async {
+    List<String> searchFields = [];
+    if (paidAmount != null) {
+      searchFields.add("reservation.paid_amount = ?");
+    }
+    if (guestId != null) {
+      searchFields.add("reservation.guest_id = ?");
+    }
+    if (courseId != null) {
+      searchFields.add("reservation.course_id = ?");
+    }
+    if (isCancelled != null) {
+      searchFields.add("reservation.is_cancelled = ?");
+    }
+    if (timeIn != null) {
+      searchFields.add("reservation.time_in = ?");
+    }
+    if (timeOut != null) {
+      searchFields.add("reservation.time_out = ?");
+    }
+    if (createdDate != null) {
+      searchFields.add("reservation.created_date = ?");
+    }
+
+    StringBuffer buf = StringBuffer();
+    for (int i = 0; i < searchFields.length; i++) {
+      if (i == 0) buf.writeln(searchFields[i]);
+      if (i != 0) buf.writeln("AND " + searchFields[i]);
+    }
+
     List<Map<String, dynamic>> data = await db.query(
       'reservation',
       where: '''
-          ${paidAmount == null ? "" : "reservation.paid_amount IS NOT NULL"}
-
+          ${buf.toString()}
           AND ${GuestReservationTable.sqlFindSchema}
           ''',
       whereArgs: [
-        paidAmount,
+        if (paidAmount != null) paidAmount,
+        if (guestId != null) guestId,
+        if (courseId != null) courseId,
+        if (isCancelled != null) isCancelled,
+        if (timeIn != null) timeIn,
+        if (timeOut != null) timeOut,
+        if (createdDate != null) createdDate,
       ],
     );
 
@@ -252,7 +392,7 @@ extension CourseReservationTable on CourseReservation {
     reservation.is_cancelled AS reservation_is_cancelled,
     reservation.time_in AS reservation_time_in,
     reservation.time_out AS reservation_time_out,
-    reservation.created_date AS reservation_created_date,
+    reservation.created_date AS reservation_created_date
   """;
 
   static const String sqlFindSchema = """
@@ -295,7 +435,7 @@ extension CourseReservationTable on CourseReservation {
     }
   }
 
-  static filterFromJson(Map<String, dynamic> json) =>
+  static CourseReservation? filterFromJson(Map<String, dynamic> json) =>
       schemaToJson(getStartWithString_('reservation', json));
 }
 
@@ -351,7 +491,7 @@ extension GuestReservationTable on GuestReservation {
     reservation.is_cancelled AS reservation_is_cancelled,
     reservation.time_in AS reservation_time_in,
     reservation.time_out AS reservation_time_out,
-    reservation.created_date AS reservation_created_date,
+    reservation.created_date AS reservation_created_date
   """;
 
   static const String sqlFindSchema = """
@@ -394,6 +534,6 @@ extension GuestReservationTable on GuestReservation {
     }
   }
 
-  static filterFromJson(Map<String, dynamic> json) =>
+  static GuestReservation? filterFromJson(Map<String, dynamic> json) =>
       schemaToJson(getStartWithString_('reservation', json));
 }

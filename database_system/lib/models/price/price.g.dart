@@ -47,13 +47,13 @@ class PriceQuery {
   PriceQuery(this.db);
 
   Future<int> create({
-    double? rate,
-    String? description,
+    required double rate,
+    required String description,
     Map<dynamic, dynamic>? options,
-    bool? isDefault,
-    bool? isDeleted,
-    bool? isPerDay,
-    DateTime? createdDate,
+    required bool isDefault,
+    required bool isDeleted,
+    required bool isPerDay,
+    required DateTime createdDate,
   }) async =>
       await db.insert('price', {
         if (rate != null) 'rate': rate,
@@ -116,27 +116,49 @@ class PriceQuery {
     bool? isPerDay,
     DateTime? createdDate,
   }) async {
+    List<String> searchFields = [];
+    if (rate != null) {
+      searchFields.add("price.rate = ?");
+    }
+    if (description != null) {
+      searchFields.add("price.description = ?");
+    }
+    if (options != null) {
+      searchFields.add("price.options = ?");
+    }
+    if (isDefault != null) {
+      searchFields.add("price.is_default = ?");
+    }
+    if (isDeleted != null) {
+      searchFields.add("price.is_deleted = ?");
+    }
+    if (isPerDay != null) {
+      searchFields.add("price.is_per_day = ?");
+    }
+    if (createdDate != null) {
+      searchFields.add("price.created_date = ?");
+    }
+
+    StringBuffer buf = StringBuffer();
+    for (int i = 0; i < searchFields.length; i++) {
+      if (i == 0) buf.writeln(searchFields[i]);
+      if (i != 0) buf.writeln("AND " + searchFields[i]);
+    }
+
     List<Map<String, dynamic>> data = await db.query(
       'price',
       where: '''
-          ${rate == null ? "" : "price.rate IS NOT NULL"}
-          ${description == null ? "" : "AND price.description IS NOT NULL"}
-          ${options == null ? "" : "AND price.options IS NOT NULL"}
-          ${isDefault == null ? "" : "AND price.is_default IS NOT NULL"}
-          ${isDeleted == null ? "" : "AND price.is_deleted IS NOT NULL"}
-          ${isPerDay == null ? "" : "AND price.is_per_day IS NOT NULL"}
-          ${createdDate == null ? "" : "AND price.created_date IS NOT NULL"}
-
+          ${buf.toString()}
           AND ${PriceTable.sqlFindSchema}
           ''',
       whereArgs: [
-        rate,
-        description,
-        options,
-        isDefault,
-        isDeleted,
-        isPerDay,
-        createdDate,
+        if (rate != null) rate,
+        if (description != null) description,
+        if (options != null) options,
+        if (isDefault != null) isDefault,
+        if (isDeleted != null) isDeleted,
+        if (isPerDay != null) isPerDay,
+        if (createdDate != null) createdDate,
       ],
     );
 
@@ -200,7 +222,7 @@ extension PriceTable on Price {
     price.is_default AS price_is_default,
     price.is_deleted AS price_is_deleted,
     price.is_per_day AS price_is_per_day,
-    price.created_date AS price_created_date,
+    price.created_date AS price_created_date
   """;
 
   static const String sqlFindSchema = """
@@ -242,6 +264,6 @@ extension PriceTable on Price {
     }
   }
 
-  static filterFromJson(Map<String, dynamic> json) =>
+  static Price? filterFromJson(Map<String, dynamic> json) =>
       schemaToJson(getStartWithString_('price', json));
 }

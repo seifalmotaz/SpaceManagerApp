@@ -10,7 +10,9 @@ class EngineSQL {
 class FieldSQL {
   /// Do not add this field to create/update function
   final bool primary;
+  final bool haveDefault;
   const FieldSQL({
     this.primary = false,
+    this.haveDefault = false,
   });
 }
