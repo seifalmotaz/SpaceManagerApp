@@ -23,4 +23,7 @@ class ColorPalette {
   static const Color lightBittersweet = Color(0xFFf8e9e1);
   //
   static const Color beige = Color(0xFFECDBBA);
+  // text
+  static const textColor = Color(0xFF37474F);
+  static const semiTextColor = Color(0xFF455A64);
 }

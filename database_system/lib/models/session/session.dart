@@ -8,9 +8,13 @@ import 'package:json_annotation/json_annotation.dart';
 part 'session.g.dart';
 
 mixin Joins {
+  @JsonKey(ignore: true)
   Guest? guest;
+  @JsonKey(ignore: true)
   Room? room;
+  @JsonKey(ignore: true)
   Reservation? reservation;
+  @JsonKey(ignore: true)
   Course? course;
 }
 

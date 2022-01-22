@@ -9,7 +9,6 @@ class RoomsController extends GetxController {
   getRooms() async {
     List<Room> _rooms = await roomQuery.find();
     rooms.value = _rooms;
-    print(_rooms.length);
   }
 
   @override

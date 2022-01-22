@@ -120,13 +120,14 @@ class CourseRegistrationQuery {
       'course_registration',
       where: '''
           ${buf.toString()}
-          AND ${CourseRegistrationTable.sqlFindSchema}
+          ${buf.toString().isNotEmpty ? "AND" : ""} ${CourseRegistrationTable.sqlFindSchema}
           ''',
       whereArgs: [
         if (guestId != null) guestId,
         if (courseId != null) courseId,
-        if (isPaid != null) isPaid,
-        if (createdDate != null) createdDate,
+        if (isPaid != null) isPaid ? 1 : 0,
+        if (createdDate != null)
+          (createdDate.millisecondsSinceEpoch / 1000) as int,
       ],
     );
 

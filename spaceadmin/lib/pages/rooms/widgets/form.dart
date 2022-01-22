@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:spaceadmin/constant/base_colors.dart';
+import 'package:spaceadmin/helpers/snacks.dart';
 import 'package:spaceadmin/pages/rooms/controllers/controller.dart';
 import 'package:spaceadmin/widgets/text_field.dart';
 
@@ -39,16 +40,7 @@ class _RoomFormState extends State<RoomForm> {
         );
         RoomsController.to.getRooms();
       } catch (e) {
-        Get.snackbar(
-          'Code error',
-          e.toString(),
-          isDismissible: false,
-          colorText: Colors.white,
-          maxWidth: Get.width * .3,
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: BaseColors.primary,
-          margin: const EdgeInsets.symmetric(vertical: 51),
-        );
+        codeErrorSnack(e.toString());
         return;
       }
       setState(() {
@@ -62,114 +54,114 @@ class _RoomFormState extends State<RoomForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return SliverPadding(
       padding: const EdgeInsets.all(33),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const Text(
-                'Add room to list:',
-                style: TextStyle(
-                  fontSize: 27,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              ArgonButton(
-                borderRadius: 3,
-                height: 35,
-                width: Get.width * .1,
-                color: ColorPalette.bittersweet,
-                child: const Text(
-                  "Save",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-                loader: Container(
-                  padding: const EdgeInsets.all(10),
-                  child: const SpinKitRotatingCircle(color: Colors.white),
-                ),
-                onTap: (startLoading, stopLoading, btnState) {
-                  startLoading();
-                  check();
-                  stopLoading();
-                },
-              ),
-            ],
-          ),
-          const SizedBox(height: 17),
-          Form(
-            key: form,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+      sliver: SliverToBoxAdapter(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const Spacer(),
-                Flexible(
-                  flex: 21,
-                  child: WTextField(
-                    border: 3,
-                    hint: 'Name',
-                    focus: nameFocus,
-                    controller: name,
-                    onFieldSubmitted: (String string) =>
-                        nameFocus.requestFocus(),
+                const Text(
+                  'Add room to list:',
+                  style: TextStyle(
+                    fontSize: 27,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
-                const Spacer(),
-                Flexible(
-                  flex: 21,
-                  child: WTextField(
-                    border: 3,
-                    hint: 'Price/hour',
-                    focus: priceFocus,
-                    controller: price,
-                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                    onFieldSubmitted: (String string) =>
-                        capacityFocus.requestFocus(),
-                    validator: (String? value) {
-                      if (value!.isEmpty) {
-                        return 'Type price';
-                      }
-                      double? d = double.tryParse(value);
-                      if (d == null) {
-                        return 'Just numbers';
-                      }
-                    },
+                ArgonButton(
+                  borderRadius: 3,
+                  height: 35,
+                  width: Get.width * .1,
+                  color: ColorPalette.bittersweet,
+                  child: const Text(
+                    "Save",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
-                ),
-                const Spacer(),
-                Flexible(
-                  flex: 21,
-                  child: WTextField(
-                    border: 3,
-                    hint: 'Capacity',
-                    focus: capacityFocus,
-                    controller: capacity,
-                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                    validator: (String? value) {
-                      if (value!.isEmpty) {
-                        return 'Type capacity of the room.';
-                      }
-                      double? d = double.tryParse(value);
-                      if (d == null) {
-                        return 'Just numbers';
-                      }
-                    },
+                  loader: Container(
+                    padding: const EdgeInsets.all(10),
+                    child: const SpinKitRotatingCircle(color: Colors.white),
                   ),
+                  onTap: (startLoading, stopLoading, btnState) {
+                    startLoading();
+                    check();
+                    stopLoading();
+                  },
                 ),
-                const Spacer(),
               ],
             ),
-          ),
-        ],
+            const SizedBox(height: 17),
+            Form(
+              key: form,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const Spacer(),
+                  Flexible(
+                    flex: 21,
+                    child: WTextField(
+                      border: 3,
+                      hint: 'Name',
+                      focus: nameFocus,
+                      controller: name,
+                      onFieldSubmitted: (String string) =>
+                          capacityFocus.requestFocus(),
+                    ),
+                  ),
+                  const Spacer(),
+                  Flexible(
+                    flex: 21,
+                    child: WTextField(
+                      border: 3,
+                      hint: 'Capacity',
+                      focus: capacityFocus,
+                      controller: capacity,
+                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                      validator: (String? value) {
+                        if (value!.isEmpty) {
+                          return 'Type capacity of the room.';
+                        }
+                        double? d = double.tryParse(value);
+                        if (d == null) {
+                          return 'Just numbers';
+                        }
+                      },
+                    ),
+                  ),
+                  const Spacer(),
+                  Flexible(
+                    flex: 21,
+                    child: WTextField(
+                      border: 3,
+                      hint: 'Price/hour',
+                      focus: priceFocus,
+                      controller: price,
+                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                      validator: (String? value) {
+                        if (value!.isEmpty) {
+                          return 'Type price';
+                        }
+                        double? d = double.tryParse(value);
+                        if (d == null) {
+                          return 'Just numbers';
+                        }
+                      },
+                    ),
+                  ),
+                  const Spacer(),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -71,7 +71,17 @@ String getFuncFieldNames(List<Map> fields) {
   for (Map field in fields) {
     FieldElement element = field['element'];
     if (!field['primary']) {
-      createParameters.writeln("if (${element.name} !=null) ${element.name},");
+      if (!element.type.toString().startsWith('bool') &&
+          !element.type.toString().startsWith('DateTime')) {
+        createParameters
+            .writeln("if (${element.name} !=null) ${element.name},");
+      } else if (element.type.toString().startsWith('bool')) {
+        createParameters
+            .writeln("if (${element.name} !=null) ${element.name}? 1 : 0,");
+      } else if (element.type.toString().startsWith('DateTime')) {
+        createParameters.writeln(
+            "if (${element.name} !=null) (${element.name}.millisecondsSinceEpoch / 1000) as int,");
+      }
     }
   }
   return createParameters.toString();

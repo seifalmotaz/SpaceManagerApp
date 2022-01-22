@@ -231,12 +231,12 @@ class StaffSessionQuery {
       'session',
       where: '''
           ${buf.toString()}
-          AND ${StaffSessionTable.sqlFindSchema}
+          ${buf.toString().isNotEmpty ? "AND" : ""} ${StaffSessionTable.sqlFindSchema}
           ''',
       whereArgs: [
         if (guestId != null) guestId,
-        if (timeIn != null) timeIn,
-        if (timeOut != null) timeOut,
+        if (timeIn != null) (timeIn.millisecondsSinceEpoch / 1000) as int,
+        if (timeOut != null) (timeOut.millisecondsSinceEpoch / 1000) as int,
       ],
     );
 
@@ -345,15 +345,15 @@ class GuestSessionQuery {
       'session',
       where: '''
           ${buf.toString()}
-          AND ${GuestSessionTable.sqlFindSchema}
+          ${buf.toString().isNotEmpty ? "AND" : ""} ${GuestSessionTable.sqlFindSchema}
           ''',
       whereArgs: [
         if (guestCount != null) guestCount,
         if (priceId != null) priceId,
         if (paidAmount != null) paidAmount,
         if (guestId != null) guestId,
-        if (timeIn != null) timeIn,
-        if (timeOut != null) timeOut,
+        if (timeIn != null) (timeIn.millisecondsSinceEpoch / 1000) as int,
+        if (timeOut != null) (timeOut.millisecondsSinceEpoch / 1000) as int,
       ],
     );
 
@@ -462,15 +462,15 @@ class ReservationSessionQuery {
       'session',
       where: '''
           ${buf.toString()}
-          AND ${ReservationSessionTable.sqlFindSchema}
+          ${buf.toString().isNotEmpty ? "AND" : ""} ${ReservationSessionTable.sqlFindSchema}
           ''',
       whereArgs: [
         if (roomId != null) roomId,
         if (paidAmount != null) paidAmount,
         if (guestId != null) guestId,
         if (reservationId != null) reservationId,
-        if (timeIn != null) timeIn,
-        if (timeOut != null) timeOut,
+        if (timeIn != null) (timeIn.millisecondsSinceEpoch / 1000) as int,
+        if (timeOut != null) (timeOut.millisecondsSinceEpoch / 1000) as int,
       ],
     );
 
@@ -571,14 +571,14 @@ class RoomSessionQuery {
       'session',
       where: '''
           ${buf.toString()}
-          AND ${RoomSessionTable.sqlFindSchema}
+          ${buf.toString().isNotEmpty ? "AND" : ""} ${RoomSessionTable.sqlFindSchema}
           ''',
       whereArgs: [
         if (roomId != null) roomId,
         if (paidAmount != null) paidAmount,
         if (guestId != null) guestId,
-        if (timeIn != null) timeIn,
-        if (timeOut != null) timeOut,
+        if (timeIn != null) (timeIn.millisecondsSinceEpoch / 1000) as int,
+        if (timeOut != null) (timeOut.millisecondsSinceEpoch / 1000) as int,
       ],
     );
 
@@ -687,15 +687,15 @@ class CourseSessionQuery {
       'session',
       where: '''
           ${buf.toString()}
-          AND ${CourseSessionTable.sqlFindSchema}
+          ${buf.toString().isNotEmpty ? "AND" : ""} ${CourseSessionTable.sqlFindSchema}
           ''',
       whereArgs: [
         if (roomId != null) roomId,
         if (courseId != null) courseId,
         if (guestCount != null) guestCount,
         if (reservationId != null) reservationId,
-        if (timeIn != null) timeIn,
-        if (timeOut != null) timeOut,
+        if (timeIn != null) (timeIn.millisecondsSinceEpoch / 1000) as int,
+        if (timeOut != null) (timeOut.millisecondsSinceEpoch / 1000) as int,
       ],
     );
 

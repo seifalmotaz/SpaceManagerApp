@@ -7,6 +7,8 @@ class WTextField extends StatelessWidget {
     this.icon,
     this.focus,
     this.width,
+    this.fontsize,
+    this.height,
     this.helper,
     this.onChange,
     this.validator,
@@ -20,6 +22,8 @@ class WTextField extends StatelessWidget {
     this.hintColor,
     this.border,
     this.obscureText = false,
+    this.textAlignVertical,
+    this.textAlign = TextAlign.start,
     required this.hint,
   }) : super(key: key);
 
@@ -30,7 +34,9 @@ class WTextField extends StatelessWidget {
   final TextEditingController? controller;
 
   final String hint;
+  final double? fontsize;
   final double? width;
+  final double? height;
   final String? counterText;
   final String? helper;
   final IconData? icon;
@@ -40,6 +46,8 @@ class WTextField extends StatelessWidget {
   final bool autoFocus;
   final double? border;
   final bool obscureText;
+  final TextAlignVertical? textAlignVertical;
+  final TextAlign textAlign;
 
   final List<TextInputFormatter>? inputFormatters;
 
@@ -52,12 +60,13 @@ class WTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: width ?? double.infinity,
+      height: height,
       child: ClipRRect(
         borderRadius: BorderRadius.circular(border ?? 13),
         child: TextFormField(
           style: textColor == null
               ? basicStyle
-              : basicStyle.copyWith(color: textColor),
+              : basicStyle.copyWith(color: textColor, fontSize: fontsize),
           autofocus: autoFocus,
           focusNode: focus,
           obscureText: obscureText,
@@ -66,8 +75,9 @@ class WTextField extends StatelessWidget {
           validator: validator,
           inputFormatters: inputFormatters,
           onChanged: onChange,
-          textAlignVertical:
-              icon == null ? TextAlignVertical.top : TextAlignVertical.center,
+          textAlign: textAlign,
+          textAlignVertical: textAlignVertical ??
+              (icon == null ? TextAlignVertical.top : TextAlignVertical.center),
           decoration: InputDecoration(
             filled: true,
             fillColor: color,

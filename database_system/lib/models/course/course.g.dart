@@ -151,16 +151,16 @@ class CourseQuery {
       'course',
       where: '''
           ${buf.toString()}
-          AND ${CourseTable.sqlFindSchema}
+          ${buf.toString().isNotEmpty ? "AND" : ""} ${CourseTable.sqlFindSchema}
           ''',
       whereArgs: [
         if (lecturerId != null) lecturerId,
         if (totalPrice != null) totalPrice,
         if (name != null) name,
         if (description != null) description,
-        if (startTime != null) startTime,
-        if (endTime != null) endTime,
-        if (isExpired != null) isExpired,
+        if (startTime != null) (startTime.millisecondsSinceEpoch / 1000) as int,
+        if (endTime != null) (endTime.millisecondsSinceEpoch / 1000) as int,
+        if (isExpired != null) isExpired ? 1 : 0,
       ],
     );
 

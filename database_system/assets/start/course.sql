@@ -12,7 +12,7 @@ CREATE TABLE course (
     end_date INTEGER NOT NULL,
     is_expired BOOLEAN DEFAULT FALSE,
     created_date INTEGER NOT NULL DEFAULT (strftime('%s', 'now')),
-    CONSTRAINT fk_guest_id FOREIGN KEY (lecturer_id) REFERENCES guest(id),
+    CONSTRAINT fk_guest_id FOREIGN KEY (lecturer_id) REFERENCES guest(id)
 );
 
 CREATE TABLE course_registration (

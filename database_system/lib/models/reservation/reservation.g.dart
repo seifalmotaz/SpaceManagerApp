@@ -191,16 +191,17 @@ class CourseReservationQuery {
       'reservation',
       where: '''
           ${buf.toString()}
-          AND ${CourseReservationTable.sqlFindSchema}
+          ${buf.toString().isNotEmpty ? "AND" : ""} ${CourseReservationTable.sqlFindSchema}
           ''',
       whereArgs: [
         if (roomId != null) roomId,
         if (guestId != null) guestId,
         if (courseId != null) courseId,
-        if (isCancelled != null) isCancelled,
-        if (timeIn != null) timeIn,
-        if (timeOut != null) timeOut,
-        if (createdDate != null) createdDate,
+        if (isCancelled != null) isCancelled ? 1 : 0,
+        if (timeIn != null) (timeIn.millisecondsSinceEpoch / 1000) as int,
+        if (timeOut != null) (timeOut.millisecondsSinceEpoch / 1000) as int,
+        if (createdDate != null)
+          (createdDate.millisecondsSinceEpoch / 1000) as int,
       ],
     );
 
@@ -319,16 +320,17 @@ class GuestReservationQuery {
       'reservation',
       where: '''
           ${buf.toString()}
-          AND ${GuestReservationTable.sqlFindSchema}
+          ${buf.toString().isNotEmpty ? "AND" : ""} ${GuestReservationTable.sqlFindSchema}
           ''',
       whereArgs: [
         if (paidAmount != null) paidAmount,
         if (guestId != null) guestId,
         if (courseId != null) courseId,
-        if (isCancelled != null) isCancelled,
-        if (timeIn != null) timeIn,
-        if (timeOut != null) timeOut,
-        if (createdDate != null) createdDate,
+        if (isCancelled != null) isCancelled ? 1 : 0,
+        if (timeIn != null) (timeIn.millisecondsSinceEpoch / 1000) as int,
+        if (timeOut != null) (timeOut.millisecondsSinceEpoch / 1000) as int,
+        if (createdDate != null)
+          (createdDate.millisecondsSinceEpoch / 1000) as int,
       ],
     );
 

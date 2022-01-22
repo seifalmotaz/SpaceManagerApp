@@ -117,13 +117,13 @@ class RoomQuery {
       'room',
       where: '''
           ${buf.toString()}
-          AND ${RoomTable.sqlFindSchema}
+          ${buf.toString().isNotEmpty ? "AND" : ""} ${RoomTable.sqlFindSchema}
           ''',
       whereArgs: [
         if (rate != null) rate,
         if (name != null) name,
         if (capacity != null) capacity,
-        if (isDeleted != null) isDeleted,
+        if (isDeleted != null) isDeleted ? 1 : 0,
       ],
     );
 

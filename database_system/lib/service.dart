@@ -30,11 +30,14 @@ class DBService extends GetxService {
   }
 
   Future createSchema(Database db, int version) async {
-    String sql = await rootBundle.loadString('assets/db/start/guest.sql');
+    String sql = await rootBundle
+        .loadString('packages/database_system/assets/start/guest.sql');
     await db.execute(sql);
-    sql = await rootBundle.loadString('assets/db/start/course.sql');
+    sql = await rootBundle
+        .loadString('packages/database_system/assets/start/course.sql');
     await db.execute(sql);
-    sql = await rootBundle.loadString('assets/db/start/session.sql');
+    sql = await rootBundle
+        .loadString('packages/database_system/assets/start/session.sql');
     await db.execute(sql);
     await GuestQuery(db).create(
       email: 'admin@admin.com',

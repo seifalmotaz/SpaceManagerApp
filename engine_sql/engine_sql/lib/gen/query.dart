@@ -113,7 +113,7 @@ class QuerysGen extends GeneratorForAnnotation<EngineSQL> {
           '$name', 
           where: '''
           \${buf.toString()}
-          AND \${${visitor.name}Table.sqlFindSchema}
+          \${buf.toString().isNotEmpty ? "AND" : ""} \${${visitor.name}Table.sqlFindSchema}
           ''', 
           whereArgs: [${getFuncFieldNames(totalFields)}],
         );

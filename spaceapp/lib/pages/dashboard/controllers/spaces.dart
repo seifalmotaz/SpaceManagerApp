@@ -1,5 +1,8 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class SpacesScreenController extends GetxController {
-  static SpacesScreenController get to => Get.find();
+class SpacesController extends GetxController {
+  static SpacesController get to => Get.find();
+
+  ScrollController homeScroll = ScrollController();
 }

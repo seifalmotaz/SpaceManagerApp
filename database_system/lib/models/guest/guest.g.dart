@@ -179,17 +179,18 @@ class GuestQuery {
       'guest',
       where: '''
           ${buf.toString()}
-          AND ${GuestTable.sqlFindSchema}
+          ${buf.toString().isNotEmpty ? "AND" : ""} ${GuestTable.sqlFindSchema}
           ''',
       whereArgs: [
-        if (createdDate != null) createdDate,
-        if (isExpired != null) isExpired,
+        if (createdDate != null)
+          (createdDate.millisecondsSinceEpoch / 1000) as int,
+        if (isExpired != null) isExpired ? 1 : 0,
         if (name != null) name,
         if (email != null) email,
         if (phone != null) phone,
         if (password != null) password,
-        if (isAdmin != null) isAdmin,
-        if (isStaff != null) isStaff,
+        if (isAdmin != null) isAdmin ? 1 : 0,
+        if (isStaff != null) isStaff ? 1 : 0,
         if (nationalId != null) nationalId,
         if (nationalIdPic != null) nationalIdPic,
       ],

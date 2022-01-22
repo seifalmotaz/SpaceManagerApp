@@ -1,5 +1,5 @@
-import 'package:spaceapp/pages/wrapper.dart';
 import 'package:flutter/material.dart';
+import 'package:spaceapp/pages/wrapper.dart';
 import 'package:get/get.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:window_manager/window_manager.dart';
@@ -10,7 +10,7 @@ Future<void> main() async {
   await windowManager.ensureInitialized();
 
   windowManager.waitUntilReadyToShow().then((_) async {
-    await windowManager.setAsFrameless();
+    // await windowManager.setAsFrameless();
     await windowManager.maximize();
     windowManager.show();
   });

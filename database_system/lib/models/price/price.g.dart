@@ -7,21 +7,20 @@ part of 'price.dart';
 // **************************************************************************
 
 Price _$PriceFromJson(Map<String, dynamic> json) => Price(
-      createdDate: DataCompiler.fromDBDate(json['created_date'] as int),
-      description: json['description'] as String,
       id: json['id'] as int,
-      isDefault: DataCompiler.fromDBool(json['is_default'] as int),
-      isDeleted: DataCompiler.fromDBool(json['is_deleted'] as int),
-      isPerDay: DataCompiler.fromDBool(json['is_per_day'] as int),
       rate: (json['rate'] as num).toDouble(),
       options: DataCompiler.fromJsonString(json['options'] as String?),
+      isPerDay: DataCompiler.fromDBoolNull(json['is_per_day'] as int?),
+      isDefault: DataCompiler.fromDBoolNull(json['is_default'] as int?),
+      isDeleted: DataCompiler.fromDBoolNull(json['is_deleted'] as int?),
+      createdDate: DataCompiler.fromDBDateNull(json['created_date'] as int?),
+      description: json['description'] as String?,
     );
 
 Map<String, dynamic> _$PriceToJson(Price instance) {
   final val = <String, dynamic>{
     'id': instance.id,
     'rate': instance.rate,
-    'description': instance.description,
   };
 
   void writeNotNull(String key, dynamic value) {
@@ -30,11 +29,12 @@ Map<String, dynamic> _$PriceToJson(Price instance) {
     }
   }
 
+  writeNotNull('description', instance.description);
   writeNotNull('options', DataCompiler.toJsonString(instance.options));
-  writeNotNull('is_default', DataCompiler.toDBool(instance.isDefault));
-  writeNotNull('is_deleted', DataCompiler.toDBool(instance.isDeleted));
-  writeNotNull('is_per_day', DataCompiler.toDBool(instance.isPerDay));
-  writeNotNull('created_date', DataCompiler.toDBDate(instance.createdDate));
+  writeNotNull('is_default', DataCompiler.toDBoolNull(instance.isDefault));
+  writeNotNull('is_deleted', DataCompiler.toDBoolNull(instance.isDeleted));
+  writeNotNull('is_per_day', DataCompiler.toDBoolNull(instance.isPerDay));
+  writeNotNull('created_date', DataCompiler.toDBDateNull(instance.createdDate));
   return val;
 }
 
@@ -48,12 +48,12 @@ class PriceQuery {
 
   Future<int> create({
     required double rate,
-    required String description,
+    String? description,
     Map<dynamic, dynamic>? options,
-    required bool isDefault,
-    required bool isDeleted,
-    required bool isPerDay,
-    required DateTime createdDate,
+    bool? isDefault,
+    bool? isDeleted,
+    bool? isPerDay,
+    DateTime? createdDate,
   }) async =>
       await db.insert('price', {
         if (rate != null) 'rate': rate,
@@ -149,16 +149,17 @@ class PriceQuery {
       'price',
       where: '''
           ${buf.toString()}
-          AND ${PriceTable.sqlFindSchema}
+          ${buf.toString().isNotEmpty ? "AND" : ""} ${PriceTable.sqlFindSchema}
           ''',
       whereArgs: [
         if (rate != null) rate,
         if (description != null) description,
         if (options != null) options,
-        if (isDefault != null) isDefault,
-        if (isDeleted != null) isDeleted,
-        if (isPerDay != null) isPerDay,
-        if (createdDate != null) createdDate,
+        if (isDefault != null) isDefault ? 1 : 0,
+        if (isDeleted != null) isDeleted ? 1 : 0,
+        if (isPerDay != null) isPerDay ? 1 : 0,
+        if (createdDate != null)
+          (createdDate.millisecondsSinceEpoch / 1000) as int,
       ],
     );
 
@@ -228,11 +229,6 @@ extension PriceTable on Price {
   static const String sqlFindSchema = """
     price.id IS NOT NULL
     AND price.rate IS NOT NULL
-    AND price.description IS NOT NULL
-    AND price.is_default IS NOT NULL
-    AND price.is_deleted IS NOT NULL
-    AND price.is_per_day IS NOT NULL
-    AND price.created_date IS NOT NULL
   """;
 
   static const List schemaMap = [

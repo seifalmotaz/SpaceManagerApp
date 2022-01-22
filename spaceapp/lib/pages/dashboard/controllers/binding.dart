@@ -7,6 +7,6 @@ class DashboardBinding implements Bindings {
   @override
   void dependencies() {
     Get.put<DashboardController>(DashboardController());
-    Get.put<SpacesScreenController>(SpacesScreenController());
+    Get.put<SpacesController>(SpacesController());
   }
 }
