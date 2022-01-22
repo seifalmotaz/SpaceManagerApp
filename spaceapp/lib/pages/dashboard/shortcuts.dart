@@ -2,19 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:spaceapp/pages/dashboard/controllers/controller.dart';
+import 'package:spaceapp/pages/dashboard/controllers/searching.dart';
 
 class SearchUsersIntent extends Intent {}
 
 class SearchUsersAction extends Action<SearchUsersIntent> {
   @override
   Future<Object?> invoke(covariant SearchUsersIntent intent) async {
-    final DashboardController controller = Get.find<DashboardController>();
+    final SearchingController controller = Get.find<SearchingController>();
     if (!controller.searching.value) {
       controller.searching.value = true;
       controller.searchingFocus.requestFocus();
     } else {
       controller.searching.value = false;
-      controller.searchingFocus.requestFocus();
+      DashboardController.to.shortcutChildFocus.requestFocus();
     }
   }
 }

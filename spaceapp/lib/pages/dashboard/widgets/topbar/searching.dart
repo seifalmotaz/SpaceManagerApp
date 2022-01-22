@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get_utils/src/extensions/string_extensions.dart';
 import 'package:spaceapp/constant/base_colors.dart';
-import 'package:spaceapp/pages/dashboard/controllers/controller.dart';
+import 'package:spaceapp/pages/dashboard/controllers/searching.dart';
 import 'package:spaceapp/widgets/text_field.dart';
 
 class SearchingBar extends StatelessWidget {
@@ -8,7 +9,7 @@ class SearchingBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    DashboardController controller = DashboardController.to;
+    SearchingController searching = SearchingController.to;
     return SizedBox(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -18,7 +19,7 @@ class SearchingBar extends StatelessWidget {
             child: Row(
               children: [
                 IconButton(
-                  onPressed: () => controller.searching.value = false,
+                  onPressed: () => searching.searching.value = false,
                   icon: const Icon(
                     Icons.search,
                     color: colorWhite,
@@ -30,8 +31,24 @@ class SearchingBar extends StatelessWidget {
                     fontsize: 23,
                     autoFocus: true,
                     hint: 'Search...',
-                    controller: controller.searchingController,
-                    focus: controller.searchingFocus,
+                    controller: searching.searchingController,
+                    onChange: (string) {
+                      if (string != null) {
+                        if (string.isNotEmpty) {
+                          RegExp reg = RegExp('[0-9]');
+                          if (reg.hasMatch(string)) {
+                            searching.searchPhone(string);
+                          } else {
+                            searching.searchEmail(string);
+                          }
+                        } else {
+                          searching.guests.value = [];
+                        }
+                      } else {
+                        searching.guests.value = [];
+                      }
+                    },
+                    focus: searching.searchingFocus,
                     color: colorLightBittersweet.withOpacity(.21),
                     textAlignVertical: TextAlignVertical.top,
                     textColor: colorWhite,
@@ -43,7 +60,7 @@ class SearchingBar extends StatelessWidget {
             ),
           ),
           IconButton(
-            onPressed: () => controller.searching.value = false,
+            onPressed: () => searching.searching.value = false,
             icon: const Icon(
               Icons.close,
               color: colorWhite,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:spaceapp/constant/base_colors.dart';
 import 'package:spaceapp/pages/dashboard/controllers/controller.dart';
+import 'package:spaceapp/pages/dashboard/controllers/searching.dart';
 import 'package:spaceapp/widgets/resposive.dart';
 
 import 'shortcuts.dart';
@@ -27,6 +28,7 @@ class DashboardPage extends UIResponsiveless {
 
   Widget _build(int crossAxisCount) {
     DashboardController controller = DashboardController.to;
+    SearchingController searching = SearchingController.to;
     return DashboardShortcuts(
       child: Scaffold(
         key: controller.scaffold,
@@ -36,24 +38,25 @@ class DashboardPage extends UIResponsiveless {
             () => CustomScrollView(
               slivers: [
                 const SliverToBoxAdapter(child: TopBarWidget()),
-                if (controller.searching.value)
-                  SliverPadding(
-                    padding: const EdgeInsets.symmetric(horizontal: 27),
-                    sliver: SliverGrid(
-                      delegate: SliverChildBuilderDelegate(
-                        (ctx, i) => const GuestItem(),
-                        childCount: 5,
-                      ),
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: crossAxisCount,
-                        // childAspectRatio: 5 / 4,
-                        crossAxisSpacing: 13,
-                        mainAxisSpacing: 13,
-                        mainAxisExtent: 285,
+                if (searching.searching.value)
+                  Obx(
+                    () => SliverPadding(
+                      padding: const EdgeInsets.symmetric(horizontal: 27),
+                      sliver: SliverGrid(
+                        delegate: SliverChildBuilderDelegate(
+                          (ctx, i) => GuestItem(searching.guests[i]),
+                          childCount: searching.guests.value.length,
+                        ),
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: crossAxisCount,
+                          crossAxisSpacing: 13,
+                          mainAxisSpacing: 13,
+                          mainAxisExtent: 285,
+                        ),
                       ),
                     ),
                   ),
-                if (!controller.searching.value)
+                if (!searching.searching.value)
                   SliverPadding(
                     padding: const EdgeInsets.symmetric(horizontal: 27),
                     sliver: SliverGrid(

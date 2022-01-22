@@ -7,17 +7,18 @@ part of 'guest.dart';
 // **************************************************************************
 
 Guest _$GuestFromJson(Map<String, dynamic> json) => Guest(
-      createdDate: DataCompiler.fromDBDate(json['created_date'] as int),
+      name: json['name'] as String?,
       email: json['email'] as String?,
+      phone: json['phone'] as String?,
+      gender: json['gender'] as String?,
+      password: json['password'] as String?,
+      nationalId: json['national_id'] as String?,
+      nationalIdPic: json['national_id_pic'] as String?,
       id: json['id'] as int,
       isAdmin: DataCompiler.fromDBool(json['is_admin'] as int),
       isExpired: DataCompiler.fromDBool(json['is_expired'] as int),
       isStaff: DataCompiler.fromDBool(json['is_staff'] as int),
-      name: json['name'] as String?,
-      nationalId: json['national_id'] as String?,
-      nationalIdPic: json['national_id_pic'] as String?,
-      password: json['password'] as String?,
-      phone: json['phone'] as String?,
+      createdDate: DataCompiler.fromDBDate(json['created_date'] as int),
     );
 
 Map<String, dynamic> _$GuestToJson(Guest instance) {
@@ -36,6 +37,7 @@ Map<String, dynamic> _$GuestToJson(Guest instance) {
   writeNotNull('name', instance.name);
   writeNotNull('email', instance.email);
   writeNotNull('phone', instance.phone);
+  writeNotNull('gender', instance.gender);
   writeNotNull('password', instance.password);
   writeNotNull('is_admin', DataCompiler.toDBool(instance.isAdmin));
   writeNotNull('is_staff', DataCompiler.toDBool(instance.isStaff));
@@ -58,6 +60,7 @@ class GuestQuery {
     String? name,
     String? email,
     String? phone,
+    String? gender,
     String? password,
     bool? isAdmin,
     bool? isStaff,
@@ -71,6 +74,7 @@ class GuestQuery {
         if (name != null) 'name': name,
         if (email != null) 'email': email,
         if (phone != null) 'phone': phone,
+        if (gender != null) 'gender': gender,
         if (password != null) 'password': password,
         if (isAdmin != null) 'is_admin': isAdmin ? 1 : 0,
         if (isStaff != null) 'is_staff': isStaff ? 1 : 0,
@@ -94,6 +98,7 @@ class GuestQuery {
     String? name,
     String? email,
     String? phone,
+    String? gender,
     String? password,
     bool? isAdmin,
     bool? isStaff,
@@ -109,6 +114,7 @@ class GuestQuery {
           if (name != null) 'name': name,
           if (email != null) 'email': email,
           if (phone != null) 'phone': phone,
+          if (gender != null) 'gender': gender,
           if (password != null) 'password': password,
           if (isAdmin != null) 'is_admin': isAdmin ? 1 : 0,
           if (isStaff != null) 'is_staff': isStaff ? 1 : 0,
@@ -131,6 +137,7 @@ class GuestQuery {
     String? name,
     String? email,
     String? phone,
+    String? gender,
     String? password,
     bool? isAdmin,
     bool? isStaff,
@@ -152,6 +159,9 @@ class GuestQuery {
     }
     if (phone != null) {
       searchFields.add("guest.phone = ?");
+    }
+    if (gender != null) {
+      searchFields.add("guest.gender = ?");
     }
     if (password != null) {
       searchFields.add("guest.password = ?");
@@ -188,6 +198,7 @@ class GuestQuery {
         if (name != null) name,
         if (email != null) email,
         if (phone != null) phone,
+        if (gender != null) gender,
         if (password != null) password,
         if (isAdmin != null) isAdmin ? 1 : 0,
         if (isStaff != null) isStaff ? 1 : 0,
@@ -241,6 +252,10 @@ extension GuestTable on Guest {
   static String nativePhone = 'guest.phone';
 
   /// Field data: field ///
+  static String gender = 'gender';
+  static String nativeGender = 'guest.gender';
+
+  /// Field data: field ///
   static String password = 'password';
   static String nativePassword = 'guest.password';
 
@@ -267,6 +282,7 @@ extension GuestTable on Guest {
     guest.name AS guest_name,
     guest.email AS guest_email,
     guest.phone AS guest_phone,
+    guest.gender AS guest_gender,
     guest.password AS guest_password,
     guest.is_admin AS guest_is_admin,
     guest.is_staff AS guest_is_staff,
@@ -289,6 +305,7 @@ extension GuestTable on Guest {
     'name',
     'email',
     'phone',
+    'gender',
     'password',
     'is_admin',
     'is_staff',

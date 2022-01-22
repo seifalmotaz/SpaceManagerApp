@@ -23,6 +23,7 @@ class Guest {
   String? name;
   String? email;
   String? phone;
+  String? gender;
   // auth data
   String? password;
 
@@ -37,19 +38,39 @@ class Guest {
   String? nationalId;
   String? nationalIdPic;
   Guest({
-    required this.createdDate,
-    required this.email,
+    this.name,
+    this.email,
+    this.phone,
+    this.gender,
+    this.password,
+    this.nationalId,
+    this.nationalIdPic,
     required this.id,
     required this.isAdmin,
     required this.isExpired,
     required this.isStaff,
-    required this.name,
-    required this.nationalId,
-    required this.nationalIdPic,
-    required this.password,
-    required this.phone,
+    required this.createdDate,
   });
 
   factory Guest.fromJson(Map<String, dynamic> json) => _$GuestFromJson(json);
   Map<String, dynamic> toJson() => _$GuestToJson(this);
+
+  /// Number from '97645893609387'
+  ///
+  /// to '9764 5893 6093 87'
+  String? readableNationalId() {
+    if (nationalId != null && nationalId!.isNotEmpty) {
+      String string = '';
+      int letter4 = 0;
+      for (var i = 0; i < nationalId!.length; i++) {
+        if (letter4 < 4) {
+          string = string + nationalId![i];
+          letter4++;
+        } else if (letter4 == 4) {
+          string = string + ' ' + nationalId![i];
+          letter4 = 0;
+        }
+      }
+    }
+  }
 }

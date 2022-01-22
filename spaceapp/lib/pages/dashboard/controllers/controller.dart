@@ -6,10 +6,6 @@ class DashboardController extends GetxController {
   // calling func
   static DashboardController get to => Get.find();
 
-  // searching vars
-  RxBool searching = false.obs;
-  TextEditingController searchingController = TextEditingController();
-  FocusNode searchingFocus = FocusNode();
   // global vars
   PageController pageController = PageController();
   GlobalKey<ScaffoldState> scaffold = GlobalKey<ScaffoldState>();

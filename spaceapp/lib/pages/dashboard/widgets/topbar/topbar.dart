@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:spaceapp/constant/base_colors.dart';
-import 'package:spaceapp/pages/dashboard/controllers/controller.dart';
+import 'package:spaceapp/pages/dashboard/controllers/searching.dart';
 import 'package:spaceapp/widgets/resposive.dart';
 
 import 'main.dart';
@@ -27,7 +27,7 @@ class TopBarWidget extends UIResponsiveless {
           child: Obx(
             () => AnimatedSwitcher(
               duration: const Duration(milliseconds: 300),
-              child: DashboardController.to.searching.value
+              child: SearchingController.to.searching.value
                   ? const SearchingBar()
                   : const MainBar(),
             ),

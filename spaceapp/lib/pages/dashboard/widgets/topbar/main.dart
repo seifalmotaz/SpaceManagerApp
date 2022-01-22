@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:spaceapp/constant/base_colors.dart';
-import 'package:spaceapp/pages/dashboard/controllers/controller.dart';
+import 'package:spaceapp/pages/dashboard/controllers/searching.dart';
 
 class MainBar extends StatelessWidget {
   const MainBar({Key? key}) : super(key: key);
@@ -68,7 +68,7 @@ class MainBar extends StatelessWidget {
                   color: colorWhite,
                   size: 23,
                 ),
-                onPressed: () => DashboardController.to.searching.value = true,
+                onPressed: () => SearchingController.to.searching.value = true,
               ),
             ],
           ),

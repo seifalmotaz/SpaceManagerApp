@@ -1,27 +1,33 @@
+import 'package:database_system/database_system.dart';
 import 'package:flutter/material.dart';
 import 'package:spaceapp/constant/base_colors.dart';
 
 class GuestItem extends StatelessWidget {
-  const GuestItem({Key? key}) : super(key: key);
+  const GuestItem(this.guest, {Key? key}) : super(key: key);
 
-  containerButton(String title) {
-    return Container(
-      padding: const EdgeInsets.all(9),
-      margin: const EdgeInsets.only(bottom: 5),
-      decoration: BoxDecoration(
-        color: colorWhite,
-        border: Border.all(
-          color: colorWhiteBased.withOpacity(.61),
+  final Guest guest;
+
+  containerButton(String title, {bool last = false}) {
+    return GestureDetector(
+      onTap: () {},
+      child: Container(
+        padding: const EdgeInsets.all(9),
+        margin: last ? null : const EdgeInsets.only(bottom: 5),
+        decoration: BoxDecoration(
+          color: colorWhite,
+          border: Border.all(
+            color: colorWhiteBased.withOpacity(.61),
+          ),
+          borderRadius: BorderRadius.circular(11),
         ),
-        borderRadius: BorderRadius.circular(11),
-      ),
-      child: Center(
-        child: Text(
-          title,
-          style: const TextStyle(
-            color: colorText,
-            fontSize: 17,
-            fontWeight: FontWeight.w600,
+        child: Center(
+          child: Text(
+            title,
+            style: const TextStyle(
+              color: colorText,
+              fontSize: 17,
+              fontWeight: FontWeight.w600,
+            ),
           ),
         ),
       ),
@@ -50,9 +56,9 @@ class GuestItem extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
-                      '@Seif Elmotaz',
-                      style: TextStyle(
+                    Text(
+                      '@' + (guest.name ?? 'Unknown'),
+                      style: const TextStyle(
                         fontSize: 27,
                         fontWeight: FontWeight.bold,
                       ),
@@ -75,35 +81,35 @@ class GuestItem extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 7),
-                const Text(
-                  'Gender: Male',
-                  style: TextStyle(
+                Text(
+                  'gender: ' + (guest.gender ?? 'unknown'),
+                  style: const TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.w600,
                     color: colorSemiText,
                   ),
                 ),
                 const SizedBox(height: 3),
-                const Text(
-                  'phone: 01122342626',
-                  style: TextStyle(
+                Text(
+                  'phone: ' + (guest.phone ?? 'none'),
+                  style: const TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.w600,
                     color: colorSemiText,
                   ),
                 ),
-                const Text(
-                  'email: seifelmotaz@outlook.com',
-                  style: TextStyle(
+                Text(
+                  'email: ' + (guest.email ?? 'none'),
+                  style: const TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.w600,
                     color: colorSemiText,
                   ),
                 ),
                 const SizedBox(height: 3),
-                const Text(
-                  'National ID: 1273 5905 4328 96',
-                  style: TextStyle(
+                Text(
+                  'National ID: ' + (guest.readableNationalId() ?? 'none'),
+                  style: const TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.w600,
                     color: colorSemiText,
@@ -116,15 +122,14 @@ class GuestItem extends StatelessWidget {
             child: Container(
               height: double.infinity,
               width: double.infinity,
+              padding: const EdgeInsets.all(9),
               decoration: const BoxDecoration(
                 color: colorWhiteBased2,
                 borderRadius: BorderRadius.vertical(
                   bottom: Radius.circular(13),
                 ),
               ),
-              child: ListView(
-                shrinkWrap: true,
-                padding: const EdgeInsets.all(9),
+              child: Column(
                 children: [
                   Row(
                     children: [
@@ -133,7 +138,10 @@ class GuestItem extends StatelessWidget {
                       Flexible(child: containerButton('Start room')),
                     ],
                   ),
-                  containerButton('Reservation'),
+                  containerButton(
+                    'Reservation',
+                    last: true,
+                  ),
                 ],
               ),
             ),

@@ -1,6 +1,6 @@
 import 'package:database_system/database_system.dart';
 
-extension ExtraQuery on StaffSessionQuery {
+extension ExtraStaffQuery on StaffSessionQuery {
   Future<StaffSession?> lastLogin() async {
     List<Map<String, dynamic>> data = await db.rawQuery("""
     SELECT ${StaffSessionTable.sqlSelect}, ${GuestTable.sqlSelect}
