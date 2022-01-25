@@ -32,12 +32,13 @@ Map<String, dynamic> _$StaffSessionToJson(StaffSession instance) {
 
 GuestSession _$GuestSessionFromJson(Map<String, dynamic> json) => GuestSession(
       guestCount: json['guest_count'] as int,
-      paidAmount: (json['paid_amount'] as num).toDouble(),
+      paidAmount: (json['paid_amount'] as num?)?.toDouble(),
       guestId: json['guest_id'] as int,
       priceId: json['price_id'] as int,
       id: json['id'],
       timeIn: DataCompiler.fromDBDate(json['time_in'] as int),
       timeOut: DataCompiler.fromDBDateNull(json['time_out'] as int?),
+      isDefault: DataCompiler.fromDBool(json['is_default'] as int),
     );
 
 Map<String, dynamic> _$GuestSessionToJson(GuestSession instance) {
@@ -55,20 +56,22 @@ Map<String, dynamic> _$GuestSessionToJson(GuestSession instance) {
   writeNotNull('time_out', DataCompiler.toDBDateNull(instance.timeOut));
   val['guest_count'] = instance.guestCount;
   val['price_id'] = instance.priceId;
-  val['paid_amount'] = instance.paidAmount;
+  writeNotNull('paid_amount', instance.paidAmount);
   val['guest_id'] = instance.guestId;
+  writeNotNull('is_default', DataCompiler.toDBool(instance.isDefault));
   return val;
 }
 
 ReservationSession _$ReservationSessionFromJson(Map<String, dynamic> json) =>
     ReservationSession(
-      paidAmount: (json['paid_amount'] as num).toDouble(),
+      paidAmount: (json['paid_amount'] as num?)?.toDouble(),
       guestId: json['guest_id'] as int,
       roomId: json['room_id'] as int,
       id: json['id'],
       timeIn: DataCompiler.fromDBDate(json['time_in'] as int),
       timeOut: DataCompiler.fromDBDateNull(json['time_out'] as int?),
       reservationId: json['reservation_id'] as int,
+      isDefault: DataCompiler.fromDBool(json['is_default'] as int),
     );
 
 Map<String, dynamic> _$ReservationSessionToJson(ReservationSession instance) {
@@ -85,19 +88,21 @@ Map<String, dynamic> _$ReservationSessionToJson(ReservationSession instance) {
   writeNotNull('time_in', DataCompiler.toDBDate(instance.timeIn));
   writeNotNull('time_out', DataCompiler.toDBDateNull(instance.timeOut));
   val['room_id'] = instance.roomId;
-  val['paid_amount'] = instance.paidAmount;
+  writeNotNull('paid_amount', instance.paidAmount);
   val['guest_id'] = instance.guestId;
   val['reservation_id'] = instance.reservationId;
+  writeNotNull('is_default', DataCompiler.toDBool(instance.isDefault));
   return val;
 }
 
 RoomSession _$RoomSessionFromJson(Map<String, dynamic> json) => RoomSession(
-      paidAmount: (json['paid_amount'] as num).toDouble(),
+      paidAmount: (json['paid_amount'] as num?)?.toDouble(),
       guestId: json['guest_id'] as int,
       roomId: json['room_id'] as int,
       id: json['id'],
       timeIn: DataCompiler.fromDBDate(json['time_in'] as int),
       timeOut: DataCompiler.fromDBDateNull(json['time_out'] as int?),
+      isDefault: DataCompiler.fromDBool(json['is_default'] as int),
     );
 
 Map<String, dynamic> _$RoomSessionToJson(RoomSession instance) {
@@ -114,8 +119,9 @@ Map<String, dynamic> _$RoomSessionToJson(RoomSession instance) {
   writeNotNull('time_in', DataCompiler.toDBDate(instance.timeIn));
   writeNotNull('time_out', DataCompiler.toDBDateNull(instance.timeOut));
   val['room_id'] = instance.roomId;
-  val['paid_amount'] = instance.paidAmount;
+  writeNotNull('paid_amount', instance.paidAmount);
   val['guest_id'] = instance.guestId;
+  writeNotNull('is_default', DataCompiler.toDBool(instance.isDefault));
   return val;
 }
 
@@ -166,9 +172,9 @@ class StaffSessionQuery {
       await db.insert('session', {
         if (guestId != null) 'guest_id': guestId,
         if (timeIn != null)
-          'time_in': (timeIn.millisecondsSinceEpoch / 1000) as int,
+          'time_in': (timeIn.millisecondsSinceEpoch / 1000).round() as int,
         if (timeOut != null)
-          'time_out': (timeOut.millisecondsSinceEpoch / 1000) as int,
+          'time_out': (timeOut.millisecondsSinceEpoch / 1000).round() as int,
       });
 
   Future<StaffSession> read(int id) async {
@@ -191,9 +197,9 @@ class StaffSessionQuery {
         {
           if (guestId != null) 'guest_id': guestId,
           if (timeIn != null)
-            'time_in': (timeIn.millisecondsSinceEpoch / 1000) as int,
+            'time_in': (timeIn.millisecondsSinceEpoch / 1000).round() as int,
           if (timeOut != null)
-            'time_out': (timeOut.millisecondsSinceEpoch / 1000) as int,
+            'time_out': (timeOut.millisecondsSinceEpoch / 1000).round() as int,
         },
         where: 'id = ?',
         whereArgs: [id],
@@ -235,8 +241,10 @@ class StaffSessionQuery {
           ''',
       whereArgs: [
         if (guestId != null) guestId,
-        if (timeIn != null) (timeIn.millisecondsSinceEpoch / 1000) as int,
-        if (timeOut != null) (timeOut.millisecondsSinceEpoch / 1000) as int,
+        if (timeIn != null)
+          (timeIn.millisecondsSinceEpoch / 1000).round() as int,
+        if (timeOut != null)
+          (timeOut.millisecondsSinceEpoch / 1000).round() as int,
       ],
     );
 
@@ -249,10 +257,11 @@ class GuestSessionQuery {
   GuestSessionQuery(this.db);
 
   Future<int> create({
-    required int guestCount,
+    int? guestCount,
     required int priceId,
-    required double paidAmount,
+    double? paidAmount,
     required int guestId,
+    bool? isDefault,
     DateTime? timeIn,
     DateTime? timeOut,
   }) async =>
@@ -261,10 +270,11 @@ class GuestSessionQuery {
         if (priceId != null) 'price_id': priceId,
         if (paidAmount != null) 'paid_amount': paidAmount,
         if (guestId != null) 'guest_id': guestId,
+        if (isDefault != null) 'is_default': isDefault ? 1 : 0,
         if (timeIn != null)
-          'time_in': (timeIn.millisecondsSinceEpoch / 1000) as int,
+          'time_in': (timeIn.millisecondsSinceEpoch / 1000).round() as int,
         if (timeOut != null)
-          'time_out': (timeOut.millisecondsSinceEpoch / 1000) as int,
+          'time_out': (timeOut.millisecondsSinceEpoch / 1000).round() as int,
       });
 
   Future<GuestSession> read(int id) async {
@@ -282,6 +292,7 @@ class GuestSessionQuery {
     int? priceId,
     double? paidAmount,
     int? guestId,
+    bool? isDefault,
     DateTime? timeIn,
     DateTime? timeOut,
   }) async =>
@@ -292,10 +303,11 @@ class GuestSessionQuery {
           if (priceId != null) 'price_id': priceId,
           if (paidAmount != null) 'paid_amount': paidAmount,
           if (guestId != null) 'guest_id': guestId,
+          if (isDefault != null) 'is_default': isDefault ? 1 : 0,
           if (timeIn != null)
-            'time_in': (timeIn.millisecondsSinceEpoch / 1000) as int,
+            'time_in': (timeIn.millisecondsSinceEpoch / 1000).round() as int,
           if (timeOut != null)
-            'time_out': (timeOut.millisecondsSinceEpoch / 1000) as int,
+            'time_out': (timeOut.millisecondsSinceEpoch / 1000).round() as int,
         },
         where: 'id = ?',
         whereArgs: [id],
@@ -312,6 +324,7 @@ class GuestSessionQuery {
     int? priceId,
     double? paidAmount,
     int? guestId,
+    bool? isDefault,
     DateTime? timeIn,
     DateTime? timeOut,
   }) async {
@@ -327,6 +340,9 @@ class GuestSessionQuery {
     }
     if (guestId != null) {
       searchFields.add("session.guest_id = ?");
+    }
+    if (isDefault != null) {
+      searchFields.add("session.is_default = ?");
     }
     if (timeIn != null) {
       searchFields.add("session.time_in = ?");
@@ -352,8 +368,11 @@ class GuestSessionQuery {
         if (priceId != null) priceId,
         if (paidAmount != null) paidAmount,
         if (guestId != null) guestId,
-        if (timeIn != null) (timeIn.millisecondsSinceEpoch / 1000) as int,
-        if (timeOut != null) (timeOut.millisecondsSinceEpoch / 1000) as int,
+        if (isDefault != null) isDefault ? 1 : 0,
+        if (timeIn != null)
+          (timeIn.millisecondsSinceEpoch / 1000).round() as int,
+        if (timeOut != null)
+          (timeOut.millisecondsSinceEpoch / 1000).round() as int,
       ],
     );
 
@@ -367,9 +386,10 @@ class ReservationSessionQuery {
 
   Future<int> create({
     required int roomId,
-    required double paidAmount,
+    double? paidAmount,
     required int guestId,
     required int reservationId,
+    bool? isDefault,
     DateTime? timeIn,
     DateTime? timeOut,
   }) async =>
@@ -378,10 +398,11 @@ class ReservationSessionQuery {
         if (paidAmount != null) 'paid_amount': paidAmount,
         if (guestId != null) 'guest_id': guestId,
         if (reservationId != null) 'reservation_id': reservationId,
+        if (isDefault != null) 'is_default': isDefault ? 1 : 0,
         if (timeIn != null)
-          'time_in': (timeIn.millisecondsSinceEpoch / 1000) as int,
+          'time_in': (timeIn.millisecondsSinceEpoch / 1000).round() as int,
         if (timeOut != null)
-          'time_out': (timeOut.millisecondsSinceEpoch / 1000) as int,
+          'time_out': (timeOut.millisecondsSinceEpoch / 1000).round() as int,
       });
 
   Future<ReservationSession> read(int id) async {
@@ -399,6 +420,7 @@ class ReservationSessionQuery {
     double? paidAmount,
     int? guestId,
     int? reservationId,
+    bool? isDefault,
     DateTime? timeIn,
     DateTime? timeOut,
   }) async =>
@@ -409,10 +431,11 @@ class ReservationSessionQuery {
           if (paidAmount != null) 'paid_amount': paidAmount,
           if (guestId != null) 'guest_id': guestId,
           if (reservationId != null) 'reservation_id': reservationId,
+          if (isDefault != null) 'is_default': isDefault ? 1 : 0,
           if (timeIn != null)
-            'time_in': (timeIn.millisecondsSinceEpoch / 1000) as int,
+            'time_in': (timeIn.millisecondsSinceEpoch / 1000).round() as int,
           if (timeOut != null)
-            'time_out': (timeOut.millisecondsSinceEpoch / 1000) as int,
+            'time_out': (timeOut.millisecondsSinceEpoch / 1000).round() as int,
         },
         where: 'id = ?',
         whereArgs: [id],
@@ -429,6 +452,7 @@ class ReservationSessionQuery {
     double? paidAmount,
     int? guestId,
     int? reservationId,
+    bool? isDefault,
     DateTime? timeIn,
     DateTime? timeOut,
   }) async {
@@ -444,6 +468,9 @@ class ReservationSessionQuery {
     }
     if (reservationId != null) {
       searchFields.add("session.reservation_id = ?");
+    }
+    if (isDefault != null) {
+      searchFields.add("session.is_default = ?");
     }
     if (timeIn != null) {
       searchFields.add("session.time_in = ?");
@@ -469,8 +496,11 @@ class ReservationSessionQuery {
         if (paidAmount != null) paidAmount,
         if (guestId != null) guestId,
         if (reservationId != null) reservationId,
-        if (timeIn != null) (timeIn.millisecondsSinceEpoch / 1000) as int,
-        if (timeOut != null) (timeOut.millisecondsSinceEpoch / 1000) as int,
+        if (isDefault != null) isDefault ? 1 : 0,
+        if (timeIn != null)
+          (timeIn.millisecondsSinceEpoch / 1000).round() as int,
+        if (timeOut != null)
+          (timeOut.millisecondsSinceEpoch / 1000).round() as int,
       ],
     );
 
@@ -484,8 +514,9 @@ class RoomSessionQuery {
 
   Future<int> create({
     required int roomId,
-    required double paidAmount,
+    double? paidAmount,
     required int guestId,
+    bool? isDefault,
     DateTime? timeIn,
     DateTime? timeOut,
   }) async =>
@@ -493,10 +524,11 @@ class RoomSessionQuery {
         if (roomId != null) 'room_id': roomId,
         if (paidAmount != null) 'paid_amount': paidAmount,
         if (guestId != null) 'guest_id': guestId,
+        if (isDefault != null) 'is_default': isDefault ? 1 : 0,
         if (timeIn != null)
-          'time_in': (timeIn.millisecondsSinceEpoch / 1000) as int,
+          'time_in': (timeIn.millisecondsSinceEpoch / 1000).round() as int,
         if (timeOut != null)
-          'time_out': (timeOut.millisecondsSinceEpoch / 1000) as int,
+          'time_out': (timeOut.millisecondsSinceEpoch / 1000).round() as int,
       });
 
   Future<RoomSession> read(int id) async {
@@ -513,6 +545,7 @@ class RoomSessionQuery {
     int? roomId,
     double? paidAmount,
     int? guestId,
+    bool? isDefault,
     DateTime? timeIn,
     DateTime? timeOut,
   }) async =>
@@ -522,10 +555,11 @@ class RoomSessionQuery {
           if (roomId != null) 'room_id': roomId,
           if (paidAmount != null) 'paid_amount': paidAmount,
           if (guestId != null) 'guest_id': guestId,
+          if (isDefault != null) 'is_default': isDefault ? 1 : 0,
           if (timeIn != null)
-            'time_in': (timeIn.millisecondsSinceEpoch / 1000) as int,
+            'time_in': (timeIn.millisecondsSinceEpoch / 1000).round() as int,
           if (timeOut != null)
-            'time_out': (timeOut.millisecondsSinceEpoch / 1000) as int,
+            'time_out': (timeOut.millisecondsSinceEpoch / 1000).round() as int,
         },
         where: 'id = ?',
         whereArgs: [id],
@@ -541,6 +575,7 @@ class RoomSessionQuery {
     int? roomId,
     double? paidAmount,
     int? guestId,
+    bool? isDefault,
     DateTime? timeIn,
     DateTime? timeOut,
   }) async {
@@ -553,6 +588,9 @@ class RoomSessionQuery {
     }
     if (guestId != null) {
       searchFields.add("session.guest_id = ?");
+    }
+    if (isDefault != null) {
+      searchFields.add("session.is_default = ?");
     }
     if (timeIn != null) {
       searchFields.add("session.time_in = ?");
@@ -577,8 +615,11 @@ class RoomSessionQuery {
         if (roomId != null) roomId,
         if (paidAmount != null) paidAmount,
         if (guestId != null) guestId,
-        if (timeIn != null) (timeIn.millisecondsSinceEpoch / 1000) as int,
-        if (timeOut != null) (timeOut.millisecondsSinceEpoch / 1000) as int,
+        if (isDefault != null) isDefault ? 1 : 0,
+        if (timeIn != null)
+          (timeIn.millisecondsSinceEpoch / 1000).round() as int,
+        if (timeOut != null)
+          (timeOut.millisecondsSinceEpoch / 1000).round() as int,
       ],
     );
 
@@ -604,9 +645,9 @@ class CourseSessionQuery {
         if (guestCount != null) 'guest_count': guestCount,
         if (reservationId != null) 'reservation_id': reservationId,
         if (timeIn != null)
-          'time_in': (timeIn.millisecondsSinceEpoch / 1000) as int,
+          'time_in': (timeIn.millisecondsSinceEpoch / 1000).round() as int,
         if (timeOut != null)
-          'time_out': (timeOut.millisecondsSinceEpoch / 1000) as int,
+          'time_out': (timeOut.millisecondsSinceEpoch / 1000).round() as int,
       });
 
   Future<CourseSession> read(int id) async {
@@ -635,9 +676,9 @@ class CourseSessionQuery {
           if (guestCount != null) 'guest_count': guestCount,
           if (reservationId != null) 'reservation_id': reservationId,
           if (timeIn != null)
-            'time_in': (timeIn.millisecondsSinceEpoch / 1000) as int,
+            'time_in': (timeIn.millisecondsSinceEpoch / 1000).round() as int,
           if (timeOut != null)
-            'time_out': (timeOut.millisecondsSinceEpoch / 1000) as int,
+            'time_out': (timeOut.millisecondsSinceEpoch / 1000).round() as int,
         },
         where: 'id = ?',
         whereArgs: [id],
@@ -694,8 +735,10 @@ class CourseSessionQuery {
         if (courseId != null) courseId,
         if (guestCount != null) guestCount,
         if (reservationId != null) reservationId,
-        if (timeIn != null) (timeIn.millisecondsSinceEpoch / 1000) as int,
-        if (timeOut != null) (timeOut.millisecondsSinceEpoch / 1000) as int,
+        if (timeIn != null)
+          (timeIn.millisecondsSinceEpoch / 1000).round() as int,
+        if (timeOut != null)
+          (timeOut.millisecondsSinceEpoch / 1000).round() as int,
       ],
     );
 
@@ -806,6 +849,10 @@ extension GuestSessionTable on GuestSession {
   static String nativeGuestId = 'session.guest_id';
 
   /// Field data: field ///
+  static String isDefault = 'is_default';
+  static String nativeIsDefault = 'session.is_default';
+
+  /// Field data: field ///
   static String id = 'id';
   static String nativeId = 'session.id';
 
@@ -822,6 +869,7 @@ extension GuestSessionTable on GuestSession {
     session.price_id AS session_price_id,
     session.paid_amount AS session_paid_amount,
     session.guest_id AS session_guest_id,
+    session.is_default AS session_is_default,
     session.id AS session_id,
     session.time_in AS session_time_in,
     session.time_out AS session_time_out
@@ -830,8 +878,8 @@ extension GuestSessionTable on GuestSession {
   static const String sqlFindSchema = """
     session.guest_count IS NOT NULL
     AND session.price_id IS NOT NULL
-    AND session.paid_amount IS NOT NULL
     AND session.guest_id IS NOT NULL
+    AND session.is_default IS NOT NULL
     AND session.id IS NOT NULL
     AND session.time_in IS NOT NULL
   """;
@@ -841,6 +889,7 @@ extension GuestSessionTable on GuestSession {
     'price_id',
     'paid_amount',
     'guest_id',
+    'is_default',
     'id',
     'time_in',
     'time_out',
@@ -897,6 +946,10 @@ extension ReservationSessionTable on ReservationSession {
   static String nativeReservationId = 'session.reservation_id';
 
   /// Field data: field ///
+  static String isDefault = 'is_default';
+  static String nativeIsDefault = 'session.is_default';
+
+  /// Field data: field ///
   static String id = 'id';
   static String nativeId = 'session.id';
 
@@ -913,6 +966,7 @@ extension ReservationSessionTable on ReservationSession {
     session.paid_amount AS session_paid_amount,
     session.guest_id AS session_guest_id,
     session.reservation_id AS session_reservation_id,
+    session.is_default AS session_is_default,
     session.id AS session_id,
     session.time_in AS session_time_in,
     session.time_out AS session_time_out
@@ -920,9 +974,9 @@ extension ReservationSessionTable on ReservationSession {
 
   static const String sqlFindSchema = """
     session.room_id IS NOT NULL
-    AND session.paid_amount IS NOT NULL
     AND session.guest_id IS NOT NULL
     AND session.reservation_id IS NOT NULL
+    AND session.is_default IS NOT NULL
     AND session.id IS NOT NULL
     AND session.time_in IS NOT NULL
   """;
@@ -932,6 +986,7 @@ extension ReservationSessionTable on ReservationSession {
     'paid_amount',
     'guest_id',
     'reservation_id',
+    'is_default',
     'id',
     'time_in',
     'time_out',
@@ -984,6 +1039,10 @@ extension RoomSessionTable on RoomSession {
   static String nativeGuestId = 'session.guest_id';
 
   /// Field data: field ///
+  static String isDefault = 'is_default';
+  static String nativeIsDefault = 'session.is_default';
+
+  /// Field data: field ///
   static String id = 'id';
   static String nativeId = 'session.id';
 
@@ -999,6 +1058,7 @@ extension RoomSessionTable on RoomSession {
     session.room_id AS session_room_id,
     session.paid_amount AS session_paid_amount,
     session.guest_id AS session_guest_id,
+    session.is_default AS session_is_default,
     session.id AS session_id,
     session.time_in AS session_time_in,
     session.time_out AS session_time_out
@@ -1006,8 +1066,8 @@ extension RoomSessionTable on RoomSession {
 
   static const String sqlFindSchema = """
     session.room_id IS NOT NULL
-    AND session.paid_amount IS NOT NULL
     AND session.guest_id IS NOT NULL
+    AND session.is_default IS NOT NULL
     AND session.id IS NOT NULL
     AND session.time_in IS NOT NULL
   """;
@@ -1016,6 +1076,7 @@ extension RoomSessionTable on RoomSession {
     'room_id',
     'paid_amount',
     'guest_id',
+    'is_default',
     'id',
     'time_in',
     'time_out',

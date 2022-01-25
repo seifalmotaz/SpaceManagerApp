@@ -69,7 +69,8 @@ class GuestQuery {
   }) async =>
       await db.insert('guest', {
         if (createdDate != null)
-          'created_date': (createdDate.millisecondsSinceEpoch / 1000) as int,
+          'created_date':
+              (createdDate.millisecondsSinceEpoch / 1000).round() as int,
         if (isExpired != null) 'is_expired': isExpired ? 1 : 0,
         if (name != null) 'name': name,
         if (email != null) 'email': email,
@@ -109,7 +110,8 @@ class GuestQuery {
         'guest',
         {
           if (createdDate != null)
-            'created_date': (createdDate.millisecondsSinceEpoch / 1000) as int,
+            'created_date':
+                (createdDate.millisecondsSinceEpoch / 1000).round() as int,
           if (isExpired != null) 'is_expired': isExpired ? 1 : 0,
           if (name != null) 'name': name,
           if (email != null) 'email': email,
@@ -193,7 +195,7 @@ class GuestQuery {
           ''',
       whereArgs: [
         if (createdDate != null)
-          (createdDate.millisecondsSinceEpoch / 1000) as int,
+          (createdDate.millisecondsSinceEpoch / 1000).round() as int,
         if (isExpired != null) isExpired ? 1 : 0,
         if (name != null) name,
         if (email != null) email,

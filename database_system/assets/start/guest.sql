@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS guest;
 
 CREATE TABLE guest (
-    id INTEGER NOT NULL,
+    id INTEGER NOT NULL PRIMARY KEY,
     name VARCHAR(51) NULL,
     email VARCHAR(200) NULL UNIQUE,
     phone VARCHAR(13) NULL UNIQUE,
@@ -13,7 +13,6 @@ CREATE TABLE guest (
     is_staff BOOLEAN DEFAULT FALSE,
     is_admin BOOLEAN DEFAULT FALSE,
     is_expired BOOLEAN DEFAULT FALSE,
-    PRIMARY KEY (id),
     CONSTRAINT guest_email_phone CHECK (
         email IS NOT NULL
         OR phone IS NOT NULL

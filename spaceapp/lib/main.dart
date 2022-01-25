@@ -11,7 +11,7 @@ Future<void> main() async {
 
   windowManager.waitUntilReadyToShow().then((_) async {
     // await windowManager.setAsFrameless();
-    await windowManager.maximize();
+    // await windowManager.maximize();
     windowManager.show();
   });
   runApp(const MyApp());

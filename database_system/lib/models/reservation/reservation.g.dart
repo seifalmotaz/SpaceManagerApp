@@ -99,11 +99,12 @@ class CourseReservationQuery {
         if (courseId != null) 'course_id': courseId,
         if (isCancelled != null) 'is_cancelled': isCancelled ? 1 : 0,
         if (timeIn != null)
-          'time_in': (timeIn.millisecondsSinceEpoch / 1000) as int,
+          'time_in': (timeIn.millisecondsSinceEpoch / 1000).round() as int,
         if (timeOut != null)
-          'time_out': (timeOut.millisecondsSinceEpoch / 1000) as int,
+          'time_out': (timeOut.millisecondsSinceEpoch / 1000).round() as int,
         if (createdDate != null)
-          'created_date': (createdDate.millisecondsSinceEpoch / 1000) as int,
+          'created_date':
+              (createdDate.millisecondsSinceEpoch / 1000).round() as int,
       });
 
   Future<CourseReservation> read(int id) async {
@@ -133,11 +134,12 @@ class CourseReservationQuery {
           if (courseId != null) 'course_id': courseId,
           if (isCancelled != null) 'is_cancelled': isCancelled ? 1 : 0,
           if (timeIn != null)
-            'time_in': (timeIn.millisecondsSinceEpoch / 1000) as int,
+            'time_in': (timeIn.millisecondsSinceEpoch / 1000).round() as int,
           if (timeOut != null)
-            'time_out': (timeOut.millisecondsSinceEpoch / 1000) as int,
+            'time_out': (timeOut.millisecondsSinceEpoch / 1000).round() as int,
           if (createdDate != null)
-            'created_date': (createdDate.millisecondsSinceEpoch / 1000) as int,
+            'created_date':
+                (createdDate.millisecondsSinceEpoch / 1000).round() as int,
         },
         where: 'id = ?',
         whereArgs: [id],
@@ -198,10 +200,12 @@ class CourseReservationQuery {
         if (guestId != null) guestId,
         if (courseId != null) courseId,
         if (isCancelled != null) isCancelled ? 1 : 0,
-        if (timeIn != null) (timeIn.millisecondsSinceEpoch / 1000) as int,
-        if (timeOut != null) (timeOut.millisecondsSinceEpoch / 1000) as int,
+        if (timeIn != null)
+          (timeIn.millisecondsSinceEpoch / 1000).round() as int,
+        if (timeOut != null)
+          (timeOut.millisecondsSinceEpoch / 1000).round() as int,
         if (createdDate != null)
-          (createdDate.millisecondsSinceEpoch / 1000) as int,
+          (createdDate.millisecondsSinceEpoch / 1000).round() as int,
       ],
     );
 
@@ -228,11 +232,12 @@ class GuestReservationQuery {
         if (courseId != null) 'course_id': courseId,
         if (isCancelled != null) 'is_cancelled': isCancelled ? 1 : 0,
         if (timeIn != null)
-          'time_in': (timeIn.millisecondsSinceEpoch / 1000) as int,
+          'time_in': (timeIn.millisecondsSinceEpoch / 1000).round() as int,
         if (timeOut != null)
-          'time_out': (timeOut.millisecondsSinceEpoch / 1000) as int,
+          'time_out': (timeOut.millisecondsSinceEpoch / 1000).round() as int,
         if (createdDate != null)
-          'created_date': (createdDate.millisecondsSinceEpoch / 1000) as int,
+          'created_date':
+              (createdDate.millisecondsSinceEpoch / 1000).round() as int,
       });
 
   Future<GuestReservation> read(int id) async {
@@ -262,11 +267,12 @@ class GuestReservationQuery {
           if (courseId != null) 'course_id': courseId,
           if (isCancelled != null) 'is_cancelled': isCancelled ? 1 : 0,
           if (timeIn != null)
-            'time_in': (timeIn.millisecondsSinceEpoch / 1000) as int,
+            'time_in': (timeIn.millisecondsSinceEpoch / 1000).round() as int,
           if (timeOut != null)
-            'time_out': (timeOut.millisecondsSinceEpoch / 1000) as int,
+            'time_out': (timeOut.millisecondsSinceEpoch / 1000).round() as int,
           if (createdDate != null)
-            'created_date': (createdDate.millisecondsSinceEpoch / 1000) as int,
+            'created_date':
+                (createdDate.millisecondsSinceEpoch / 1000).round() as int,
         },
         where: 'id = ?',
         whereArgs: [id],
@@ -327,10 +333,12 @@ class GuestReservationQuery {
         if (guestId != null) guestId,
         if (courseId != null) courseId,
         if (isCancelled != null) isCancelled ? 1 : 0,
-        if (timeIn != null) (timeIn.millisecondsSinceEpoch / 1000) as int,
-        if (timeOut != null) (timeOut.millisecondsSinceEpoch / 1000) as int,
+        if (timeIn != null)
+          (timeIn.millisecondsSinceEpoch / 1000).round() as int,
+        if (timeOut != null)
+          (timeOut.millisecondsSinceEpoch / 1000).round() as int,
         if (createdDate != null)
-          (createdDate.millisecondsSinceEpoch / 1000) as int,
+          (createdDate.millisecondsSinceEpoch / 1000).round() as int,
       ],
     );
 

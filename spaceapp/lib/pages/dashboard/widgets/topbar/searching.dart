@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get_utils/src/extensions/string_extensions.dart';
 import 'package:spaceapp/constant/base_colors.dart';
 import 'package:spaceapp/pages/dashboard/controllers/searching.dart';
 import 'package:spaceapp/widgets/text_field.dart';
@@ -34,8 +33,8 @@ class SearchingBar extends StatelessWidget {
                     controller: searching.searchingController,
                     onChange: (string) {
                       if (string != null) {
-                        if (string.isNotEmpty) {
-                          RegExp reg = RegExp('[0-9]');
+                        if (!string.startsWith(' ') && string.isNotEmpty) {
+                          RegExp reg = RegExp(r"""[0-9]+$""");
                           if (reg.hasMatch(string)) {
                             searching.searchPhone(string);
                           } else {

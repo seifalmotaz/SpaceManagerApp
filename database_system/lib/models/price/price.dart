@@ -13,36 +13,36 @@ class Price {
   double rate;
 
   @FieldSQL(haveDefault: true)
-  String? description;
+  String description;
 
   @jsonKey
   Map? options;
 
-  @boolNullKey
+  @boolKey
   @FieldSQL(haveDefault: true)
-  bool? isDefault;
+  bool isDefault;
 
-  @boolNullKey
+  @boolKey
   @FieldSQL(haveDefault: true)
-  bool? isDeleted;
+  bool isDeleted;
 
-  @boolNullKey
+  @boolKey
   @FieldSQL(haveDefault: true)
-  bool? isPerDay;
+  bool isPerDay;
 
   @dateNullTimeKey
   @FieldSQL(haveDefault: true)
   DateTime? createdDate;
 
   Price({
+    this.options,
+    this.createdDate,
     required this.id,
     required this.rate,
-    this.options,
-    this.isPerDay,
-    this.isDefault,
-    this.isDeleted,
-    this.createdDate,
-    this.description,
+    required this.isPerDay,
+    required this.isDefault,
+    required this.isDeleted,
+    required this.description,
   });
 
   factory Price.fromJson(Map<String, dynamic> json) => _$PriceFromJson(json);

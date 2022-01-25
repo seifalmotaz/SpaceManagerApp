@@ -58,7 +58,7 @@ String getFuncFields(List<Map> fields) {
       } else if (element.type.toString().startsWith('DateTime')) {
         createParameters.writeln("""
         if (${element.name} !=null) 
-          '${getSnakeFieldName(element.name)}': (${element.name}.millisecondsSinceEpoch / 1000) as int,
+          '${getSnakeFieldName(element.name)}': (${element.name}.millisecondsSinceEpoch / 1000).round() as int,
         """);
       }
     }
@@ -80,7 +80,7 @@ String getFuncFieldNames(List<Map> fields) {
             .writeln("if (${element.name} !=null) ${element.name}? 1 : 0,");
       } else if (element.type.toString().startsWith('DateTime')) {
         createParameters.writeln(
-            "if (${element.name} !=null) (${element.name}.millisecondsSinceEpoch / 1000) as int,");
+            "if (${element.name} !=null) (${element.name}.millisecondsSinceEpoch / 1000).round() as int,");
       }
     }
   }

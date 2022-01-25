@@ -126,7 +126,6 @@ class _LoginPageState extends State<LoginPage> {
                       padding: const EdgeInsets.all(10),
                       child: const SpinKitRotatingCircle(
                         color: Colors.white,
-                        // size: loaderWidth ,
                       ),
                     ),
                     onTap: submit,

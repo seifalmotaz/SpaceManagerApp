@@ -5,7 +5,7 @@ extension ExtraGuestQuery on GuestQuery {
     List<Map<String, dynamic>> data = await db.rawQuery("""
     SELECT *
     FROM guest
-    WHERE ${GuestTable.phone} LIKE '%$phone%' AND ${GuestTable.nativeIsStaff} = false 
+    WHERE ${GuestTable.phone} LIKE "%$phone%" AND ${GuestTable.nativeIsStaff} = false 
     """);
     return data.map((e) => Guest.fromJson(e)).toList();
   }
@@ -14,7 +14,7 @@ extension ExtraGuestQuery on GuestQuery {
     List<Map<String, dynamic>> data = await db.rawQuery("""
     SELECT *
     FROM guest
-    WHERE ${GuestTable.email} LIKE '%$email%' AND ${GuestTable.nativeIsStaff} = false 
+    WHERE ${GuestTable.email} LIKE "%$email%" AND ${GuestTable.nativeIsStaff} = false 
     """);
     return data.map((e) => Guest.fromJson(e)).toList();
   }

@@ -16,7 +16,7 @@ CREATE TABLE course (
 );
 
 CREATE TABLE course_registration (
-    id INTEGER NOT NULL,
+    id INTEGER NOT NULL PRIMARY KEY,
     guest_id INTEGER NOT NULL,
     course_id INTEGER NOT NULL,
     is_paid BOOLEAN NOT NULL DEFAULT FALSE,

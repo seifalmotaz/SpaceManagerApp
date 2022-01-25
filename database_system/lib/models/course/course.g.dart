@@ -61,9 +61,10 @@ class CourseQuery {
         if (name != null) 'name': name,
         if (description != null) 'description': description,
         if (startTime != null)
-          'start_time': (startTime.millisecondsSinceEpoch / 1000) as int,
+          'start_time':
+              (startTime.millisecondsSinceEpoch / 1000).round() as int,
         if (endTime != null)
-          'end_time': (endTime.millisecondsSinceEpoch / 1000) as int,
+          'end_time': (endTime.millisecondsSinceEpoch / 1000).round() as int,
         if (isExpired != null) 'is_expired': isExpired ? 1 : 0,
       });
 
@@ -94,9 +95,10 @@ class CourseQuery {
           if (name != null) 'name': name,
           if (description != null) 'description': description,
           if (startTime != null)
-            'start_time': (startTime.millisecondsSinceEpoch / 1000) as int,
+            'start_time':
+                (startTime.millisecondsSinceEpoch / 1000).round() as int,
           if (endTime != null)
-            'end_time': (endTime.millisecondsSinceEpoch / 1000) as int,
+            'end_time': (endTime.millisecondsSinceEpoch / 1000).round() as int,
           if (isExpired != null) 'is_expired': isExpired ? 1 : 0,
         },
         where: 'id = ?',
@@ -158,8 +160,10 @@ class CourseQuery {
         if (totalPrice != null) totalPrice,
         if (name != null) name,
         if (description != null) description,
-        if (startTime != null) (startTime.millisecondsSinceEpoch / 1000) as int,
-        if (endTime != null) (endTime.millisecondsSinceEpoch / 1000) as int,
+        if (startTime != null)
+          (startTime.millisecondsSinceEpoch / 1000).round() as int,
+        if (endTime != null)
+          (endTime.millisecondsSinceEpoch / 1000).round() as int,
         if (isExpired != null) isExpired ? 1 : 0,
       ],
     );

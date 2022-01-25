@@ -1,33 +1,36 @@
-// import 'package:flutter/material.dart';
-// import 'package:spaceapp/widgets/resposive.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:spaceapp/pages/dashboard/controllers/searching.dart';
 
-// import 'guest_item.dart';
+import 'guest_item.dart';
 
-// class SearchingResults extends UIResponsiveless {
-//   const SearchingResults({Key? key}) : super(key: key);
-
-//   Widget basic(int crossAxisCount) => SliverGrid(
-//         delegate: SliverChildBuilderDelegate(
-//           (ctx, i) =>  GuestItem(),
-//           childCount: 5,
-//         ),
-//         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-//           crossAxisCount: crossAxisCount,
-//           childAspectRatio: 1 / 1,
-//           crossAxisSpacing: 13,
-//           mainAxisSpacing: 13,
-//         ),
-//       );
-
-//   @override
-//   Widget largeBuild(BuildContext context, Size size) => basic(4);
-
-//   @override
-//   Widget customBuild(BuildContext context, Size size) => basic(3);
-
-//   @override
-//   Widget mediumBuild(BuildContext context, Size size) => basic(2);
-
-//   @override
-//   Widget smallBuild(BuildContext context, Size size) => basic(1);
-// }
+CustomScrollView searchingResults(
+    SearchingController searching, int crossAxisCount) {
+  return CustomScrollView(slivers: [
+    const SliverToBoxAdapter(
+      child: SizedBox(
+        height: kToolbarHeight * 2,
+      ),
+    ),
+    Obx(
+      () => SliverPadding(
+        padding: const EdgeInsets.symmetric(horizontal: 27),
+        sliver: SliverGrid(
+          delegate: SliverChildBuilderDelegate(
+            (ctx, i) => GuestItem(
+              searching.guests[i],
+              key: GlobalKey(),
+            ),
+            childCount: searching.guests.value.length,
+          ),
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: crossAxisCount,
+            crossAxisSpacing: 13,
+            mainAxisSpacing: 13,
+            mainAxisExtent: 285,
+          ),
+        ),
+      ),
+    ),
+  ]);
+}

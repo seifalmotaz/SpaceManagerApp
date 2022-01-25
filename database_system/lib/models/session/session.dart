@@ -66,10 +66,15 @@ class StaffSession extends Session with Joins {
 @JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
 @EngineSQL(name: 'session')
 class GuestSession extends Session with Joins {
+  @FieldSQL(haveDefault: true)
   int guestCount;
   int priceId;
-  double paidAmount;
+  double? paidAmount;
   int guestId;
+
+  @boolKey
+  @FieldSQL(haveDefault: true)
+  bool isDefault;
 
   GuestSession({
     required this.guestCount,
@@ -79,6 +84,7 @@ class GuestSession extends Session with Joins {
     required id,
     required timeIn,
     required timeOut,
+    required this.isDefault,
   }) : super(
           id: id,
           timeIn: timeIn,
@@ -94,9 +100,13 @@ class GuestSession extends Session with Joins {
 @EngineSQL(name: 'session')
 class ReservationSession extends Session with Joins {
   int roomId;
-  double paidAmount;
+  double? paidAmount;
   int guestId;
   int reservationId;
+
+  @boolKey
+  @FieldSQL(haveDefault: true)
+  bool isDefault;
 
   ReservationSession({
     required this.paidAmount,
@@ -106,6 +116,7 @@ class ReservationSession extends Session with Joins {
     required timeIn,
     required timeOut,
     required this.reservationId,
+    required this.isDefault,
   }) : super(
           id: id,
           timeIn: timeIn,
@@ -121,8 +132,12 @@ class ReservationSession extends Session with Joins {
 @EngineSQL(name: 'session')
 class RoomSession extends Session with Joins {
   int roomId;
-  double paidAmount;
+  double? paidAmount;
   int guestId;
+
+  @boolKey
+  @FieldSQL(haveDefault: true)
+  bool isDefault;
 
   RoomSession({
     required this.paidAmount,
@@ -131,6 +146,7 @@ class RoomSession extends Session with Joins {
     required id,
     required timeIn,
     required timeOut,
+    required this.isDefault,
   }) : super(
           id: id,
           timeIn: timeIn,

@@ -29,7 +29,9 @@ const Color colorWhite = Colors.white;
 const Color colorWhiteBased = Color(0xFFe4e6eb);
 const Color colorWhiteBased2 = Color(0xFFf6f8fa);
 
-const Color colorDark = Color(0xFF191919);
+const Color colorDarkLight = Color(0xFF252525);
+const Color colorDarkLighter = Color(0xFF303030);
+const Color colorDarkLightest = Color(0xFF3f3f3f);
 
 const Color colorNavy = Color(0xFF2D4263);
 

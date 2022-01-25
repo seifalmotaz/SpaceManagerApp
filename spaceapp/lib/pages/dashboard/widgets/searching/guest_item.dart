@@ -1,20 +1,45 @@
 import 'package:database_system/database_system.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:spaceapp/constant/base_colors.dart';
+import 'package:spaceapp/pages/dashboard/screens/start_room/start_room.dart';
+import 'package:spaceapp/pages/dashboard/screens/start_session/start_session.dart';
 
-class GuestItem extends StatelessWidget {
-  const GuestItem(this.guest, {Key? key}) : super(key: key);
+class GuestItem extends StatefulWidget {
+  const GuestItem(this.result, {Key? key}) : super(key: key);
 
-  final Guest guest;
+  final Guest$Session result;
 
-  containerButton(String title, {bool last = false}) {
+  @override
+  State<GuestItem> createState() => _GuestItemState();
+}
+
+class _GuestItemState extends State<GuestItem> {
+  late Guest guest;
+  int? session;
+
+  @override
+  void initState() {
+    guest = widget.result.guest;
+    session = widget.result.session;
+    super.initState();
+  }
+
+  endSession() {}
+
+  containerButton(
+    String title, {
+    bool last = false,
+    required Function() onTap,
+    Color? color,
+  }) {
     return GestureDetector(
-      onTap: () {},
+      onTap: onTap,
       child: Container(
         padding: const EdgeInsets.all(9),
         margin: last ? null : const EdgeInsets.only(bottom: 5),
         decoration: BoxDecoration(
-          color: colorWhite,
+          color: color ?? colorWhite,
           border: Border.all(
             color: colorWhiteBased.withOpacity(.61),
           ),
@@ -131,16 +156,83 @@ class GuestItem extends StatelessWidget {
               ),
               child: Column(
                 children: [
+                  if (session != null)
+                    containerButton(
+                      'End session',
+                      color: colorLightBittersweet,
+                      onTap: () => Get.dialog(StartSessionScreen(
+                        guest,
+                        key: GlobalKey(),
+                      )),
+                    ),
+                  if (session == null)
+                    Row(
+                      children: [
+                        Flexible(
+                          child: containerButton(
+                            'Start session',
+                            onTap: () async {
+                              StartSessionResults? results =
+                                  await Get.dialog(StartSessionScreen(
+                                guest,
+                                key: GlobalKey(),
+                              ));
+                              if (results != null) {
+                                setState(() {
+                                  if (results.sessionId != null) {
+                                    session = results.sessionId!;
+                                  }
+                                  guest = results.guest;
+                                });
+                              }
+                            },
+                          ),
+                        ),
+                        const SizedBox(width: 3),
+                        Flexible(
+                          child: containerButton(
+                            'Start room',
+                            onTap: () async {
+                              StartRoomReturnResults? results =
+                                  await Get.dialog(StartRoomSessionScreen(
+                                guest,
+                                key: GlobalKey(),
+                              ));
+
+                              if (results != null) {
+                                setState(() {
+                                  session = results.sessionId;
+                                  guest = results.guest;
+                                });
+                              }
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
                   Row(
                     children: [
-                      Flexible(child: containerButton('Start session')),
+                      Flexible(
+                        flex: 3,
+                        child: containerButton(
+                          'Reservation',
+                          last: true,
+                          onTap: () => Get.dialog(StartSessionScreen(
+                            guest,
+                            key: GlobalKey(),
+                          )),
+                        ),
+                      ),
                       const SizedBox(width: 3),
-                      Flexible(child: containerButton('Start room')),
+                      Flexible(
+                        child: containerButton(
+                          'Edit',
+                          last: true,
+                          color: colorLightBittersweet,
+                          onTap: () {},
+                        ),
+                      ),
                     ],
-                  ),
-                  containerButton(
-                    'Reservation',
-                    last: true,
                   ),
                 ],
               ),

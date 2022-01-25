@@ -52,7 +52,8 @@ class CourseRegistrationQuery {
         if (courseId != null) 'course_id': courseId,
         if (isPaid != null) 'is_paid': isPaid ? 1 : 0,
         if (createdDate != null)
-          'created_date': (createdDate.millisecondsSinceEpoch / 1000) as int,
+          'created_date':
+              (createdDate.millisecondsSinceEpoch / 1000).round() as int,
       });
 
   Future<CourseRegistration> read(int id) async {
@@ -78,7 +79,8 @@ class CourseRegistrationQuery {
           if (courseId != null) 'course_id': courseId,
           if (isPaid != null) 'is_paid': isPaid ? 1 : 0,
           if (createdDate != null)
-            'created_date': (createdDate.millisecondsSinceEpoch / 1000) as int,
+            'created_date':
+                (createdDate.millisecondsSinceEpoch / 1000).round() as int,
         },
         where: 'id = ?',
         whereArgs: [id],
@@ -127,7 +129,7 @@ class CourseRegistrationQuery {
         if (courseId != null) courseId,
         if (isPaid != null) isPaid ? 1 : 0,
         if (createdDate != null)
-          (createdDate.millisecondsSinceEpoch / 1000) as int,
+          (createdDate.millisecondsSinceEpoch / 1000).round() as int,
       ],
     );
 
