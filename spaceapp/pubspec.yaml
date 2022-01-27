@@ -41,6 +41,8 @@ dependencies:
   # Extra widgets
   flutter_spinkit: ^5.1.0
   argon_buttons_flutter: ^1.1.0
+  # Monitoring helper packages
+  sentry_flutter: ^6.2.2
   # Helper packages
   database_system:
     path: ../database_system/

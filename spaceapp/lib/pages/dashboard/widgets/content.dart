@@ -5,6 +5,7 @@ import 'package:spaceapp/widgets/resposive.dart';
 
 import 'rooms/rooms.dart';
 import 'searching/searching.dart';
+import 'topbar/topbar.dart';
 
 class ContentWidget extends UIResponsiveless {
   const ContentWidget({Key? key}) : super(key: key);
@@ -21,9 +22,6 @@ class ContentWidget extends UIResponsiveless {
   @override
   Widget smallBuild(BuildContext context, Size size) => _build(1);
 
-  final SliverToBoxAdapter topPadding =
-      const SliverToBoxAdapter(child: SizedBox(height: kToolbarHeight * 2));
-
   Widget _build(int crossAxisCount) {
     SearchingController searching = SearchingController.to;
     return Obx(
@@ -32,7 +30,7 @@ class ContentWidget extends UIResponsiveless {
         child: searching.searching.value
             ? searchingResults(searching, crossAxisCount)
             : CustomScrollView(slivers: [
-                topPadding,
+                paddingFromTopBar,
                 roomsList(crossAxisCount),
               ]),
       ),

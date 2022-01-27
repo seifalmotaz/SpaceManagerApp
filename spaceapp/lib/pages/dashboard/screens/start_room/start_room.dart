@@ -6,6 +6,8 @@ import 'package:get/get.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:spaceapp/constant/base_colors.dart';
 import 'package:spaceapp/helpers/snacks.dart';
+import 'package:spaceapp/pages/dashboard/controllers/controller.dart';
+import 'package:spaceapp/pages/dashboard/controllers/searching.dart';
 import 'package:spaceapp/widgets/text_field.dart';
 import 'package:spaceapp/helpers/extention.dart';
 
@@ -91,17 +93,21 @@ class _StartRoomSessionScreenState extends State<StartRoomSessionScreen> {
       }
 
       int session = await roomSessionQuery.create(
-        guestId: _guest.id,
+        guestId: guest.id,
         roomId: roomSelected,
       );
 
       Get.back(
-        closeOverlays: true,
         result: StartRoomReturnResults(
           sessionId: session,
           guest: _guest,
         ),
       );
+
+      SearchingController.to.searchingController.text = '';
+      SearchingController.to.guests.value = [];
+      SearchingController.to.searching.value = false;
+      DashboardController.to.shortcutChildFocus.requestFocus();
     } catch (e) {
       codeError(e.toString());
     }

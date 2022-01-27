@@ -5,9 +5,8 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:spaceapp/constant/base_colors.dart';
-import 'package:spaceapp/helpers/snacks.dart';
-import 'package:spaceapp/widgets/text_field.dart';
-import 'package:spaceapp/helpers/extention.dart';
+import 'package:spaceapp/pages/dashboard/screens/start_session/controller.dart';
+import 'package:spaceapp/pages/dashboard/screens/widgets/guest_form.dart';
 
 import 'session_form.dart';
 
@@ -21,122 +20,14 @@ class StartSessionResults {
   });
 }
 
-class StartSessionScreen extends StatefulWidget {
+class StartSessionScreen extends StatelessWidget {
   const StartSessionScreen(this.guest, {Key? key}) : super(key: key);
 
   final Guest guest;
 
   @override
-  _StartSessionScreenState createState() => _StartSessionScreenState();
-}
-
-class _StartSessionScreenState extends State<StartSessionScreen> {
-  bool dataEdited = false;
-  final DateTime _dateTime = DateTime.now();
-  List<Price> prices = [];
-  Price? priceSelected;
-  // data
-  late Guest guest;
-  TextEditingController guestCount = TextEditingController();
-  TextEditingController name = TextEditingController();
-  TextEditingController email = TextEditingController();
-  TextEditingController phone = TextEditingController();
-  TextEditingController nationalId = TextEditingController();
-
-  @override
-  void initState() {
-    guest = widget.guest;
-    name.text = guest.name ?? '';
-    email.text = guest.email ?? '';
-    phone.text = guest.phone ?? '';
-    nationalId.text = guest.nationalId ?? '';
-    super.initState();
-    getPrices();
-  }
-
-  setPrice(Price p) => setState(() {
-        priceSelected = p;
-      });
-
-  getPrices() async {
-    List<Price> _prices = await priceQuery.find(isDeleted: false);
-    setState(() {
-      prices = _prices;
-      for (Price item in _prices) {
-        if (item.isDefault) {
-          priceSelected = item;
-        }
-      }
-    });
-  }
-
-  saveStart(Function start, Function stop, ButtonState state) async {
-    start();
-    try {
-      late Guest _guest;
-      if (guest.id == 0) {
-        int newGuest = await guestQuery.create(
-          name: (name.text).getStringOrNull(),
-          email: (email.text).getStringOrNull(),
-          phone: (phone.text).getStringOrNull(),
-          nationalId: (nationalId.text).getStringOrNull(),
-        );
-        _guest = await guestQuery.read(newGuest);
-      } else if (dataEdited) {
-        int newGuest = await guestQuery.update(
-          id: guest.id,
-          name: (name.text).getStringIfChanged(guest.name),
-          email: (email.text).getStringIfChanged(guest.email),
-          phone: (phone.text).getStringIfChanged(guest.phone),
-          nationalId: (nationalId.text).getStringIfChanged(guest.nationalId),
-        );
-        _guest = await guestQuery.read(newGuest);
-      } else {
-        _guest = guest;
-      }
-      if (priceSelected!.isPerDay) {
-        await guestSessionQuery.create(
-          guestId: _guest.id,
-          guestCount: int.tryParse((guestCount.text).getStringOrNull() ?? ''),
-          priceId: priceSelected!.id,
-          paidAmount: priceSelected!.rate,
-          timeIn: _dateTime,
-          timeOut: DateTime(
-            _dateTime.year,
-            _dateTime.month,
-            _dateTime.day,
-            11,
-            59,
-            50,
-          ).toUtc(),
-        );
-        Get.back(
-          result: StartSessionResults(
-            guest: _guest,
-          ),
-        );
-      } else {
-        int session = await guestSessionQuery.create(
-          guestId: _guest.id,
-          guestCount: int.tryParse((guestCount.text).getStringOrNull() ?? ''),
-          priceId: priceSelected!.id,
-        );
-        Get.back(
-          result: StartSessionResults(
-            sessionId: session,
-            guest: _guest,
-          ),
-        );
-      }
-    } catch (e) {
-      codeError(e.toString());
-    }
-
-    stop();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    StartSessionController controller = Get.put(StartSessionController(guest));
     return Scaffold(
       backgroundColor: Colors.black12,
       body: Stack(
@@ -169,7 +60,7 @@ class _StartSessionScreenState extends State<StartSessionScreen> {
                         ),
                       ),
                       Text(
-                        Jiffy(_dateTime).jm,
+                        Jiffy(controller.dateTime).jm,
                         style: const TextStyle(
                           fontSize: 21,
                           color: colorWhite,
@@ -179,76 +70,14 @@ class _StartSessionScreenState extends State<StartSessionScreen> {
                     ],
                   ),
                   const SizedBox(height: 13),
-                  SessionFormWidget(
-                    prices: prices,
-                    setPrice: setPrice,
-                    guestCount: guestCount,
-                    priceSelected: priceSelected,
-                  ),
+                  const SessionFormWidget(),
                   const SizedBox(height: 17),
-                  const Text(
-                    'Edit guest info:',
-                    style: TextStyle(
-                      color: colorWhite,
-                      fontSize: 17,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  const SizedBox(height: 9),
-                  Row(
-                    children: [
-                      Flexible(
-                        child: WTextField(
-                          hint: 'Name',
-                          controller: name,
-                          color: Colors.white10,
-                          textColor: Colors.white70,
-                          onChange: (string) => setState(() {
-                            dataEdited = true;
-                          }),
-                        ),
-                      ),
-                      const SizedBox(width: 9),
-                      Flexible(
-                        child: WTextField(
-                          hint: 'National ID',
-                          controller: nationalId,
-                          color: Colors.white10,
-                          textColor: Colors.white70,
-                          onChange: (string) => setState(() {
-                            dataEdited = true;
-                          }),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 9),
-                  Row(
-                    children: [
-                      Flexible(
-                        child: WTextField(
-                          hint: 'Email',
-                          controller: email,
-                          color: Colors.white10,
-                          textColor: Colors.white70,
-                          onChange: (string) => setState(() {
-                            dataEdited = true;
-                          }),
-                        ),
-                      ),
-                      const SizedBox(width: 9),
-                      Flexible(
-                        child: WTextField(
-                          hint: 'Phone',
-                          controller: phone,
-                          color: Colors.white10,
-                          textColor: Colors.white70,
-                          onChange: (string) => setState(() {
-                            dataEdited = true;
-                          }),
-                        ),
-                      ),
-                    ],
+                  GuestFormWidget(
+                    email: controller.email,
+                    name: controller.name,
+                    nationalId: controller.nationalId,
+                    phone: controller.phone,
+                    dataEdited: () => controller..dataEdited.value = true,
                   ),
                   const SizedBox(height: 17),
                   Center(
@@ -270,7 +99,7 @@ class _StartSessionScreenState extends State<StartSessionScreen> {
                           color: Colors.white,
                         ),
                       ),
-                      onTap: saveStart,
+                      onTap: controller.startSession,
                     ),
                   ),
                 ],

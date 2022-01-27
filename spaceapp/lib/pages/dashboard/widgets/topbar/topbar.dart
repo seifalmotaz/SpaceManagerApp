@@ -7,6 +7,9 @@ import 'package:spaceapp/widgets/resposive.dart';
 import 'main.dart';
 import 'searching.dart';
 
+const SliverToBoxAdapter paddingFromTopBar =
+    SliverToBoxAdapter(child: SizedBox(height: kToolbarHeight * 1.61));
+
 class TopBarWidget extends UIResponsiveless {
   const TopBarWidget({Key? key}) : super(key: key);
 
@@ -16,12 +19,12 @@ class TopBarWidget extends UIResponsiveless {
       alignment: Alignment.topCenter,
       child: Container(
         height: kToolbarHeight,
-        width: size.width * .91,
-        padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 13),
-        margin: const EdgeInsets.only(top: 27, bottom: 23),
+        width: size.width * .97,
+        padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 17),
+        margin: const EdgeInsets.only(top: 17),
         decoration: BoxDecoration(
           color: colorBittersweet,
-          borderRadius: BorderRadius.circular(51),
+          borderRadius: BorderRadius.circular(7),
         ),
         child: SizedBox.expand(
           child: Obx(

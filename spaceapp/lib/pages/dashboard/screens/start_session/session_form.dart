@@ -1,61 +1,84 @@
 import 'package:database_system/database_system.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:get/get.dart';
 import 'package:spaceapp/constant/base_colors.dart';
+import 'package:spaceapp/pages/dashboard/screens/start_session/controller.dart';
 import 'package:spaceapp/widgets/text_field.dart';
 
 import 'price_item.dart';
 
 class SessionFormWidget extends StatelessWidget {
-  const SessionFormWidget({
-    Key? key,
-    required this.prices,
-    required this.setPrice,
-    required this.guestCount,
-    required this.priceSelected,
-  }) : super(key: key);
-
-  final List<Price> prices;
-  final TextEditingController guestCount;
-  final Function(Price id) setPrice;
-  final Price? priceSelected;
+  const SessionFormWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    StartSessionController controller = StartSessionController.to;
     return Column(
       children: [
         WTextField(
           hint: 'Guests count',
-          controller: guestCount,
+          controller: controller.guestCount,
           color: Colors.white10,
           textColor: Colors.white70,
         ),
         const SizedBox(height: 11),
-        AnimatedSwitcher(
-          duration: const Duration(milliseconds: 300),
-          child: prices.isEmpty
-              ? const SpinKitRotatingCircle(
-                  color: colorDarkLighter,
-                  size: 27,
-                )
-              : GridView.builder(
-                  shrinkWrap: true,
-                  itemCount: prices.length,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    mainAxisSpacing: 9,
-                    crossAxisSpacing: 7,
-                    mainAxisExtent: 51,
+        Obx(
+          () => AnimatedSwitcher(
+            duration: const Duration(milliseconds: 300),
+            child: controller.prices.isEmpty
+                ? const SpinKitRotatingCircle(
+                    color: colorDarkLighter,
+                    size: 27,
+                  )
+                : GridView.builder(
+                    shrinkWrap: true,
+                    itemCount: controller.prices.length + 1,
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      mainAxisSpacing: 9,
+                      crossAxisSpacing: 7,
+                      mainAxisExtent: 51,
+                    ),
+                    itemBuilder: (context, index) {
+                      if (index != controller.prices.length) {
+                        Price price = controller.prices[index];
+                        return Obx(
+                          () => PriceItemWidget(
+                            key: GlobalKey(),
+                            price: price,
+                            priceSelected: controller.priceSelectedValue,
+                            setPrice: () {
+                              controller.priceSelected.value = price;
+                              controller.isCustomRate.value = false;
+                            },
+                          ),
+                        );
+                      }
+                      Price price = Price(
+                        id: 0,
+                        description: 'Custom price for guest',
+                        rate: 0,
+                        isPerDay: false,
+                        isDeleted: false,
+                        isDefault: false,
+                      );
+
+                      return Obx(
+                        () => PriceItemWidget(
+                          key: GlobalKey(),
+                          price: price,
+                          priceSelected: controller.priceSelectedValue,
+                          setPrice: () {
+                            controller.priceSelected.value = price;
+                            controller.isCustomRate.value = true;
+                          },
+                        ),
+                      );
+                    },
                   ),
-                  itemBuilder: (context, index) {
-                    Price price = prices[index];
-                    return PriceItemWidget(
-                      price,
-                      setPrice,
-                      priceSelected,
-                    );
-                  },
-                ),
+          ),
         ),
       ],
     );

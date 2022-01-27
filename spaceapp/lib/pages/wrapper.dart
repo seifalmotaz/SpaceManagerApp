@@ -1,9 +1,10 @@
 import 'package:database_system/database_system.dart';
-import 'package:spaceapp/helpers/snacks.dart';
+import 'package:spaceapp/helpers/monitoring.dart';
 import 'package:spaceapp/pages/auth/login.dart';
 import 'package:spaceapp/pages/dashboard/controllers/binding.dart';
 import 'package:spaceapp/pages/dashboard/dashboard.dart';
 import 'package:spaceapp/services/auth.dart';
+import 'package:spaceapp/services/guests.dart';
 import 'package:spaceapp/services/storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -21,16 +22,19 @@ class _WrapperState extends State<Wrapper> {
     // connect storage
     StorageService storage =
         await Get.putAsync<StorageService>(() async => StorageService());
-    await storage.connect();
+    bool wait = await storage.connect();
+    if (!wait) return;
 
     await Future.delayed(const Duration(seconds: 1));
+
+    await Get.putAsync<MemoryGuestsService>(() async => MemoryGuestsService());
 
     // connect db
     DBService db = await Get.putAsync<DBService>(() async => DBService());
     try {
       await db.connect();
-    } catch (e) {
-      errorSnack('Code error', e.toString(), const Duration(minutes: 5));
+    } catch (e, s) {
+      MonitoringApp.error(e, s);
       return;
     }
 

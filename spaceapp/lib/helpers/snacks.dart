@@ -5,7 +5,7 @@ codeError(m, [Duration? sec]) {
   return Get.snackbar(
     'Code Error',
     m,
-    isDismissible: false,
+    isDismissible: true,
     colorText: Colors.white,
     maxWidth: Get.width * .3,
     snackPosition: SnackPosition.BOTTOM,
@@ -19,7 +19,7 @@ errorSnack(t, m, [Duration? sec]) {
   return Get.snackbar(
     t,
     m,
-    isDismissible: false,
+    isDismissible: true,
     colorText: Colors.white,
     maxWidth: Get.width * .3,
     snackPosition: SnackPosition.BOTTOM,
@@ -33,7 +33,7 @@ successSnack(t, m) {
   return Get.snackbar(
     t,
     m,
-    isDismissible: false,
+    isDismissible: true,
     colorText: Colors.black,
     maxWidth: Get.width * .3,
     snackPosition: SnackPosition.BOTTOM,

@@ -15,6 +15,9 @@ class SearchUsersAction extends Action<SearchUsersIntent> {
       controller.searchingFocus.requestFocus();
     } else {
       controller.searching.value = false;
+      SearchingController.to.searchingController.text = '';
+      SearchingController.to.guests.value = [];
+      SearchingController.to.searching.value = false;
       DashboardController.to.shortcutChildFocus.requestFocus();
     }
   }

@@ -2,8 +2,14 @@ import 'package:database_system/database_system.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:spaceapp/constant/base_colors.dart';
+import 'package:spaceapp/helpers/monitoring.dart';
+import 'package:spaceapp/pages/dashboard/screens/end_room/end_room.dart';
+import 'package:spaceapp/pages/dashboard/screens/end_session/end_session.dart';
+import 'package:spaceapp/pages/dashboard/screens/end_session_custom/end_session_custom.dart';
 import 'package:spaceapp/pages/dashboard/screens/start_room/start_room.dart';
 import 'package:spaceapp/pages/dashboard/screens/start_session/start_session.dart';
+import 'package:spaceapp/pages/reservation/create/create.dart';
+import 'package:spaceapp/services/guests.dart';
 
 class GuestItem extends StatefulWidget {
   const GuestItem(this.result, {Key? key}) : super(key: key);
@@ -17,15 +23,63 @@ class GuestItem extends StatefulWidget {
 class _GuestItemState extends State<GuestItem> {
   late Guest guest;
   int? session;
+  bool isSecondToday = false;
 
   @override
   void initState() {
     guest = widget.result.guest;
     session = widget.result.session;
+    isSecondToday = MemoryGuestsService.to.readGuest(guest.id);
     super.initState();
   }
 
-  endSession() {}
+  endSession() => MonitoringApp.errorTrack(() async {
+        Map<String, dynamic>? _session = await sessionQuery.read(session!);
+        if (_session != null) {
+          _session = Map.of(_session);
+          _session.removeWhere((key, value) => value == null);
+          // room sessiom
+          RoomSession? roomSession = RoomSessionTable.schemaToJson(_session);
+          if (roomSession != null) {
+            await Get.dialog(EndRoomScreen(
+              guest: guest,
+              session: roomSession,
+            ));
+            return;
+          }
+
+          // guest sessiom with custom price
+          GuestSession$Custom? guestSession$Custom =
+              GuestSession$CustomTable.schemaToJson(_session);
+          if (guestSession$Custom != null) {
+            bool? wait = await Get.dialog(EndSessionScreen$Custom(
+              guest: guest,
+              session: guestSession$Custom,
+            ));
+            if (wait != null && wait && mounted) {
+              setState(() {
+                session = null;
+              });
+            }
+            return;
+          }
+
+          // guest sessiom
+          GuestSession? guestSession = GuestSessionTable.schemaToJson(_session);
+          if (guestSession != null) {
+            bool? wait = await Get.dialog(EndSessionScreen(
+              guest: guest,
+              session: guestSession,
+            ));
+            if (wait != null && wait) {
+              setState(() {
+                session = null;
+              });
+            }
+            return;
+          }
+        }
+      });
 
   containerButton(
     String title, {
@@ -88,21 +142,17 @@ class _GuestItemState extends State<GuestItem> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    Container(
-                      padding: const EdgeInsets.all(9),
-                      decoration: BoxDecoration(
-                        color: colorWhiteBased,
-                        borderRadius: BorderRadius.circular(23),
-                      ),
-                      child: const Text(
-                        '9',
-                        style: TextStyle(
-                          fontSize: 21,
-                          fontWeight: FontWeight.bold,
-                          color: colorText,
-                        ),
-                      ),
-                    ),
+                    isSecondToday
+                        ? const Icon(
+                            Icons.circle_outlined,
+                            color: Colors.blue,
+                            size: 30,
+                          )
+                        : const Icon(
+                            Icons.circle_outlined,
+                            color: colorDarkLightest,
+                            size: 30,
+                          ),
                   ],
                 ),
                 const SizedBox(height: 7),
@@ -160,10 +210,7 @@ class _GuestItemState extends State<GuestItem> {
                     containerButton(
                       'End session',
                       color: colorLightBittersweet,
-                      onTap: () => Get.dialog(StartSessionScreen(
-                        guest,
-                        key: GlobalKey(),
-                      )),
+                      onTap: endSession,
                     ),
                   if (session == null)
                     Row(
@@ -178,12 +225,14 @@ class _GuestItemState extends State<GuestItem> {
                                 key: GlobalKey(),
                               ));
                               if (results != null) {
-                                setState(() {
-                                  if (results.sessionId != null) {
-                                    session = results.sessionId!;
-                                  }
-                                  guest = results.guest;
-                                });
+                                if (mounted) {
+                                  setState(() {
+                                    if (results.sessionId != null) {
+                                      session = results.sessionId!;
+                                    }
+                                    guest = results.guest;
+                                  });
+                                }
                               }
                             },
                           ),
@@ -217,10 +266,8 @@ class _GuestItemState extends State<GuestItem> {
                         child: containerButton(
                           'Reservation',
                           last: true,
-                          onTap: () => Get.dialog(StartSessionScreen(
-                            guest,
-                            key: GlobalKey(),
-                          )),
+                          onTap: () =>
+                              Get.to(() => CreateReservationPage(guest)),
                         ),
                       ),
                       const SizedBox(width: 3),

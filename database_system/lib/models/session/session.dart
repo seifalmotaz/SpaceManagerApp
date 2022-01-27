@@ -9,6 +9,8 @@ part 'session.g.dart';
 
 mixin Joins {
   @JsonKey(ignore: true)
+  Price? price;
+  @JsonKey(ignore: true)
   Guest? guest;
   @JsonKey(ignore: true)
   Room? room;
@@ -36,6 +38,7 @@ class Session {
   factory Session.fromJson(Map<String, dynamic> json) {
     dynamic session;
     session ??= GuestSessionTable.schemaToJson(json);
+    session ??= GuestSession$CustomTable.schemaToJson(json);
     session ??= RoomSessionTable.schemaToJson(json);
     session ??= CourseSessionTable.schemaToJson(json);
     return session!;
@@ -65,16 +68,43 @@ class StaffSession extends Session with Joins {
 
 @JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
 @EngineSQL(name: 'session')
+class GuestSession$Custom extends Session with Joins {
+  int guestCount;
+  double? paidAmount;
+  int guestId;
+
+  @boolKey
+  bool customPaid;
+
+  GuestSession$Custom({
+    required this.guestCount,
+    required this.guestId,
+    required id,
+    required timeIn,
+    required timeOut,
+    required this.customPaid,
+    this.paidAmount,
+  }) : super(
+          id: id,
+          timeIn: timeIn,
+          timeOut: timeOut,
+        );
+
+  factory GuestSession$Custom.fromJson(Map<String, dynamic> json) =>
+      _$GuestSession$CustomFromJson(json);
+  Map<String, dynamic> toJson() => _$GuestSession$CustomToJson(this);
+}
+
+@JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
+@EngineSQL(name: 'session')
 class GuestSession extends Session with Joins {
-  @FieldSQL(haveDefault: true)
   int guestCount;
   int priceId;
   double? paidAmount;
   int guestId;
 
-  @boolKey
-  @FieldSQL(haveDefault: true)
-  bool isDefault;
+  @boolNullKey
+  bool? customPaid;
 
   GuestSession({
     required this.guestCount,
@@ -84,7 +114,6 @@ class GuestSession extends Session with Joins {
     required id,
     required timeIn,
     required timeOut,
-    required this.isDefault,
   }) : super(
           id: id,
           timeIn: timeIn,
@@ -106,7 +135,7 @@ class ReservationSession extends Session with Joins {
 
   @boolKey
   @FieldSQL(haveDefault: true)
-  bool isDefault;
+  bool customPaid;
 
   ReservationSession({
     required this.paidAmount,
@@ -116,7 +145,7 @@ class ReservationSession extends Session with Joins {
     required timeIn,
     required timeOut,
     required this.reservationId,
-    required this.isDefault,
+    required this.customPaid,
   }) : super(
           id: id,
           timeIn: timeIn,
@@ -137,7 +166,7 @@ class RoomSession extends Session with Joins {
 
   @boolKey
   @FieldSQL(haveDefault: true)
-  bool isDefault;
+  bool customPaid;
 
   RoomSession({
     required this.paidAmount,
@@ -146,7 +175,7 @@ class RoomSession extends Session with Joins {
     required id,
     required timeIn,
     required timeOut,
-    required this.isDefault,
+    required this.customPaid,
   }) : super(
           id: id,
           timeIn: timeIn,
@@ -163,13 +192,11 @@ class RoomSession extends Session with Joins {
 class CourseSession extends Session with Joins {
   int roomId;
   int courseId;
-  int guestCount;
   int reservationId;
 
   CourseSession({
     required this.roomId,
     required this.courseId,
-    required this.guestCount,
     required this.reservationId,
     required id,
     required timeIn,

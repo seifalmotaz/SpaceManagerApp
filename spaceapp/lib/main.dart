@@ -14,6 +14,15 @@ Future<void> main() async {
     // await windowManager.maximize();
     windowManager.show();
   });
+
+  // await SentryFlutter.init(
+  //   (options) {
+  //     options.dsn =
+  //         'https://270e51a5dfac40799b6e269b05dbcb87@o1126736.ingest.sentry.io/6168003';
+  //     options.tracesSampleRate = 1.0;
+  //   },
+  //   appRunner: () => runApp(const MyApp()),
+  // );
   runApp(const MyApp());
 }
 

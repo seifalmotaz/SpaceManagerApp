@@ -3,18 +3,21 @@ import 'package:flutter/material.dart';
 import 'package:spaceapp/constant/base_colors.dart';
 
 class PriceItemWidget extends StatelessWidget {
-  const PriceItemWidget(this.price, this.setPrice, this.priceSelected,
-      {Key? key})
-      : super(key: key);
+  const PriceItemWidget({
+    Key? key,
+    required this.price,
+    required this.setPrice,
+    required this.priceSelected,
+  }) : super(key: key);
 
   final Price price;
   final Price? priceSelected;
-  final Function(Price id) setPrice;
+  final Function() setPrice;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => setPrice(price),
+      onTap: setPrice,
       child: Tooltip(
         padding: const EdgeInsets.all(7),
         textStyle: const TextStyle(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:spaceapp/constant/base_colors.dart';
+import 'package:spaceapp/pages/dashboard/controllers/controller.dart';
 import 'package:spaceapp/pages/dashboard/controllers/searching.dart';
 import 'package:spaceapp/widgets/text_field.dart';
 
@@ -59,11 +60,16 @@ class SearchingBar extends StatelessWidget {
             ),
           ),
           IconButton(
-            onPressed: () => searching.searching.value = false,
             icon: const Icon(
               Icons.close,
               color: colorWhite,
             ),
+            onPressed: () {
+              SearchingController.to.searchingController.text = '';
+              SearchingController.to.guests.value = [];
+              SearchingController.to.searching.value = false;
+              DashboardController.to.shortcutChildFocus.requestFocus();
+            },
           ),
         ],
       ),

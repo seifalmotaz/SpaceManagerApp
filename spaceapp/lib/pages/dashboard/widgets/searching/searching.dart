@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:spaceapp/pages/dashboard/controllers/searching.dart';
+import 'package:spaceapp/pages/dashboard/widgets/topbar/topbar.dart';
 
 import 'guest_item.dart';
 
 CustomScrollView searchingResults(
     SearchingController searching, int crossAxisCount) {
   return CustomScrollView(slivers: [
-    const SliverToBoxAdapter(
-      child: SizedBox(
-        height: kToolbarHeight * 2,
-      ),
-    ),
+    paddingFromTopBar,
     Obx(
       () => SliverPadding(
         padding: const EdgeInsets.symmetric(horizontal: 27),

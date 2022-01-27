@@ -30,6 +30,37 @@ Map<String, dynamic> _$StaffSessionToJson(StaffSession instance) {
   return val;
 }
 
+GuestSession$Custom _$GuestSession$CustomFromJson(Map<String, dynamic> json) =>
+    GuestSession$Custom(
+      guestCount: json['guest_count'] as int,
+      guestId: json['guest_id'] as int,
+      id: json['id'],
+      timeIn: DataCompiler.fromDBDate(json['time_in'] as int),
+      timeOut: DataCompiler.fromDBDateNull(json['time_out'] as int?),
+      customPaid: DataCompiler.fromDBool(json['custom_paid'] as int),
+      paidAmount: (json['paid_amount'] as num?)?.toDouble(),
+    );
+
+Map<String, dynamic> _$GuestSession$CustomToJson(GuestSession$Custom instance) {
+  final val = <String, dynamic>{
+    'id': instance.id,
+  };
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('time_in', DataCompiler.toDBDate(instance.timeIn));
+  writeNotNull('time_out', DataCompiler.toDBDateNull(instance.timeOut));
+  val['guest_count'] = instance.guestCount;
+  writeNotNull('paid_amount', instance.paidAmount);
+  val['guest_id'] = instance.guestId;
+  writeNotNull('custom_paid', DataCompiler.toDBool(instance.customPaid));
+  return val;
+}
+
 GuestSession _$GuestSessionFromJson(Map<String, dynamic> json) => GuestSession(
       guestCount: json['guest_count'] as int,
       paidAmount: (json['paid_amount'] as num?)?.toDouble(),
@@ -38,8 +69,7 @@ GuestSession _$GuestSessionFromJson(Map<String, dynamic> json) => GuestSession(
       id: json['id'],
       timeIn: DataCompiler.fromDBDate(json['time_in'] as int),
       timeOut: DataCompiler.fromDBDateNull(json['time_out'] as int?),
-      isDefault: DataCompiler.fromDBool(json['is_default'] as int),
-    );
+    )..customPaid = DataCompiler.fromDBoolNull(json['custom_paid'] as int?);
 
 Map<String, dynamic> _$GuestSessionToJson(GuestSession instance) {
   final val = <String, dynamic>{
@@ -58,7 +88,7 @@ Map<String, dynamic> _$GuestSessionToJson(GuestSession instance) {
   val['price_id'] = instance.priceId;
   writeNotNull('paid_amount', instance.paidAmount);
   val['guest_id'] = instance.guestId;
-  writeNotNull('is_default', DataCompiler.toDBool(instance.isDefault));
+  writeNotNull('custom_paid', DataCompiler.toDBoolNull(instance.customPaid));
   return val;
 }
 
@@ -71,7 +101,7 @@ ReservationSession _$ReservationSessionFromJson(Map<String, dynamic> json) =>
       timeIn: DataCompiler.fromDBDate(json['time_in'] as int),
       timeOut: DataCompiler.fromDBDateNull(json['time_out'] as int?),
       reservationId: json['reservation_id'] as int,
-      isDefault: DataCompiler.fromDBool(json['is_default'] as int),
+      customPaid: DataCompiler.fromDBool(json['custom_paid'] as int),
     );
 
 Map<String, dynamic> _$ReservationSessionToJson(ReservationSession instance) {
@@ -91,7 +121,7 @@ Map<String, dynamic> _$ReservationSessionToJson(ReservationSession instance) {
   writeNotNull('paid_amount', instance.paidAmount);
   val['guest_id'] = instance.guestId;
   val['reservation_id'] = instance.reservationId;
-  writeNotNull('is_default', DataCompiler.toDBool(instance.isDefault));
+  writeNotNull('custom_paid', DataCompiler.toDBool(instance.customPaid));
   return val;
 }
 
@@ -102,7 +132,7 @@ RoomSession _$RoomSessionFromJson(Map<String, dynamic> json) => RoomSession(
       id: json['id'],
       timeIn: DataCompiler.fromDBDate(json['time_in'] as int),
       timeOut: DataCompiler.fromDBDateNull(json['time_out'] as int?),
-      isDefault: DataCompiler.fromDBool(json['is_default'] as int),
+      customPaid: DataCompiler.fromDBool(json['custom_paid'] as int),
     );
 
 Map<String, dynamic> _$RoomSessionToJson(RoomSession instance) {
@@ -121,7 +151,7 @@ Map<String, dynamic> _$RoomSessionToJson(RoomSession instance) {
   val['room_id'] = instance.roomId;
   writeNotNull('paid_amount', instance.paidAmount);
   val['guest_id'] = instance.guestId;
-  writeNotNull('is_default', DataCompiler.toDBool(instance.isDefault));
+  writeNotNull('custom_paid', DataCompiler.toDBool(instance.customPaid));
   return val;
 }
 
@@ -129,7 +159,6 @@ CourseSession _$CourseSessionFromJson(Map<String, dynamic> json) =>
     CourseSession(
       roomId: json['room_id'] as int,
       courseId: json['course_id'] as int,
-      guestCount: json['guest_count'] as int,
       reservationId: json['reservation_id'] as int,
       id: json['id'],
       timeIn: DataCompiler.fromDBDate(json['time_in'] as int),
@@ -151,7 +180,6 @@ Map<String, dynamic> _$CourseSessionToJson(CourseSession instance) {
   writeNotNull('time_out', DataCompiler.toDBDateNull(instance.timeOut));
   val['room_id'] = instance.roomId;
   val['course_id'] = instance.courseId;
-  val['guest_count'] = instance.guestCount;
   val['reservation_id'] = instance.reservationId;
   return val;
 }
@@ -252,16 +280,135 @@ class StaffSessionQuery {
   }
 }
 
+class GuestSession$CustomQuery {
+  final Database db;
+  GuestSession$CustomQuery(this.db);
+
+  Future<int> create({
+    required int guestCount,
+    double? paidAmount,
+    required int guestId,
+    required bool customPaid,
+    DateTime? timeIn,
+    DateTime? timeOut,
+  }) async =>
+      await db.insert('session', {
+        if (guestCount != null) 'guest_count': guestCount,
+        if (paidAmount != null) 'paid_amount': paidAmount,
+        if (guestId != null) 'guest_id': guestId,
+        if (customPaid != null) 'custom_paid': customPaid ? 1 : 0,
+        if (timeIn != null)
+          'time_in': (timeIn.millisecondsSinceEpoch / 1000).round() as int,
+        if (timeOut != null)
+          'time_out': (timeOut.millisecondsSinceEpoch / 1000).round() as int,
+      });
+
+  Future<GuestSession$Custom> read(int id) async {
+    List<Map<String, dynamic>> data = await db.query(
+      'session',
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+    return GuestSession$Custom.fromJson(data.first);
+  }
+
+  Future<int> update({
+    required int id,
+    int? guestCount,
+    double? paidAmount,
+    int? guestId,
+    bool? customPaid,
+    DateTime? timeIn,
+    DateTime? timeOut,
+  }) async =>
+      await db.update(
+        'session',
+        {
+          if (guestCount != null) 'guest_count': guestCount,
+          if (paidAmount != null) 'paid_amount': paidAmount,
+          if (guestId != null) 'guest_id': guestId,
+          if (customPaid != null) 'custom_paid': customPaid ? 1 : 0,
+          if (timeIn != null)
+            'time_in': (timeIn.millisecondsSinceEpoch / 1000).round() as int,
+          if (timeOut != null)
+            'time_out': (timeOut.millisecondsSinceEpoch / 1000).round() as int,
+        },
+        where: 'id = ?',
+        whereArgs: [id],
+      );
+
+  Future<int> delete(int id) async => await db.delete(
+        'session',
+        where: 'id = ?',
+        whereArgs: [id],
+      );
+
+  Future<List<GuestSession$Custom>> find({
+    int? guestCount,
+    double? paidAmount,
+    int? guestId,
+    bool? customPaid,
+    DateTime? timeIn,
+    DateTime? timeOut,
+  }) async {
+    List<String> searchFields = [];
+    if (guestCount != null) {
+      searchFields.add("session.guest_count = ?");
+    }
+    if (paidAmount != null) {
+      searchFields.add("session.paid_amount = ?");
+    }
+    if (guestId != null) {
+      searchFields.add("session.guest_id = ?");
+    }
+    if (customPaid != null) {
+      searchFields.add("session.custom_paid = ?");
+    }
+    if (timeIn != null) {
+      searchFields.add("session.time_in = ?");
+    }
+    if (timeOut != null) {
+      searchFields.add("session.time_out = ?");
+    }
+
+    StringBuffer buf = StringBuffer();
+    for (int i = 0; i < searchFields.length; i++) {
+      if (i == 0) buf.writeln(searchFields[i]);
+      if (i != 0) buf.writeln("AND " + searchFields[i]);
+    }
+
+    List<Map<String, dynamic>> data = await db.query(
+      'session',
+      where: '''
+          ${buf.toString()}
+          ${buf.toString().isNotEmpty ? "AND" : ""} ${GuestSession$CustomTable.sqlFindSchema}
+          ''',
+      whereArgs: [
+        if (guestCount != null) guestCount,
+        if (paidAmount != null) paidAmount,
+        if (guestId != null) guestId,
+        if (customPaid != null) customPaid ? 1 : 0,
+        if (timeIn != null)
+          (timeIn.millisecondsSinceEpoch / 1000).round() as int,
+        if (timeOut != null)
+          (timeOut.millisecondsSinceEpoch / 1000).round() as int,
+      ],
+    );
+
+    return data.map((e) => GuestSession$Custom.fromJson(e)).toList();
+  }
+}
+
 class GuestSessionQuery {
   final Database db;
   GuestSessionQuery(this.db);
 
   Future<int> create({
-    int? guestCount,
+    required int guestCount,
     required int priceId,
     double? paidAmount,
     required int guestId,
-    bool? isDefault,
+    bool? customPaid,
     DateTime? timeIn,
     DateTime? timeOut,
   }) async =>
@@ -270,7 +417,7 @@ class GuestSessionQuery {
         if (priceId != null) 'price_id': priceId,
         if (paidAmount != null) 'paid_amount': paidAmount,
         if (guestId != null) 'guest_id': guestId,
-        if (isDefault != null) 'is_default': isDefault ? 1 : 0,
+        if (customPaid != null) 'custom_paid': customPaid ? 1 : 0,
         if (timeIn != null)
           'time_in': (timeIn.millisecondsSinceEpoch / 1000).round() as int,
         if (timeOut != null)
@@ -292,7 +439,7 @@ class GuestSessionQuery {
     int? priceId,
     double? paidAmount,
     int? guestId,
-    bool? isDefault,
+    bool? customPaid,
     DateTime? timeIn,
     DateTime? timeOut,
   }) async =>
@@ -303,7 +450,7 @@ class GuestSessionQuery {
           if (priceId != null) 'price_id': priceId,
           if (paidAmount != null) 'paid_amount': paidAmount,
           if (guestId != null) 'guest_id': guestId,
-          if (isDefault != null) 'is_default': isDefault ? 1 : 0,
+          if (customPaid != null) 'custom_paid': customPaid ? 1 : 0,
           if (timeIn != null)
             'time_in': (timeIn.millisecondsSinceEpoch / 1000).round() as int,
           if (timeOut != null)
@@ -324,7 +471,7 @@ class GuestSessionQuery {
     int? priceId,
     double? paidAmount,
     int? guestId,
-    bool? isDefault,
+    bool? customPaid,
     DateTime? timeIn,
     DateTime? timeOut,
   }) async {
@@ -341,8 +488,8 @@ class GuestSessionQuery {
     if (guestId != null) {
       searchFields.add("session.guest_id = ?");
     }
-    if (isDefault != null) {
-      searchFields.add("session.is_default = ?");
+    if (customPaid != null) {
+      searchFields.add("session.custom_paid = ?");
     }
     if (timeIn != null) {
       searchFields.add("session.time_in = ?");
@@ -368,7 +515,7 @@ class GuestSessionQuery {
         if (priceId != null) priceId,
         if (paidAmount != null) paidAmount,
         if (guestId != null) guestId,
-        if (isDefault != null) isDefault ? 1 : 0,
+        if (customPaid != null) customPaid ? 1 : 0,
         if (timeIn != null)
           (timeIn.millisecondsSinceEpoch / 1000).round() as int,
         if (timeOut != null)
@@ -389,7 +536,7 @@ class ReservationSessionQuery {
     double? paidAmount,
     required int guestId,
     required int reservationId,
-    bool? isDefault,
+    bool? customPaid,
     DateTime? timeIn,
     DateTime? timeOut,
   }) async =>
@@ -398,7 +545,7 @@ class ReservationSessionQuery {
         if (paidAmount != null) 'paid_amount': paidAmount,
         if (guestId != null) 'guest_id': guestId,
         if (reservationId != null) 'reservation_id': reservationId,
-        if (isDefault != null) 'is_default': isDefault ? 1 : 0,
+        if (customPaid != null) 'custom_paid': customPaid ? 1 : 0,
         if (timeIn != null)
           'time_in': (timeIn.millisecondsSinceEpoch / 1000).round() as int,
         if (timeOut != null)
@@ -420,7 +567,7 @@ class ReservationSessionQuery {
     double? paidAmount,
     int? guestId,
     int? reservationId,
-    bool? isDefault,
+    bool? customPaid,
     DateTime? timeIn,
     DateTime? timeOut,
   }) async =>
@@ -431,7 +578,7 @@ class ReservationSessionQuery {
           if (paidAmount != null) 'paid_amount': paidAmount,
           if (guestId != null) 'guest_id': guestId,
           if (reservationId != null) 'reservation_id': reservationId,
-          if (isDefault != null) 'is_default': isDefault ? 1 : 0,
+          if (customPaid != null) 'custom_paid': customPaid ? 1 : 0,
           if (timeIn != null)
             'time_in': (timeIn.millisecondsSinceEpoch / 1000).round() as int,
           if (timeOut != null)
@@ -452,7 +599,7 @@ class ReservationSessionQuery {
     double? paidAmount,
     int? guestId,
     int? reservationId,
-    bool? isDefault,
+    bool? customPaid,
     DateTime? timeIn,
     DateTime? timeOut,
   }) async {
@@ -469,8 +616,8 @@ class ReservationSessionQuery {
     if (reservationId != null) {
       searchFields.add("session.reservation_id = ?");
     }
-    if (isDefault != null) {
-      searchFields.add("session.is_default = ?");
+    if (customPaid != null) {
+      searchFields.add("session.custom_paid = ?");
     }
     if (timeIn != null) {
       searchFields.add("session.time_in = ?");
@@ -496,7 +643,7 @@ class ReservationSessionQuery {
         if (paidAmount != null) paidAmount,
         if (guestId != null) guestId,
         if (reservationId != null) reservationId,
-        if (isDefault != null) isDefault ? 1 : 0,
+        if (customPaid != null) customPaid ? 1 : 0,
         if (timeIn != null)
           (timeIn.millisecondsSinceEpoch / 1000).round() as int,
         if (timeOut != null)
@@ -516,7 +663,7 @@ class RoomSessionQuery {
     required int roomId,
     double? paidAmount,
     required int guestId,
-    bool? isDefault,
+    bool? customPaid,
     DateTime? timeIn,
     DateTime? timeOut,
   }) async =>
@@ -524,7 +671,7 @@ class RoomSessionQuery {
         if (roomId != null) 'room_id': roomId,
         if (paidAmount != null) 'paid_amount': paidAmount,
         if (guestId != null) 'guest_id': guestId,
-        if (isDefault != null) 'is_default': isDefault ? 1 : 0,
+        if (customPaid != null) 'custom_paid': customPaid ? 1 : 0,
         if (timeIn != null)
           'time_in': (timeIn.millisecondsSinceEpoch / 1000).round() as int,
         if (timeOut != null)
@@ -545,7 +692,7 @@ class RoomSessionQuery {
     int? roomId,
     double? paidAmount,
     int? guestId,
-    bool? isDefault,
+    bool? customPaid,
     DateTime? timeIn,
     DateTime? timeOut,
   }) async =>
@@ -555,7 +702,7 @@ class RoomSessionQuery {
           if (roomId != null) 'room_id': roomId,
           if (paidAmount != null) 'paid_amount': paidAmount,
           if (guestId != null) 'guest_id': guestId,
-          if (isDefault != null) 'is_default': isDefault ? 1 : 0,
+          if (customPaid != null) 'custom_paid': customPaid ? 1 : 0,
           if (timeIn != null)
             'time_in': (timeIn.millisecondsSinceEpoch / 1000).round() as int,
           if (timeOut != null)
@@ -575,7 +722,7 @@ class RoomSessionQuery {
     int? roomId,
     double? paidAmount,
     int? guestId,
-    bool? isDefault,
+    bool? customPaid,
     DateTime? timeIn,
     DateTime? timeOut,
   }) async {
@@ -589,8 +736,8 @@ class RoomSessionQuery {
     if (guestId != null) {
       searchFields.add("session.guest_id = ?");
     }
-    if (isDefault != null) {
-      searchFields.add("session.is_default = ?");
+    if (customPaid != null) {
+      searchFields.add("session.custom_paid = ?");
     }
     if (timeIn != null) {
       searchFields.add("session.time_in = ?");
@@ -615,7 +762,7 @@ class RoomSessionQuery {
         if (roomId != null) roomId,
         if (paidAmount != null) paidAmount,
         if (guestId != null) guestId,
-        if (isDefault != null) isDefault ? 1 : 0,
+        if (customPaid != null) customPaid ? 1 : 0,
         if (timeIn != null)
           (timeIn.millisecondsSinceEpoch / 1000).round() as int,
         if (timeOut != null)
@@ -634,7 +781,6 @@ class CourseSessionQuery {
   Future<int> create({
     required int roomId,
     required int courseId,
-    required int guestCount,
     required int reservationId,
     DateTime? timeIn,
     DateTime? timeOut,
@@ -642,7 +788,6 @@ class CourseSessionQuery {
       await db.insert('session', {
         if (roomId != null) 'room_id': roomId,
         if (courseId != null) 'course_id': courseId,
-        if (guestCount != null) 'guest_count': guestCount,
         if (reservationId != null) 'reservation_id': reservationId,
         if (timeIn != null)
           'time_in': (timeIn.millisecondsSinceEpoch / 1000).round() as int,
@@ -663,7 +808,6 @@ class CourseSessionQuery {
     required int id,
     int? roomId,
     int? courseId,
-    int? guestCount,
     int? reservationId,
     DateTime? timeIn,
     DateTime? timeOut,
@@ -673,7 +817,6 @@ class CourseSessionQuery {
         {
           if (roomId != null) 'room_id': roomId,
           if (courseId != null) 'course_id': courseId,
-          if (guestCount != null) 'guest_count': guestCount,
           if (reservationId != null) 'reservation_id': reservationId,
           if (timeIn != null)
             'time_in': (timeIn.millisecondsSinceEpoch / 1000).round() as int,
@@ -693,7 +836,6 @@ class CourseSessionQuery {
   Future<List<CourseSession>> find({
     int? roomId,
     int? courseId,
-    int? guestCount,
     int? reservationId,
     DateTime? timeIn,
     DateTime? timeOut,
@@ -704,9 +846,6 @@ class CourseSessionQuery {
     }
     if (courseId != null) {
       searchFields.add("session.course_id = ?");
-    }
-    if (guestCount != null) {
-      searchFields.add("session.guest_count = ?");
     }
     if (reservationId != null) {
       searchFields.add("session.reservation_id = ?");
@@ -733,7 +872,6 @@ class CourseSessionQuery {
       whereArgs: [
         if (roomId != null) roomId,
         if (courseId != null) courseId,
-        if (guestCount != null) guestCount,
         if (reservationId != null) reservationId,
         if (timeIn != null)
           (timeIn.millisecondsSinceEpoch / 1000).round() as int,
@@ -820,6 +958,96 @@ extension StaffSessionTable on StaffSession {
       schemaToJson(getStartWithString_('session', json));
 }
 
+extension GuestSession$CustomTable on GuestSession$Custom {
+  static Map<String, dynamic> getStartWithString_(String string, Map data) {
+    Map<String, dynamic> newData = {};
+    for (String key in data.keys.toList()) {
+      if (key.startsWith(string)) {
+        String k = key.substring(string.length + 1);
+        newData.addAll({k: data[key]});
+      }
+    }
+    return newData;
+  }
+
+  /// Field data: field ///
+  static String guestCount = 'guest_count';
+  static String nativeGuestCount = 'session.guest_count';
+
+  /// Field data: field ///
+  static String paidAmount = 'paid_amount';
+  static String nativePaidAmount = 'session.paid_amount';
+
+  /// Field data: field ///
+  static String guestId = 'guest_id';
+  static String nativeGuestId = 'session.guest_id';
+
+  /// Field data: field ///
+  static String customPaid = 'custom_paid';
+  static String nativeCustomPaid = 'session.custom_paid';
+
+  /// Field data: field ///
+  static String id = 'id';
+  static String nativeId = 'session.id';
+
+  /// Field data: field ///
+  static String timeIn = 'time_in';
+  static String nativeTimeIn = 'session.time_in';
+
+  /// Field data: field ///
+  static String timeOut = 'time_out';
+  static String nativeTimeOut = 'session.time_out';
+
+  static const String sqlSelect = """
+    session.guest_count AS session_guest_count,
+    session.paid_amount AS session_paid_amount,
+    session.guest_id AS session_guest_id,
+    session.custom_paid AS session_custom_paid,
+    session.id AS session_id,
+    session.time_in AS session_time_in,
+    session.time_out AS session_time_out
+  """;
+
+  static const String sqlFindSchema = """
+    session.guest_count IS NOT NULL
+    AND session.guest_id IS NOT NULL
+    AND session.custom_paid IS NOT NULL
+    AND session.id IS NOT NULL
+    AND session.time_in IS NOT NULL
+  """;
+
+  static const List schemaMap = [
+    'guest_count',
+    'paid_amount',
+    'guest_id',
+    'custom_paid',
+    'id',
+    'time_in',
+    'time_out',
+  ];
+
+  static fromJson(Map<String, dynamic> json) =>
+      _$GuestSession$CustomFromJson(getStartWithString_('session', json));
+
+  static GuestSession$Custom? schemaToJson(Map<String, dynamic> json) {
+    bool valid = true;
+
+    for (String i in json.keys) {
+      if (!schemaMap.contains(i)) {
+        valid = false;
+        break;
+      }
+    }
+
+    if (valid) {
+      return _$GuestSession$CustomFromJson(json);
+    }
+  }
+
+  static GuestSession$Custom? filterFromJson(Map<String, dynamic> json) =>
+      schemaToJson(getStartWithString_('session', json));
+}
+
 extension GuestSessionTable on GuestSession {
   static Map<String, dynamic> getStartWithString_(String string, Map data) {
     Map<String, dynamic> newData = {};
@@ -849,8 +1077,8 @@ extension GuestSessionTable on GuestSession {
   static String nativeGuestId = 'session.guest_id';
 
   /// Field data: field ///
-  static String isDefault = 'is_default';
-  static String nativeIsDefault = 'session.is_default';
+  static String customPaid = 'custom_paid';
+  static String nativeCustomPaid = 'session.custom_paid';
 
   /// Field data: field ///
   static String id = 'id';
@@ -869,7 +1097,7 @@ extension GuestSessionTable on GuestSession {
     session.price_id AS session_price_id,
     session.paid_amount AS session_paid_amount,
     session.guest_id AS session_guest_id,
-    session.is_default AS session_is_default,
+    session.custom_paid AS session_custom_paid,
     session.id AS session_id,
     session.time_in AS session_time_in,
     session.time_out AS session_time_out
@@ -879,7 +1107,6 @@ extension GuestSessionTable on GuestSession {
     session.guest_count IS NOT NULL
     AND session.price_id IS NOT NULL
     AND session.guest_id IS NOT NULL
-    AND session.is_default IS NOT NULL
     AND session.id IS NOT NULL
     AND session.time_in IS NOT NULL
   """;
@@ -889,7 +1116,7 @@ extension GuestSessionTable on GuestSession {
     'price_id',
     'paid_amount',
     'guest_id',
-    'is_default',
+    'custom_paid',
     'id',
     'time_in',
     'time_out',
@@ -946,8 +1173,8 @@ extension ReservationSessionTable on ReservationSession {
   static String nativeReservationId = 'session.reservation_id';
 
   /// Field data: field ///
-  static String isDefault = 'is_default';
-  static String nativeIsDefault = 'session.is_default';
+  static String customPaid = 'custom_paid';
+  static String nativeCustomPaid = 'session.custom_paid';
 
   /// Field data: field ///
   static String id = 'id';
@@ -966,7 +1193,7 @@ extension ReservationSessionTable on ReservationSession {
     session.paid_amount AS session_paid_amount,
     session.guest_id AS session_guest_id,
     session.reservation_id AS session_reservation_id,
-    session.is_default AS session_is_default,
+    session.custom_paid AS session_custom_paid,
     session.id AS session_id,
     session.time_in AS session_time_in,
     session.time_out AS session_time_out
@@ -976,7 +1203,7 @@ extension ReservationSessionTable on ReservationSession {
     session.room_id IS NOT NULL
     AND session.guest_id IS NOT NULL
     AND session.reservation_id IS NOT NULL
-    AND session.is_default IS NOT NULL
+    AND session.custom_paid IS NOT NULL
     AND session.id IS NOT NULL
     AND session.time_in IS NOT NULL
   """;
@@ -986,7 +1213,7 @@ extension ReservationSessionTable on ReservationSession {
     'paid_amount',
     'guest_id',
     'reservation_id',
-    'is_default',
+    'custom_paid',
     'id',
     'time_in',
     'time_out',
@@ -1039,8 +1266,8 @@ extension RoomSessionTable on RoomSession {
   static String nativeGuestId = 'session.guest_id';
 
   /// Field data: field ///
-  static String isDefault = 'is_default';
-  static String nativeIsDefault = 'session.is_default';
+  static String customPaid = 'custom_paid';
+  static String nativeCustomPaid = 'session.custom_paid';
 
   /// Field data: field ///
   static String id = 'id';
@@ -1058,7 +1285,7 @@ extension RoomSessionTable on RoomSession {
     session.room_id AS session_room_id,
     session.paid_amount AS session_paid_amount,
     session.guest_id AS session_guest_id,
-    session.is_default AS session_is_default,
+    session.custom_paid AS session_custom_paid,
     session.id AS session_id,
     session.time_in AS session_time_in,
     session.time_out AS session_time_out
@@ -1067,7 +1294,7 @@ extension RoomSessionTable on RoomSession {
   static const String sqlFindSchema = """
     session.room_id IS NOT NULL
     AND session.guest_id IS NOT NULL
-    AND session.is_default IS NOT NULL
+    AND session.custom_paid IS NOT NULL
     AND session.id IS NOT NULL
     AND session.time_in IS NOT NULL
   """;
@@ -1076,7 +1303,7 @@ extension RoomSessionTable on RoomSession {
     'room_id',
     'paid_amount',
     'guest_id',
-    'is_default',
+    'custom_paid',
     'id',
     'time_in',
     'time_out',
@@ -1125,10 +1352,6 @@ extension CourseSessionTable on CourseSession {
   static String nativeCourseId = 'session.course_id';
 
   /// Field data: field ///
-  static String guestCount = 'guest_count';
-  static String nativeGuestCount = 'session.guest_count';
-
-  /// Field data: field ///
   static String reservationId = 'reservation_id';
   static String nativeReservationId = 'session.reservation_id';
 
@@ -1147,7 +1370,6 @@ extension CourseSessionTable on CourseSession {
   static const String sqlSelect = """
     session.room_id AS session_room_id,
     session.course_id AS session_course_id,
-    session.guest_count AS session_guest_count,
     session.reservation_id AS session_reservation_id,
     session.id AS session_id,
     session.time_in AS session_time_in,
@@ -1157,7 +1379,6 @@ extension CourseSessionTable on CourseSession {
   static const String sqlFindSchema = """
     session.room_id IS NOT NULL
     AND session.course_id IS NOT NULL
-    AND session.guest_count IS NOT NULL
     AND session.reservation_id IS NOT NULL
     AND session.id IS NOT NULL
     AND session.time_in IS NOT NULL
@@ -1166,7 +1387,6 @@ extension CourseSessionTable on CourseSession {
   static const List schemaMap = [
     'room_id',
     'course_id',
-    'guest_count',
     'reservation_id',
     'id',
     'time_in',

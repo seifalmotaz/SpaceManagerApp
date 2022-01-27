@@ -68,7 +68,10 @@ class MainBar extends StatelessWidget {
                   color: colorWhite,
                   size: 23,
                 ),
-                onPressed: () => SearchingController.to.searching.value = true,
+                onPressed: () {
+                  SearchingController.to.searching.value = true;
+                  SearchingController.to.searchingFocus.requestFocus();
+                },
               ),
             ],
           ),

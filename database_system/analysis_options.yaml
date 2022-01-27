@@ -10,3 +10,4 @@ analyzer:
   errors:
     invalid_annotation_target: ignore
     unnecessary_null_comparison: ignore
+    unnecessary_cast: ignore

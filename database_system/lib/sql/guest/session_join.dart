@@ -15,9 +15,13 @@ extension GuestJoinSessionQuery on GuestQuery {
     SELECT guest.*, session.id AS session_id
     FROM guest
     LEFT JOIN (
-      SELECT id, time_in, time_out, guest_id FROM session WHERE time_out IS NULL
+      SELECT id, time_in, time_out, guest_id, paid_amount 
+      FROM session 
+      WHERE
+      time_out IS NULL
     ) session ON guest.id=session.guest_id
-    WHERE ${GuestTable.phone} LIKE "%$phone%" AND ${GuestTable.nativeIsStaff} = false 
+    WHERE ${GuestTable.phone} LIKE "%$phone%" AND ${GuestTable.nativeIsStaff} = false
+    GROUP BY guest.id
     """);
     return data
         .map((e) => Guest$Session(
