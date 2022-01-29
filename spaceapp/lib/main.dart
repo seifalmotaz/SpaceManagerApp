@@ -10,8 +10,8 @@ Future<void> main() async {
   await windowManager.ensureInitialized();
 
   windowManager.waitUntilReadyToShow().then((_) async {
-    // await windowManager.setAsFrameless();
-    // await windowManager.maximize();
+    await windowManager.setAsFrameless();
+    await windowManager.maximize();
     windowManager.show();
   });
 

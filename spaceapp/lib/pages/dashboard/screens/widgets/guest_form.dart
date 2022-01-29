@@ -5,6 +5,7 @@ import 'package:spaceapp/widgets/text_field.dart';
 class GuestFormWidget extends StatelessWidget {
   const GuestFormWidget({
     Key? key,
+    this.titleSize,
     required this.email,
     required this.name,
     required this.nationalId,
@@ -12,6 +13,7 @@ class GuestFormWidget extends StatelessWidget {
     required this.dataEdited,
   }) : super(key: key);
 
+  final double? titleSize;
   final TextEditingController name;
   final TextEditingController email;
   final TextEditingController phone;
@@ -26,11 +28,11 @@ class GuestFormWidget extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
+        Text(
           'Edit guest info:',
           style: TextStyle(
             color: colorWhite,
-            fontSize: 17,
+            fontSize: titleSize ?? 17,
             fontWeight: FontWeight.w600,
           ),
         ),

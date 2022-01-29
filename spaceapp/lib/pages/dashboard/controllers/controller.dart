@@ -1,6 +1,7 @@
 import 'package:database_system/database_system.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:spaceapp/pages/dashboard/controllers/searching.dart';
 
 class DashboardController extends GetxController {
   // calling func
@@ -13,4 +14,11 @@ class DashboardController extends GetxController {
 
   // rooms data
   RxList<Room> rooms = RxList<Room>([]);
+
+  toMainPage() {
+    SearchingController.to.searchingController.text = '';
+    SearchingController.to.guests.value = [];
+    SearchingController.to.searching.value = false;
+    DashboardController.to.shortcutChildFocus.requestFocus();
+  }
 }

@@ -43,6 +43,10 @@ dependencies:
   argon_buttons_flutter: ^1.1.0
   # Monitoring helper packages
   sentry_flutter: ^6.2.2
+  # Syncfusion packages
+  syncfusion_flutter_datepicker: ^19.4.40
+  syncfusion_flutter_core: ^19.4.40
+  syncfusion_flutter_calendar: ^19.4.40
   # Helper packages
   database_system:
     path: ../database_system/

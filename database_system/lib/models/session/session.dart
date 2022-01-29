@@ -37,8 +37,8 @@ class Session {
 
   factory Session.fromJson(Map<String, dynamic> json) {
     dynamic session;
-    session ??= GuestSessionTable.schemaToJson(json);
     session ??= GuestSession$CustomTable.schemaToJson(json);
+    session ??= GuestSessionTable.schemaToJson(json);
     session ??= RoomSessionTable.schemaToJson(json);
     session ??= CourseSessionTable.schemaToJson(json);
     return session!;

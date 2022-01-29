@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:spaceapp/constant/base_colors.dart';
 import 'package:spaceapp/helpers/monitoring.dart';
+import 'package:spaceapp/pages/dashboard/screens/edit/edit_guest.dart';
 import 'package:spaceapp/pages/dashboard/screens/end_room/end_room.dart';
 import 'package:spaceapp/pages/dashboard/screens/end_session/end_session.dart';
 import 'package:spaceapp/pages/dashboard/screens/end_session_custom/end_session_custom.dart';
@@ -266,8 +267,14 @@ class _GuestItemState extends State<GuestItem> {
                         child: containerButton(
                           'Reservation',
                           last: true,
-                          onTap: () =>
-                              Get.to(() => CreateReservationPage(guest)),
+                          onTap: () => Get.dialog(EditGuestScreen(
+                            guest: guest,
+                            onSave: (_guest) {
+                              setState(() => guest = _guest);
+                              Get.back();
+                              Get.to(() => CreateReservationPage(_guest));
+                            },
+                          )),
                         ),
                       ),
                       const SizedBox(width: 3),
@@ -276,7 +283,13 @@ class _GuestItemState extends State<GuestItem> {
                           'Edit',
                           last: true,
                           color: colorLightBittersweet,
-                          onTap: () {},
+                          onTap: () => Get.dialog(EditGuestScreen(
+                            guest: guest,
+                            onSave: (_guest) {
+                              setState(() => guest = _guest);
+                              Get.back();
+                            },
+                          )),
                         ),
                       ),
                     ],

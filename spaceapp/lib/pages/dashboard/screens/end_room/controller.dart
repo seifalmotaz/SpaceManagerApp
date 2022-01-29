@@ -2,7 +2,7 @@ import 'package:argon_buttons_flutter/argon_buttons_flutter.dart';
 import 'package:database_system/database_system.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:spaceapp/constants/limits.dart';
+import 'package:spaceapp/constants/settings.dart';
 import 'package:spaceapp/helpers/monitoring.dart';
 import 'package:spaceapp/pages/dashboard/controllers/controller.dart';
 import 'package:spaceapp/pages/dashboard/controllers/searching.dart';

@@ -19,6 +19,7 @@ CREATE TABLE course_registration (
     id INTEGER NOT NULL PRIMARY KEY,
     guest_id INTEGER NOT NULL,
     course_id INTEGER NOT NULL,
+    reservations_primary_name VARCHAR(200) NOT NULL,
     is_paid BOOLEAN NOT NULL DEFAULT FALSE,
     created_date INTEGER NOT NULL DEFAULT (strftime('%s', 'now')),
     CONSTRAINT fk_guest_id FOREIGN KEY (guest_id) REFERENCES guest(id),

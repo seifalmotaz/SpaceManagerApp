@@ -8,26 +8,33 @@ part 'reservation.g.dart';
 class Reservation {
   @FieldSQL(primary: true)
   final int id;
+
   int guestId;
-  int courseId;
+  int roomId;
+  String primaryName;
 
   @boolKey
+  @FieldSQL(haveDefault: true)
   bool isCancelled;
+
   // main data
   @dateTimeKey
   DateTime timeIn;
   @dateTimeKey
   DateTime timeOut;
-  @dateTimeKey
-  DateTime createdDate;
+
+  @dateNullTimeKey
+  @FieldSQL(haveDefault: true)
+  DateTime? createdDate;
 
   Reservation({
-    required this.createdDate,
     required this.guestId,
     required this.id,
     required this.timeIn,
     required this.timeOut,
-    required this.courseId,
+    required this.roomId,
+    required this.primaryName,
+    required this.createdDate,
     this.isCancelled = false,
   });
 
@@ -42,19 +49,21 @@ class Reservation {
 @JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
 @EngineSQL(name: 'reservation')
 class CourseReservation extends Reservation {
-  int roomId;
+  int courseId;
 
   CourseReservation({
-    required courseId,
-    required this.roomId,
+    required this.courseId,
     required createdDate,
     required guestId,
     required id,
     required timeIn,
     required timeOut,
+    required roomId,
+    required primaryName,
     isCancelled = false,
   }) : super(
-          courseId: courseId,
+          primaryName: primaryName,
+          roomId: roomId,
           createdDate: createdDate,
           guestId: guestId,
           id: id,
@@ -73,16 +82,18 @@ class GuestReservation extends Reservation {
   double paidAmount;
 
   GuestReservation({
-    required courseId,
     required this.paidAmount,
     required createdDate,
     required guestId,
     required id,
     required timeIn,
     required timeOut,
-    isCancelled = false,
+    required roomId,
+    isCancelled,
+    primaryName,
   }) : super(
-          courseId: courseId,
+          primaryName: primaryName,
+          roomId: roomId,
           createdDate: createdDate,
           guestId: guestId,
           id: id,

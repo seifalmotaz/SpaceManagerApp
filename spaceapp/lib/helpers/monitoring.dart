@@ -15,6 +15,7 @@ class MonitoringApp {
     //   stackTrace: stackTrace,
     //   hint: hint,
     // );
+
     String err = '';
     if (exception.toString().length > 250) {
       err = exception.toString().substring(0, 250);
@@ -35,34 +36,11 @@ class MonitoringApp {
     );
   }
 
-  static errorTrack(Function() func) async {
+  static Future errorTrack(Function() func) async {
     try {
-      func();
-    } catch (exception) {
-      // await Sentry.captureException(
-      //   exception,
-      //   stackTrace: stackTrace,
-      // );
-
-      // snack error to user
-      String err = '';
-      if (exception.toString().length > 250) {
-        err = exception.toString().substring(0, 250);
-      } else {
-        err = exception.toString();
-      }
-
-      Get.snackbar(
-        'Error tracker',
-        err,
-        isDismissible: true,
-        colorText: Colors.white,
-        maxWidth: Get.width * .3,
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.red,
-        duration: const Duration(seconds: 30),
-        margin: const EdgeInsets.symmetric(vertical: 51),
-      );
+      await func();
+    } catch (exception, stackTrace) {
+      error(exception, stackTrace);
     }
   }
 }

@@ -13,6 +13,7 @@ CourseRegistration _$CourseRegistrationFromJson(Map<String, dynamic> json) =>
       guestId: json['guest_id'] as int,
       id: json['id'] as int,
       isPaid: DataCompiler.fromDBool(json['is_paid'] as int),
+      reservationsPrimaryName: json['reservations_primary_name'] as String,
     );
 
 Map<String, dynamic> _$CourseRegistrationToJson(CourseRegistration instance) {
@@ -20,6 +21,7 @@ Map<String, dynamic> _$CourseRegistrationToJson(CourseRegistration instance) {
     'id': instance.id,
     'guest_id': instance.guestId,
     'course_id': instance.courseId,
+    'reservations_primary_name': instance.reservationsPrimaryName,
   };
 
   void writeNotNull(String key, dynamic value) {
@@ -44,12 +46,15 @@ class CourseRegistrationQuery {
   Future<int> create({
     required int guestId,
     required int courseId,
+    required String reservationsPrimaryName,
     required bool isPaid,
     required DateTime createdDate,
   }) async =>
       await db.insert('course_registration', {
         if (guestId != null) 'guest_id': guestId,
         if (courseId != null) 'course_id': courseId,
+        if (reservationsPrimaryName != null)
+          'reservations_primary_name': reservationsPrimaryName,
         if (isPaid != null) 'is_paid': isPaid ? 1 : 0,
         if (createdDate != null)
           'created_date':
@@ -69,6 +74,7 @@ class CourseRegistrationQuery {
     required int id,
     int? guestId,
     int? courseId,
+    String? reservationsPrimaryName,
     bool? isPaid,
     DateTime? createdDate,
   }) async =>
@@ -77,6 +83,8 @@ class CourseRegistrationQuery {
         {
           if (guestId != null) 'guest_id': guestId,
           if (courseId != null) 'course_id': courseId,
+          if (reservationsPrimaryName != null)
+            'reservations_primary_name': reservationsPrimaryName,
           if (isPaid != null) 'is_paid': isPaid ? 1 : 0,
           if (createdDate != null)
             'created_date':
@@ -95,6 +103,7 @@ class CourseRegistrationQuery {
   Future<List<CourseRegistration>> find({
     int? guestId,
     int? courseId,
+    String? reservationsPrimaryName,
     bool? isPaid,
     DateTime? createdDate,
   }) async {
@@ -104,6 +113,9 @@ class CourseRegistrationQuery {
     }
     if (courseId != null) {
       searchFields.add("course_registration.course_id = ?");
+    }
+    if (reservationsPrimaryName != null) {
+      searchFields.add("course_registration.reservations_primary_name = ?");
     }
     if (isPaid != null) {
       searchFields.add("course_registration.is_paid = ?");
@@ -127,6 +139,7 @@ class CourseRegistrationQuery {
       whereArgs: [
         if (guestId != null) guestId,
         if (courseId != null) courseId,
+        if (reservationsPrimaryName != null) reservationsPrimaryName,
         if (isPaid != null) isPaid ? 1 : 0,
         if (createdDate != null)
           (createdDate.millisecondsSinceEpoch / 1000).round() as int,
@@ -166,6 +179,11 @@ extension CourseRegistrationTable on CourseRegistration {
   static String nativeCourseId = 'course_registration.course_id';
 
   /// Field data: field ///
+  static String reservationsPrimaryName = 'reservations_primary_name';
+  static String nativeReservationsPrimaryName =
+      'course_registration.reservations_primary_name';
+
+  /// Field data: field ///
   static String isPaid = 'is_paid';
   static String nativeIsPaid = 'course_registration.is_paid';
 
@@ -177,6 +195,7 @@ extension CourseRegistrationTable on CourseRegistration {
     course_registration.id AS course_registration_id,
     course_registration.guest_id AS course_registration_guest_id,
     course_registration.course_id AS course_registration_course_id,
+    course_registration.reservations_primary_name AS course_registration_reservations_primary_name,
     course_registration.is_paid AS course_registration_is_paid,
     course_registration.created_date AS course_registration_created_date
   """;
@@ -185,6 +204,7 @@ extension CourseRegistrationTable on CourseRegistration {
     course_registration.id IS NOT NULL
     AND course_registration.guest_id IS NOT NULL
     AND course_registration.course_id IS NOT NULL
+    AND course_registration.reservations_primary_name IS NOT NULL
     AND course_registration.is_paid IS NOT NULL
     AND course_registration.created_date IS NOT NULL
   """;
@@ -193,6 +213,7 @@ extension CourseRegistrationTable on CourseRegistration {
     'id',
     'guest_id',
     'course_id',
+    'reservations_primary_name',
     'is_paid',
     'created_date',
   ];

@@ -7,3 +7,6 @@
 
 const int maxMinutes$Session = 5;
 const int maxMinutes$Room = 10;
+
+/// The persentege price of reservation
+const double reservationPrice = .25;

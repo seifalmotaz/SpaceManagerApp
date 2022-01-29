@@ -8,13 +8,14 @@ part of 'reservation.dart';
 
 CourseReservation _$CourseReservationFromJson(Map<String, dynamic> json) =>
     CourseReservation(
-      courseId: json['course_id'],
-      roomId: json['room_id'] as int,
-      createdDate: DataCompiler.fromDBDate(json['created_date'] as int),
+      courseId: json['course_id'] as int,
+      createdDate: DataCompiler.fromDBDateNull(json['created_date'] as int?),
       guestId: json['guest_id'],
       id: json['id'],
       timeIn: DataCompiler.fromDBDate(json['time_in'] as int),
       timeOut: DataCompiler.fromDBDate(json['time_out'] as int),
+      roomId: json['room_id'],
+      primaryName: json['primary_name'],
       isCancelled: json['is_cancelled'] == null
           ? false
           : DataCompiler.fromDBool(json['is_cancelled'] as int),
@@ -24,7 +25,8 @@ Map<String, dynamic> _$CourseReservationToJson(CourseReservation instance) {
   final val = <String, dynamic>{
     'id': instance.id,
     'guest_id': instance.guestId,
-    'course_id': instance.courseId,
+    'room_id': instance.roomId,
+    'primary_name': instance.primaryName,
   };
 
   void writeNotNull(String key, dynamic value) {
@@ -36,30 +38,30 @@ Map<String, dynamic> _$CourseReservationToJson(CourseReservation instance) {
   writeNotNull('is_cancelled', DataCompiler.toDBool(instance.isCancelled));
   writeNotNull('time_in', DataCompiler.toDBDate(instance.timeIn));
   writeNotNull('time_out', DataCompiler.toDBDate(instance.timeOut));
-  writeNotNull('created_date', DataCompiler.toDBDate(instance.createdDate));
-  val['room_id'] = instance.roomId;
+  writeNotNull('created_date', DataCompiler.toDBDateNull(instance.createdDate));
+  val['course_id'] = instance.courseId;
   return val;
 }
 
 GuestReservation _$GuestReservationFromJson(Map<String, dynamic> json) =>
     GuestReservation(
-      courseId: json['course_id'],
       paidAmount: (json['paid_amount'] as num).toDouble(),
-      createdDate: DataCompiler.fromDBDate(json['created_date'] as int),
+      createdDate: DataCompiler.fromDBDateNull(json['created_date'] as int?),
       guestId: json['guest_id'],
       id: json['id'],
       timeIn: DataCompiler.fromDBDate(json['time_in'] as int),
       timeOut: DataCompiler.fromDBDate(json['time_out'] as int),
-      isCancelled: json['is_cancelled'] == null
-          ? false
-          : DataCompiler.fromDBool(json['is_cancelled'] as int),
+      roomId: json['room_id'],
+      isCancelled: DataCompiler.fromDBool(json['is_cancelled'] as int),
+      primaryName: json['primary_name'],
     );
 
 Map<String, dynamic> _$GuestReservationToJson(GuestReservation instance) {
   final val = <String, dynamic>{
     'id': instance.id,
     'guest_id': instance.guestId,
-    'course_id': instance.courseId,
+    'room_id': instance.roomId,
+    'primary_name': instance.primaryName,
   };
 
   void writeNotNull(String key, dynamic value) {
@@ -71,7 +73,7 @@ Map<String, dynamic> _$GuestReservationToJson(GuestReservation instance) {
   writeNotNull('is_cancelled', DataCompiler.toDBool(instance.isCancelled));
   writeNotNull('time_in', DataCompiler.toDBDate(instance.timeIn));
   writeNotNull('time_out', DataCompiler.toDBDate(instance.timeOut));
-  writeNotNull('created_date', DataCompiler.toDBDate(instance.createdDate));
+  writeNotNull('created_date', DataCompiler.toDBDateNull(instance.createdDate));
   val['paid_amount'] = instance.paidAmount;
   return val;
 }
@@ -85,18 +87,20 @@ class CourseReservationQuery {
   CourseReservationQuery(this.db);
 
   Future<int> create({
-    required int roomId,
-    required int guestId,
     required int courseId,
-    required bool isCancelled,
+    required int guestId,
+    required int roomId,
+    required String primaryName,
+    bool? isCancelled,
     required DateTime timeIn,
     required DateTime timeOut,
-    required DateTime createdDate,
+    DateTime? createdDate,
   }) async =>
       await db.insert('reservation', {
-        if (roomId != null) 'room_id': roomId,
-        if (guestId != null) 'guest_id': guestId,
         if (courseId != null) 'course_id': courseId,
+        if (guestId != null) 'guest_id': guestId,
+        if (roomId != null) 'room_id': roomId,
+        if (primaryName != null) 'primary_name': primaryName,
         if (isCancelled != null) 'is_cancelled': isCancelled ? 1 : 0,
         if (timeIn != null)
           'time_in': (timeIn.millisecondsSinceEpoch / 1000).round() as int,
@@ -118,9 +122,10 @@ class CourseReservationQuery {
 
   Future<int> update({
     required int id,
-    int? roomId,
-    int? guestId,
     int? courseId,
+    int? guestId,
+    int? roomId,
+    String? primaryName,
     bool? isCancelled,
     DateTime? timeIn,
     DateTime? timeOut,
@@ -129,9 +134,10 @@ class CourseReservationQuery {
       await db.update(
         'reservation',
         {
-          if (roomId != null) 'room_id': roomId,
-          if (guestId != null) 'guest_id': guestId,
           if (courseId != null) 'course_id': courseId,
+          if (guestId != null) 'guest_id': guestId,
+          if (roomId != null) 'room_id': roomId,
+          if (primaryName != null) 'primary_name': primaryName,
           if (isCancelled != null) 'is_cancelled': isCancelled ? 1 : 0,
           if (timeIn != null)
             'time_in': (timeIn.millisecondsSinceEpoch / 1000).round() as int,
@@ -152,23 +158,27 @@ class CourseReservationQuery {
       );
 
   Future<List<CourseReservation>> find({
-    int? roomId,
-    int? guestId,
     int? courseId,
+    int? guestId,
+    int? roomId,
+    String? primaryName,
     bool? isCancelled,
     DateTime? timeIn,
     DateTime? timeOut,
     DateTime? createdDate,
   }) async {
     List<String> searchFields = [];
-    if (roomId != null) {
-      searchFields.add("reservation.room_id = ?");
+    if (courseId != null) {
+      searchFields.add("reservation.course_id = ?");
     }
     if (guestId != null) {
       searchFields.add("reservation.guest_id = ?");
     }
-    if (courseId != null) {
-      searchFields.add("reservation.course_id = ?");
+    if (roomId != null) {
+      searchFields.add("reservation.room_id = ?");
+    }
+    if (primaryName != null) {
+      searchFields.add("reservation.primary_name = ?");
     }
     if (isCancelled != null) {
       searchFields.add("reservation.is_cancelled = ?");
@@ -196,9 +206,10 @@ class CourseReservationQuery {
           ${buf.toString().isNotEmpty ? "AND" : ""} ${CourseReservationTable.sqlFindSchema}
           ''',
       whereArgs: [
-        if (roomId != null) roomId,
-        if (guestId != null) guestId,
         if (courseId != null) courseId,
+        if (guestId != null) guestId,
+        if (roomId != null) roomId,
+        if (primaryName != null) primaryName,
         if (isCancelled != null) isCancelled ? 1 : 0,
         if (timeIn != null)
           (timeIn.millisecondsSinceEpoch / 1000).round() as int,
@@ -220,16 +231,18 @@ class GuestReservationQuery {
   Future<int> create({
     required double paidAmount,
     required int guestId,
-    required int courseId,
-    required bool isCancelled,
+    required int roomId,
+    required String primaryName,
+    bool? isCancelled,
     required DateTime timeIn,
     required DateTime timeOut,
-    required DateTime createdDate,
+    DateTime? createdDate,
   }) async =>
       await db.insert('reservation', {
         if (paidAmount != null) 'paid_amount': paidAmount,
         if (guestId != null) 'guest_id': guestId,
-        if (courseId != null) 'course_id': courseId,
+        if (roomId != null) 'room_id': roomId,
+        if (primaryName != null) 'primary_name': primaryName,
         if (isCancelled != null) 'is_cancelled': isCancelled ? 1 : 0,
         if (timeIn != null)
           'time_in': (timeIn.millisecondsSinceEpoch / 1000).round() as int,
@@ -253,7 +266,8 @@ class GuestReservationQuery {
     required int id,
     double? paidAmount,
     int? guestId,
-    int? courseId,
+    int? roomId,
+    String? primaryName,
     bool? isCancelled,
     DateTime? timeIn,
     DateTime? timeOut,
@@ -264,7 +278,8 @@ class GuestReservationQuery {
         {
           if (paidAmount != null) 'paid_amount': paidAmount,
           if (guestId != null) 'guest_id': guestId,
-          if (courseId != null) 'course_id': courseId,
+          if (roomId != null) 'room_id': roomId,
+          if (primaryName != null) 'primary_name': primaryName,
           if (isCancelled != null) 'is_cancelled': isCancelled ? 1 : 0,
           if (timeIn != null)
             'time_in': (timeIn.millisecondsSinceEpoch / 1000).round() as int,
@@ -287,7 +302,8 @@ class GuestReservationQuery {
   Future<List<GuestReservation>> find({
     double? paidAmount,
     int? guestId,
-    int? courseId,
+    int? roomId,
+    String? primaryName,
     bool? isCancelled,
     DateTime? timeIn,
     DateTime? timeOut,
@@ -300,8 +316,11 @@ class GuestReservationQuery {
     if (guestId != null) {
       searchFields.add("reservation.guest_id = ?");
     }
-    if (courseId != null) {
-      searchFields.add("reservation.course_id = ?");
+    if (roomId != null) {
+      searchFields.add("reservation.room_id = ?");
+    }
+    if (primaryName != null) {
+      searchFields.add("reservation.primary_name = ?");
     }
     if (isCancelled != null) {
       searchFields.add("reservation.is_cancelled = ?");
@@ -331,7 +350,8 @@ class GuestReservationQuery {
       whereArgs: [
         if (paidAmount != null) paidAmount,
         if (guestId != null) guestId,
-        if (courseId != null) courseId,
+        if (roomId != null) roomId,
+        if (primaryName != null) primaryName,
         if (isCancelled != null) isCancelled ? 1 : 0,
         if (timeIn != null)
           (timeIn.millisecondsSinceEpoch / 1000).round() as int,
@@ -363,8 +383,8 @@ extension CourseReservationTable on CourseReservation {
   }
 
   /// Field data: field ///
-  static String roomId = 'room_id';
-  static String nativeRoomId = 'reservation.room_id';
+  static String courseId = 'course_id';
+  static String nativeCourseId = 'reservation.course_id';
 
   /// Field data: field ///
   static String id = 'id';
@@ -375,8 +395,12 @@ extension CourseReservationTable on CourseReservation {
   static String nativeGuestId = 'reservation.guest_id';
 
   /// Field data: field ///
-  static String courseId = 'course_id';
-  static String nativeCourseId = 'reservation.course_id';
+  static String roomId = 'room_id';
+  static String nativeRoomId = 'reservation.room_id';
+
+  /// Field data: field ///
+  static String primaryName = 'primary_name';
+  static String nativePrimaryName = 'reservation.primary_name';
 
   /// Field data: field ///
   static String isCancelled = 'is_cancelled';
@@ -395,10 +419,11 @@ extension CourseReservationTable on CourseReservation {
   static String nativeCreatedDate = 'reservation.created_date';
 
   static const String sqlSelect = """
-    reservation.room_id AS reservation_room_id,
+    reservation.course_id AS reservation_course_id,
     reservation.id AS reservation_id,
     reservation.guest_id AS reservation_guest_id,
-    reservation.course_id AS reservation_course_id,
+    reservation.room_id AS reservation_room_id,
+    reservation.primary_name AS reservation_primary_name,
     reservation.is_cancelled AS reservation_is_cancelled,
     reservation.time_in AS reservation_time_in,
     reservation.time_out AS reservation_time_out,
@@ -406,21 +431,22 @@ extension CourseReservationTable on CourseReservation {
   """;
 
   static const String sqlFindSchema = """
-    reservation.room_id IS NOT NULL
+    reservation.course_id IS NOT NULL
     AND reservation.id IS NOT NULL
     AND reservation.guest_id IS NOT NULL
-    AND reservation.course_id IS NOT NULL
+    AND reservation.room_id IS NOT NULL
+    AND reservation.primary_name IS NOT NULL
     AND reservation.is_cancelled IS NOT NULL
     AND reservation.time_in IS NOT NULL
     AND reservation.time_out IS NOT NULL
-    AND reservation.created_date IS NOT NULL
   """;
 
   static const List schemaMap = [
-    'room_id',
+    'course_id',
     'id',
     'guest_id',
-    'course_id',
+    'room_id',
+    'primary_name',
     'is_cancelled',
     'time_in',
     'time_out',
@@ -474,8 +500,12 @@ extension GuestReservationTable on GuestReservation {
   static String nativeGuestId = 'reservation.guest_id';
 
   /// Field data: field ///
-  static String courseId = 'course_id';
-  static String nativeCourseId = 'reservation.course_id';
+  static String roomId = 'room_id';
+  static String nativeRoomId = 'reservation.room_id';
+
+  /// Field data: field ///
+  static String primaryName = 'primary_name';
+  static String nativePrimaryName = 'reservation.primary_name';
 
   /// Field data: field ///
   static String isCancelled = 'is_cancelled';
@@ -497,7 +527,8 @@ extension GuestReservationTable on GuestReservation {
     reservation.paid_amount AS reservation_paid_amount,
     reservation.id AS reservation_id,
     reservation.guest_id AS reservation_guest_id,
-    reservation.course_id AS reservation_course_id,
+    reservation.room_id AS reservation_room_id,
+    reservation.primary_name AS reservation_primary_name,
     reservation.is_cancelled AS reservation_is_cancelled,
     reservation.time_in AS reservation_time_in,
     reservation.time_out AS reservation_time_out,
@@ -508,18 +539,19 @@ extension GuestReservationTable on GuestReservation {
     reservation.paid_amount IS NOT NULL
     AND reservation.id IS NOT NULL
     AND reservation.guest_id IS NOT NULL
-    AND reservation.course_id IS NOT NULL
+    AND reservation.room_id IS NOT NULL
+    AND reservation.primary_name IS NOT NULL
     AND reservation.is_cancelled IS NOT NULL
     AND reservation.time_in IS NOT NULL
     AND reservation.time_out IS NOT NULL
-    AND reservation.created_date IS NOT NULL
   """;
 
   static const List schemaMap = [
     'paid_amount',
     'id',
     'guest_id',
-    'course_id',
+    'room_id',
+    'primary_name',
     'is_cancelled',
     'time_in',
     'time_out',

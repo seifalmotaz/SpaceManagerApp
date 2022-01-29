@@ -27,8 +27,9 @@ CREATE TABLE room (
 
 CREATE TABLE reservation (
     id INTEGER NOT NULL PRIMARY KEY,
+    primary_name VARCHAR(200) NOT NULL DEFAULT "Reservation",
     guest_id INTEGER NOT NULL,
-    course_id INTEGER NOT NULL,
+    course_id INTEGER NULL,
     room_id INTEGER NOT NULL,
     time_in INTEGER NOT NULL,
     time_out INTEGER NOT NULL,

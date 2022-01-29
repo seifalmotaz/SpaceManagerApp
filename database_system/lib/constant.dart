@@ -1,3 +1,5 @@
+import 'package:database_system/sql/reservation/extra.dart';
+
 import 'service.dart';
 //
 import './models/course/course.dart';
@@ -42,6 +44,8 @@ final CourseSessionQuery courseSessionQuery =
 
 // Room and Reservation
 final RoomQuery roomQuery = RoomQuery(DBService.to.db);
+
+final ReservationQuery reservationQuery = ReservationQuery(DBService.to.db);
 final GuestReservationQuery guestReservationQuery =
     GuestReservationQuery(DBService.to.db);
 final CourseRegistrationQuery courseRegistrationQuery =

@@ -21,8 +21,10 @@ class WTextField extends StatelessWidget {
     this.textColor,
     this.hintColor,
     this.border,
+    this.initText,
     this.obscureText = false,
     this.textAlignVertical,
+    this.contentPadding,
     this.textAlign = TextAlign.start,
     required this.hint,
   }) : super(key: key);
@@ -34,7 +36,9 @@ class WTextField extends StatelessWidget {
   final TextEditingController? controller;
 
   final String hint;
+  final String? initText;
   final double? fontsize;
+  final EdgeInsets? contentPadding;
   final double? width;
   final double? height;
   final String? counterText;
@@ -64,6 +68,7 @@ class WTextField extends StatelessWidget {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(border ?? 13),
         child: TextFormField(
+          initialValue: initText,
           style: textColor == null
               ? basicStyle
               : basicStyle.copyWith(color: textColor, fontSize: fontsize),
@@ -74,14 +79,24 @@ class WTextField extends StatelessWidget {
           onFieldSubmitted: onFieldSubmitted,
           validator: validator,
           inputFormatters: inputFormatters,
+          toolbarOptions: const ToolbarOptions(
+            copy: true,
+            cut: true,
+            paste: true,
+            selectAll: true,
+          ),
           onChanged: onChange,
           textAlign: textAlign,
           textAlignVertical: textAlignVertical ??
               (icon == null ? TextAlignVertical.top : TextAlignVertical.center),
           decoration: InputDecoration(
             filled: true,
+            isDense: contentPadding == null ? false : true,
             fillColor: color,
-            contentPadding: const EdgeInsets.symmetric(horizontal: 11),
+            contentPadding: contentPadding ??
+                const EdgeInsets.symmetric(
+                  horizontal: 11,
+                ),
             border: InputBorder.none,
             counterText: counterText,
             hintText: hint,

@@ -9,10 +9,15 @@ part 'course_registration.g.dart';
 class CourseRegistration {
   @FieldSQL(primary: true)
   final int id;
+
   int guestId;
   int courseId;
+
+  String reservationsPrimaryName;
+
   @boolKey
   bool isPaid;
+
   @dateTimeKey
   DateTime createdDate;
 
@@ -22,6 +27,7 @@ class CourseRegistration {
     required this.guestId,
     required this.id,
     required this.isPaid,
+    required this.reservationsPrimaryName,
   });
 
   factory CourseRegistration.fromJson(Map<String, dynamic> json) =>
