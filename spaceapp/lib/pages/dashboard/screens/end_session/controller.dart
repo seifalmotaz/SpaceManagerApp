@@ -48,7 +48,7 @@ class EndSessionScreenController extends GetxController {
   TextEditingController nationalId = TextEditingController();
 
   init() => MonitoringApp.errorTrack(() async {
-        Price _price = await priceQuery.read(sessionValue.priceId);
+        Price _price = await priceQuery.read(sessionValue.priceId!);
         price = Rx<Price>(_price);
         // setting session time string
         DateTimeRange range = DateTimeRange(

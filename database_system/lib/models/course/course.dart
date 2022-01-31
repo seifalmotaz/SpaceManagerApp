@@ -16,20 +16,20 @@ class Course {
   String name;
   String description;
   @dateTimeKey
-  DateTime startTime;
+  DateTime startDate;
   @dateTimeKey
-  DateTime endTime;
+  DateTime endDate;
   @boolKey
   bool isExpired;
 
   Course({
     required this.id,
     required this.description,
-    required this.endTime,
+    required this.endDate,
     required this.isExpired,
     required this.lecturerId,
     required this.name,
-    required this.startTime,
+    required this.startDate,
     required this.totalPrice,
   });
 

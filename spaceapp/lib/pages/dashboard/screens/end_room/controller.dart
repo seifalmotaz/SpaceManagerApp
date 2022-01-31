@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:spaceapp/constants/settings.dart';
 import 'package:spaceapp/helpers/monitoring.dart';
 import 'package:spaceapp/pages/dashboard/controllers/controller.dart';
-import 'package:spaceapp/pages/dashboard/controllers/searching.dart';
 
 class EndRoomScreenController extends GetxController {
   // calling func
@@ -76,15 +75,12 @@ class EndRoomScreenController extends GetxController {
         timeOut: dateTime,
       );
       Get.back(result: true);
-      SearchingController.to.searchingController.text = '';
-      SearchingController.to.guests.value = [];
-      SearchingController.to.searching.value = false;
-      DashboardController.to.shortcutChildFocus.requestFocus();
+      DashboardController.to.toMainPage();
     });
     stop();
   }
 
-  setPrice(String? string) {
+  setPrice(String? string) async {
     if (string == null || string.isEmpty) {
       totalPrice.value = 0;
     }
@@ -116,6 +112,12 @@ class EndRoomScreenController extends GetxController {
         }
         totalPrice.value = _totalPrice;
       }
+    }
+
+    if (sessionValue.reservationId != null) {
+      GuestReservation r =
+          await sessionValue.guestReservationData(sessionValue.reservationId!);
+      totalPrice.value = (totalPrice.value - r.paidAmount).round();
     }
   }
 }

@@ -49,35 +49,32 @@ class _GuestItemState extends State<GuestItem> {
             return;
           }
 
-          // guest sessiom with custom price
-          GuestSession$Custom? guestSession$Custom =
-              GuestSession$CustomTable.schemaToJson(_session);
-          if (guestSession$Custom != null) {
-            bool? wait = await Get.dialog(EndSessionScreen$Custom(
-              guest: guest,
-              session: guestSession$Custom,
-            ));
-            if (wait != null && wait && mounted) {
-              setState(() {
-                session = null;
-              });
-            }
-            return;
-          }
-
           // guest sessiom
           GuestSession? guestSession = GuestSessionTable.schemaToJson(_session);
           if (guestSession != null) {
-            bool? wait = await Get.dialog(EndSessionScreen(
-              guest: guest,
-              session: guestSession,
-            ));
-            if (wait != null && wait) {
-              setState(() {
-                session = null;
-              });
+            if (guestSession.customPaid) {
+              bool? wait = await Get.dialog(EndSessionScreen$Custom(
+                guest: guest,
+                session: guestSession,
+              ));
+              if (wait != null && wait && mounted) {
+                setState(() {
+                  session = null;
+                });
+              }
+              return;
+            } else {
+              bool? wait = await Get.dialog(EndSessionScreen(
+                guest: guest,
+                session: guestSession,
+              ));
+              if (wait != null && wait) {
+                setState(() {
+                  session = null;
+                });
+              }
+              return;
             }
-            return;
           }
         }
       });

@@ -182,6 +182,13 @@ class CreateReservationController extends GetxController {
     return total * reservationPrice;
   }
 
+  double getPaidAmountForAppointment(DateTime start, DateTime end) {
+    double rate = selectedRoom_!.rate;
+    DateTimeRange range = DateTimeRange(start: start, end: end);
+    double total = range.duration.inHours * rate;
+    return total * reservationPrice;
+  }
+
   saveAll(Function start, Function stop, ButtonState state) async {
     List<Map> list = appointmentGroups.values.toList();
     for (Map item in list) {
@@ -189,12 +196,12 @@ class CreateReservationController extends GetxController {
       for (Appointment app in apps) {
         await MonitoringApp.errorTrack(() async {
           await guestReservationQuery.create(
-            paidAmount: getPaidAmount(),
             timeOut: app.endTime,
             timeIn: app.startTime,
             guestId: guest.value.id,
             roomId: selectedRoom_!.id,
             primaryName: item['title'],
+            paidAmount: getPaidAmountForAppointment(app.startTime, app.endTime),
           );
         });
       }

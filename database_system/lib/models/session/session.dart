@@ -18,9 +18,19 @@ mixin Joins {
   Reservation? reservation;
   @JsonKey(ignore: true)
   Course? course;
+
+  Future<Room> roomData(int i) async => room = await roomQuery.read(i);
+  Future<Price> priceData(int i) async => price = await priceQuery.read(i);
+  Future<Guest> guestData(int i) async => guest = await guestQuery.read(i);
+  Future<Course> courseData(int i) async => course = await courseQuery.read(i);
+
+  Future<GuestReservation> guestReservationData(int i) async =>
+      reservation = await guestReservationQuery.read(i);
+  Future<CourseReservation> courseReservationData(int i) async =>
+      reservation = await courseReservationQuery.read(i);
 }
 
-class Session {
+class Session with Joins {
   @FieldSQL(primary: true)
   final int id;
   // main data
@@ -37,7 +47,6 @@ class Session {
 
   factory Session.fromJson(Map<String, dynamic> json) {
     dynamic session;
-    session ??= GuestSession$CustomTable.schemaToJson(json);
     session ??= GuestSessionTable.schemaToJson(json);
     session ??= RoomSessionTable.schemaToJson(json);
     session ??= CourseSessionTable.schemaToJson(json);
@@ -68,52 +77,24 @@ class StaffSession extends Session with Joins {
 
 @JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
 @EngineSQL(name: 'session')
-class GuestSession$Custom extends Session with Joins {
+class GuestSession extends Session with Joins {
   int guestCount;
+  int? priceId;
   double? paidAmount;
   int guestId;
 
   @boolKey
   bool customPaid;
 
-  GuestSession$Custom({
-    required this.guestCount,
-    required this.guestId,
-    required id,
-    required timeIn,
-    required timeOut,
-    required this.customPaid,
-    this.paidAmount,
-  }) : super(
-          id: id,
-          timeIn: timeIn,
-          timeOut: timeOut,
-        );
-
-  factory GuestSession$Custom.fromJson(Map<String, dynamic> json) =>
-      _$GuestSession$CustomFromJson(json);
-  Map<String, dynamic> toJson() => _$GuestSession$CustomToJson(this);
-}
-
-@JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
-@EngineSQL(name: 'session')
-class GuestSession extends Session with Joins {
-  int guestCount;
-  int priceId;
-  double? paidAmount;
-  int guestId;
-
-  @boolNullKey
-  bool? customPaid;
-
   GuestSession({
     required this.guestCount,
     required this.paidAmount,
     required this.guestId,
-    required this.priceId,
+    required this.customPaid,
     required id,
     required timeIn,
     required timeOut,
+    this.priceId,
   }) : super(
           id: id,
           timeIn: timeIn,
@@ -127,42 +108,11 @@ class GuestSession extends Session with Joins {
 
 @JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
 @EngineSQL(name: 'session')
-class ReservationSession extends Session with Joins {
-  int roomId;
-  double? paidAmount;
-  int guestId;
-  int reservationId;
-
-  @boolKey
-  @FieldSQL(haveDefault: true)
-  bool customPaid;
-
-  ReservationSession({
-    required this.paidAmount,
-    required this.guestId,
-    required this.roomId,
-    required id,
-    required timeIn,
-    required timeOut,
-    required this.reservationId,
-    required this.customPaid,
-  }) : super(
-          id: id,
-          timeIn: timeIn,
-          timeOut: timeOut,
-        );
-
-  factory ReservationSession.fromJson(Map<String, dynamic> json) =>
-      _$ReservationSessionFromJson(json);
-  Map<String, dynamic> toJson() => _$ReservationSessionToJson(this);
-}
-
-@JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
-@EngineSQL(name: 'session')
 class RoomSession extends Session with Joins {
   int roomId;
   double? paidAmount;
   int guestId;
+  int? reservationId;
 
   @boolKey
   @FieldSQL(haveDefault: true)
@@ -176,6 +126,7 @@ class RoomSession extends Session with Joins {
     required timeIn,
     required timeOut,
     required this.customPaid,
+    this.reservationId,
   }) : super(
           id: id,
           timeIn: timeIn,

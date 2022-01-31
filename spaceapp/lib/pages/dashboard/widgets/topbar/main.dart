@@ -12,32 +12,27 @@ class MainBar extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const Text(
-            'SpaceDash',
-            style: TextStyle(
-              color: colorWhite,
-              fontWeight: FontWeight.bold,
-              fontSize: 21,
-            ),
-          ),
           Row(
             children: [
-              TextButton.icon(
-                label: const Text(
-                  'Home',
-                  style: TextStyle(
-                    fontSize: 17,
-                    color: colorWhite,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
+              IconButton(
                 icon: const Icon(
-                  Icons.home_filled,
+                  Icons.menu,
                   color: colorWhite,
-                  size: 23,
                 ),
                 onPressed: () {},
               ),
+              const Text(
+                'SpaceDash',
+                style: TextStyle(
+                  color: colorWhite,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 21,
+                ),
+              ),
+            ],
+          ),
+          Row(
+            children: [
               TextButton.icon(
                 label: const Text(
                   'Courses',

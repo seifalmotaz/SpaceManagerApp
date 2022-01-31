@@ -97,26 +97,10 @@ class StartSessionController extends GetxController {
     MonitoringApp.errorTrack(() async {
       Guest _guest = await updateGuest();
 
-      if (isCustomRate.value) {
-        int session = await guestSession$CustomQuery.create(
-          guestId: _guest.id,
-          customPaid: true,
-          guestCount:
-              int.tryParse((guestCount.text).getStringOrNull() ?? '') ?? 1,
-        );
-        Get.back(
-          result: StartSessionResults(
-            sessionId: session,
-            guest: _guest,
-          ),
-        );
-        SearchingController.to.searchingController.text = '';
-        SearchingController.to.guests.value = [];
-        SearchingController.to.searching.value = false;
-        DashboardController.to.shortcutChildFocus.requestFocus();
-      } else if (priceSelectedValue!.isPerDay) {
+      if (priceSelectedValue!.isPerDay) {
         await guestSessionQuery.create(
           guestId: _guest.id,
+          customPaid: false,
           guestCount:
               int.tryParse((guestCount.text).getStringOrNull() ?? '') ?? 1,
           priceId: priceSelectedValue!.id,
@@ -140,6 +124,7 @@ class StartSessionController extends GetxController {
       } else {
         int session = await guestSessionQuery.create(
           guestId: _guest.id,
+          customPaid: isCustomRate.value,
           guestCount:
               int.tryParse((guestCount.text).getStringOrNull() ?? '') ?? 1,
           priceId: priceSelectedValue!.id,

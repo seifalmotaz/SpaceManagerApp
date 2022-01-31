@@ -5,7 +5,7 @@ ListTile dataLabel({
   required int i,
   String? title,
   Widget? titleWidget,
-  required String trailing,
+  String? trailing,
 }) {
   return ListTile(
     horizontalTitleGap: -14,
@@ -24,12 +24,14 @@ ListTile dataLabel({
             fontSize: 15,
           ),
         ),
-    trailing: Text(
-      trailing,
-      style: const TextStyle(
-        color: colorWhite,
-        fontSize: 16,
-      ),
-    ),
+    trailing: trailing == null
+        ? null
+        : Text(
+            trailing,
+            style: const TextStyle(
+              color: colorWhite,
+              fontSize: 16,
+            ),
+          ),
   );
 }

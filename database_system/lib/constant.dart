@@ -30,13 +30,9 @@ final StaffSessionQuery staffSessionQuery =
     StaffSessionQuery(DBService.to.db); // staff sessions
 
 final GuestSessionQuery guestSessionQuery = GuestSessionQuery(DBService.to.db);
-final GuestSession$CustomQuery guestSession$CustomQuery =
-    GuestSession$CustomQuery(DBService.to.db);
 
 // room sessions
 final RoomSessionQuery roomSessionQuery = RoomSessionQuery(DBService.to.db);
-final ReservationSessionQuery reservationSessionQuery =
-    ReservationSessionQuery(DBService.to.db);
 
 // courses sessions
 final CourseSessionQuery courseSessionQuery =
@@ -48,5 +44,8 @@ final RoomQuery roomQuery = RoomQuery(DBService.to.db);
 final ReservationQuery reservationQuery = ReservationQuery(DBService.to.db);
 final GuestReservationQuery guestReservationQuery =
     GuestReservationQuery(DBService.to.db);
+final CourseReservationQuery courseReservationQuery =
+    CourseReservationQuery(DBService.to.db);
+
 final CourseRegistrationQuery courseRegistrationQuery =
     CourseRegistrationQuery(DBService.to.db);

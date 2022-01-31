@@ -9,11 +9,11 @@ part of 'course.dart';
 Course _$CourseFromJson(Map<String, dynamic> json) => Course(
       id: json['id'] as int,
       description: json['description'] as String,
-      endTime: DataCompiler.fromDBDate(json['end_time'] as int),
+      endDate: DataCompiler.fromDBDate(json['end_date'] as int),
       isExpired: DataCompiler.fromDBool(json['is_expired'] as int),
       lecturerId: json['lecturer_id'] as int,
       name: json['name'] as String,
-      startTime: DataCompiler.fromDBDate(json['start_time'] as int),
+      startDate: DataCompiler.fromDBDate(json['start_date'] as int),
       totalPrice: (json['total_price'] as num).toDouble(),
     );
 
@@ -32,8 +32,8 @@ Map<String, dynamic> _$CourseToJson(Course instance) {
     }
   }
 
-  writeNotNull('start_time', DataCompiler.toDBDate(instance.startTime));
-  writeNotNull('end_time', DataCompiler.toDBDate(instance.endTime));
+  writeNotNull('start_date', DataCompiler.toDBDate(instance.startDate));
+  writeNotNull('end_date', DataCompiler.toDBDate(instance.endDate));
   writeNotNull('is_expired', DataCompiler.toDBool(instance.isExpired));
   return val;
 }
@@ -51,8 +51,8 @@ class CourseQuery {
     required double totalPrice,
     required String name,
     required String description,
-    required DateTime startTime,
-    required DateTime endTime,
+    required DateTime startDate,
+    required DateTime endDate,
     required bool isExpired,
   }) async =>
       await db.insert('course', {
@@ -60,11 +60,11 @@ class CourseQuery {
         if (totalPrice != null) 'total_price': totalPrice,
         if (name != null) 'name': name,
         if (description != null) 'description': description,
-        if (startTime != null)
-          'start_time':
-              (startTime.millisecondsSinceEpoch / 1000).round() as int,
-        if (endTime != null)
-          'end_time': (endTime.millisecondsSinceEpoch / 1000).round() as int,
+        if (startDate != null)
+          'start_date':
+              (startDate.millisecondsSinceEpoch / 1000).round() as int,
+        if (endDate != null)
+          'end_date': (endDate.millisecondsSinceEpoch / 1000).round() as int,
         if (isExpired != null) 'is_expired': isExpired ? 1 : 0,
       });
 
@@ -83,8 +83,8 @@ class CourseQuery {
     double? totalPrice,
     String? name,
     String? description,
-    DateTime? startTime,
-    DateTime? endTime,
+    DateTime? startDate,
+    DateTime? endDate,
     bool? isExpired,
   }) async =>
       await db.update(
@@ -94,11 +94,11 @@ class CourseQuery {
           if (totalPrice != null) 'total_price': totalPrice,
           if (name != null) 'name': name,
           if (description != null) 'description': description,
-          if (startTime != null)
-            'start_time':
-                (startTime.millisecondsSinceEpoch / 1000).round() as int,
-          if (endTime != null)
-            'end_time': (endTime.millisecondsSinceEpoch / 1000).round() as int,
+          if (startDate != null)
+            'start_date':
+                (startDate.millisecondsSinceEpoch / 1000).round() as int,
+          if (endDate != null)
+            'end_date': (endDate.millisecondsSinceEpoch / 1000).round() as int,
           if (isExpired != null) 'is_expired': isExpired ? 1 : 0,
         },
         where: 'id = ?',
@@ -116,8 +116,8 @@ class CourseQuery {
     double? totalPrice,
     String? name,
     String? description,
-    DateTime? startTime,
-    DateTime? endTime,
+    DateTime? startDate,
+    DateTime? endDate,
     bool? isExpired,
   }) async {
     List<String> searchFields = [];
@@ -133,11 +133,11 @@ class CourseQuery {
     if (description != null) {
       searchFields.add("course.description = ?");
     }
-    if (startTime != null) {
-      searchFields.add("course.start_time = ?");
+    if (startDate != null) {
+      searchFields.add("course.start_date = ?");
     }
-    if (endTime != null) {
-      searchFields.add("course.end_time = ?");
+    if (endDate != null) {
+      searchFields.add("course.end_date = ?");
     }
     if (isExpired != null) {
       searchFields.add("course.is_expired = ?");
@@ -160,10 +160,10 @@ class CourseQuery {
         if (totalPrice != null) totalPrice,
         if (name != null) name,
         if (description != null) description,
-        if (startTime != null)
-          (startTime.millisecondsSinceEpoch / 1000).round() as int,
-        if (endTime != null)
-          (endTime.millisecondsSinceEpoch / 1000).round() as int,
+        if (startDate != null)
+          (startDate.millisecondsSinceEpoch / 1000).round() as int,
+        if (endDate != null)
+          (endDate.millisecondsSinceEpoch / 1000).round() as int,
         if (isExpired != null) isExpired ? 1 : 0,
       ],
     );
@@ -209,12 +209,12 @@ extension CourseTable on Course {
   static String nativeDescription = 'course.description';
 
   /// Field data: field ///
-  static String startTime = 'start_time';
-  static String nativeStartTime = 'course.start_time';
+  static String startDate = 'start_date';
+  static String nativeStartDate = 'course.start_date';
 
   /// Field data: field ///
-  static String endTime = 'end_time';
-  static String nativeEndTime = 'course.end_time';
+  static String endDate = 'end_date';
+  static String nativeEndDate = 'course.end_date';
 
   /// Field data: field ///
   static String isExpired = 'is_expired';
@@ -226,8 +226,8 @@ extension CourseTable on Course {
     course.total_price AS course_total_price,
     course.name AS course_name,
     course.description AS course_description,
-    course.start_time AS course_start_time,
-    course.end_time AS course_end_time,
+    course.start_date AS course_start_date,
+    course.end_date AS course_end_date,
     course.is_expired AS course_is_expired
   """;
 
@@ -237,8 +237,8 @@ extension CourseTable on Course {
     AND course.total_price IS NOT NULL
     AND course.name IS NOT NULL
     AND course.description IS NOT NULL
-    AND course.start_time IS NOT NULL
-    AND course.end_time IS NOT NULL
+    AND course.start_date IS NOT NULL
+    AND course.end_date IS NOT NULL
     AND course.is_expired IS NOT NULL
   """;
 
@@ -248,8 +248,8 @@ extension CourseTable on Course {
     'total_price',
     'name',
     'description',
-    'start_time',
-    'end_time',
+    'start_date',
+    'end_date',
     'is_expired',
   ];
 

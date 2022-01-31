@@ -13,7 +13,7 @@ class EndSessionScreenController$Custom extends GetxController {
   static EndSessionScreenController$Custom get to => Get.find();
   EndSessionScreenController$Custom(g, s) {
     guest = Rx<Guest>(g);
-    session = Rx<GuestSession$Custom>(s);
+    session = Rx<GuestSession>(s);
     // form values
     name.text = guestValue.name ?? '';
     email.text = guestValue.email ?? '';
@@ -36,8 +36,8 @@ class EndSessionScreenController$Custom extends GetxController {
   late Rx<Guest> guest;
   Guest get guestValue => guest.value;
 
-  late Rx<GuestSession$Custom> session;
-  GuestSession$Custom get sessionValue => session.value;
+  late Rx<GuestSession> session;
+  GuestSession get sessionValue => session.value;
 
   // guest form vars
   RxBool dataEdited = false.obs;

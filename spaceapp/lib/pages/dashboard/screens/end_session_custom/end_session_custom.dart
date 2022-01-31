@@ -15,7 +15,7 @@ class EndSessionScreen$Custom extends StatelessWidget {
   }) : super(key: key);
 
   final Guest guest;
-  final GuestSession$Custom session;
+  final GuestSession session;
 
   @override
   Widget build(BuildContext context) {
