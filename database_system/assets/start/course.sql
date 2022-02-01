@@ -8,9 +8,7 @@ CREATE TABLE course (
     total_price FLOAT NOT NULL,
     name VARCHAR(200) NOT NULL,
     description VARCHAR(200) NULL,
-    start_date INTEGER NOT NULL,
-    end_date INTEGER NOT NULL,
-    is_expired BOOLEAN DEFAULT FALSE,
+    is_deleted BOOLEAN DEFAULT FALSE,
     created_date INTEGER NOT NULL DEFAULT (strftime('%s', 'now')),
     CONSTRAINT fk_guest_id FOREIGN KEY (lecturer_id) REFERENCES guest(id)
 );

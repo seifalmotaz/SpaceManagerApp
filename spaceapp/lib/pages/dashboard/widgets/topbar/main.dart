@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:spaceapp/constant/base_colors.dart';
+import 'package:spaceapp/pages/course/list/list.dart';
 import 'package:spaceapp/pages/dashboard/controllers/searching.dart';
 
 class MainBar extends StatelessWidget {
@@ -47,7 +49,7 @@ class MainBar extends StatelessWidget {
                   color: colorWhite,
                   size: 23,
                 ),
-                onPressed: () {},
+                onPressed: () => Get.to(() => const CoursesListPage()),
               ),
               TextButton.icon(
                 label: const Text(

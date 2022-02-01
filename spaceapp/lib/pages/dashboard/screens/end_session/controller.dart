@@ -47,34 +47,10 @@ class EndSessionScreenController extends GetxController {
   TextEditingController phone = TextEditingController();
   TextEditingController nationalId = TextEditingController();
 
-  init() => MonitoringApp.errorTrack(() async {
-        Price _price = await priceQuery.read(sessionValue.priceId!);
-        price = Rx<Price>(_price);
-        // setting session time string
-        DateTimeRange range = DateTimeRange(
-          start: sessionValue.timeIn,
-          end: dateTime,
-        );
-        Duration rangeTime = range.duration;
-        sessionTimeH.value = rangeTime.inHours.toString();
-        sessionTimeM.value = (rangeTime.inMinutes % 60).toString();
-        // get total price
-        double rate = priceValue.rate;
-        double _totalPrice = 0;
-        double i = rangeTime.inMinutes % 60;
-        if (i < maxMinutes$Session) {
-          for (var i = 0; i < sessionValue.guestCount; i++) {
-            _totalPrice = _totalPrice + (rangeTime.inHours * rate);
-          }
-        } else {
-          for (var i = 0; i < sessionValue.guestCount; i++) {
-            _totalPrice = _totalPrice + ((rangeTime.inHours + 1) * rate);
-          }
-        }
-        totalPrice.value = _totalPrice.round();
-
-        isLoading.value = false;
-      });
+  // custom price vars
+  RxBool customPrice = false.obs;
+  RxBool priceHourly = true.obs;
+  TextEditingController pricing = TextEditingController();
 
   Future<void> updateGuest() async {
     if (dataEdited.value) {
@@ -89,15 +65,30 @@ class EndSessionScreenController extends GetxController {
     }
   }
 
-  endSession(Function start, Function stop, ButtonState state) {
+  endSession(Function start, Function stop, ButtonState state) async {
     start();
-    MonitoringApp.errorTrack(() async {
+    await MonitoringApp.errorTrack(() async {
       await updateGuest();
-      await guestSessionQuery.update(
-        id: sessionValue.id,
-        paidAmount: totalPrice.value.toDouble(),
-        timeOut: dateTime,
-      );
+      if (customPrice.value) {
+        await DBService.to.db.update(
+          'session',
+          {
+            'paid_amount': totalPrice.value.toDouble(),
+            'time_out': (dateTime.millisecondsSinceEpoch / 1000).round(),
+            'price_id': null,
+            'custom_paid': 1,
+          },
+          where: 'id = ?',
+          whereArgs: [sessionValue.id],
+        );
+      } else {
+        await guestSessionQuery.update(
+          id: sessionValue.id,
+          paidAmount: totalPrice.value.toDouble(),
+          timeOut: dateTime,
+          customPaid: false,
+        );
+      }
       Get.back(result: true);
       SearchingController.to.searchingController.text = '';
       SearchingController.to.guests.value = [];
@@ -108,8 +99,48 @@ class EndSessionScreenController extends GetxController {
   }
 
   @override
-  void onReady() {
-    init();
+  Future<void> onReady() async {
     super.onReady();
+    await MonitoringApp.errorTrack(() async {
+      Price _price = await priceQuery.read(sessionValue.priceId!);
+      price = Rx<Price>(_price);
+      setPrice(price.value.rate.toString());
+    });
+  }
+
+  setPrice(String? string) {
+    if (string == null || string.isEmpty) {
+      totalPrice.value = 0;
+      return;
+    }
+
+    if (!priceHourly.value) {
+      totalPrice.value = int.tryParse(string) ?? 0;
+      return;
+    }
+
+    // setting session time string
+    DateTimeRange range = DateTimeRange(
+      start: sessionValue.timeIn,
+      end: dateTime,
+    );
+    Duration rangeTime = range.duration;
+    sessionTimeH.value = rangeTime.inHours.toString();
+    sessionTimeM.value = (rangeTime.inMinutes % 60).toString();
+    // get total price
+    double rate = double.parse(string);
+    double _totalPrice = 0;
+    double i = rangeTime.inMinutes % 60;
+    if (i < maxMinutes$Session) {
+      for (var i = 0; i < sessionValue.guestCount; i++) {
+        _totalPrice = _totalPrice + (rangeTime.inHours * rate);
+      }
+    } else {
+      for (var i = 0; i < sessionValue.guestCount; i++) {
+        _totalPrice = _totalPrice + ((rangeTime.inHours + 1) * rate);
+      }
+    }
+    totalPrice.value = _totalPrice.round();
+    isLoading.value = false;
   }
 }

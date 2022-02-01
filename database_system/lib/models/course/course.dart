@@ -15,22 +15,18 @@ class Course {
   double totalPrice;
   String name;
   String description;
-  @dateTimeKey
-  DateTime startDate;
-  @dateTimeKey
-  DateTime endDate;
-  @boolKey
-  bool isExpired;
+
+  @boolNullKey
+  @FieldSQL(haveDefault: true)
+  bool? isDeleted;
 
   Course({
     required this.id,
     required this.description,
-    required this.endDate,
-    required this.isExpired,
     required this.lecturerId,
     required this.name,
-    required this.startDate,
     required this.totalPrice,
+    this.isDeleted,
   });
 
   factory Course.fromJson(Map<String, dynamic> json) => _$CourseFromJson(json);

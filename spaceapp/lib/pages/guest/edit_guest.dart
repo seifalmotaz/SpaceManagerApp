@@ -61,7 +61,7 @@ class _EditGuestScreenState extends State<EditGuestScreen> {
             child: const Tooltip(
               message: 'Save guest data and go to reservations page',
               child: Text(
-                "Save/Reserve",
+                "Save",
                 style: TextStyle(
                   color: colorWhite,
                   fontSize: 17,

@@ -9,12 +9,10 @@ part of 'course.dart';
 Course _$CourseFromJson(Map<String, dynamic> json) => Course(
       id: json['id'] as int,
       description: json['description'] as String,
-      endDate: DataCompiler.fromDBDate(json['end_date'] as int),
-      isExpired: DataCompiler.fromDBool(json['is_expired'] as int),
       lecturerId: json['lecturer_id'] as int,
       name: json['name'] as String,
-      startDate: DataCompiler.fromDBDate(json['start_date'] as int),
       totalPrice: (json['total_price'] as num).toDouble(),
+      isDeleted: DataCompiler.fromDBoolNull(json['is_deleted'] as int?),
     );
 
 Map<String, dynamic> _$CourseToJson(Course instance) {
@@ -32,9 +30,7 @@ Map<String, dynamic> _$CourseToJson(Course instance) {
     }
   }
 
-  writeNotNull('start_date', DataCompiler.toDBDate(instance.startDate));
-  writeNotNull('end_date', DataCompiler.toDBDate(instance.endDate));
-  writeNotNull('is_expired', DataCompiler.toDBool(instance.isExpired));
+  writeNotNull('is_deleted', DataCompiler.toDBoolNull(instance.isDeleted));
   return val;
 }
 
@@ -51,21 +47,14 @@ class CourseQuery {
     required double totalPrice,
     required String name,
     required String description,
-    required DateTime startDate,
-    required DateTime endDate,
-    required bool isExpired,
+    bool? isDeleted,
   }) async =>
       await db.insert('course', {
         if (lecturerId != null) 'lecturer_id': lecturerId,
         if (totalPrice != null) 'total_price': totalPrice,
         if (name != null) 'name': name,
         if (description != null) 'description': description,
-        if (startDate != null)
-          'start_date':
-              (startDate.millisecondsSinceEpoch / 1000).round() as int,
-        if (endDate != null)
-          'end_date': (endDate.millisecondsSinceEpoch / 1000).round() as int,
-        if (isExpired != null) 'is_expired': isExpired ? 1 : 0,
+        if (isDeleted != null) 'is_deleted': isDeleted ? 1 : 0,
       });
 
   Future<Course> read(int id) async {
@@ -83,9 +72,7 @@ class CourseQuery {
     double? totalPrice,
     String? name,
     String? description,
-    DateTime? startDate,
-    DateTime? endDate,
-    bool? isExpired,
+    bool? isDeleted,
   }) async =>
       await db.update(
         'course',
@@ -94,12 +81,7 @@ class CourseQuery {
           if (totalPrice != null) 'total_price': totalPrice,
           if (name != null) 'name': name,
           if (description != null) 'description': description,
-          if (startDate != null)
-            'start_date':
-                (startDate.millisecondsSinceEpoch / 1000).round() as int,
-          if (endDate != null)
-            'end_date': (endDate.millisecondsSinceEpoch / 1000).round() as int,
-          if (isExpired != null) 'is_expired': isExpired ? 1 : 0,
+          if (isDeleted != null) 'is_deleted': isDeleted ? 1 : 0,
         },
         where: 'id = ?',
         whereArgs: [id],
@@ -116,9 +98,7 @@ class CourseQuery {
     double? totalPrice,
     String? name,
     String? description,
-    DateTime? startDate,
-    DateTime? endDate,
-    bool? isExpired,
+    bool? isDeleted,
   }) async {
     List<String> searchFields = [];
     if (lecturerId != null) {
@@ -133,14 +113,8 @@ class CourseQuery {
     if (description != null) {
       searchFields.add("course.description = ?");
     }
-    if (startDate != null) {
-      searchFields.add("course.start_date = ?");
-    }
-    if (endDate != null) {
-      searchFields.add("course.end_date = ?");
-    }
-    if (isExpired != null) {
-      searchFields.add("course.is_expired = ?");
+    if (isDeleted != null) {
+      searchFields.add("course.is_deleted = ?");
     }
 
     StringBuffer buf = StringBuffer();
@@ -160,11 +134,7 @@ class CourseQuery {
         if (totalPrice != null) totalPrice,
         if (name != null) name,
         if (description != null) description,
-        if (startDate != null)
-          (startDate.millisecondsSinceEpoch / 1000).round() as int,
-        if (endDate != null)
-          (endDate.millisecondsSinceEpoch / 1000).round() as int,
-        if (isExpired != null) isExpired ? 1 : 0,
+        if (isDeleted != null) isDeleted ? 1 : 0,
       ],
     );
 
@@ -209,16 +179,8 @@ extension CourseTable on Course {
   static String nativeDescription = 'course.description';
 
   /// Field data: field ///
-  static String startDate = 'start_date';
-  static String nativeStartDate = 'course.start_date';
-
-  /// Field data: field ///
-  static String endDate = 'end_date';
-  static String nativeEndDate = 'course.end_date';
-
-  /// Field data: field ///
-  static String isExpired = 'is_expired';
-  static String nativeIsExpired = 'course.is_expired';
+  static String isDeleted = 'is_deleted';
+  static String nativeIsDeleted = 'course.is_deleted';
 
   static const String sqlSelect = """
     course.id AS course_id,
@@ -226,9 +188,7 @@ extension CourseTable on Course {
     course.total_price AS course_total_price,
     course.name AS course_name,
     course.description AS course_description,
-    course.start_date AS course_start_date,
-    course.end_date AS course_end_date,
-    course.is_expired AS course_is_expired
+    course.is_deleted AS course_is_deleted
   """;
 
   static const String sqlFindSchema = """
@@ -237,9 +197,6 @@ extension CourseTable on Course {
     AND course.total_price IS NOT NULL
     AND course.name IS NOT NULL
     AND course.description IS NOT NULL
-    AND course.start_date IS NOT NULL
-    AND course.end_date IS NOT NULL
-    AND course.is_expired IS NOT NULL
   """;
 
   static const List schemaMap = [
@@ -248,9 +205,7 @@ extension CourseTable on Course {
     'total_price',
     'name',
     'description',
-    'start_date',
-    'end_date',
-    'is_expired',
+    'is_deleted',
   ];
 
   static fromJson(Map<String, dynamic> json) =>

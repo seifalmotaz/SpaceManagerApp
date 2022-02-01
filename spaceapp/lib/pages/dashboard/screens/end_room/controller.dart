@@ -83,12 +83,13 @@ class EndRoomScreenController extends GetxController {
   setPrice(String? string) async {
     if (string == null || string.isEmpty) {
       totalPrice.value = 0;
+      return;
     }
 
     if (!priceHourly.value) {
-      totalPrice.value = int.tryParse(string!) ?? 0;
+      totalPrice.value = int.tryParse(string) ?? 0;
     } else {
-      int? rate = int.tryParse(string!);
+      int? rate = int.tryParse(string);
       if (rate != null) {
         // setting session time string
         DateTimeRange range = DateTimeRange(

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:spaceapp/constant/base_colors.dart';
 import 'package:spaceapp/helpers/monitoring.dart';
-import 'package:spaceapp/pages/dashboard/screens/edit/edit_guest.dart';
+import 'package:spaceapp/pages/guest/edit_guest.dart';
 import 'package:spaceapp/pages/dashboard/screens/end_room/end_room.dart';
 import 'package:spaceapp/pages/dashboard/screens/end_session/end_session.dart';
 import 'package:spaceapp/pages/dashboard/screens/end_session_custom/end_session_custom.dart';

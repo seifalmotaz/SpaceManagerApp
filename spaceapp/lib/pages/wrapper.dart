@@ -1,8 +1,8 @@
 import 'package:database_system/database_system.dart';
 import 'package:spaceapp/helpers/monitoring.dart';
-import 'package:spaceapp/pages/auth/login.dart';
 import 'package:spaceapp/pages/dashboard/controllers/binding.dart';
 import 'package:spaceapp/pages/dashboard/dashboard.dart';
+import 'package:spaceapp/pages/guest/login.dart';
 import 'package:spaceapp/services/auth.dart';
 import 'package:spaceapp/services/guests.dart';
 import 'package:spaceapp/services/storage.dart';

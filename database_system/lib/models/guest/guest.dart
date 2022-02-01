@@ -55,6 +55,14 @@ class Guest {
   factory Guest.fromJson(Map<String, dynamic> json) => _$GuestFromJson(json);
   Map<String, dynamic> toJson() => _$GuestToJson(this);
 
+  @override
+  String toString() {
+    if (name != null) return name!;
+    if (email != null) return email!;
+    if (phone != null) return phone!;
+    return 'None';
+  }
+
   /// Number from '97645893609387'
   ///
   /// to '9764 5893 6093 87'
