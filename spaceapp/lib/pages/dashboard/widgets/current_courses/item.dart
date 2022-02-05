@@ -18,14 +18,14 @@ class SessionItemWidget extends StatefulWidget {
 
 class _SessionItemWidgetState extends State<SessionItemWidget> {
   late CourseSession session;
-  late Guest guest;
   late Room room;
   late Course course;
+
+  // TODO create end course session function
 
   @override
   void initState() {
     session = widget.session;
-    guest = session.guest!;
     course = session.course!;
     room = DashboardController.to.rooms
         .firstWhere((e) => (e.id == session.roomId));

@@ -469,6 +469,7 @@ extension CourseReservationTable on CourseReservation {
     if (valid) {
       return _$CourseReservationFromJson(json);
     }
+    return null;
   }
 
   static CourseReservation? filterFromJson(Map<String, dynamic> json) =>
@@ -574,6 +575,7 @@ extension GuestReservationTable on GuestReservation {
     if (valid) {
       return _$GuestReservationFromJson(json);
     }
+    return null;
   }
 
   static GuestReservation? filterFromJson(Map<String, dynamic> json) =>

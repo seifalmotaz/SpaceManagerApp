@@ -80,5 +80,6 @@ class Guest {
         }
       }
     }
+    return null;
   }
 }

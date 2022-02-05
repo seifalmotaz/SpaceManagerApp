@@ -101,6 +101,7 @@ class TopBarWidget extends UIResponsiveless {
                   child: WTextField(
                     hint: 'Frequency',
                     textColor: colorWhite,
+                    controller: controller.frequencyNumberEditing,
                     hintColor: colorWhiteBased2,
                     textAlign: TextAlign.center,
                     color: colorLightBittersweet.withOpacity(.21),

@@ -37,14 +37,11 @@ extension RoomJoinRoomSessionQuery on RoomSessionQuery {
 extension RoomJoinCourseSessionQuery on CourseSessionQuery {
   Future<List<CourseSession>> getCurrent() async {
     List<Map<String, dynamic>> data = await db.rawQuery("""
-    SELECT session.*, ${GuestTable.sqlSelect}, ${CourseTable.sqlSelect}
+    SELECT session.*, ${CourseTable.sqlSelect}
     FROM session
-    INNER JOIN guest ON guest.id = session.guest_id
-    LEFT JOIN course ON course.id = session.course_id
+    INNER JOIN course ON course.id = session.course_id
     WHERE
     ${CourseSessionTable.sqlFindSchema}
-    AND
-    session.room_id IS NOT NULL
     AND
     session.time_out IS NULL
     """);
@@ -52,9 +49,7 @@ extension RoomJoinCourseSessionQuery on CourseSessionQuery {
     return data.map<CourseSession>((e) {
       Map<String, dynamic> _e = Map.of(e);
       CourseSession session = CourseSession.fromJson(_e);
-      return session
-        ..guest = GuestTable.fromJson(_e)
-        ..course = CourseTable.fromJson(_e);
+      return session..course = CourseTable.fromJson(_e);
     }).toList();
   }
 }

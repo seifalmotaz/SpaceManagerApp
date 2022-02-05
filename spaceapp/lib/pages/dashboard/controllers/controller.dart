@@ -18,8 +18,8 @@ class DashboardController extends GetxController {
   RxList<Room> rooms = RxList<Room>([]);
 
   // reservations going to start
-  RxList<GuestReservation$Room$Guest> reservations =
-      RxList<GuestReservation$Room$Guest>([]);
+  RxList<GuestReservation> reservations = RxList<GuestReservation>([]);
+  RxList<CourseReservation> coursesReservations = RxList<CourseReservation>([]);
 
   // current room sesstions
   RxList<RoomSession> roomSessions = RxList<RoomSession>([]);
@@ -34,10 +34,13 @@ class DashboardController extends GetxController {
   }
 
   resetData() async {
-    reservations.value = await guestReservationQuery.findWillStart$Room$Guest();
+    // rooms data
     rooms.value = await roomQuery.find(isDeleted: false);
     roomSessions.value = await roomSessionQuery.getCurrent();
+    reservations.value = await guestReservationQuery.findWillStart();
+    // courses data
     currentCourses.value = await courseSessionQuery.getCurrent();
+    coursesReservations.value = await courseReservationQuery.findWillStart();
   }
 
   toMainPage() {

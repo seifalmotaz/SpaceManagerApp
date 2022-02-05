@@ -21,7 +21,7 @@ errorSnack(t, m, [Duration? sec]) {
     m,
     isDismissible: true,
     colorText: Colors.white,
-    maxWidth: Get.width * .3,
+    maxWidth: 500,
     snackPosition: SnackPosition.BOTTOM,
     backgroundColor: Colors.red,
     duration: sec,

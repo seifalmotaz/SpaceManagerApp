@@ -13,7 +13,8 @@ export './models/price/price.dart';
 //
 export './models/reservation/reservation.dart';
 export './sql/reservation/extra.dart';
-export './sql/reservation/room_join.dart';
+export 'sql/reservation/guest_join.dart';
+export 'sql/reservation/course_join.dart';
 //
 export './models/room/room.dart';
 //

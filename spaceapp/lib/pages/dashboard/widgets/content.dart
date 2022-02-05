@@ -4,7 +4,7 @@ import 'package:spaceapp/pages/dashboard/controllers/searching.dart';
 import 'package:spaceapp/widgets/resposive.dart';
 
 import 'current_courses/current_courses.dart';
-import 'reservationsWillStart/reservations.dart';
+import 'reservations/reservations.dart';
 import 'room_sessions/room_sessions.dart';
 import 'searching/searching.dart';
 import 'topbar/topbar.dart';
@@ -34,7 +34,8 @@ class ContentWidget extends UIResponsiveless {
             : CustomScrollView(
                 slivers: [
                   paddingFromTopBar,
-                  ...reservationsWillStart(),
+                  ...roomReservations(),
+                  ...courseReservations(),
                   ...roomSessions(),
                   ...currentCourses(),
                 ],

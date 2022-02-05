@@ -5,6 +5,7 @@ extension XString on String {
     } else if (isNotEmpty) {
       return this;
     }
+    return null;
   }
 
   String? getStringIfChanged(String? main) {
@@ -17,5 +18,6 @@ extension XString on String {
     } else if (isNotEmpty && main != this) {
       return this;
     }
+    return null;
   }
 }

@@ -1,19 +1,8 @@
 import 'package:database_system/database_system.dart';
 
-class GuestReservation$Room$Guest {
-  final GuestReservation reservation;
-  final Room room;
-  final Guest guest;
-  GuestReservation$Room$Guest({
-    required this.reservation,
-    required this.room,
-    required this.guest,
-  });
-}
-
-extension ReservationJoinRoomQuery on GuestReservationQuery {
+extension GuestReservationExtraQuery on GuestReservationQuery {
   /// find the reservation that will start after now by 1 hour
-  Future<List<GuestReservation$Room$Guest>> findWillStart$Room$Guest() async {
+  Future<List<GuestReservation>> findWillStart() async {
     List<Map<String, dynamic>> data = await db.rawQuery("""
     SELECT reservation.*, ${RoomTable.sqlSelect}, ${GuestTable.sqlSelect}, session.id AS session_id
     FROM reservation
@@ -30,11 +19,9 @@ extension ReservationJoinRoomQuery on GuestReservationQuery {
     session_id IS NULL
     """);
     return data
-        .map((e) => GuestReservation$Room$Guest(
-              reservation: GuestReservation.fromJson(e),
-              room: RoomTable.filterFromJson(e)!,
-              guest: GuestTable.filterFromJson(e)!,
-            ))
+        .map((e) => GuestReservation.fromJson(e)
+          ..room = RoomTable.filterFromJson(e)!
+          ..guest = GuestTable.filterFromJson(e)!)
         .toList();
   }
 }

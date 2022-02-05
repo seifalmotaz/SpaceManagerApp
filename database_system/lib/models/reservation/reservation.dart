@@ -1,9 +1,19 @@
+import 'package:database_system/database_system.dart';
 import 'package:engine_sql_annotation/engine_sql_annotation.dart';
 import 'package:sqflite_common/sqlite_api.dart';
 import 'package:database_system/models/func.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'reservation.g.dart';
+
+mixin ReservationJoins {
+  @JsonKey(ignore: true)
+  Guest? guest;
+  @JsonKey(ignore: true)
+  Course? course;
+  @JsonKey(ignore: true)
+  Room? room;
+}
 
 class Reservation {
   @FieldSQL(primary: true)
@@ -48,7 +58,7 @@ class Reservation {
 
 @JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
 @EngineSQL(name: 'reservation')
-class CourseReservation extends Reservation {
+class CourseReservation extends Reservation with ReservationJoins {
   int courseId;
 
   CourseReservation({
@@ -78,7 +88,7 @@ class CourseReservation extends Reservation {
 
 @JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
 @EngineSQL(name: 'reservation')
-class GuestReservation extends Reservation {
+class GuestReservation extends Reservation with ReservationJoins {
   double paidAmount;
 
   GuestReservation({

@@ -7,7 +7,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'session.g.dart';
 
-mixin Joins {
+mixin SessionJoins {
   @JsonKey(ignore: true)
   Price? price;
   @JsonKey(ignore: true)
@@ -30,7 +30,7 @@ mixin Joins {
       reservation = await courseReservationQuery.read(i);
 }
 
-class Session with Joins {
+class Session with SessionJoins {
   @FieldSQL(primary: true)
   final int id;
   // main data
@@ -56,7 +56,7 @@ class Session with Joins {
 
 @JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
 @EngineSQL(name: 'session')
-class StaffSession extends Session with Joins {
+class StaffSession extends Session with SessionJoins {
   int guestId;
 
   StaffSession({
@@ -77,7 +77,7 @@ class StaffSession extends Session with Joins {
 
 @JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
 @EngineSQL(name: 'session')
-class GuestSession extends Session with Joins {
+class GuestSession extends Session with SessionJoins {
   int guestCount;
   int? priceId;
   double? paidAmount;
@@ -108,7 +108,7 @@ class GuestSession extends Session with Joins {
 
 @JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
 @EngineSQL(name: 'session')
-class RoomSession extends Session with Joins {
+class RoomSession extends Session with SessionJoins {
   int roomId;
   double? paidAmount;
   int guestId;
@@ -140,7 +140,7 @@ class RoomSession extends Session with Joins {
 
 @JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
 @EngineSQL(name: 'session')
-class CourseSession extends Session with Joins {
+class CourseSession extends Session with SessionJoins {
   int roomId;
   int courseId;
   int reservationId;

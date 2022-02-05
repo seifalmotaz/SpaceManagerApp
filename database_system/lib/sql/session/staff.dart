@@ -14,5 +14,6 @@ extension ExtraStaffQuery on StaffSessionQuery {
       s.guest = GuestTable.filterFromJson(data.first);
       return s;
     }
+    return null;
   }
 }

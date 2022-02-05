@@ -269,7 +269,7 @@ class _GuestItemState extends State<GuestItem> {
                             onSave: (_guest) {
                               setState(() => guest = _guest);
                               Get.back();
-                              Get.to(() => CreateReservationPage(_guest));
+                              Get.to(() => CreateReservationPage(_guest, null));
                             },
                           )),
                         ),

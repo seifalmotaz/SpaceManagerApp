@@ -62,8 +62,9 @@ class AppointmentGroups extends UIResponsiveless {
                     color: colorDarkLightest.withOpacity(.81),
                   ),
                   onPressed: () {
-                    controller.selectedAppointment.value =
+                    controller.$AppointmentGroup.value =
                         controller.appointmentGroups.length;
+                    controller.$AppointmentSubGroup.value = 0;
                   },
                 ),
               ],
@@ -81,7 +82,12 @@ class AppointmentGroups extends UIResponsiveless {
                   );
                 },
                 itemBuilder: (context, index) {
-                  return GroupItem(key: GlobalKey(), index: index);
+                  AppointmentGroup group = controller.appointmentGroups[index]!;
+                  return GroupItem(
+                    key: GlobalKey(),
+                    group: group,
+                    index: index,
+                  );
                 },
               ),
             ),

@@ -10,10 +10,11 @@ import 'package:spaceapp/pages/dashboard/controllers/controller.dart';
 import 'package:spaceapp/pages/dashboard/screens/widgets/widgets.dart';
 import 'package:spaceapp/widgets/dialog.dart';
 
-class ReservationItemWidget extends StatelessWidget {
-  const ReservationItemWidget(this.reservation, {Key? key}) : super(key: key);
+class CourseReservationItemWidget extends StatelessWidget {
+  const CourseReservationItemWidget(this.reservation, {Key? key})
+      : super(key: key);
 
-  final GuestReservation$Room$Guest reservation;
+  final CourseReservation reservation;
 
   start() => Get.dialog(WDialog(
         body: Column(
@@ -43,20 +44,27 @@ class ReservationItemWidget extends StatelessWidget {
             const SizedBox(height: 13),
             dataLabel(
               i: 1,
-              title: 'Guest',
-              trailing: (reservation.guest.name ??
-                  reservation.guest.phone ??
-                  reservation.guest.email)!,
+              title: 'Course name',
+              trailing: (reservation.guest!.name ??
+                  reservation.guest!.phone ??
+                  reservation.guest!.email)!,
             ),
             dataLabel(
               i: 2,
-              title: 'Room',
-              trailing: reservation.room.name,
+              title: 'Course by',
+              trailing: (reservation.guest!.name ??
+                  reservation.guest!.phone ??
+                  reservation.guest!.email)!,
             ),
             dataLabel(
               i: 3,
-              title: 'From: ' + Jiffy(reservation.reservation.timeIn).jm,
-              trailing: 'To: ' + Jiffy(reservation.reservation.timeOut).jm,
+              title: 'Room',
+              trailing: reservation.room!.name,
+            ),
+            dataLabel(
+              i: 4,
+              title: 'From: ' + Jiffy(reservation.timeIn).jm,
+              trailing: 'To: ' + Jiffy(reservation.timeOut).jm,
             ),
             const SizedBox(height: 17),
             Center(
@@ -81,10 +89,10 @@ class ReservationItemWidget extends StatelessWidget {
                 onTap: (startLoading, stopLoading, btnState) async {
                   startLoading();
                   await MonitoringApp.errorTrack(() async {
-                    await roomSessionQuery.create(
-                      roomId: reservation.room.id,
-                      guestId: reservation.guest.id,
-                      reservationId: reservation.reservation.id,
+                    await courseSessionQuery.create(
+                      roomId: reservation.room!.id,
+                      courseId: reservation.courseId,
+                      reservationId: reservation.id,
                     );
                   });
                   stopLoading();
@@ -116,14 +124,15 @@ class ReservationItemWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                'Reservation by:',
-                style: TextStyle(color: colorSemiText),
+              Text(
+                'Course by: ' +
+                    (reservation.guest!.name ??
+                        reservation.guest!.phone ??
+                        reservation.guest!.email)!,
+                style: const TextStyle(color: colorSemiText),
               ),
               Text(
-                (reservation.guest.name ??
-                    reservation.guest.phone ??
-                    reservation.guest.email)!,
+                reservation.course!.name,
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   color: colorText,
@@ -170,7 +179,7 @@ class ReservationItemWidget extends StatelessWidget {
                     style: TextStyle(color: colorSemiText),
                   ),
                   Text(
-                    Jiffy(reservation.reservation.timeIn).jm,
+                    Jiffy(reservation.timeIn).jm,
                     style: const TextStyle(
                       fontWeight: FontWeight.w600,
                       color: colorText,
@@ -188,7 +197,7 @@ class ReservationItemWidget extends StatelessWidget {
                     style: TextStyle(color: colorSemiText),
                   ),
                   Text(
-                    Jiffy(reservation.reservation.timeOut).jm,
+                    Jiffy(reservation.timeOut).jm,
                     style: const TextStyle(
                       fontWeight: FontWeight.w600,
                       color: colorText,
@@ -212,7 +221,7 @@ class ReservationItemWidget extends StatelessWidget {
                     style: TextStyle(color: colorSemiText),
                   ),
                   Text(
-                    reservation.room.name,
+                    reservation.room!.name,
                     style: const TextStyle(
                       fontWeight: FontWeight.w600,
                       color: colorText,
@@ -230,7 +239,7 @@ class ReservationItemWidget extends StatelessWidget {
                     style: TextStyle(color: colorSemiText),
                   ),
                   Text(
-                    reservation.reservation.primaryName,
+                    reservation.primaryName,
                     style: const TextStyle(
                       fontWeight: FontWeight.w600,
                       color: colorText,

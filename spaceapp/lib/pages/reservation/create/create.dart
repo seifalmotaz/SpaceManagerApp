@@ -5,16 +5,18 @@ import 'package:spaceapp/constant/base_colors.dart';
 import 'package:spaceapp/pages/reservation/create/controller.dart';
 import 'package:spaceapp/widgets/resposive.dart';
 import 'package:spaceapp/pages/dashboard/widgets/background.dart';
-import 'package:spaceapp/pages/reservation/create/widgets/calender_icker.dart';
+import 'package:spaceapp/pages/reservation/create/widgets/calender_picker.dart';
 import 'package:spaceapp/pages/reservation/create/widgets/topbar.dart';
 
 import 'widgets/appointment_groups/appointment_groups.dart';
 import 'widgets/appointment_groups/room_item.dart';
 
 class CreateReservationPage extends UIResponsiveless {
-  const CreateReservationPage(this.guest, {Key? key}) : super(key: key);
+  const CreateReservationPage(this.guest, this.course, {Key? key})
+      : super(key: key);
 
-  final Guest guest;
+  final Guest? guest;
+  final Course? course;
 
   @override
   Widget xBuild(BuildContext context, Size size) => _build(2, 4);
@@ -33,7 +35,7 @@ class CreateReservationPage extends UIResponsiveless {
 
   Scaffold _build(int flex1, int flex2) {
     CreateReservationController controller =
-        Get.put(CreateReservationController(guest));
+        Get.put(CreateReservationController(guest, course));
     return Scaffold(
       body: DashboardBackground(
         Stack(

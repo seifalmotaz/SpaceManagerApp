@@ -7,42 +7,171 @@ import 'package:jiffy/jiffy.dart';
 import 'package:spaceapp/constant/base_colors.dart';
 import 'package:spaceapp/constants/settings.dart';
 import 'package:spaceapp/helpers/monitoring.dart';
+import 'package:spaceapp/helpers/snacks.dart';
 import 'package:spaceapp/pages/dashboard/controllers/controller.dart';
 import 'package:spaceapp/widgets/dialog.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
+class AppointmentGroup {
+  String title;
+  Color color;
+  Map<int, List<Appointment>> subgroups;
+  AppointmentGroup({
+    required this.title,
+    required this.subgroups,
+    required this.color,
+  });
+}
+
+Color colorChooser(int i) {
+  List<Color> colors = [
+    Colors.red,
+    Colors.blueGrey,
+    Colors.cyan,
+    Colors.green,
+    Colors.indigo,
+    Colors.orange,
+    Colors.deepOrange,
+    Colors.lime,
+    Colors.yellow,
+  ];
+  return colors[i];
+}
+
 class CreateReservationController extends GetxController {
   // calling func
   static CreateReservationController get to => Get.find();
-  CreateReservationController(Guest g) {
-    guest = Rx<Guest>(g);
+  CreateReservationController(Guest? g, Course? c) {
+    guest = Rxn<Guest>(g);
+    course = Rxn<Course>(c);
   }
 
   final List<String> freqList = ['Daily', 'Weekly', 'Monthly', 'Monthly 30'];
 
-  late Rx<Guest> guest;
-  RxList<Room> rooms = <Room>[].obs;
+  // main info
+  late Rxn<Guest> guest;
+  late Rxn<Course> course;
+  RxList<Room> rooms = <Room>[].obs; // rooms data
 
+  // room info
   Rx<Room?> selectedRoom = Rx<Room?>(null);
   Room? get selectedRoom_ => selectedRoom.value;
+  // room previos reservations
   RxList<Appointment> roomAppointments = RxList<Appointment>();
 
+  // options vars like frequency and reservation hours
   RxInt reservedHours = 1.obs;
   RxnString frequency = RxnString(null);
   RxInt frequencyNumber = 1.obs;
-  CalendarController calendarController = CalendarController();
+  TextEditingController frequencyNumberEditing = TextEditingController();
 
-  RxInt selectedAppointment = 0.obs;
-  int get selectedAppointment_ => selectedAppointment.value;
+  // ui vars
+  // $ sign == `selected`
+  RxInt $AppointmentGroup = 0.obs;
+  int get $AppointmentGroup_ => $AppointmentGroup.value;
+  // subgroups
+  RxInt $AppointmentSubGroup = 0.obs;
+  int get $AppointmentSubGroup_ => $AppointmentSubGroup.value;
+  // selected appointements
+  RxMap<int, AppointmentGroup> appointmentGroups =
+      RxMap<int, AppointmentGroup>();
+  //
   List<Appointment> get appointmentsList {
-    List<Appointment> output = [];
-    Map? item = appointmentGroups[selectedAppointment_];
-    if (item != null) output.addAll(item['reservations']);
+    List<Appointment> output = [...roomAppointments];
+    for (AppointmentGroup item in appointmentGroups.values.toList()) {
+      for (List<Appointment> i in item.subgroups.values.toList()) {
+        output.addAll(i);
+      }
+    }
     return output;
   }
 
-  RxMap<int, Map> appointmentGroups = RxMap<int, Map>();
+  List<Appointment> get selectedAppointmentList {
+    List<Appointment> output = [];
+    for (AppointmentGroup item in appointmentGroups.values.toList()) {
+      for (List<Appointment> i in item.subgroups.values.toList()) {
+        output.addAll(i);
+      }
+    }
+    return output;
+  }
 
+  void setReservationGroupTitle(int i, String? string) {
+    if (string == null || string.isEmpty) return;
+    appointmentGroups[i]!.title = string;
+  }
+
+  void timeSelected(CalendarSelectionDetails calendarSelectionDetails) {
+    AppointmentGroup? $group = appointmentGroups[$AppointmentGroup_];
+
+    Duration duration = Duration(hours: reservedHours.value);
+    DateTime startDate = calendarSelectionDetails.date!;
+    DateTime endDate = startDate.add(duration);
+
+    if ($group != null) {
+      Map<int, AppointmentGroup> appGroups = Map.of(appointmentGroups);
+      appGroups.update($AppointmentGroup_, (value) {
+        Appointment app = Appointment(
+          color: value.color,
+          id: value.title,
+          startTime: startDate,
+          endTime: endDate,
+        );
+        List<Appointment> $subgroup = freq(app);
+        if (value.subgroups.containsKey($AppointmentSubGroup_)) {
+          value.subgroups
+              .update($AppointmentSubGroup_, (value) => value = $subgroup);
+        } else {
+          value.subgroups.addAll({$AppointmentSubGroup_: $subgroup});
+        }
+        return value;
+      });
+      appointmentGroups.value = appGroups;
+    } else {
+      final int listLenght = appointmentGroups.length;
+      Appointment app = Appointment(
+        color: colorChooser(listLenght),
+        id: 'Reservation $listLenght',
+        startTime: startDate,
+        endTime: endDate,
+      );
+      appointmentGroups[$AppointmentGroup_] = AppointmentGroup(
+        title: 'Reservation $listLenght',
+        color: colorChooser(listLenght),
+        subgroups: {$AppointmentSubGroup_: freq(app)},
+      );
+    }
+    frequency.value = null;
+    frequencyNumber.value = 1;
+    frequencyNumberEditing.text = '';
+  }
+
+  getRoomReservations() async {
+    if (selectedRoom_ != null) {
+      List<dynamic> _reservations =
+          await reservationQuery.readRoom(selectedRoom_!.id);
+
+      for (dynamic item in _reservations) {
+        if (item is GuestReservation) {
+          roomAppointments.add(Appointment(
+            color: Colors.teal,
+            notes: item.primaryName,
+            startTime: item.timeIn,
+            endTime: item.timeOut,
+          ));
+        } else if (item is CourseReservation) {
+          roomAppointments.add(Appointment(
+            color: Colors.lightBlue,
+            notes: item.primaryName,
+            startTime: item.timeIn,
+            endTime: item.timeOut,
+          ));
+        }
+      }
+    }
+  }
+
+  /// frequency getter function
   List<Appointment> freq(Appointment app) {
     switch (frequency.value) {
       case 'Daily':
@@ -94,73 +223,6 @@ class CreateReservationController extends GetxController {
     }
   }
 
-  timeSelected(CalendarSelectionDetails calendarSelectionDetails) {
-    Map? _selected = appointmentGroups[selectedAppointment_];
-
-    Duration duration = Duration(hours: reservedHours.value);
-    DateTime selectedDate = calendarSelectionDetails.date!;
-    DateTime endDate = selectedDate.add(duration);
-    int listLenght = appointmentGroups.keys.length + 1;
-    appointmentGroups[selectedAppointment_] = {
-      'title': _selected?['title'] ?? 'Reservation $listLenght',
-      'reservations': freq(Appointment(
-        color: Colors.blueAccent,
-        id: 'the new reservation',
-        startTime: selectedDate,
-        endTime: endDate,
-      ))
-    };
-  }
-
-  removeFromAppointments(int ai) {
-    Map<int, Map> app = appointmentGroups;
-    Map<int, Map> newApp = {};
-    List<Map> list = app.values.toList();
-    list.removeAt(ai);
-    newApp = list.asMap();
-    selectedAppointment.value = 0;
-    appointmentGroups.value = RxMap(newApp);
-  }
-
-  getRoomReservations() async {
-    if (selectedRoom_ != null) {
-      List<dynamic> _reservations =
-          await reservationQuery.readRoom(selectedRoom_!.id);
-
-      for (dynamic item in _reservations) {
-        if (item is GuestReservation) {
-          roomAppointments.add(Appointment(
-            color: Colors.teal,
-            notes: item.primaryName,
-            startTime: item.timeIn,
-            endTime: item.timeOut,
-          ));
-        } else if (item is CourseReservation) {
-          roomAppointments.add(Appointment(
-            color: Colors.lightBlue,
-            notes: item.primaryName,
-            startTime: item.timeIn,
-            endTime: item.timeOut,
-          ));
-        }
-      }
-    }
-  }
-
-  setReservationGroupTitle(int i, String? string) {
-    if (string != null && string.isNotEmpty) {
-      Map map = appointmentGroups.value;
-      Map item = map[i];
-      item['title'] = string;
-      map[i] = item;
-    } else {
-      Map map = appointmentGroups.value;
-      Map item = map[i];
-      item['title'] = 'Reservation ${i + 1}';
-      map[i] = item;
-    }
-  }
-
   @override
   Future<void> onReady() async {
     super.onReady();
@@ -170,98 +232,129 @@ class CreateReservationController extends GetxController {
   double getPaidAmount() {
     double total = 0;
     double rate = selectedRoom_!.rate;
-    List<Map> list = appointmentGroups.values.toList();
-    for (Map item in list) {
-      for (Appointment app in item['reservations']) {
-        DateTimeRange range =
-            DateTimeRange(start: app.startTime, end: app.endTime);
-
-        total += range.duration.inHours * rate;
-      }
+    for (Appointment app in selectedAppointmentList) {
+      DateTimeRange range =
+          DateTimeRange(start: app.startTime, end: app.endTime);
+      total += rate * range.duration.inHours;
     }
     return total * reservationPrice;
   }
 
-  double getPaidAmountForAppointment(DateTime start, DateTime end) {
+  double getPaidAmountForAppointment(Appointment app) {
     double rate = selectedRoom_!.rate;
-    DateTimeRange range = DateTimeRange(start: start, end: end);
+    DateTimeRange range = DateTimeRange(start: app.startTime, end: app.endTime);
     double total = range.duration.inHours * rate;
     return total * reservationPrice;
   }
 
-  saveAll(Function start, Function stop, ButtonState state) async {
-    List<Map> list = appointmentGroups.values.toList();
-    for (Map item in list) {
-      List<Appointment> apps = item['reservations'];
-      for (Appointment app in apps) {
-        await MonitoringApp.errorTrack(() async {
-          await guestReservationQuery.create(
-            timeOut: app.endTime,
-            timeIn: app.startTime,
-            guestId: guest.value.id,
-            roomId: selectedRoom_!.id,
-            primaryName: item['title'],
-            paidAmount: getPaidAmountForAppointment(app.startTime, app.endTime),
-          );
-        });
+  save(start, stop, state) async {
+    start();
+    for (AppointmentGroup group in appointmentGroups.values) {
+      List<Appointment> list = [for (List i in group.subgroups.values) ...i];
+      for (Appointment app in list) {
+        try {
+          if (guest.value != null) {
+            await guestReservationQuery.create(
+              timeOut: app.endTime,
+              timeIn: app.startTime,
+              guestId: guest.value!.id,
+              roomId: selectedRoom_!.id,
+              primaryName: group.title,
+              paidAmount: getPaidAmountForAppointment(app),
+            );
+          } else if (course.value != null) {
+            await courseReservationQuery.create(
+              timeOut: app.endTime,
+              timeIn: app.startTime,
+              guestId: course.value!.lecturerId,
+              courseId: course.value!.id,
+              roomId: selectedRoom_!.id,
+              primaryName: group.title,
+            );
+          }
+        } catch (e, stackTrace) {
+          MonitoringApp.error(e, stackTrace);
+        }
       }
     }
+    stop();
     Get.back();
     Get.back();
     DashboardController.to.toMainPage();
   }
 
-  saveDialog() => Get.dialog(WDialog(
-        body: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  "Total price:",
-                  style: TextStyle(
-                    color: colorWhite,
-                    fontSize: 27,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                Text(
-                  "${getPaidAmount()}\$",
-                  style: const TextStyle(
-                    color: colorWhite,
-                    fontSize: 33,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 15),
-            ArgonButton(
-              height: 45,
-              width: 400,
-              borderRadius: 13,
-              padding: const EdgeInsets.all(11),
-              child: const Tooltip(
-                message: 'Custom price for the guest',
-                child: Text(
-                  "Enter",
-                  style: TextStyle(
-                    color: colorWhite,
-                    fontSize: 27,
-                    fontWeight: FontWeight.w600,
-                  ),
+  saveDialog() {
+    if (selectedRoom_ == null) {
+      return errorSnack(
+        'Select room',
+        'select room and appointments to save',
+        const Duration(seconds: 1),
+      );
+    } else if (selectedAppointmentList.isEmpty) {
+      return errorSnack(
+        'Select appointments',
+        'select appointments to save',
+        const Duration(seconds: 1),
+      );
+    }
+
+    if (course.value != null) {
+      save(() {}, () {}, ButtonState.Busy);
+      return;
+    }
+
+    Get.dialog(WDialog(
+      body: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                "Total price:",
+                style: TextStyle(
+                  color: colorWhite,
+                  fontSize: 27,
+                  fontWeight: FontWeight.w600,
                 ),
               ),
-              loader: Container(
-                padding: const EdgeInsets.all(10),
-                child: const SpinKitRotatingCircle(
-                  color: Colors.white,
+              Text(
+                "${getPaidAmount()}\$",
+                style: const TextStyle(
+                  color: colorWhite,
+                  fontSize: 33,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
-              onTap: saveAll,
+            ],
+          ),
+          const SizedBox(height: 15),
+          ArgonButton(
+            height: 45,
+            width: 400,
+            borderRadius: 13,
+            padding: const EdgeInsets.all(11),
+            child: const Tooltip(
+              message: 'Custom price for the guest',
+              child: Text(
+                "Enter",
+                style: TextStyle(
+                  color: colorWhite,
+                  fontSize: 27,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
             ),
-          ],
-        ),
-      ));
+            loader: Container(
+              padding: const EdgeInsets.all(10),
+              child: const SpinKitRotatingCircle(
+                color: Colors.white,
+              ),
+            ),
+            onTap: save,
+          ),
+        ],
+      ),
+    ));
+  }
 }

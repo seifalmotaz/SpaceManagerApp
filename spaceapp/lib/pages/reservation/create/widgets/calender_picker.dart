@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:spaceapp/constant/base_colors.dart';
+import 'package:spaceapp/helpers/snacks.dart';
 import 'package:spaceapp/pages/reservation/create/controller.dart';
 import 'package:spaceapp/widgets/resposive.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
@@ -48,7 +49,15 @@ class CalenderPickerWidget extends StatelessWidget {
           ),
           onSelectionChanged: (calendarSelectionDetails) {
             if (calendarSelectionDetails.date != null) {
-              controller.timeSelected(calendarSelectionDetails);
+              if (controller.selectedRoom_ != null) {
+                controller.timeSelected(calendarSelectionDetails);
+              } else {
+                errorSnack(
+                  'Unable to select datetime',
+                  'Please select room before selecting datetime',
+                  const Duration(seconds: 1),
+                );
+              }
             }
           },
         ),

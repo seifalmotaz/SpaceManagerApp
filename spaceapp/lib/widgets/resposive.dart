@@ -107,15 +107,25 @@ abstract class UIResponsiveless extends StatelessWidget {
     );
   }
 
-  Widget? xBuild(BuildContext context, Size size) {}
+  Widget? xBuild(BuildContext context, Size size) {
+    return null;
+  }
 
-  Widget? largeBuild(BuildContext context, Size size) {}
+  Widget? largeBuild(BuildContext context, Size size) {
+    return null;
+  }
 
-  Widget? mediumBuild(BuildContext context, Size size) {}
+  Widget? mediumBuild(BuildContext context, Size size) {
+    return null;
+  }
 
-  Widget? smallBuild(BuildContext context, Size size) {}
+  Widget? smallBuild(BuildContext context, Size size) {
+    return null;
+  }
 
-  Widget? customBuild(BuildContext context, Size size) {}
+  Widget? customBuild(BuildContext context, Size size) {
+    return null;
+  }
 }
 
 abstract class UIResponsivefull extends StatefulWidget {
@@ -177,13 +187,23 @@ class UIResponsiveState<T extends UIResponsivefull>
     );
   }
 
-  Widget? xBuild(BuildContext context, Size size) {}
+  Widget? xBuild(BuildContext context, Size size) {
+    return null;
+  }
 
-  Widget? largeBuild(BuildContext context, Size size) {}
+  Widget? largeBuild(BuildContext context, Size size) {
+    return null;
+  }
 
-  Widget? mediumBuild(BuildContext context, Size size) {}
+  Widget? mediumBuild(BuildContext context, Size size) {
+    return null;
+  }
 
-  Widget? smallBuild(BuildContext context, Size size) {}
+  Widget? smallBuild(BuildContext context, Size size) {
+    return null;
+  }
 
-  Widget? customBuild(BuildContext context, Size size) {}
+  Widget? customBuild(BuildContext context, Size size) {
+    return null;
+  }
 }

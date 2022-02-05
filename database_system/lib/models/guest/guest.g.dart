@@ -331,6 +331,7 @@ extension GuestTable on Guest {
     if (valid) {
       return _$GuestFromJson(json);
     }
+    return null;
   }
 
   static Guest? filterFromJson(Map<String, dynamic> json) =>

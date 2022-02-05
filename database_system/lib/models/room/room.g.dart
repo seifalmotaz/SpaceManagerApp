@@ -206,6 +206,7 @@ extension RoomTable on Room {
     if (valid) {
       return _$RoomFromJson(json);
     }
+    return null;
   }
 
   static Room? filterFromJson(Map<String, dynamic> json) =>

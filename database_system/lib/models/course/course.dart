@@ -20,6 +20,10 @@ class Course {
   @FieldSQL(haveDefault: true)
   bool? isDeleted;
 
+  @dateNullTimeKey
+  @FieldSQL(haveDefault: true)
+  DateTime? createdDate;
+
   Course({
     required this.id,
     required this.description,
@@ -27,6 +31,7 @@ class Course {
     required this.name,
     required this.totalPrice,
     this.isDeleted,
+    this.createdDate,
   });
 
   factory Course.fromJson(Map<String, dynamic> json) => _$CourseFromJson(json);

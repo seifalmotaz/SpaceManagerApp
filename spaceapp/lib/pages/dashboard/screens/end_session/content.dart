@@ -65,6 +65,7 @@ class ScreenContentWidget extends StatelessWidget {
                           if (string == null || string.isEmpty) {
                             return 'Not valid';
                           }
+                          return null;
                         },
                       ),
                       SwitchListTile.adaptive(

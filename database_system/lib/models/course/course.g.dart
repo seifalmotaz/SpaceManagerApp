@@ -1,5 +1,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
+// ignore_for_file: body_might_complete_normally_nullable
+
 part of 'course.dart';
 
 // **************************************************************************
@@ -13,6 +15,7 @@ Course _$CourseFromJson(Map<String, dynamic> json) => Course(
       name: json['name'] as String,
       totalPrice: (json['total_price'] as num).toDouble(),
       isDeleted: DataCompiler.fromDBoolNull(json['is_deleted'] as int?),
+      createdDate: DataCompiler.fromDBDateNull(json['created_date'] as int?),
     );
 
 Map<String, dynamic> _$CourseToJson(Course instance) {
@@ -31,6 +34,7 @@ Map<String, dynamic> _$CourseToJson(Course instance) {
   }
 
   writeNotNull('is_deleted', DataCompiler.toDBoolNull(instance.isDeleted));
+  writeNotNull('created_date', DataCompiler.toDBDateNull(instance.createdDate));
   return val;
 }
 
@@ -48,6 +52,7 @@ class CourseQuery {
     required String name,
     required String description,
     bool? isDeleted,
+    DateTime? createdDate,
   }) async =>
       await db.insert('course', {
         if (lecturerId != null) 'lecturer_id': lecturerId,
@@ -55,6 +60,9 @@ class CourseQuery {
         if (name != null) 'name': name,
         if (description != null) 'description': description,
         if (isDeleted != null) 'is_deleted': isDeleted ? 1 : 0,
+        if (createdDate != null)
+          'created_date':
+              (createdDate.millisecondsSinceEpoch / 1000).round() as int,
       });
 
   Future<Course> read(int id) async {
@@ -73,6 +81,7 @@ class CourseQuery {
     String? name,
     String? description,
     bool? isDeleted,
+    DateTime? createdDate,
   }) async =>
       await db.update(
         'course',
@@ -82,6 +91,9 @@ class CourseQuery {
           if (name != null) 'name': name,
           if (description != null) 'description': description,
           if (isDeleted != null) 'is_deleted': isDeleted ? 1 : 0,
+          if (createdDate != null)
+            'created_date':
+                (createdDate.millisecondsSinceEpoch / 1000).round() as int,
         },
         where: 'id = ?',
         whereArgs: [id],
@@ -99,6 +111,7 @@ class CourseQuery {
     String? name,
     String? description,
     bool? isDeleted,
+    DateTime? createdDate,
   }) async {
     List<String> searchFields = [];
     if (lecturerId != null) {
@@ -115,6 +128,9 @@ class CourseQuery {
     }
     if (isDeleted != null) {
       searchFields.add("course.is_deleted = ?");
+    }
+    if (createdDate != null) {
+      searchFields.add("course.created_date = ?");
     }
 
     StringBuffer buf = StringBuffer();
@@ -135,6 +151,8 @@ class CourseQuery {
         if (name != null) name,
         if (description != null) description,
         if (isDeleted != null) isDeleted ? 1 : 0,
+        if (createdDate != null)
+          (createdDate.millisecondsSinceEpoch / 1000).round() as int,
       ],
     );
 
@@ -182,13 +200,18 @@ extension CourseTable on Course {
   static String isDeleted = 'is_deleted';
   static String nativeIsDeleted = 'course.is_deleted';
 
+  /// Field data: field ///
+  static String createdDate = 'created_date';
+  static String nativeCreatedDate = 'course.created_date';
+
   static const String sqlSelect = """
     course.id AS course_id,
     course.lecturer_id AS course_lecturer_id,
     course.total_price AS course_total_price,
     course.name AS course_name,
     course.description AS course_description,
-    course.is_deleted AS course_is_deleted
+    course.is_deleted AS course_is_deleted,
+    course.created_date AS course_created_date
   """;
 
   static const String sqlFindSchema = """
@@ -206,6 +229,7 @@ extension CourseTable on Course {
     'name',
     'description',
     'is_deleted',
+    'created_date',
   ];
 
   static fromJson(Map<String, dynamic> json) =>

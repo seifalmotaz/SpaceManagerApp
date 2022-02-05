@@ -10,5 +10,6 @@ class SessionQuery {
     WHERE id = $id
     """);
     if (data.isNotEmpty) return data.first;
+    return null;
   }
 }
