@@ -37,6 +37,10 @@ class Reservation {
   @FieldSQL(haveDefault: true)
   DateTime? createdDate;
 
+  @boolNullKey
+  @FieldSQL(haveDefault: true)
+  bool? customPaid;
+
   Reservation({
     required this.guestId,
     required this.id,
@@ -46,6 +50,7 @@ class Reservation {
     required this.primaryName,
     required this.createdDate,
     this.isCancelled = false,
+    this.customPaid = false,
   });
 
   factory Reservation.fromJson(Map<String, dynamic> json) {
@@ -71,12 +76,14 @@ class CourseReservation extends Reservation with ReservationJoins {
     required roomId,
     required primaryName,
     isCancelled = false,
+    customPaid = false,
   }) : super(
           primaryName: primaryName,
           roomId: roomId,
           createdDate: createdDate,
           guestId: guestId,
           id: id,
+          customPaid: customPaid,
           timeIn: timeIn,
           timeOut: timeOut,
           isCancelled: isCancelled,
@@ -99,14 +106,16 @@ class GuestReservation extends Reservation with ReservationJoins {
     required timeIn,
     required timeOut,
     required roomId,
+    required primaryName,
     isCancelled,
-    primaryName,
+    customPaid,
   }) : super(
           primaryName: primaryName,
           roomId: roomId,
           createdDate: createdDate,
           guestId: guestId,
           id: id,
+          customPaid: customPaid,
           timeIn: timeIn,
           timeOut: timeOut,
           isCancelled: isCancelled,

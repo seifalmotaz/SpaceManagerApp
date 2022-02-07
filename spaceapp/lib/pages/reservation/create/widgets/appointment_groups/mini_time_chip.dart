@@ -57,14 +57,6 @@ class MiniTimeChipWidget extends StatelessWidget {
                         fontWeight: FontWeight.w600,
                       ),
                     ),
-                    if (list.length > 1)
-                      Text(
-                        list.length.toString() + ' Reservations',
-                        style: const TextStyle(
-                          color: BaseColors.textColor,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
                   ],
                 ),
               ),

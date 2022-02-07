@@ -51,11 +51,12 @@ class DataCompiler {
   static DateTime fromDBDate(int datetime) =>
       DateTime.fromMillisecondsSinceEpoch(datetime * 1000);
   static int toDBDate(DateTime datetime) =>
-      (datetime.millisecondsSinceEpoch / 1000) as int;
+      (datetime.millisecondsSinceEpoch / 1000).round();
 
   static DateTime? fromDBDateNull(int? datetime) => datetime == null
       ? null
       : DateTime.fromMillisecondsSinceEpoch(datetime * 1000);
-  static int? toDBDateNull(DateTime? datetime) =>
-      datetime == null ? null : (datetime.millisecondsSinceEpoch / 1000) as int;
+  static int? toDBDateNull(DateTime? datetime) => datetime == null
+      ? null
+      : (datetime.millisecondsSinceEpoch / 1000).round();
 }

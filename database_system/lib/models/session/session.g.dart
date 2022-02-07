@@ -653,7 +653,6 @@ extension StaffSessionTable on StaffSession {
     if (valid) {
       return _$StaffSessionFromJson(json);
     }
-    return null;
   }
 
   static StaffSession? filterFromJson(Map<String, dynamic> json) =>
@@ -750,7 +749,6 @@ extension GuestSessionTable on GuestSession {
     if (valid) {
       return _$GuestSessionFromJson(json);
     }
-    return null;
   }
 
   static GuestSession? filterFromJson(Map<String, dynamic> json) =>
@@ -847,7 +845,6 @@ extension RoomSessionTable on RoomSession {
     if (valid) {
       return _$RoomSessionFromJson(json);
     }
-    return null;
   }
 
   static RoomSession? filterFromJson(Map<String, dynamic> json) =>
@@ -932,7 +929,6 @@ extension CourseSessionTable on CourseSession {
     if (valid) {
       return _$CourseSessionFromJson(json);
     }
-    return null;
   }
 
   static CourseSession? filterFromJson(Map<String, dynamic> json) =>

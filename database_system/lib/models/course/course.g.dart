@@ -1,7 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-// ignore_for_file: body_might_complete_normally_nullable
-
 part of 'course.dart';
 
 // **************************************************************************

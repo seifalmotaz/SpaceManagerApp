@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:spaceapp/constant/base_colors.dart';
 import 'package:spaceapp/helpers/snacks.dart';
+import 'package:spaceapp/pages/course/list/controller.dart';
 import 'package:spaceapp/pages/guest/edit_guest.dart';
 
 class CreateCourseController extends GetxController {
@@ -36,8 +37,6 @@ class CreateCourseController extends GetxController {
           isExpired: false,
           isStaff: false,
           phone: phone.text,
-          name: 'Unknown',
-          email: 'Unknown',
           createdDate: DateTime(2001),
         );
         return;
@@ -105,6 +104,7 @@ class CreateCourseController extends GetxController {
     }
 
     await create();
+    CoursesListController.to.resetData();
     stopLoading();
     return;
   }

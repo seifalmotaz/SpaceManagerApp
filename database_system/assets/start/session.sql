@@ -58,15 +58,5 @@ CREATE TABLE session (
     CONSTRAINT fk_course_id FOREIGN KEY (course_id) REFERENCES course(id),
     CONSTRAINT fk_room_id FOREIGN KEY (room_id) REFERENCES room(id),
     CONSTRAINT fk_reservation_id FOREIGN KEY (reservation_id) REFERENCES reservation(id),
-    CONSTRAINT fk_price_id FOREIGN KEY (price_id) REFERENCES price(id),
-    CONSTRAINT guest_paid_end CHECK (
-        (
-            time_out IS NOT NULL
-            AND paid_amount IS NOT NULL
-        )
-        OR (
-            time_out IS NULL
-            AND paid_amount IS NULL
-        )
-    )
+    CONSTRAINT fk_price_id FOREIGN KEY (price_id) REFERENCES price(id)
 );

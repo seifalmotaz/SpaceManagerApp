@@ -25,7 +25,7 @@ class AppointmentGroup {
 
 Color colorChooser(int i) {
   List<Color> colors = [
-    Colors.red,
+    Colors.redAccent,
     Colors.blueGrey,
     Colors.cyan,
     Colors.green,
@@ -77,7 +77,7 @@ class CreateReservationController extends GetxController {
       RxMap<int, AppointmentGroup>();
   //
   List<Appointment> get appointmentsList {
-    List<Appointment> output = [...roomAppointments];
+    List<Appointment> output = [...roomAppointments.value];
     for (AppointmentGroup item in appointmentGroups.values.toList()) {
       for (List<Appointment> i in item.subgroups.values.toList()) {
         output.addAll(i);
@@ -128,6 +128,7 @@ class CreateReservationController extends GetxController {
       });
       appointmentGroups.value = appGroups;
     } else {
+      Map<int, AppointmentGroup> appGroups = Map.of(appointmentGroups);
       final int listLenght = appointmentGroups.length;
       Appointment app = Appointment(
         color: colorChooser(listLenght),
@@ -135,40 +136,40 @@ class CreateReservationController extends GetxController {
         startTime: startDate,
         endTime: endDate,
       );
-      appointmentGroups[$AppointmentGroup_] = AppointmentGroup(
+      appGroups[$AppointmentGroup_] = AppointmentGroup(
         title: 'Reservation $listLenght',
         color: colorChooser(listLenght),
         subgroups: {$AppointmentSubGroup_: freq(app)},
       );
+      appointmentGroups.value = appGroups;
     }
     frequency.value = null;
     frequencyNumber.value = 1;
     frequencyNumberEditing.text = '';
   }
 
-  getRoomReservations() async {
-    if (selectedRoom_ != null) {
-      List<dynamic> _reservations =
-          await reservationQuery.readRoom(selectedRoom_!.id);
+  getRoomReservations(int id) async {
+    List<Appointment> _roomAppointments = [];
+    List<dynamic> _reservations = await reservationQuery.readRoom(id);
 
-      for (dynamic item in _reservations) {
-        if (item is GuestReservation) {
-          roomAppointments.add(Appointment(
-            color: Colors.teal,
-            notes: item.primaryName,
-            startTime: item.timeIn,
-            endTime: item.timeOut,
-          ));
-        } else if (item is CourseReservation) {
-          roomAppointments.add(Appointment(
-            color: Colors.lightBlue,
-            notes: item.primaryName,
-            startTime: item.timeIn,
-            endTime: item.timeOut,
-          ));
-        }
+    for (dynamic item in _reservations) {
+      if (item is GuestReservation) {
+        _roomAppointments.add(Appointment(
+          color: Colors.teal,
+          notes: item.primaryName,
+          startTime: item.timeIn,
+          endTime: item.timeOut,
+        ));
+      } else if (item is CourseReservation) {
+        _roomAppointments.add(Appointment(
+          color: Colors.lightBlue,
+          notes: item.primaryName,
+          startTime: item.timeIn,
+          endTime: item.timeOut,
+        ));
       }
     }
+    roomAppointments.value = _roomAppointments;
   }
 
   /// frequency getter function

@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import 'package:spaceapp/constant/base_colors.dart';
 import 'package:spaceapp/pages/course/list/list.dart';
 import 'package:spaceapp/pages/dashboard/controllers/searching.dart';
+import 'package:spaceapp/pages/dashboard/screens/menu/menu.dart';
+import 'package:spaceapp/widgets/dialog.dart';
 
 class MainBar extends StatelessWidget {
   const MainBar({Key? key}) : super(key: key);
@@ -21,7 +23,7 @@ class MainBar extends StatelessWidget {
                   Icons.menu,
                   color: colorWhite,
                 ),
-                onPressed: () {},
+                onPressed: () => Get.dialog(const WDialog(body: MenuScreen())),
               ),
               const Text(
                 'SpaceDash',

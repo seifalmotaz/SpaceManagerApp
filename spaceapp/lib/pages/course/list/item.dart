@@ -1,7 +1,7 @@
 import 'package:database_system/database_system.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:spaceapp/pages/reservation/create/create.dart';
+import 'package:spaceapp/pages/course/read/read.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:readmore/readmore.dart';
 import 'package:spaceapp/constant/base_colors.dart';
@@ -72,8 +72,7 @@ class CourseItemWidget extends UIResponsiveless {
             child: Column(
               children: [
                 TextButton(
-                  onPressed: () =>
-                      Get.to(() => CreateReservationPage(null, course)),
+                  onPressed: () => Get.to(() => ReedCoursePage(course)),
                   child: const Text(
                     'Details',
                     style: TextStyle(

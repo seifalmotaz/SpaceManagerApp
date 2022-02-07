@@ -264,7 +264,6 @@ extension PriceTable on Price {
     if (valid) {
       return _$PriceFromJson(json);
     }
-    return null;
   }
 
   static Price? filterFromJson(Map<String, dynamic> json) =>

@@ -63,8 +63,8 @@ class CreateReservationPage extends UIResponsiveless {
                                 : InkWell(
                                     onTap: () {
                                       controller.selectedRoom.value = room;
-                                      controller.getRoomReservations();
                                       controller.appointmentGroups.value = {};
+                                      controller.getRoomReservations(room.id);
                                     },
                                     child: RoomItemWidget(
                                       room,
@@ -88,7 +88,8 @@ class CreateReservationPage extends UIResponsiveless {
                         return Flexible(
                           flex: flex2,
                           child: CalenderPickerWidget(
-                            appointments: controller.appointmentsList,
+                            appointments: controller.appointmentsList +
+                                controller.roomAppointments.value,
                           ),
                         );
                       }),

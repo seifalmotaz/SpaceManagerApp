@@ -31,7 +31,7 @@ class MonitoringApp {
       maxWidth: Get.width * .3,
       snackPosition: SnackPosition.BOTTOM,
       backgroundColor: Colors.red,
-      duration: const Duration(seconds: 30),
+      duration: const Duration(seconds: 10),
       margin: const EdgeInsets.symmetric(vertical: 51),
     );
   }

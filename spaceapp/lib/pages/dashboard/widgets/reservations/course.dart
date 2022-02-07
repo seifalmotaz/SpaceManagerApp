@@ -45,9 +45,7 @@ class CourseReservationItemWidget extends StatelessWidget {
             dataLabel(
               i: 1,
               title: 'Course name',
-              trailing: (reservation.guest!.name ??
-                  reservation.guest!.phone ??
-                  reservation.guest!.email)!,
+              trailing: reservation.course!.name,
             ),
             dataLabel(
               i: 2,
@@ -155,13 +153,42 @@ class CourseReservationItemWidget extends StatelessWidget {
                 ),
               ),
               TextButton(
-                onPressed: () {},
                 child: const Text(
                   'Cancell',
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
                     color: colorText,
                     fontSize: 16,
+                  ),
+                ),
+                onPressed: () => Get.snackbar(
+                  'Are you sure you want to cancell',
+                  'If you want to cancell tap on button',
+                  isDismissible: true,
+                  colorText: Colors.white,
+                  maxWidth: 500,
+                  snackPosition: SnackPosition.BOTTOM,
+                  backgroundColor: Colors.red,
+                  margin: const EdgeInsets.symmetric(vertical: 51),
+                  mainButton: TextButton(
+                    child: const Text(
+                      'Cancell',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        color: colorWhite,
+                        fontSize: 16,
+                      ),
+                    ),
+                    onPressed: () async {
+                      await MonitoringApp.errorTrack(() {
+                        courseReservationQuery.update(
+                          id: reservation.id,
+                          isCancelled: true,
+                        );
+                      });
+                      Get.back();
+                      DashboardController.to.resetData();
+                    },
                   ),
                 ),
               ),

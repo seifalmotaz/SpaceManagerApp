@@ -18,7 +18,7 @@ class CoursesListPage extends StatelessWidget {
       body: DashboardBackground(
         Stack(
           children: [
-            XTopBar(
+            WTopBar(
               title: 'Courses',
               trailing: [
                 WIconButton(

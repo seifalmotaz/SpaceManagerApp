@@ -2,10 +2,14 @@ import 'dart:async';
 
 import 'package:database_system/database_system.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:spaceapp/constant/base_colors.dart';
 import 'package:spaceapp/pages/dashboard/controllers/controller.dart';
+import 'package:spaceapp/widgets/dialog.dart';
 import 'package:timeago/timeago.dart' as timeago;
+
+import 'end.dart';
 
 class SessionItemWidget extends StatefulWidget {
   const SessionItemWidget(this.session, {Key? key}) : super(key: key);
@@ -20,8 +24,6 @@ class _SessionItemWidgetState extends State<SessionItemWidget> {
   late CourseSession session;
   late Room room;
   late Course course;
-
-  // TODO create end course session function
 
   @override
   void initState() {
@@ -118,7 +120,13 @@ class _SessionItemWidgetState extends State<SessionItemWidget> {
           Column(
             children: [
               TextButton(
-                onPressed: () {},
+                onPressed: () => Get.dialog(WDialog(
+                  body: EndCourseSessions(
+                    course: course,
+                    room: room,
+                    session: session,
+                  ),
+                )),
                 child: const Text(
                   'End',
                   style: TextStyle(

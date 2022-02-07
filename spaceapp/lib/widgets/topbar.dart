@@ -16,8 +16,8 @@ class WIconButton {
   });
 }
 
-class XTopBar extends UIResponsiveless {
-  const XTopBar({
+class WTopBar extends UIResponsiveless {
+  const WTopBar({
     Key? key,
     required this.title,
     this.leading,
