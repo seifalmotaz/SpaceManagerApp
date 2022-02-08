@@ -108,15 +108,30 @@ class CreateReservationController extends GetxController {
     DateTime startDate = calendarSelectionDetails.date!;
     DateTime endDate = startDate.add(duration);
 
+    Appointment app = Appointment(
+      id: 'value.title',
+      startTime: startDate,
+      endTime: endDate,
+    );
+
+    List<Appointment> _freq = freq(app);
+    for (Appointment item in _freq) {
+      Appointment? overlap = appointmentsList.firstWhereOrNull(
+          (e) => e.startTime == item.startTime || e.endTime == item.endTime);
+      if (overlap != null) {
+        errorSnack(
+          'Overlaping',
+          'the appointment is is overlaping with date:\n ${Jiffy(overlap.startTime).yMMMMEEEEdjm}',
+        );
+        return;
+      }
+    }
+
     if ($group != null) {
       Map<int, AppointmentGroup> appGroups = Map.of(appointmentGroups);
       appGroups.update($AppointmentGroup_, (value) {
-        Appointment app = Appointment(
-          color: value.color,
-          id: value.title,
-          startTime: startDate,
-          endTime: endDate,
-        );
+        app.id = value.title;
+        app.color = value.color;
         List<Appointment> $subgroup = freq(app);
         if (value.subgroups.containsKey($AppointmentSubGroup_)) {
           value.subgroups
@@ -130,12 +145,8 @@ class CreateReservationController extends GetxController {
     } else {
       Map<int, AppointmentGroup> appGroups = Map.of(appointmentGroups);
       final int listLenght = appointmentGroups.length;
-      Appointment app = Appointment(
-        color: colorChooser(listLenght),
-        id: 'Reservation $listLenght',
-        startTime: startDate,
-        endTime: endDate,
-      );
+      app.id = 'Reservation $listLenght';
+      app.color = colorChooser(listLenght);
       appGroups[$AppointmentGroup_] = AppointmentGroup(
         title: 'Reservation $listLenght',
         color: colorChooser(listLenght),
@@ -143,6 +154,7 @@ class CreateReservationController extends GetxController {
       );
       appointmentGroups.value = appGroups;
     }
+
     frequency.value = null;
     frequencyNumber.value = 1;
     frequencyNumberEditing.text = '';

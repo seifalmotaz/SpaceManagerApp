@@ -88,8 +88,7 @@ class CreateReservationPage extends UIResponsiveless {
                         return Flexible(
                           flex: flex2,
                           child: CalenderPickerWidget(
-                            appointments: controller.appointmentsList +
-                                controller.roomAppointments.value,
+                            appointments: controller.appointmentsList,
                           ),
                         );
                       }),

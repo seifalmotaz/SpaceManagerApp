@@ -35,9 +35,10 @@ successSnack(t, m) {
     m,
     isDismissible: true,
     colorText: Colors.black,
-    maxWidth: Get.width * .3,
+    maxWidth: 500,
     snackPosition: SnackPosition.BOTTOM,
     backgroundColor: Colors.greenAccent,
+    duration: const Duration(seconds: 3),
     margin: const EdgeInsets.symmetric(vertical: 51),
   );
 }
