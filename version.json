@@ -1,4 +1,4 @@
 {
-  "version": 2.0.0,
+  "version": "2.0.0",
   "autoupdate": "https://github.com/seifalmotaz/SpaceManagerApp/releases/download/test-autoupdating/mysetup.exe"
 }
