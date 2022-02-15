@@ -10,6 +10,9 @@ class WButton extends StatelessWidget {
     this.bottomMargin = false,
     this.border = true,
     required this.onTap,
+    this.height,
+    this.width,
+    this.padding,
   }) : super(key: key);
 
   final String title;
@@ -18,13 +21,18 @@ class WButton extends StatelessWidget {
   final Color? color;
   final Color? textColor;
   final bool border;
+  final double? height;
+  final double? width;
+  final EdgeInsetsGeometry? padding;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.all(9),
+        height: height,
+        width: width,
+        padding: padding ?? const EdgeInsets.all(9),
         margin: bottomMargin ? null : const EdgeInsets.only(bottom: 5),
         decoration: BoxDecoration(
           color: color ?? colorDarkLight,

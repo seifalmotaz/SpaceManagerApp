@@ -16,7 +16,7 @@ CustomScrollView searchingResults(
           delegate: SliverChildBuilderDelegate(
             (ctx, i) => GuestItem(
               searching.guests[i],
-              key: GlobalKey(),
+              key: Key(searching.guests[i].guest.id.toString()),
             ),
             childCount: searching.guests.value.length,
           ),

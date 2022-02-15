@@ -98,7 +98,7 @@ class _EndCourseSessionsState extends State<EndCourseSessions> {
               });
               stopLoading();
               Get.back();
-              DashboardController.to.toMainPage();
+              DashboardController.to.toMainPageUpdate();
             },
           ),
         ),

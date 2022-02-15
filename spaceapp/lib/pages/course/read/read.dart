@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:spaceapp/constant/base_colors.dart';
 import 'package:spaceapp/pages/course/read/controller.dart';
+import 'package:spaceapp/pages/course/registration/create.dart';
 import 'package:spaceapp/pages/reservation/create/create.dart';
+import 'package:spaceapp/widgets/dialog.dart';
 import 'package:spaceapp/widgets/resposive.dart';
 import 'package:spaceapp/widgets/scaffold.dart';
 import 'package:spaceapp/widgets/topbar.dart';
@@ -11,7 +13,8 @@ import 'package:spaceapp/widgets/topbar.dart';
 import 'widgets/data.dart';
 import 'widgets/form.dart';
 import 'widgets/groups.dart';
-import 'widgets/tile.dart';
+import 'widgets/pages.dart';
+import 'widgets/reservations.dart';
 
 class ReedCoursePage extends UIResponsiveless {
   const ReedCoursePage(this.course, {Key? key}) : super(key: key);
@@ -44,6 +47,12 @@ class ReedCoursePage extends UIResponsiveless {
       title: 'Course: ${course.name}',
       trailing: [
         WIconButton(
+          title: 'New registration',
+          icon: Icons.person,
+          onTap: () =>
+              Get.dialog(const WDialog(body: CreateRegustrationScreen())),
+        ),
+        WIconButton(
           title: 'New reservations',
           icon: Icons.more_time_sharp,
           onTap: () => Get.to(() => CreateReservationPage(null, course)),
@@ -60,40 +69,51 @@ class ReedCoursePage extends UIResponsiveless {
           children: [
             Column(
               children: [
+                const PagesWidget(),
+                const SizedBox(height: 13),
                 CourseDataWidget(course: course),
                 const SizedBox(height: 13),
                 CourseFormWidget(course: course),
               ],
             ),
-            SizedBox(
-              width: sizeOfReservationsList,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    'Reservation groups:',
-                    style: TextStyle(
-                      color: colorDarkLight,
-                      fontSize: 27,
-                      fontWeight: FontWeight.w500,
-                    ),
+            Obx(() => SizedBox(
+                  width: sizeOfReservationsList,
+                  child: AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 300),
+                    child: controller.currentPage.value == 0
+                        ? Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: const [
+                              Text(
+                                'Course Registration:',
+                                style: TextStyle(
+                                  color: colorDarkLight,
+                                  fontSize: 27,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              SizedBox(height: 7),
+                            ],
+                          )
+                        : Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: const [
+                              Text(
+                                'Reservation groups:',
+                                style: TextStyle(
+                                  color: colorDarkLight,
+                                  fontSize: 27,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              SizedBox(height: 7),
+                              GroupsListWidget(),
+                              SizedBox(height: 11),
+                              ReservationsListWidget(),
+                            ],
+                          ),
                   ),
-                  const SizedBox(height: 7),
-                  const GroupsListWidget(),
-                  const SizedBox(height: 11),
-                  Obx(() => ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: controller.selectedReservations_.length,
-                        itemBuilder: (cntx, i) {
-                          return ReservationTileWidget(
-                            controller.selectedReservations[i],
-                            key: GlobalKey(),
-                          );
-                        },
-                      ))
-                ],
-              ),
-            ),
+                )),
           ],
         ),
       ),

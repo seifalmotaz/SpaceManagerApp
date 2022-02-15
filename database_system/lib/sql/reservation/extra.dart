@@ -12,7 +12,8 @@ class ReservationQuery {
   }) async {
     DateTime now = DateTime.now();
     DateTime afterDateTime = selectedAfterDateTime?.toUtc() ??
-        DateTime(now.year, now.month, now.day, now.hour, now.minute).toUtc();
+        DateTime(now.year, now.month, now.day - 8, now.hour, now.minute)
+            .toUtc();
     DateTime beforeDateTime = selectedBeforeDateTime?.toUtc() ??
         DateTime(now.year, now.month, now.day)
             .add(const Duration(days: 360))

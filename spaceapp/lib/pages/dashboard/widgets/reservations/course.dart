@@ -95,7 +95,7 @@ class CourseReservationItemWidget extends StatelessWidget {
                   });
                   stopLoading();
                   Get.back();
-                  DashboardController.to.toMainPage();
+                  DashboardController.to.toMainPageUpdate();
                 },
               ),
             ),

@@ -2,14 +2,14 @@ import 'package:database_system/database_system.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:spaceapp/constant/base_colors.dart';
-import 'package:spaceapp/pages/course/read/controller.dart';
+import 'package:spaceapp/pages/guest/read/controller.dart';
 
 class GroupsListWidget extends StatelessWidget {
   const GroupsListWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    ReadCourseController controller = Get.find<ReadCourseController>();
+    ReadGuestController controller = Get.find<ReadGuestController>();
     return Obx(() => Wrap(
           spacing: 11,
           runSpacing: 11,
@@ -24,7 +24,7 @@ class GroupsListWidget extends StatelessWidget {
                     borderRadius: BorderRadius.circular(13),
                     onTap: () {
                       controller.selectedGroup.value = group;
-                      List<CourseReservation> data = controller.reservations_
+                      List<GuestReservation> data = controller.reservations_
                           .where((e) => e.primaryName == group.title)
                           .toList();
 
@@ -39,13 +39,11 @@ class GroupsListWidget extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Expanded(
-                            child: Text(
-                              group.title,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.w600,
-                                fontSize: 17,
-                              ),
+                          Text(
+                            group.title,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 17,
                             ),
                           ),
                           Material(

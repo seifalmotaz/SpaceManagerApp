@@ -8,7 +8,7 @@ import 'package:spaceapp/constant/base_colors.dart';
 import 'package:spaceapp/helpers/snacks.dart';
 import 'package:spaceapp/pages/dashboard/controllers/controller.dart';
 import 'package:spaceapp/pages/dashboard/controllers/searching.dart';
-import 'package:spaceapp/widgets/text_field.dart';
+import 'package:spaceapp/pages/dashboard/screens/widgets/guest_form.dart';
 import 'package:spaceapp/helpers/extention.dart';
 
 import 'room_item.dart';
@@ -196,60 +196,12 @@ class _StartRoomSessionScreenState extends State<StartRoomSessionScreen> {
                     ),
                   ),
                   const SizedBox(height: 9),
-                  Row(
-                    children: [
-                      Flexible(
-                        child: WTextField(
-                          hint: 'Name',
-                          controller: name,
-                          color: Colors.white10,
-                          textColor: Colors.white70,
-                          onChange: (string) => setState(() {
-                            dataEdited = true;
-                          }),
-                        ),
-                      ),
-                      const SizedBox(width: 9),
-                      Flexible(
-                        child: WTextField(
-                          hint: 'National ID',
-                          controller: nationalId,
-                          color: Colors.white10,
-                          textColor: Colors.white70,
-                          onChange: (string) => setState(() {
-                            dataEdited = true;
-                          }),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 9),
-                  Row(
-                    children: [
-                      Flexible(
-                        child: WTextField(
-                          hint: 'Email',
-                          controller: email,
-                          color: Colors.white10,
-                          textColor: Colors.white70,
-                          onChange: (string) => setState(() {
-                            dataEdited = true;
-                          }),
-                        ),
-                      ),
-                      const SizedBox(width: 9),
-                      Flexible(
-                        child: WTextField(
-                          hint: 'Phone',
-                          controller: phone,
-                          color: Colors.white10,
-                          textColor: Colors.white70,
-                          onChange: (string) => setState(() {
-                            dataEdited = true;
-                          }),
-                        ),
-                      ),
-                    ],
+                  GuestFormWidget(
+                    email: email,
+                    name: name,
+                    nationalId: nationalId,
+                    phone: phone,
+                    dataEdited: () => dataEdited = true,
                   ),
                   const SizedBox(height: 17),
                   Center(

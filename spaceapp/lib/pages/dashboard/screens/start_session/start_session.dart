@@ -77,7 +77,7 @@ class StartSessionScreen extends StatelessWidget {
                     name: controller.name,
                     nationalId: controller.nationalId,
                     phone: controller.phone,
-                    dataEdited: () => controller..dataEdited.value = true,
+                    dataEdited: () => controller.dataEdited.value = true,
                   ),
                   const SizedBox(height: 17),
                   Center(

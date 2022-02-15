@@ -60,9 +60,16 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
 
+msix_config:
+  display_name: SpaceManager
+  msix_version: 2.0.0.0
+  logo_path: D:\StartUps\SpaceManager\logo.png
+  capabilities: "internetClient,removableStorage"
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  msix: ^2.8.18
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

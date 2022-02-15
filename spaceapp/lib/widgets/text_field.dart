@@ -26,6 +26,7 @@ class WTextField extends StatelessWidget {
     this.textAlignVertical,
     this.contentPadding,
     this.textAlign = TextAlign.start,
+    this.maxLines = 1,
     required this.hint,
   }) : super(key: key);
 
@@ -38,6 +39,7 @@ class WTextField extends StatelessWidget {
   final String hint;
   final String? initText;
   final double? fontsize;
+  final int? maxLines;
   final EdgeInsets? contentPadding;
   final double? width;
   final double? height;
@@ -69,6 +71,7 @@ class WTextField extends StatelessWidget {
         borderRadius: BorderRadius.circular(border ?? 13),
         child: TextFormField(
           initialValue: initText,
+          maxLines: maxLines,
           style: textColor == null
               ? basicStyle
               : basicStyle.copyWith(color: textColor, fontSize: fontsize),

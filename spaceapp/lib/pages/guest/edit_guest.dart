@@ -2,9 +2,12 @@ import 'package:argon_buttons_flutter/argon_buttons_flutter.dart';
 import 'package:database_system/database_system.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:get/get.dart';
 import 'package:spaceapp/constant/base_colors.dart';
 import 'package:spaceapp/helpers/extention.dart';
 import 'package:spaceapp/pages/dashboard/screens/widgets/guest_form.dart';
+import 'package:spaceapp/pages/guest/read/read.dart';
+import 'package:spaceapp/widgets/button.dart';
 import 'package:spaceapp/widgets/dialog.dart';
 
 class EditGuestScreen extends StatefulWidget {
@@ -53,53 +56,74 @@ class _EditGuestScreenState extends State<EditGuestScreen> {
             }),
           ),
           const SizedBox(height: 17),
-          ArgonButton(
-            height: 35,
-            width: 400,
-            borderRadius: 13,
-            padding: const EdgeInsets.all(11),
-            child: const Tooltip(
-              message: 'Save guest data and go to reservations page',
-              child: Text(
-                "Save",
-                style: TextStyle(
-                  color: colorWhite,
-                  fontSize: 17,
-                  fontWeight: FontWeight.w600,
+          Row(
+            children: [
+              Flexible(
+                flex: 3,
+                child: LayoutBuilder(builder: (context, con) {
+                  return ArgonButton(
+                    height: 35,
+                    borderRadius: 13,
+                    width: con.maxWidth,
+                    padding: const EdgeInsets.all(11),
+                    child: const Tooltip(
+                      message: 'Save guest data and go to reservations page',
+                      child: Text(
+                        "Save",
+                        style: TextStyle(
+                          color: colorWhite,
+                          fontSize: 17,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                    loader: Container(
+                      padding: const EdgeInsets.all(10),
+                      child: const SpinKitRotatingCircle(
+                        color: Colors.white,
+                      ),
+                    ),
+                    onTap: (startLoading, stopLoading, btnState) async {
+                      late Guest _guest;
+                      if (guest.id == 0) {
+                        int g = await guestQuery.create(
+                          name: (name.text).getStringOrNull(),
+                          email: (email.text).getStringOrNull(),
+                          phone: (phone.text).getStringOrNull(),
+                          nationalId: (nationalId.text).getStringOrNull(),
+                        );
+                        _guest = await guestQuery.read(g);
+                      } else if (dataEdited) {
+                        await guestQuery.update(
+                          id: guest.id,
+                          name: (name.text).getStringIfChanged(guest.name),
+                          email: (email.text).getStringIfChanged(guest.email),
+                          phone: (phone.text).getStringIfChanged(guest.phone),
+                          nationalId: (nationalId.text)
+                              .getStringIfChanged(guest.nationalId),
+                        );
+                        _guest = await guestQuery.read(guest.id);
+                      } else {
+                        _guest = guest;
+                      }
+                      widget.onSave(_guest);
+                    },
+                  );
+                }),
+              ),
+              const SizedBox(width: 7),
+              Flexible(
+                child: WButton(
+                  height: 35,
+                  title: 'View',
+                  padding: EdgeInsets.zero,
+                  onTap: () {
+                    Get.back();
+                    Get.to(() => ReadGuestPage(guest.id));
+                  },
                 ),
               ),
-            ),
-            loader: Container(
-              padding: const EdgeInsets.all(10),
-              child: const SpinKitRotatingCircle(
-                color: Colors.white,
-              ),
-            ),
-            onTap: (startLoading, stopLoading, btnState) async {
-              late Guest _guest;
-              if (guest.id == 0) {
-                int newGuest = await guestQuery.create(
-                  name: (name.text).getStringOrNull(),
-                  email: (email.text).getStringOrNull(),
-                  phone: (phone.text).getStringOrNull(),
-                  nationalId: (nationalId.text).getStringOrNull(),
-                );
-                _guest = await guestQuery.read(newGuest);
-              } else if (dataEdited) {
-                int newGuest = await guestQuery.update(
-                  id: guest.id,
-                  name: (name.text).getStringIfChanged(guest.name),
-                  email: (email.text).getStringIfChanged(guest.email),
-                  phone: (phone.text).getStringIfChanged(guest.phone),
-                  nationalId:
-                      (nationalId.text).getStringIfChanged(guest.nationalId),
-                );
-                _guest = await guestQuery.read(newGuest);
-              } else {
-                _guest = guest;
-              }
-              widget.onSave(_guest);
-            },
+            ],
           ),
         ],
       ),

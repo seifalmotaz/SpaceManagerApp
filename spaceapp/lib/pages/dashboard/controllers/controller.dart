@@ -43,8 +43,12 @@ class DashboardController extends GetxController {
     coursesReservations.value = await courseReservationQuery.findWillStart();
   }
 
-  toMainPage() {
+  toMainPageUpdate() {
     resetData();
+    toMainPage();
+  }
+
+  toMainPage() {
     SearchingController.to.searchingController.text = '';
     SearchingController.to.guests.value = [];
     SearchingController.to.searching.value = false;

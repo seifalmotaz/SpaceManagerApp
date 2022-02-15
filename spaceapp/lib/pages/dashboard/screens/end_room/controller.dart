@@ -75,7 +75,7 @@ class EndRoomScreenController extends GetxController {
         timeOut: dateTime,
       );
       Get.back(result: true);
-      DashboardController.to.toMainPage();
+      DashboardController.to.toMainPageUpdate();
     });
     stop();
   }

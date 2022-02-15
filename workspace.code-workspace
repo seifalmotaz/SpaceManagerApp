@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "autoupdater"
+		},
+		{
+			"path": "database_system"
+		},
+		{
+			"path": "spaceapp"
+		}
+	],
+	"settings": {}
+}

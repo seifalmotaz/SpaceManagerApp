@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:spaceapp/constant/base_colors.dart';
-import 'package:spaceapp/helpers/snacks.dart';
 import 'package:spaceapp/pages/reservation/create/controller.dart';
 import 'package:spaceapp/widgets/text_field.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
@@ -19,6 +18,14 @@ class GroupItem extends StatelessWidget {
   final int index;
   final AppointmentGroup group;
 
+  bool isSelected(int i, CreateReservationController controller) {
+    if (i != controller.$AppointmentSubGroup_ ||
+        controller.$AppointmentGroup_ != index) {
+      return false;
+    }
+    return true;
+  }
+
   @override
   Widget build(BuildContext context) {
     CreateReservationController controller = CreateReservationController.to;
@@ -34,8 +41,9 @@ class GroupItem extends StatelessWidget {
             children: [
               Flexible(
                 child: WTextField(
-                  height: 35,
+                  // height: 35,
                   fontsize: 13,
+                  maxLines: null,
                   textColor: colorDarkLightest,
                   color: Colors.grey.shade100,
                   hint: 'Reservations group name',
@@ -54,16 +62,9 @@ class GroupItem extends StatelessWidget {
               IconButton(
                 icon: const Icon(Icons.add),
                 onPressed: () {
-                  if (controller.$AppointmentGroup_ == index) {
-                    controller.$AppointmentSubGroup.value =
-                        group.subgroups.length;
-                  } else {
-                    errorSnack(
-                      'Unselected group',
-                      'Cannot add appiontment to group with selecting it.',
-                      const Duration(seconds: 1),
-                    );
-                  }
+                  controller.$AppointmentGroup.value = index;
+                  controller.$AppointmentSubGroup.value =
+                      group.subgroups.length;
                 },
               ),
             ],
@@ -74,11 +75,14 @@ class GroupItem extends StatelessWidget {
             itemBuilder: (context, i) {
               return Obx(
                 () => InkWell(
-                  onTap: () => controller.$AppointmentSubGroup.value = i,
+                  onTap: () {
+                    controller.$AppointmentSubGroup.value = i;
+                    controller.$AppointmentGroup.value = index;
+                  },
                   child: Opacity(
-                    opacity: i != controller.$AppointmentSubGroup_ ? .51 : 1,
+                    opacity: isSelected(i, controller) ? 1 : .51,
                     child: IgnorePointer(
-                      ignoring: i != controller.$AppointmentSubGroup_,
+                      ignoring: !isSelected(i, controller),
                       child: MiniTimeChipWidget(
                         group.subgroups[i]!,
                         key: GlobalKey(),

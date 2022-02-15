@@ -116,11 +116,8 @@ class CreateReservationController extends GetxController {
 
     List<Appointment> _freq = freq(app);
     for (Appointment item in _freq) {
-      Appointment? overlap = appointmentsList.firstWhereOrNull((e) =>
-          (e.startTime.isAfter(item.startTime) &&
-              e.startTime.isBefore(item.endTime)) ||
-          (e.endTime.isAfter(item.startTime) &&
-              e.endTime.isBefore(item.endTime)));
+      Appointment? overlap = appointmentsList.firstWhereOrNull(
+          (e) => e.startTime == item.startTime || e.endTime == item.endTime);
       if (overlap != null) {
         errorSnack(
           'Overlaping',
@@ -147,11 +144,12 @@ class CreateReservationController extends GetxController {
       appointmentGroups.value = appGroups;
     } else {
       Map<int, AppointmentGroup> appGroups = Map.of(appointmentGroups);
-      app.id = Jiffy(DateTime.now()).format("yyyy/MM/dd, hh:mm:ss");
-      app.color = colorChooser(appointmentGroups.length);
+      final int listLenght = appointmentGroups.length;
+      app.id = 'Reservation $listLenght';
+      app.color = colorChooser(listLenght);
       appGroups[$AppointmentGroup_] = AppointmentGroup(
-        title: Jiffy(DateTime.now()).format("yyyy/MM/dd, hh:mm:ss"),
-        color: colorChooser(appointmentGroups.length),
+        title: 'Reservation $listLenght',
+        color: colorChooser(listLenght),
         subgroups: {$AppointmentSubGroup_: freq(app)},
       );
       appointmentGroups.value = appGroups;

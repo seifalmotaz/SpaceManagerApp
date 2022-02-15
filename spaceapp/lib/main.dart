@@ -17,9 +17,10 @@ Future<void> main() async {
 
   // await SentryFlutter.init(
   //   (options) {
+  //     options.tracesSampleRate = 1.0;
   //     options.dsn =
   //         'https://270e51a5dfac40799b6e269b05dbcb87@o1126736.ingest.sentry.io/6168003';
-  //     options.tracesSampleRate = 1.0;
+  //
   //   },
   //   appRunner: () => runApp(const MyApp()),
   // );
