@@ -154,6 +154,7 @@ class _PriceFormState extends State<PriceForm> {
                         if (d == null) {
                           return 'Just numbers';
                         }
+                        return null;
                       },
                     ),
                   ),

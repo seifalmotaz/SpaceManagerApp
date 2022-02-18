@@ -44,14 +44,14 @@ class ReadGuestController extends GetxController {
 
     List<String> listString = [];
     for (GuestReservation reservation in reservations_) {
-      if (!listString.contains(reservation.primaryName)) {
-        listString.add(reservation.primaryName);
+      if (!listString.contains(reservation.group)) {
+        listString.add(reservation.group);
       }
     }
 
     List<ReservationsGroup> list = [];
     for (String item in listString) {
-      int count = reservations_.where((e) => e.primaryName == item).length;
+      int count = reservations_.where((e) => e.group == item).length;
       list.add(ReservationsGroup(item, count));
     }
 

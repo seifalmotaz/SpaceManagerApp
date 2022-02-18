@@ -29,9 +29,9 @@ class ReservationQuery {
     is_cancelled = false
     AND
     (
-      time_in BETWEEN "${after}" AND "${before}"
+      time_in BETWEEN "$after" AND "$before"
       OR
-      time_out BETWEEN "${after}" AND "${before}"
+      time_out BETWEEN "$after" AND "$before"
     )
     """);
     return data.map((e) {

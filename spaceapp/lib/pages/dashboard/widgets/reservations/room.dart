@@ -260,7 +260,7 @@ class RoomReservationItemWidget extends StatelessWidget {
                     style: TextStyle(color: colorSemiText),
                   ),
                   Text(
-                    reservation.primaryName,
+                    reservation.group,
                     style: const TextStyle(
                       fontWeight: FontWeight.w600,
                       color: colorText,

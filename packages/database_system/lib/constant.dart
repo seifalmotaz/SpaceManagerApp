@@ -15,6 +15,8 @@ import './models/room/room.dart';
 import './models/session/session.dart';
 import 'sql/session/extra.dart';
 
+typedef QueryData = Map<String, dynamic>;
+
 // Guests
 final GuestQuery guestQuery = GuestQuery(DBService.to.db);
 // Prices

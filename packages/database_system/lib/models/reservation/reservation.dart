@@ -19,9 +19,9 @@ class Reservation {
   @FieldSQL(primary: true)
   final int id;
 
-  int guestId;
   int roomId;
-  String primaryName;
+  String group;
+  int? capacity;
 
   @boolKey
   @FieldSQL(haveDefault: true)
@@ -42,15 +42,15 @@ class Reservation {
   bool? customPaid;
 
   Reservation({
-    required this.guestId,
     required this.id,
     required this.timeIn,
     required this.timeOut,
     required this.roomId,
-    required this.primaryName,
+    required this.group,
     required this.createdDate,
     this.isCancelled = false,
     this.customPaid = false,
+    this.capacity,
   });
 
   factory Reservation.fromJson(Map<String, dynamic> json) {
@@ -69,24 +69,24 @@ class CourseReservation extends Reservation with ReservationJoins {
   CourseReservation({
     required this.courseId,
     required createdDate,
-    required guestId,
     required id,
     required timeIn,
     required timeOut,
     required roomId,
-    required primaryName,
+    required group,
     isCancelled = false,
     customPaid = false,
+    capacity,
   }) : super(
-          primaryName: primaryName,
+          group: group,
           roomId: roomId,
           createdDate: createdDate,
-          guestId: guestId,
           id: id,
           customPaid: customPaid,
           timeIn: timeIn,
           timeOut: timeOut,
           isCancelled: isCancelled,
+          capacity: capacity,
         );
   factory CourseReservation.fromJson(Map<String, dynamic> json) =>
       _$CourseReservationFromJson(json);
@@ -97,28 +97,30 @@ class CourseReservation extends Reservation with ReservationJoins {
 @EngineSQL(name: 'reservation')
 class GuestReservation extends Reservation with ReservationJoins {
   double paidAmount;
+  int guestId;
 
   GuestReservation({
     required this.paidAmount,
+    required this.guestId,
     required createdDate,
-    required guestId,
     required id,
     required timeIn,
     required timeOut,
     required roomId,
-    required primaryName,
+    required group,
     isCancelled,
     customPaid,
+    capacity,
   }) : super(
-          primaryName: primaryName,
+          group: group,
           roomId: roomId,
           createdDate: createdDate,
-          guestId: guestId,
           id: id,
           customPaid: customPaid,
           timeIn: timeIn,
           timeOut: timeOut,
           isCancelled: isCancelled,
+          capacity: capacity,
         );
   factory GuestReservation.fromJson(Map<String, dynamic> json) =>
       _$GuestReservationFromJson(json);

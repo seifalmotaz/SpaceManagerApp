@@ -133,6 +133,7 @@ class _RoomFormState extends State<RoomForm> {
                         if (d == null) {
                           return 'Just numbers';
                         }
+                        return null;
                       },
                     ),
                   ),
@@ -153,6 +154,7 @@ class _RoomFormState extends State<RoomForm> {
                         if (d == null) {
                           return 'Just numbers';
                         }
+                        return null;
                       },
                     ),
                   ),

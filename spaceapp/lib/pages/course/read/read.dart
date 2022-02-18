@@ -14,6 +14,7 @@ import 'widgets/data.dart';
 import 'widgets/form.dart';
 import 'widgets/groups.dart';
 import 'widgets/pages.dart';
+import 'widgets/registration.dart';
 import 'widgets/reservations.dart';
 
 class ReedCoursePage extends UIResponsiveless {
@@ -83,16 +84,26 @@ class ReedCoursePage extends UIResponsiveless {
                     child: controller.currentPage.value == 0
                         ? Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            children: const [
-                              Text(
-                                'Course Registration:',
+                            children: [
+                              const Text(
+                                'Course Registrations:',
                                 style: TextStyle(
                                   color: colorDarkLight,
                                   fontSize: 27,
                                   fontWeight: FontWeight.w500,
                                 ),
                               ),
-                              SizedBox(height: 7),
+                              const SizedBox(height: 7),
+                              ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: controller.guests_.length,
+                                itemBuilder: (cntx, i) {
+                                  return RegistrationWidget(
+                                    controller.guests_[i],
+                                    key: GlobalKey(),
+                                  );
+                                },
+                              ),
                             ],
                           )
                         : Column(

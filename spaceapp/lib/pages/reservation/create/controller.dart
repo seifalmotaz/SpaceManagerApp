@@ -170,14 +170,14 @@ class CreateReservationController extends GetxController {
       if (item is GuestReservation) {
         _roomAppointments.add(Appointment(
           color: Colors.teal,
-          notes: item.primaryName,
+          notes: item.group,
           startTime: item.timeIn,
           endTime: item.timeOut,
         ));
       } else if (item is CourseReservation) {
         _roomAppointments.add(Appointment(
           color: Colors.lightBlue,
-          notes: item.primaryName,
+          notes: item.group,
           startTime: item.timeIn,
           endTime: item.timeOut,
         ));
@@ -274,17 +274,16 @@ class CreateReservationController extends GetxController {
               timeIn: app.startTime,
               guestId: guest.value!.id,
               roomId: selectedRoom_!.id,
-              primaryName: group.title,
+              group: group.title,
               paidAmount: getPaidAmountForAppointment(app),
             );
           } else if (course.value != null) {
             await courseReservationQuery.create(
               timeOut: app.endTime,
               timeIn: app.startTime,
-              guestId: course.value!.lecturerId,
               courseId: course.value!.id,
               roomId: selectedRoom_!.id,
-              primaryName: group.title,
+              group: group.title,
             );
           }
         } catch (e, stackTrace) {

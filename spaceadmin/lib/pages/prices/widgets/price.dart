@@ -22,8 +22,8 @@ class _PriceItemWidgetState extends State<PriceItemWidget> {
   @override
   void initState() {
     setState(() {
-      isPerDay = widget.price.isPerDay ?? false;
-      isDefault = widget.price.isDefault ?? false;
+      isPerDay = widget.price.isPerDay;
+      isDefault = widget.price.isDefault;
     });
     super.initState();
   }
@@ -40,7 +40,7 @@ class _PriceItemWidgetState extends State<PriceItemWidget> {
       margin: const EdgeInsets.symmetric(vertical: 7),
       padding: const EdgeInsets.symmetric(horizontal: 23, vertical: 13),
       decoration: BoxDecoration(
-        color: widget.price.isDeleted!
+        color: widget.price.isDeleted
             ? ColorPalette.lightBittersweet
             : Colors.white,
         borderRadius: BorderRadius.circular(13),
@@ -68,7 +68,7 @@ class _PriceItemWidgetState extends State<PriceItemWidget> {
                   ),
                 ),
                 Text(
-                  widget.price.description!,
+                  widget.price.description,
                   style: const TextStyle(
                     color: ColorPalette.semiTextColor,
                     fontWeight: FontWeight.bold,
@@ -81,9 +81,9 @@ class _PriceItemWidgetState extends State<PriceItemWidget> {
           Flexible(
             flex: 3,
             child: IgnorePointer(
-              ignoring: widget.price.isDeleted!,
+              ignoring: widget.price.isDeleted,
               child: Opacity(
-                opacity: widget.price.isDeleted! ? .51 : 1,
+                opacity: widget.price.isDeleted ? .51 : 1,
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -164,7 +164,7 @@ class _PriceItemWidgetState extends State<PriceItemWidget> {
           ),
           Flexible(
             flex: 2,
-            child: widget.price.isDeleted!
+            child: widget.price.isDeleted
                 ? IconButton(
                     icon: const Icon(
                       Icons.restore_from_trash,

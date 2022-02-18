@@ -25,7 +25,7 @@ class GroupsListWidget extends StatelessWidget {
                     onTap: () {
                       controller.selectedGroup.value = group;
                       List<CourseReservation> data = controller.reservations_
-                          .where((e) => e.primaryName == group.title)
+                          .where((e) => e.group == group.title)
                           .toList();
 
                       data.sort((a, b) {

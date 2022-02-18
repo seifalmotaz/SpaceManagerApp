@@ -4,6 +4,7 @@ export 'service.dart';
 //
 export './models/course/course.dart';
 export './models/course_registration/course_registration.dart';
+export './sql/registration.dart';
 //
 export './models/guest/guest.dart';
 export './sql/guest/session_join.dart';

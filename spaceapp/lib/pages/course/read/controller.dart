@@ -35,7 +35,7 @@ class ReadCourseController extends GetxController {
     for (ReservationsGroup item in groups_) {
       bool ended = true;
       List<CourseReservation> data =
-          reservations_.where((e) => e.primaryName == item.title).toList();
+          reservations_.where((e) => e.group == item.title).toList();
       for (CourseReservation i in data) {
         if (!i.timeOut.isBefore(dateTime)) {
           ended = false;
@@ -62,20 +62,20 @@ class ReadCourseController extends GetxController {
 
     List<String> listString = [];
     for (CourseReservation reservation in reservations_) {
-      if (!listString.contains(reservation.primaryName)) {
-        listString.add(reservation.primaryName);
+      if (!listString.contains(reservation.group)) {
+        listString.add(reservation.group);
       }
     }
 
     List<ReservationsGroup> list = [];
     for (String item in listString) {
-      int count = reservations_.where((e) => e.primaryName == item).length;
+      int count = reservations_.where((e) => e.group == item).length;
       list.add(ReservationsGroup(item, count));
     }
 
     groups.value = list;
 
-    guests.value = await courseRegistrationQuery.find(courseId: course.id);
+    guests.value = await courseRegistrationQuery.findForCourse(course.id);
   }
 
   @override

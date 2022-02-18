@@ -10,26 +10,25 @@ CourseReservation _$CourseReservationFromJson(Map<String, dynamic> json) =>
     CourseReservation(
       courseId: json['course_id'] as int,
       createdDate: DataCompiler.fromDBDateNull(json['created_date'] as int?),
-      guestId: json['guest_id'],
       id: json['id'],
       timeIn: DataCompiler.fromDBDate(json['time_in'] as int),
       timeOut: DataCompiler.fromDBDate(json['time_out'] as int),
       roomId: json['room_id'],
-      primaryName: json['primary_name'],
+      group: json['group'],
       isCancelled: json['is_cancelled'] == null
           ? false
           : DataCompiler.fromDBool(json['is_cancelled'] as int),
       customPaid: json['custom_paid'] == null
           ? false
           : DataCompiler.fromDBoolNull(json['custom_paid'] as int?),
+      capacity: json['capacity'],
     );
 
 Map<String, dynamic> _$CourseReservationToJson(CourseReservation instance) {
   final val = <String, dynamic>{
     'id': instance.id,
-    'guest_id': instance.guestId,
     'room_id': instance.roomId,
-    'primary_name': instance.primaryName,
+    'group': instance.group,
   };
 
   void writeNotNull(String key, dynamic value) {
@@ -38,6 +37,7 @@ Map<String, dynamic> _$CourseReservationToJson(CourseReservation instance) {
     }
   }
 
+  writeNotNull('capacity', instance.capacity);
   writeNotNull('is_cancelled', DataCompiler.toDBool(instance.isCancelled));
   writeNotNull('time_in', DataCompiler.toDBDate(instance.timeIn));
   writeNotNull('time_out', DataCompiler.toDBDate(instance.timeOut));
@@ -50,23 +50,23 @@ Map<String, dynamic> _$CourseReservationToJson(CourseReservation instance) {
 GuestReservation _$GuestReservationFromJson(Map<String, dynamic> json) =>
     GuestReservation(
       paidAmount: (json['paid_amount'] as num).toDouble(),
+      guestId: json['guest_id'] as int,
       createdDate: DataCompiler.fromDBDateNull(json['created_date'] as int?),
-      guestId: json['guest_id'],
       id: json['id'],
       timeIn: DataCompiler.fromDBDate(json['time_in'] as int),
       timeOut: DataCompiler.fromDBDate(json['time_out'] as int),
       roomId: json['room_id'],
-      primaryName: json['primary_name'],
+      group: json['group'],
       isCancelled: DataCompiler.fromDBool(json['is_cancelled'] as int),
       customPaid: DataCompiler.fromDBoolNull(json['custom_paid'] as int?),
+      capacity: json['capacity'],
     );
 
 Map<String, dynamic> _$GuestReservationToJson(GuestReservation instance) {
   final val = <String, dynamic>{
     'id': instance.id,
-    'guest_id': instance.guestId,
     'room_id': instance.roomId,
-    'primary_name': instance.primaryName,
+    'group': instance.group,
   };
 
   void writeNotNull(String key, dynamic value) {
@@ -75,12 +75,14 @@ Map<String, dynamic> _$GuestReservationToJson(GuestReservation instance) {
     }
   }
 
+  writeNotNull('capacity', instance.capacity);
   writeNotNull('is_cancelled', DataCompiler.toDBool(instance.isCancelled));
   writeNotNull('time_in', DataCompiler.toDBDate(instance.timeIn));
   writeNotNull('time_out', DataCompiler.toDBDate(instance.timeOut));
   writeNotNull('created_date', DataCompiler.toDBDateNull(instance.createdDate));
   writeNotNull('custom_paid', DataCompiler.toDBoolNull(instance.customPaid));
   val['paid_amount'] = instance.paidAmount;
+  val['guest_id'] = instance.guestId;
   return val;
 }
 
@@ -94,9 +96,9 @@ class CourseReservationQuery {
 
   Future<int> create({
     required int courseId,
-    required int guestId,
     required int roomId,
-    required String primaryName,
+    required String group,
+    int? capacity,
     bool? isCancelled,
     required DateTime timeIn,
     required DateTime timeOut,
@@ -105,9 +107,9 @@ class CourseReservationQuery {
   }) async =>
       await db.insert('reservation', {
         if (courseId != null) 'course_id': courseId,
-        if (guestId != null) 'guest_id': guestId,
         if (roomId != null) 'room_id': roomId,
-        if (primaryName != null) 'primary_name': primaryName,
+        if (group != null) 'group': group,
+        if (capacity != null) 'capacity': capacity,
         if (isCancelled != null) 'is_cancelled': isCancelled ? 1 : 0,
         if (timeIn != null)
           'time_in': (timeIn.millisecondsSinceEpoch / 1000).round() as int,
@@ -131,9 +133,9 @@ class CourseReservationQuery {
   Future<int> update({
     required int id,
     int? courseId,
-    int? guestId,
     int? roomId,
-    String? primaryName,
+    String? group,
+    int? capacity,
     bool? isCancelled,
     DateTime? timeIn,
     DateTime? timeOut,
@@ -144,9 +146,9 @@ class CourseReservationQuery {
         'reservation',
         {
           if (courseId != null) 'course_id': courseId,
-          if (guestId != null) 'guest_id': guestId,
           if (roomId != null) 'room_id': roomId,
-          if (primaryName != null) 'primary_name': primaryName,
+          if (group != null) 'group': group,
+          if (capacity != null) 'capacity': capacity,
           if (isCancelled != null) 'is_cancelled': isCancelled ? 1 : 0,
           if (timeIn != null)
             'time_in': (timeIn.millisecondsSinceEpoch / 1000).round() as int,
@@ -169,9 +171,9 @@ class CourseReservationQuery {
 
   Future<List<CourseReservation>> find({
     int? courseId,
-    int? guestId,
     int? roomId,
-    String? primaryName,
+    String? group,
+    int? capacity,
     bool? isCancelled,
     DateTime? timeIn,
     DateTime? timeOut,
@@ -182,14 +184,14 @@ class CourseReservationQuery {
     if (courseId != null) {
       searchFields.add("reservation.course_id = ?");
     }
-    if (guestId != null) {
-      searchFields.add("reservation.guest_id = ?");
-    }
     if (roomId != null) {
       searchFields.add("reservation.room_id = ?");
     }
-    if (primaryName != null) {
-      searchFields.add("reservation.primary_name = ?");
+    if (group != null) {
+      searchFields.add("reservation.group = ?");
+    }
+    if (capacity != null) {
+      searchFields.add("reservation.capacity = ?");
     }
     if (isCancelled != null) {
       searchFields.add("reservation.is_cancelled = ?");
@@ -215,15 +217,16 @@ class CourseReservationQuery {
 
     List<Map<String, dynamic>> data = await db.query(
       'reservation',
-      where: '''
+      where:
+          '''
           ${buf.toString()}
           ${buf.toString().isNotEmpty ? "AND" : ""} ${CourseReservationTable.sqlFindSchema}
           ''',
       whereArgs: [
         if (courseId != null) courseId,
-        if (guestId != null) guestId,
         if (roomId != null) roomId,
-        if (primaryName != null) primaryName,
+        if (group != null) group,
+        if (capacity != null) capacity,
         if (isCancelled != null) isCancelled ? 1 : 0,
         if (timeIn != null)
           (timeIn.millisecondsSinceEpoch / 1000).round() as int,
@@ -247,7 +250,8 @@ class GuestReservationQuery {
     required double paidAmount,
     required int guestId,
     required int roomId,
-    required String primaryName,
+    required String group,
+    int? capacity,
     bool? isCancelled,
     required DateTime timeIn,
     required DateTime timeOut,
@@ -258,7 +262,8 @@ class GuestReservationQuery {
         if (paidAmount != null) 'paid_amount': paidAmount,
         if (guestId != null) 'guest_id': guestId,
         if (roomId != null) 'room_id': roomId,
-        if (primaryName != null) 'primary_name': primaryName,
+        if (group != null) 'group': group,
+        if (capacity != null) 'capacity': capacity,
         if (isCancelled != null) 'is_cancelled': isCancelled ? 1 : 0,
         if (timeIn != null)
           'time_in': (timeIn.millisecondsSinceEpoch / 1000).round() as int,
@@ -284,7 +289,8 @@ class GuestReservationQuery {
     double? paidAmount,
     int? guestId,
     int? roomId,
-    String? primaryName,
+    String? group,
+    int? capacity,
     bool? isCancelled,
     DateTime? timeIn,
     DateTime? timeOut,
@@ -297,7 +303,8 @@ class GuestReservationQuery {
           if (paidAmount != null) 'paid_amount': paidAmount,
           if (guestId != null) 'guest_id': guestId,
           if (roomId != null) 'room_id': roomId,
-          if (primaryName != null) 'primary_name': primaryName,
+          if (group != null) 'group': group,
+          if (capacity != null) 'capacity': capacity,
           if (isCancelled != null) 'is_cancelled': isCancelled ? 1 : 0,
           if (timeIn != null)
             'time_in': (timeIn.millisecondsSinceEpoch / 1000).round() as int,
@@ -322,7 +329,8 @@ class GuestReservationQuery {
     double? paidAmount,
     int? guestId,
     int? roomId,
-    String? primaryName,
+    String? group,
+    int? capacity,
     bool? isCancelled,
     DateTime? timeIn,
     DateTime? timeOut,
@@ -339,8 +347,11 @@ class GuestReservationQuery {
     if (roomId != null) {
       searchFields.add("reservation.room_id = ?");
     }
-    if (primaryName != null) {
-      searchFields.add("reservation.primary_name = ?");
+    if (group != null) {
+      searchFields.add("reservation.group = ?");
+    }
+    if (capacity != null) {
+      searchFields.add("reservation.capacity = ?");
     }
     if (isCancelled != null) {
       searchFields.add("reservation.is_cancelled = ?");
@@ -366,7 +377,8 @@ class GuestReservationQuery {
 
     List<Map<String, dynamic>> data = await db.query(
       'reservation',
-      where: '''
+      where:
+          '''
           ${buf.toString()}
           ${buf.toString().isNotEmpty ? "AND" : ""} ${GuestReservationTable.sqlFindSchema}
           ''',
@@ -374,7 +386,8 @@ class GuestReservationQuery {
         if (paidAmount != null) paidAmount,
         if (guestId != null) guestId,
         if (roomId != null) roomId,
-        if (primaryName != null) primaryName,
+        if (group != null) group,
+        if (capacity != null) capacity,
         if (isCancelled != null) isCancelled ? 1 : 0,
         if (timeIn != null)
           (timeIn.millisecondsSinceEpoch / 1000).round() as int,
@@ -415,16 +428,16 @@ extension CourseReservationTable on CourseReservation {
   static String nativeId = 'reservation.id';
 
   /// Field data: field ///
-  static String guestId = 'guest_id';
-  static String nativeGuestId = 'reservation.guest_id';
-
-  /// Field data: field ///
   static String roomId = 'room_id';
   static String nativeRoomId = 'reservation.room_id';
 
   /// Field data: field ///
-  static String primaryName = 'primary_name';
-  static String nativePrimaryName = 'reservation.primary_name';
+  static String group = 'group';
+  static String nativeGroup = 'reservation.group';
+
+  /// Field data: field ///
+  static String capacity = 'capacity';
+  static String nativeCapacity = 'reservation.capacity';
 
   /// Field data: field ///
   static String isCancelled = 'is_cancelled';
@@ -446,12 +459,13 @@ extension CourseReservationTable on CourseReservation {
   static String customPaid = 'custom_paid';
   static String nativeCustomPaid = 'reservation.custom_paid';
 
-  static const String sqlSelect = """
+  static const String sqlSelect =
+      """
     reservation.course_id AS reservation_course_id,
     reservation.id AS reservation_id,
-    reservation.guest_id AS reservation_guest_id,
     reservation.room_id AS reservation_room_id,
-    reservation.primary_name AS reservation_primary_name,
+    reservation.group AS reservation_group,
+    reservation.capacity AS reservation_capacity,
     reservation.is_cancelled AS reservation_is_cancelled,
     reservation.time_in AS reservation_time_in,
     reservation.time_out AS reservation_time_out,
@@ -459,12 +473,12 @@ extension CourseReservationTable on CourseReservation {
     reservation.custom_paid AS reservation_custom_paid
   """;
 
-  static const String sqlFindSchema = """
+  static const String sqlFindSchema =
+      """
     reservation.course_id IS NOT NULL
     AND reservation.id IS NOT NULL
-    AND reservation.guest_id IS NOT NULL
     AND reservation.room_id IS NOT NULL
-    AND reservation.primary_name IS NOT NULL
+    AND reservation.group IS NOT NULL
     AND reservation.is_cancelled IS NOT NULL
     AND reservation.time_in IS NOT NULL
     AND reservation.time_out IS NOT NULL
@@ -473,9 +487,9 @@ extension CourseReservationTable on CourseReservation {
   static const List schemaMap = [
     'course_id',
     'id',
-    'guest_id',
     'room_id',
-    'primary_name',
+    'group',
+    'capacity',
     'is_cancelled',
     'time_in',
     'time_out',
@@ -522,20 +536,24 @@ extension GuestReservationTable on GuestReservation {
   static String nativePaidAmount = 'reservation.paid_amount';
 
   /// Field data: field ///
-  static String id = 'id';
-  static String nativeId = 'reservation.id';
-
-  /// Field data: field ///
   static String guestId = 'guest_id';
   static String nativeGuestId = 'reservation.guest_id';
+
+  /// Field data: field ///
+  static String id = 'id';
+  static String nativeId = 'reservation.id';
 
   /// Field data: field ///
   static String roomId = 'room_id';
   static String nativeRoomId = 'reservation.room_id';
 
   /// Field data: field ///
-  static String primaryName = 'primary_name';
-  static String nativePrimaryName = 'reservation.primary_name';
+  static String group = 'group';
+  static String nativeGroup = 'reservation.group';
+
+  /// Field data: field ///
+  static String capacity = 'capacity';
+  static String nativeCapacity = 'reservation.capacity';
 
   /// Field data: field ///
   static String isCancelled = 'is_cancelled';
@@ -557,12 +575,14 @@ extension GuestReservationTable on GuestReservation {
   static String customPaid = 'custom_paid';
   static String nativeCustomPaid = 'reservation.custom_paid';
 
-  static const String sqlSelect = """
+  static const String sqlSelect =
+      """
     reservation.paid_amount AS reservation_paid_amount,
-    reservation.id AS reservation_id,
     reservation.guest_id AS reservation_guest_id,
+    reservation.id AS reservation_id,
     reservation.room_id AS reservation_room_id,
-    reservation.primary_name AS reservation_primary_name,
+    reservation.group AS reservation_group,
+    reservation.capacity AS reservation_capacity,
     reservation.is_cancelled AS reservation_is_cancelled,
     reservation.time_in AS reservation_time_in,
     reservation.time_out AS reservation_time_out,
@@ -570,12 +590,13 @@ extension GuestReservationTable on GuestReservation {
     reservation.custom_paid AS reservation_custom_paid
   """;
 
-  static const String sqlFindSchema = """
+  static const String sqlFindSchema =
+      """
     reservation.paid_amount IS NOT NULL
-    AND reservation.id IS NOT NULL
     AND reservation.guest_id IS NOT NULL
+    AND reservation.id IS NOT NULL
     AND reservation.room_id IS NOT NULL
-    AND reservation.primary_name IS NOT NULL
+    AND reservation.group IS NOT NULL
     AND reservation.is_cancelled IS NOT NULL
     AND reservation.time_in IS NOT NULL
     AND reservation.time_out IS NOT NULL
@@ -583,10 +604,11 @@ extension GuestReservationTable on GuestReservation {
 
   static const List schemaMap = [
     'paid_amount',
-    'id',
     'guest_id',
+    'id',
     'room_id',
-    'primary_name',
+    'group',
+    'capacity',
     'is_cancelled',
     'time_in',
     'time_out',

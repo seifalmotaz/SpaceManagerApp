@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:autoupdater/autoupdater.dart';
 import 'package:database_system/database_system.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -31,6 +32,7 @@ class DashboardController extends GetxController {
     super.onReady();
     resetData();
     Timer.periodic(const Duration(minutes: 5), (timer) => resetData());
+    autoUpdater();
   }
 
   resetData() async {
