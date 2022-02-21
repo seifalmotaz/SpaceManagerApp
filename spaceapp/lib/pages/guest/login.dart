@@ -3,12 +3,11 @@ import 'package:database_system/database_system.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
-import 'package:spaceapp/constant/base_colors.dart';
+import 'package:xwidgets/xwidgets.dart';
 import 'package:spaceapp/helpers/snacks.dart';
 import 'package:spaceapp/pages/dashboard/controllers/binding.dart';
 import 'package:spaceapp/pages/dashboard/dashboard.dart';
 import 'package:spaceapp/services/auth.dart';
-import 'package:spaceapp/widgets/text_field.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);

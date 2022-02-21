@@ -1,7 +1,7 @@
 import 'package:database_system/database_system.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:spaceapp/constant/base_colors.dart';
+import 'package:xwidgets/xwidgets.dart';
 import 'package:spaceapp/pages/course/read/controller.dart';
 
 class GroupsListWidget extends StatelessWidget {
@@ -25,7 +25,7 @@ class GroupsListWidget extends StatelessWidget {
                     onTap: () {
                       controller.selectedGroup.value = group;
                       List<CourseReservation> data = controller.reservations_
-                          .where((e) => e.group == group.title)
+                          .where((e) => e.tag == group.title)
                           .toList();
 
                       data.sort((a, b) {

@@ -3,12 +3,10 @@ import 'package:database_system/database_system.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
-import 'package:spaceapp/constant/base_colors.dart';
+import 'package:xwidgets/xwidgets.dart';
 import 'package:spaceapp/helpers/extention.dart';
 import 'package:spaceapp/pages/dashboard/screens/widgets/guest_form.dart';
 import 'package:spaceapp/pages/guest/read/read.dart';
-import 'package:spaceapp/widgets/button.dart';
-import 'package:spaceapp/widgets/dialog.dart';
 
 class EditGuestScreen extends StatefulWidget {
   const EditGuestScreen({Key? key, required this.guest, required this.onSave})

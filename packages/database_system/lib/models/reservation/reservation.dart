@@ -20,7 +20,7 @@ class Reservation {
   final int id;
 
   int roomId;
-  String group;
+  String tag;
   int? capacity;
 
   @boolKey
@@ -46,7 +46,7 @@ class Reservation {
     required this.timeIn,
     required this.timeOut,
     required this.roomId,
-    required this.group,
+    required this.tag,
     required this.createdDate,
     this.isCancelled = false,
     this.customPaid = false,
@@ -73,12 +73,12 @@ class CourseReservation extends Reservation with ReservationJoins {
     required timeIn,
     required timeOut,
     required roomId,
-    required group,
+    required tag,
     isCancelled = false,
     customPaid = false,
     capacity,
   }) : super(
-          group: group,
+          tag: tag,
           roomId: roomId,
           createdDate: createdDate,
           id: id,
@@ -98,21 +98,23 @@ class CourseReservation extends Reservation with ReservationJoins {
 class GuestReservation extends Reservation with ReservationJoins {
   double paidAmount;
   int guestId;
+  double? extraHoursPrice;
 
   GuestReservation({
     required this.paidAmount,
     required this.guestId,
     required createdDate,
+    this.extraHoursPrice,
     required id,
     required timeIn,
     required timeOut,
     required roomId,
-    required group,
+    required tag,
     isCancelled,
     customPaid,
     capacity,
   }) : super(
-          group: group,
+          tag: tag,
           roomId: roomId,
           createdDate: createdDate,
           id: id,

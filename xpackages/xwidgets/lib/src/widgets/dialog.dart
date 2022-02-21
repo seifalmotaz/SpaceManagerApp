@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:spaceapp/constant/base_colors.dart';
+part of widgets_group;
 
 class WDialog extends StatelessWidget {
   const WDialog({

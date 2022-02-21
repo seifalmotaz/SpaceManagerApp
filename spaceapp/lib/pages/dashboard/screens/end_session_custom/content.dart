@@ -4,10 +4,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:jiffy/jiffy.dart';
-import 'package:spaceapp/constant/base_colors.dart';
+import 'package:xwidgets/xwidgets.dart';
 import 'package:spaceapp/pages/dashboard/screens/end_session_custom/controller.dart';
 import 'package:spaceapp/pages/dashboard/screens/widgets/guest_form.dart';
-import 'package:spaceapp/widgets/text_field.dart';
 
 class ScreenContentWidget extends StatelessWidget {
   const ScreenContentWidget({Key? key}) : super(key: key);

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:spaceapp/constant/base_colors.dart';
+import 'package:xwidgets/xwidgets.dart';
 import 'package:spaceapp/pages/dashboard/controllers/controller.dart';
 
 import 'course.dart';

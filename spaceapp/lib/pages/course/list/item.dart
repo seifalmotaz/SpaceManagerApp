@@ -4,8 +4,7 @@ import 'package:get/get.dart';
 import 'package:spaceapp/pages/course/read/read.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:readmore/readmore.dart';
-import 'package:spaceapp/constant/base_colors.dart';
-import 'package:spaceapp/widgets/resposive.dart';
+import 'package:xwidgets/xwidgets.dart';
 
 class CourseItemWidget extends UIResponsiveless {
   const CourseItemWidget(this.course, {Key? key}) : super(key: key);

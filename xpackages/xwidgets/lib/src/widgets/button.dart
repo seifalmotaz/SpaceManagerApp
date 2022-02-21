@@ -1,5 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:spaceapp/constant/base_colors.dart';
+part of widgets_group;
 
 class WButton extends StatelessWidget {
   const WButton({

@@ -8,7 +8,6 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   sqfliteFfiInit();
   await windowManager.ensureInitialized();
-
   windowManager.waitUntilReadyToShow().then((_) async {
     // await windowManager.setAsFrameless();
     // await windowManager.maximize();

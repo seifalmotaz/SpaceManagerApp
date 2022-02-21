@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:spaceapp/pages/course/create/create.dart';
 import 'package:spaceapp/pages/course/list/controller.dart';
 import 'package:spaceapp/pages/dashboard/widgets/background.dart';
-import 'package:spaceapp/widgets/topbar.dart';
+import 'package:xwidgets/xwidgets.dart';
 
 import 'item.dart';
 

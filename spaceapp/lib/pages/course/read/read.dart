@@ -1,14 +1,10 @@
 import 'package:database_system/database_system.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:spaceapp/constant/base_colors.dart';
+import 'package:xwidgets/xwidgets.dart';
 import 'package:spaceapp/pages/course/read/controller.dart';
 import 'package:spaceapp/pages/course/registration/create.dart';
 import 'package:spaceapp/pages/reservation/create/create.dart';
-import 'package:spaceapp/widgets/dialog.dart';
-import 'package:spaceapp/widgets/resposive.dart';
-import 'package:spaceapp/widgets/scaffold.dart';
-import 'package:spaceapp/widgets/topbar.dart';
 
 import 'widgets/data.dart';
 import 'widgets/form.dart';

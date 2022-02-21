@@ -1,6 +1,6 @@
 import 'package:database_system/database_system.dart';
 import 'package:flutter/material.dart';
-import 'package:spaceapp/constant/base_colors.dart';
+import 'package:xwidgets/xwidgets.dart';
 
 class GuestDataWidget extends StatelessWidget {
   const GuestDataWidget(this.guest, {Key? key}) : super(key: key);

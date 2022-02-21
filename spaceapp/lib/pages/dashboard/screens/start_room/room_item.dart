@@ -1,6 +1,6 @@
 import 'package:database_system/database_system.dart';
 import 'package:flutter/material.dart';
-import 'package:spaceapp/constant/base_colors.dart';
+import 'package:xwidgets/xwidgets.dart';
 
 class RoomItemWidget extends StatelessWidget {
   const RoomItemWidget(this.room, this.setroom, this.roomSelected, {Key? key})

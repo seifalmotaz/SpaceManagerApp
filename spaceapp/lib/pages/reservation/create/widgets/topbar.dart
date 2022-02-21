@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:spaceapp/constant/base_colors.dart';
+import 'package:xwidgets/xwidgets.dart';
 import 'package:spaceapp/pages/reservation/create/controller.dart';
-import 'package:spaceapp/widgets/resposive.dart';
-import 'package:spaceapp/widgets/text_field.dart';
 
 const SliverToBoxAdapter paddingFromTopBar =
     SliverToBoxAdapter(child: SizedBox(height: kToolbarHeight * 1.61));

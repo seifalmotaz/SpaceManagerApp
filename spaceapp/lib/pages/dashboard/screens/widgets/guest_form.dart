@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:spaceapp/constant/base_colors.dart';
-import 'package:spaceapp/widgets/text_field.dart';
+import 'package:xwidgets/xwidgets.dart';
 
 class GuestFormWidget extends StatelessWidget {
   const GuestFormWidget({

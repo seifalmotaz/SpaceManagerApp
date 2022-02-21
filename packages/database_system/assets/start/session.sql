@@ -26,9 +26,10 @@ CREATE TABLE room (
 
 CREATE TABLE reservation (
     id INTEGER NOT NULL PRIMARY KEY,
-    group VARCHAR(200) NOT NULL,
+    tag VARCHAR(200) NOT NULL,
     capacity INTEGER NOT NULL,
     paid_amount FLOAT NULL,
+    extra_hours_price FLOAT NULL,
     custom_paid BOOLEAN DEFAULT FALSE,
 
     guest_id INTEGER NULL,
@@ -57,7 +58,6 @@ CREATE TABLE session (
     room_id INTEGER NULL,
     reservation_id INTEGER NULL,
 
-    time_out INTEGER NULL,
     paid_amount FLOAT NULL,
     custom_paid BOOLEAN DEFAULT FALSE,
     

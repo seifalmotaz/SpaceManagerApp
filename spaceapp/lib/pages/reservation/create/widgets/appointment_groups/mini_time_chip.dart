@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jiffy/jiffy.dart';
-import 'package:spaceapp/constant/base_colors.dart';
+import 'package:xwidgets/xwidgets.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 class MiniTimeChipWidget extends StatelessWidget {

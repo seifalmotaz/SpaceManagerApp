@@ -1,5 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+part of widgets_group;
 
 class WTextField extends StatelessWidget {
   const WTextField({

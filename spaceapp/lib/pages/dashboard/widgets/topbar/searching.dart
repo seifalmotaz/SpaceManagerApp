@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:spaceapp/constant/base_colors.dart';
+import 'package:xwidgets/xwidgets.dart';
 import 'package:spaceapp/pages/dashboard/controllers/controller.dart';
 import 'package:spaceapp/pages/dashboard/controllers/searching.dart';
-import 'package:spaceapp/widgets/text_field.dart';
 
 class SearchingBar extends StatelessWidget {
   const SearchingBar({Key? key}) : super(key: key);

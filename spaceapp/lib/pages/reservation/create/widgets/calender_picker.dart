@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:spaceapp/constant/base_colors.dart';
+import 'package:xwidgets/xwidgets.dart';
 import 'package:spaceapp/helpers/snacks.dart';
 import 'package:spaceapp/pages/reservation/create/controller.dart';
-import 'package:spaceapp/widgets/resposive.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 import '../source.dart';
@@ -30,6 +29,7 @@ class CalenderPickerWidget extends StatelessWidget {
         ),
         child: SfCalendar(
           firstDayOfWeek: 6,
+          controller: controller.calendarController,
           view: CalendarView.week,
           showDatePickerButton: true,
           allowViewNavigation: true,

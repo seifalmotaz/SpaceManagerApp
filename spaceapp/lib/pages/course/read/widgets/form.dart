@@ -2,12 +2,10 @@ import 'package:database_system/database_system.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:spaceapp/constant/base_colors.dart';
+import 'package:xwidgets/xwidgets.dart';
 import 'package:spaceapp/helpers/monitoring.dart';
 import 'package:spaceapp/helpers/snacks.dart';
 import 'package:spaceapp/pages/course/list/controller.dart';
-import 'package:spaceapp/widgets/button.dart';
-import 'package:spaceapp/widgets/text_field.dart';
 
 class CourseFormWidget extends StatefulWidget {
   const CourseFormWidget({

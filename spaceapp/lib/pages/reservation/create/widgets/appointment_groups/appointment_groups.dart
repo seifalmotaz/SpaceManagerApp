@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:spaceapp/constant/base_colors.dart';
+import 'package:xwidgets/xwidgets.dart';
 import 'package:spaceapp/pages/reservation/create/controller.dart';
-import 'package:spaceapp/widgets/resposive.dart';
-
 import 'group_item.dart';
 
 class AppointmentGroups extends UIResponsiveless {
@@ -61,11 +59,8 @@ class AppointmentGroups extends UIResponsiveless {
                     Icons.add,
                     color: colorDarkLightest.withOpacity(.81),
                   ),
-                  onPressed: () {
-                    controller.$AppointmentGroup.value =
-                        controller.appointmentGroups.length;
-                    controller.$AppointmentSubGroup.value = 0;
-                  },
+                  onPressed: () => controller.selectedGroup.value =
+                      controller.appointmentGroups.length,
                 ),
               ],
             ),
@@ -74,7 +69,7 @@ class AppointmentGroups extends UIResponsiveless {
             child: Obx(
               () => ListView.separated(
                 itemCount: controller.appointmentGroups.length,
-                padding: const EdgeInsets.all(13),
+                padding: const EdgeInsets.symmetric(horizontal: 13),
                 separatorBuilder: (context, index) {
                   return Divider(
                     color: Colors.grey.shade200,

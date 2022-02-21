@@ -35,7 +35,7 @@ class ReadCourseController extends GetxController {
     for (ReservationsGroup item in groups_) {
       bool ended = true;
       List<CourseReservation> data =
-          reservations_.where((e) => e.group == item.title).toList();
+          reservations_.where((e) => e.tag == item.title).toList();
       for (CourseReservation i in data) {
         if (!i.timeOut.isBefore(dateTime)) {
           ended = false;
@@ -62,14 +62,14 @@ class ReadCourseController extends GetxController {
 
     List<String> listString = [];
     for (CourseReservation reservation in reservations_) {
-      if (!listString.contains(reservation.group)) {
-        listString.add(reservation.group);
+      if (!listString.contains(reservation.tag)) {
+        listString.add(reservation.tag);
       }
     }
 
     List<ReservationsGroup> list = [];
     for (String item in listString) {
-      int count = reservations_.where((e) => e.group == item).length;
+      int count = reservations_.where((e) => e.tag == item).length;
       list.add(ReservationsGroup(item, count));
     }
 

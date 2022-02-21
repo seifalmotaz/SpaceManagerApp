@@ -1,9 +1,8 @@
 import 'package:database_system/database_system.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:spaceapp/constant/base_colors.dart';
+import 'package:xwidgets/xwidgets.dart';
 import 'package:spaceapp/pages/reservation/create/controller.dart';
-import 'package:spaceapp/widgets/resposive.dart';
 import 'package:spaceapp/pages/dashboard/widgets/background.dart';
 import 'package:spaceapp/pages/reservation/create/widgets/calender_picker.dart';
 import 'package:spaceapp/pages/reservation/create/widgets/topbar.dart';
@@ -52,7 +51,7 @@ class CreateReservationPage extends UIResponsiveless {
                         for (Room room in controller.rooms)
                           AnimatedSwitcher(
                             duration: const Duration(milliseconds: 300),
-                            child: controller.selectedRoom_?.id == room.id
+                            child: controller.selectedRoom_ == room.id
                                 ? RoomItemWidget(
                                     room,
                                     bg: colorDarkLightest,
@@ -62,8 +61,7 @@ class CreateReservationPage extends UIResponsiveless {
                                   )
                                 : InkWell(
                                     onTap: () {
-                                      controller.selectedRoom.value = room;
-                                      controller.appointmentGroups.value = {};
+                                      controller.selectedRoom.value = room.id;
                                       controller.getRoomReservations(room.id);
                                     },
                                     child: RoomItemWidget(

@@ -4,37 +4,26 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:jiffy/jiffy.dart';
-import 'package:spaceapp/constant/base_colors.dart';
+import 'package:xwidgets/xwidgets.dart';
 import 'package:spaceapp/constants/settings.dart';
-import 'package:spaceapp/helpers/monitoring.dart';
 import 'package:spaceapp/helpers/snacks.dart';
 import 'package:spaceapp/pages/dashboard/controllers/controller.dart';
-import 'package:spaceapp/widgets/dialog.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 class AppointmentGroup {
-  String title;
+  int roomId;
   Color color;
-  Map<int, List<Appointment>> subgroups;
+  List<Appointment> appointments;
   AppointmentGroup({
-    required this.title,
-    required this.subgroups,
+    required this.roomId,
+    required this.appointments,
     required this.color,
   });
 }
 
 Color colorChooser(int i) {
-  List<Color> colors = [
-    Colors.redAccent,
-    Colors.blueGrey,
-    Colors.cyan,
-    Colors.green,
-    Colors.indigo,
-    Colors.orange,
-    Colors.deepOrange,
-    Colors.lime,
-    Colors.yellow,
-  ];
+  List<Color> colors = Colors.primaries;
+  if (i >= colors.length) i = i - colors.length;
   return colors[i];
 }
 
@@ -47,6 +36,8 @@ class CreateReservationController extends GetxController {
   }
 
   final List<String> freqList = ['Daily', 'Weekly', 'Monthly', 'Monthly 30'];
+  TextEditingController tagName = TextEditingController();
+  CalendarController calendarController = CalendarController();
 
   // main info
   late Rxn<Guest> guest;
@@ -54,8 +45,8 @@ class CreateReservationController extends GetxController {
   RxList<Room> rooms = <Room>[].obs; // rooms data
 
   // room info
-  Rx<Room?> selectedRoom = Rx<Room?>(null);
-  Room? get selectedRoom_ => selectedRoom.value;
+  Rx<int?> selectedRoom = Rx<int?>(null);
+  int? get selectedRoom_ => selectedRoom.value;
   // room previos reservations
   RxList<Appointment> roomAppointments = RxList<Appointment>();
 
@@ -67,51 +58,47 @@ class CreateReservationController extends GetxController {
 
   // ui vars
   // $ sign == `selected`
-  RxInt $AppointmentGroup = 0.obs;
-  int get $AppointmentGroup_ => $AppointmentGroup.value;
-  // subgroups
-  RxInt $AppointmentSubGroup = 0.obs;
-  int get $AppointmentSubGroup_ => $AppointmentSubGroup.value;
+  RxInt selectedGroup = 0.obs;
+  int get selectedGroup_ => selectedGroup.value;
   // selected appointements
   RxMap<int, AppointmentGroup> appointmentGroups =
       RxMap<int, AppointmentGroup>();
-  //
+  // get all room appointments
   List<Appointment> get appointmentsList {
-    List<Appointment> output = [...roomAppointments.value];
-    for (AppointmentGroup item in appointmentGroups.values.toList()) {
-      for (List<Appointment> i in item.subgroups.values.toList()) {
-        output.addAll(i);
+    List<Appointment> output = [];
+    List<AppointmentGroup> groups = appointmentGroups.values
+        .where((e) => e.roomId == selectedRoom_!)
+        .toList();
+    for (AppointmentGroup item in groups) {
+      for (Appointment i in item.appointments) {
+        output.add(i);
       }
     }
-    return output;
+
+    return [...output, ...roomAppointments.value];
   }
 
+  // get the new appointments only
   List<Appointment> get selectedAppointmentList {
     List<Appointment> output = [];
-    for (AppointmentGroup item in appointmentGroups.values.toList()) {
-      for (List<Appointment> i in item.subgroups.values.toList()) {
-        output.addAll(i);
+    for (AppointmentGroup item in appointmentGroups.values) {
+      for (Appointment i in item.appointments) {
+        output.add(i);
       }
     }
     return output;
-  }
-
-  void setReservationGroupTitle(int i, String? string) {
-    if (string == null || string.isEmpty) return;
-    appointmentGroups[i]!.title = string;
   }
 
   void timeSelected(CalendarSelectionDetails calendarSelectionDetails) {
-    AppointmentGroup? $group = appointmentGroups[$AppointmentGroup_];
-
     Duration duration = Duration(hours: reservedHours.value);
     DateTime startDate = calendarSelectionDetails.date!;
     DateTime endDate = startDate.add(duration);
 
     Appointment app = Appointment(
-      id: 'value.title',
+      id: selectedRoom_!,
       startTime: startDate,
       endTime: endDate,
+      color: colorChooser(selectedGroup_),
     );
 
     List<Appointment> _freq = freq(app);
@@ -120,7 +107,8 @@ class CreateReservationController extends GetxController {
           (e.startTime.isAfter(item.startTime) &&
               e.startTime.isBefore(item.endTime)) ||
           (e.endTime.isAfter(item.startTime) &&
-              e.endTime.isBefore(item.endTime)));
+              e.endTime.isBefore(item.endTime)) ||
+          (e.endTime == item.endTime || e.startTime == item.startTime));
       if (overlap != null) {
         errorSnack(
           'Overlaping',
@@ -130,36 +118,19 @@ class CreateReservationController extends GetxController {
       }
     }
 
-    if ($group != null) {
-      Map<int, AppointmentGroup> appGroups = Map.of(appointmentGroups);
-      appGroups.update($AppointmentGroup_, (value) {
-        app.id = value.title;
-        app.color = value.color;
-        List<Appointment> $subgroup = freq(app);
-        if (value.subgroups.containsKey($AppointmentSubGroup_)) {
-          value.subgroups
-              .update($AppointmentSubGroup_, (value) => value = $subgroup);
-        } else {
-          value.subgroups.addAll({$AppointmentSubGroup_: $subgroup});
-        }
-        return value;
-      });
-      appointmentGroups.value = appGroups;
-    } else {
-      Map<int, AppointmentGroup> appGroups = Map.of(appointmentGroups);
-      app.id = Jiffy(DateTime.now()).format("yyyy/MM/dd, hh:mm:ss");
-      app.color = colorChooser(appointmentGroups.length);
-      appGroups[$AppointmentGroup_] = AppointmentGroup(
-        title: Jiffy(DateTime.now()).format("yyyy/MM/dd, hh:mm:ss"),
-        color: colorChooser(appointmentGroups.length),
-        subgroups: {$AppointmentSubGroup_: freq(app)},
-      );
-      appointmentGroups.value = appGroups;
-    }
-
-    frequency.value = null;
     frequencyNumber.value = 1;
     frequencyNumberEditing.text = '';
+
+    Map<int, AppointmentGroup> _appointmentGroups =
+        Map.of(appointmentGroups.value);
+
+    _appointmentGroups[selectedGroup_] = AppointmentGroup(
+      roomId: selectedRoom_!,
+      appointments: _freq,
+      color: colorChooser(selectedGroup_),
+    );
+
+    appointmentGroups.value = _appointmentGroups;
   }
 
   getRoomReservations(int id) async {
@@ -170,14 +141,14 @@ class CreateReservationController extends GetxController {
       if (item is GuestReservation) {
         _roomAppointments.add(Appointment(
           color: Colors.teal,
-          notes: item.group,
+          notes: item.tag,
           startTime: item.timeIn,
           endTime: item.timeOut,
         ));
       } else if (item is CourseReservation) {
         _roomAppointments.add(Appointment(
           color: Colors.lightBlue,
-          notes: item.group,
+          notes: item.tag,
           startTime: item.timeIn,
           endTime: item.timeOut,
         ));
@@ -245,8 +216,9 @@ class CreateReservationController extends GetxController {
   }
 
   double getPaidAmount() {
+    Room room = rooms.firstWhere((e) => e.id == selectedRoom_);
     double total = 0;
-    double rate = selectedRoom_!.rate;
+    double rate = room.rate;
     for (Appointment app in selectedAppointmentList) {
       DateTimeRange range =
           DateTimeRange(start: app.startTime, end: app.endTime);
@@ -256,7 +228,8 @@ class CreateReservationController extends GetxController {
   }
 
   double getPaidAmountForAppointment(Appointment app) {
-    double rate = selectedRoom_!.rate;
+    Room room = rooms.firstWhere((e) => e.id == selectedRoom_);
+    double rate = room.rate;
     DateTimeRange range = DateTimeRange(start: app.startTime, end: app.endTime);
     double total = range.duration.inHours * rate;
     return total * reservationPrice;
@@ -264,33 +237,33 @@ class CreateReservationController extends GetxController {
 
   save(start, stop, state) async {
     start();
-    for (AppointmentGroup group in appointmentGroups.values) {
-      List<Appointment> list = [for (List i in group.subgroups.values) ...i];
-      for (Appointment app in list) {
-        try {
-          if (guest.value != null) {
-            await guestReservationQuery.create(
-              timeOut: app.endTime,
-              timeIn: app.startTime,
-              guestId: guest.value!.id,
-              roomId: selectedRoom_!.id,
-              group: group.title,
-              paidAmount: getPaidAmountForAppointment(app),
-            );
-          } else if (course.value != null) {
-            await courseReservationQuery.create(
-              timeOut: app.endTime,
-              timeIn: app.startTime,
-              courseId: course.value!.id,
-              roomId: selectedRoom_!.id,
-              group: group.title,
-            );
-          }
-        } catch (e, stackTrace) {
-          MonitoringApp.error(e, stackTrace);
-        }
-      }
-    }
+    // for (AppointmentGroup group in appointmentGroups.values) {
+    //   List<Appointment> list = [for (List i in group.subgroups.values) ...i];
+    //   for (Appointment app in list) {
+    //     try {
+    //       if (guest.value != null) {
+    //         await guestReservationQuery.create(
+    //           timeOut: app.endTime,
+    //           timeIn: app.startTime,
+    //           guestId: guest.value!.id,
+    //           roomId: selectedRoom_!.id,
+    //           tag: group.title,
+    //           paidAmount: getPaidAmountForAppointment(app),
+    //         );
+    //       } else if (course.value != null) {
+    //         await courseReservationQuery.create(
+    //           timeOut: app.endTime,
+    //           timeIn: app.startTime,
+    //           courseId: course.value!.id,
+    //           roomId: selectedRoom_!.id,
+    //           tag: group.title,
+    //         );
+    //       }
+    //     } catch (e, stackTrace) {
+    //       MonitoringApp.error(e, stackTrace);
+    //     }
+    //   }
+    // }
     stop();
     Get.back();
     if (guest.value != null) Get.back();

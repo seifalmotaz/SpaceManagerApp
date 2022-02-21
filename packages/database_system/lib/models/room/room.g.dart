@@ -115,8 +115,7 @@ class RoomQuery {
 
     List<Map<String, dynamic>> data = await db.query(
       'room',
-      where:
-          '''
+      where: '''
           ${buf.toString()}
           ${buf.toString().isNotEmpty ? "AND" : ""} ${RoomTable.sqlFindSchema}
           ''',
@@ -168,8 +167,7 @@ extension RoomTable on Room {
   static String isDeleted = 'is_deleted';
   static String nativeIsDeleted = 'room.is_deleted';
 
-  static const String sqlSelect =
-      """
+  static const String sqlSelect = """
     room.id AS room_id,
     room.rate AS room_rate,
     room.name AS room_name,
@@ -177,8 +175,7 @@ extension RoomTable on Room {
     room.is_deleted AS room_is_deleted
   """;
 
-  static const String sqlFindSchema =
-      """
+  static const String sqlFindSchema = """
     room.id IS NOT NULL
     AND room.rate IS NOT NULL
     AND room.name IS NOT NULL

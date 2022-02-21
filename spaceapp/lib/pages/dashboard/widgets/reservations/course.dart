@@ -4,11 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:jiffy/jiffy.dart';
-import 'package:spaceapp/constant/base_colors.dart';
+import 'package:xwidgets/xwidgets.dart';
 import 'package:spaceapp/helpers/monitoring.dart';
 import 'package:spaceapp/pages/dashboard/controllers/controller.dart';
 import 'package:spaceapp/pages/dashboard/screens/widgets/widgets.dart';
-import 'package:spaceapp/widgets/dialog.dart';
 
 class CourseReservationItemWidget extends StatelessWidget {
   const CourseReservationItemWidget(this.reservation, {Key? key})
@@ -266,7 +265,7 @@ class CourseReservationItemWidget extends StatelessWidget {
                     style: TextStyle(color: colorSemiText),
                   ),
                   Text(
-                    reservation.group,
+                    reservation.tag,
                     style: const TextStyle(
                       fontWeight: FontWeight.w600,
                       color: colorText,

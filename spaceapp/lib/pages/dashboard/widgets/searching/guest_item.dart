@@ -1,7 +1,7 @@
 import 'package:database_system/database_system.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:spaceapp/constant/base_colors.dart';
+import 'package:xwidgets/xwidgets.dart';
 import 'package:spaceapp/helpers/monitoring.dart';
 import 'package:spaceapp/pages/guest/edit_guest.dart';
 import 'package:spaceapp/pages/dashboard/screens/end_room/end_room.dart';
