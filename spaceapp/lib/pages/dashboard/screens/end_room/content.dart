@@ -46,6 +46,7 @@ class ScreenContentWidget extends StatelessWidget {
             duration: const Duration(milliseconds: 300),
             child: !controller.customPrice.value
                 ? Column(
+                    key: const Key('main price'),
                     children: [
                       dataLabel(
                         i: 1,
@@ -91,6 +92,7 @@ class ScreenContentWidget extends StatelessWidget {
                     ],
                   )
                 : Column(
+                    key: const Key('custom price'),
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [

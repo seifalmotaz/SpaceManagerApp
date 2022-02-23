@@ -14,10 +14,13 @@ CustomScrollView searchingResults(
         padding: const EdgeInsets.symmetric(horizontal: 27),
         sliver: SliverGrid(
           delegate: SliverChildBuilderDelegate(
-            (ctx, i) => GuestItem(
-              searching.guests[i],
-              key: Key(searching.guests[i].guest.id.toString()),
-            ),
+            (ctx, i) {
+              int guestId = searching.guests[i].guest.id;
+              return GuestItem(
+                searching.guests[i],
+                key: guestId == 0 ? GlobalKey() : Key(guestId.toString()),
+              );
+            },
             childCount: searching.guests.value.length,
           ),
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

@@ -37,10 +37,6 @@ class Reservation {
   @FieldSQL(haveDefault: true)
   DateTime? createdDate;
 
-  @boolNullKey
-  @FieldSQL(haveDefault: true)
-  bool? customPaid;
-
   Reservation({
     required this.id,
     required this.timeIn,
@@ -49,7 +45,6 @@ class Reservation {
     required this.tag,
     required this.createdDate,
     this.isCancelled = false,
-    this.customPaid = false,
     this.capacity,
   });
 
@@ -75,14 +70,12 @@ class CourseReservation extends Reservation with ReservationJoins {
     required roomId,
     required tag,
     isCancelled = false,
-    customPaid = false,
     capacity,
   }) : super(
           tag: tag,
           roomId: roomId,
           createdDate: createdDate,
           id: id,
-          customPaid: customPaid,
           timeIn: timeIn,
           timeOut: timeOut,
           isCancelled: isCancelled,
@@ -100,6 +93,14 @@ class GuestReservation extends Reservation with ReservationJoins {
   int guestId;
   double? extraHoursPrice;
 
+  @boolKey
+  @FieldSQL(haveDefault: true)
+  bool customPaid;
+
+  @boolKey
+  @FieldSQL(haveDefault: true)
+  bool isFullpayed;
+
   GuestReservation({
     required this.paidAmount,
     required this.guestId,
@@ -111,14 +112,14 @@ class GuestReservation extends Reservation with ReservationJoins {
     required roomId,
     required tag,
     isCancelled,
-    customPaid,
     capacity,
+    this.customPaid = false,
+    this.isFullpayed = false,
   }) : super(
           tag: tag,
           roomId: roomId,
           createdDate: createdDate,
           id: id,
-          customPaid: customPaid,
           timeIn: timeIn,
           timeOut: timeOut,
           isCancelled: isCancelled,

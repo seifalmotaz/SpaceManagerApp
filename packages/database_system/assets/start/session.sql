@@ -27,9 +27,11 @@ CREATE TABLE room (
 CREATE TABLE reservation (
     id INTEGER NOT NULL PRIMARY KEY,
     tag VARCHAR(200) NOT NULL,
-    capacity INTEGER NOT NULL,
+    
+    capacity INTEGER NULL,
     paid_amount FLOAT NULL,
     extra_hours_price FLOAT NULL,
+    is_fullpayed BOOLEAN DEFAULT FALSE,
     custom_paid BOOLEAN DEFAULT FALSE,
 
     guest_id INTEGER NULL,

@@ -86,8 +86,9 @@ class EndRoomScreenController extends GetxController {
       return;
     }
 
-    if (!priceHourly.value) {
+    if (!priceHourly.value && customPrice.value) {
       totalPrice.value = int.tryParse(string) ?? 0;
+      return;
     } else {
       int? rate = int.tryParse(string);
       if (rate != null) {
@@ -106,19 +107,56 @@ class EndRoomScreenController extends GetxController {
         // get total price
         int _totalPrice = 0;
 
-        if (i < maxMinutes$Room) {
-          _totalPrice = _totalPrice + (rangeTime.inHours * rate);
-        } else {
-          _totalPrice = _totalPrice + ((rangeTime.inHours + 1) * rate);
-        }
-        totalPrice.value = _totalPrice;
-      }
-    }
+        if (sessionValue.reservationId != null) {
+          GuestReservation reservation = await sessionValue
+              .guestReservationData(sessionValue.reservationId!);
 
-    if (sessionValue.reservationId != null) {
-      GuestReservation r =
-          await sessionValue.guestReservationData(sessionValue.reservationId!);
-      totalPrice.value = (totalPrice.value - r.paidAmount).round();
+          DateTimeRange resRange = DateTimeRange(
+            start: reservation.timeIn,
+            end: reservation.timeOut,
+          );
+
+          if (!customPrice.value) {
+            if (reservation.isFullpayed) {
+              totalPrice.value = 0;
+              return;
+            }
+          }
+
+          if ((resRange.duration.inMinutes + maxMinutes$Room) <
+              rangeTime.inMinutes) {
+            int mainHours = resRange.duration.inHours;
+            int extraHours =
+                ((rangeTime.inMinutes - resRange.duration.inMinutes) / 60)
+                    .round();
+            _totalPrice = _totalPrice + (mainHours * rate);
+
+            int _rate = reservation.extraHoursPrice!.toInt();
+            if (i < maxMinutes$Room) {
+              _totalPrice = _totalPrice + (extraHours * _rate);
+            } else {
+              _totalPrice = _totalPrice + ((extraHours + 1) * _rate);
+            }
+          } else {
+            if (i < maxMinutes$Room) {
+              _totalPrice = _totalPrice + (rangeTime.inHours * rate);
+            } else {
+              _totalPrice = _totalPrice + ((rangeTime.inHours + 1) * rate);
+            }
+          }
+
+          int total = (_totalPrice - reservation.paidAmount).round();
+          if (!customPrice.value) totalPrice.value = total < 0 ? 0 : total;
+          if (customPrice.value) totalPrice.value = _totalPrice;
+        } else {
+          if (i < maxMinutes$Room) {
+            _totalPrice = _totalPrice + (rangeTime.inHours * rate);
+          } else {
+            _totalPrice = _totalPrice + ((rangeTime.inHours + 1) * rate);
+          }
+          totalPrice.value = _totalPrice;
+        }
+      }
     }
   }
 }

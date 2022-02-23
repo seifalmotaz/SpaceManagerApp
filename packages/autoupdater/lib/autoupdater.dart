@@ -27,12 +27,23 @@ Future<void> autoUpdater() async {
     duration: const Duration(seconds: 120),
     snackPosition: SnackPosition.BOTTOM,
     borderRadius: 0,
-    onTap: (snack) async {
-      String source = await downloadExe(appVersion);
-      Process.run(source, []);
-      windowManager.setAlwaysOnTop(true);
-      await Future.delayed(const Duration(seconds: 10));
-      exit(0);
-    },
   );
+}
+
+Future<void> updateIt() async {
+  AppVersion appVersion = await getAppVersion();
+  String source = await downloadExe(appVersion.exeUrl);
+  Process.run(source, []);
+  windowManager.setAlwaysOnTop(true);
+  await Future.delayed(const Duration(seconds: 15));
+  exit(0);
+}
+
+Future<void> downgradeIt() async {
+  AppVersion appVersion = await getAppVersion();
+  String source = await downloadExe(appVersion.downgradeUrl);
+  Process.run(source, []);
+  windowManager.setAlwaysOnTop(true);
+  await Future.delayed(const Duration(seconds: 15));
+  exit(0);
 }

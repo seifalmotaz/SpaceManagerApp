@@ -5,11 +5,13 @@ class AppVersion {
 
   /// Last version download link
   final String exeUrl;
+  final String downgradeUrl;
 
   /// is current app is the last version
   final bool isUpdated;
 
-  AppVersion(this.exeUrl, this.isUpdated, this.currentVersion);
+  AppVersion(
+      this.exeUrl, this.downgradeUrl, this.isUpdated, this.currentVersion);
 }
 
 /// Get if current app is updated and get the last version download url
@@ -18,10 +20,11 @@ Future<AppVersion> getAppVersion() async {
   Map<String, dynamic> data = jsonDecode(res.body);
 
   String lastVersion = data['last_version'];
-  String downloadLink = data['download'];
+  String upgradeLink = data['upgrade'];
+  String downgradeLink = data['downgrade'];
 
   if (currentAppVersion == lastVersion) {
-    return AppVersion(downloadLink, true, lastVersion);
+    return AppVersion(upgradeLink, downgradeLink, true, lastVersion);
   }
-  return AppVersion(downloadLink, false, lastVersion);
+  return AppVersion(upgradeLink, downgradeLink, false, lastVersion);
 }

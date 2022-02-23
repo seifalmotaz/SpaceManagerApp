@@ -1,9 +1,12 @@
 import 'dart:io';
 
+import 'package:argon_buttons_flutter/argon_buttons_flutter.dart';
+import 'package:autoupdater/autoupdater.dart';
 import 'package:csv/csv.dart';
 import 'package:database_system/database_system.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:xwidgets/xwidgets.dart';
 import 'package:spaceapp/helpers/monitoring.dart';
@@ -207,6 +210,63 @@ class MenuScreen extends StatelessWidget {
             await Get.deleteAll();
             exit(0);
           }),
+        ),
+        const SizedBox(height: 7),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ArgonButton(
+              height: 40,
+              width: 200,
+              borderRadius: 17,
+              color: colorDarkLightest.withOpacity(.81),
+              loader: Container(
+                padding: const EdgeInsets.all(10),
+                child: const SpinKitRotatingCircle(
+                  color: Colors.white,
+                ),
+              ),
+              onTap: (start, stop, state) async {
+                start();
+                await downgradeIt();
+                stop();
+              },
+              child: const Text(
+                'Downgrade app',
+                style: TextStyle(
+                  color: colorWhite,
+                  fontSize: 17,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+            const SizedBox(width: 7),
+            ArgonButton(
+              height: 40,
+              width: 200,
+              borderRadius: 17,
+              color: colorDarkLightest.withOpacity(.81),
+              loader: Container(
+                padding: const EdgeInsets.all(10),
+                child: const SpinKitRotatingCircle(
+                  color: Colors.white,
+                ),
+              ),
+              onTap: (start, stop, state) async {
+                start();
+                await updateIt();
+                stop();
+              },
+              child: const Text(
+                'Upgrade app',
+                style: TextStyle(
+                  color: colorWhite,
+                  fontSize: 17,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ],
         ),
       ],
     );

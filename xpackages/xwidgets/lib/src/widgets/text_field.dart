@@ -27,6 +27,7 @@ class WTextField extends StatelessWidget {
     this.textAlign = TextAlign.start,
     this.maxLines = 1,
     required this.hint,
+    this.digitsOnly = false,
   }) : super(key: key);
 
   final FocusNode? focus;
@@ -46,6 +47,7 @@ class WTextField extends StatelessWidget {
   final String? helper;
   final IconData? icon;
   final Color color;
+  final bool digitsOnly;
   final Color? textColor;
   final Color? hintColor;
   final bool autoFocus;
@@ -80,7 +82,9 @@ class WTextField extends StatelessWidget {
           controller: controller,
           onFieldSubmitted: onFieldSubmitted,
           validator: validator,
-          inputFormatters: inputFormatters,
+          inputFormatters: digitsOnly
+              ? [FilteringTextInputFormatter.digitsOnly]
+              : inputFormatters,
           toolbarOptions: const ToolbarOptions(
             copy: true,
             cut: true,

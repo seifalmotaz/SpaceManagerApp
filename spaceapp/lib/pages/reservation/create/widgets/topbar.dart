@@ -4,6 +4,8 @@ import 'package:get/get.dart';
 import 'package:xwidgets/xwidgets.dart';
 import 'package:spaceapp/pages/reservation/create/controller.dart';
 
+import '../payout/payout.dart';
+
 const SliverToBoxAdapter paddingFromTopBar =
     SliverToBoxAdapter(child: SizedBox(height: kToolbarHeight * 1.61));
 
@@ -103,7 +105,7 @@ class TopBarWidget extends UIResponsiveless {
                     hintColor: colorWhiteBased2,
                     textAlign: TextAlign.center,
                     color: colorLightBittersweet.withOpacity(.21),
-                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                    digitsOnly: true,
                     contentPadding: const EdgeInsets.symmetric(
                       horizontal: 13,
                       vertical: 13,
@@ -154,7 +156,8 @@ class TopBarWidget extends UIResponsiveless {
                     color: colorWhite,
                     size: 23,
                   ),
-                  onPressed: controller.saveDialog,
+                  onPressed: () =>
+                      Get.dialog(const WDialog(body: PayOutScreen())),
                 ),
               ],
             ),

@@ -1,13 +1,9 @@
-import 'package:argon_buttons_flutter/argon_buttons_flutter.dart';
 import 'package:database_system/database_system.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:jiffy/jiffy.dart';
-import 'package:xwidgets/xwidgets.dart';
 import 'package:spaceapp/constants/settings.dart';
 import 'package:spaceapp/helpers/snacks.dart';
-import 'package:spaceapp/pages/dashboard/controllers/controller.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 class AppointmentGroup {
@@ -216,132 +212,33 @@ class CreateReservationController extends GetxController {
   }
 
   double getPaidAmount() {
-    Room room = rooms.firstWhere((e) => e.id == selectedRoom_);
     double total = 0;
-    double rate = room.rate;
-    for (Appointment app in selectedAppointmentList) {
-      DateTimeRange range =
-          DateTimeRange(start: app.startTime, end: app.endTime);
-      total += rate * range.duration.inHours;
+    for (AppointmentGroup group in appointmentGroups.values) {
+      Room room = rooms.firstWhere((e) => e.id == group.roomId);
+      for (Appointment item in group.appointments) {
+        DateTimeRange range =
+            DateTimeRange(start: item.startTime, end: item.endTime);
+        total += room.rate * range.duration.inHours;
+      }
     }
     return total * reservationPrice;
   }
 
-  double getPaidAmountForAppointment(Appointment app) {
-    Room room = rooms.firstWhere((e) => e.id == selectedRoom_);
-    double rate = room.rate;
+  double getCustomPaidAmount(double rate) {
+    double total = 0;
+    for (AppointmentGroup group in appointmentGroups.values) {
+      for (Appointment item in group.appointments) {
+        DateTimeRange range =
+            DateTimeRange(start: item.startTime, end: item.endTime);
+        total += rate * range.duration.inHours;
+      }
+    }
+    return total * reservationPrice;
+  }
+
+  double getPaidAmountForAppointment(Appointment app, double rate) {
     DateTimeRange range = DateTimeRange(start: app.startTime, end: app.endTime);
     double total = range.duration.inHours * rate;
-    return total * reservationPrice;
-  }
-
-  save(start, stop, state) async {
-    start();
-    // for (AppointmentGroup group in appointmentGroups.values) {
-    //   List<Appointment> list = [for (List i in group.subgroups.values) ...i];
-    //   for (Appointment app in list) {
-    //     try {
-    //       if (guest.value != null) {
-    //         await guestReservationQuery.create(
-    //           timeOut: app.endTime,
-    //           timeIn: app.startTime,
-    //           guestId: guest.value!.id,
-    //           roomId: selectedRoom_!.id,
-    //           tag: group.title,
-    //           paidAmount: getPaidAmountForAppointment(app),
-    //         );
-    //       } else if (course.value != null) {
-    //         await courseReservationQuery.create(
-    //           timeOut: app.endTime,
-    //           timeIn: app.startTime,
-    //           courseId: course.value!.id,
-    //           roomId: selectedRoom_!.id,
-    //           tag: group.title,
-    //         );
-    //       }
-    //     } catch (e, stackTrace) {
-    //       MonitoringApp.error(e, stackTrace);
-    //     }
-    //   }
-    // }
-    stop();
-    Get.back();
-    if (guest.value != null) Get.back();
-    DashboardController.to.toMainPageUpdate();
-  }
-
-  saveDialog() {
-    if (selectedRoom_ == null) {
-      return errorSnack(
-        'Select room',
-        'select room and appointments to save',
-        const Duration(seconds: 1),
-      );
-    } else if (selectedAppointmentList.isEmpty) {
-      return errorSnack(
-        'Select appointments',
-        'select appointments to save',
-        const Duration(seconds: 1),
-      );
-    }
-
-    if (course.value != null) {
-      save(() {}, () {}, ButtonState.Busy);
-      return;
-    }
-
-    Get.dialog(WDialog(
-      body: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text(
-                "Total price:",
-                style: TextStyle(
-                  color: colorWhite,
-                  fontSize: 27,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              Text(
-                "${getPaidAmount()}\$",
-                style: const TextStyle(
-                  color: colorWhite,
-                  fontSize: 33,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 15),
-          ArgonButton(
-            height: 45,
-            width: 400,
-            borderRadius: 13,
-            padding: const EdgeInsets.all(11),
-            child: const Tooltip(
-              message: 'Custom price for the guest',
-              child: Text(
-                "Enter",
-                style: TextStyle(
-                  color: colorWhite,
-                  fontSize: 27,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
-            loader: Container(
-              padding: const EdgeInsets.all(10),
-              child: const SpinKitRotatingCircle(
-                color: Colors.white,
-              ),
-            ),
-            onTap: save,
-          ),
-        ],
-      ),
-    ));
+    return total;
   }
 }

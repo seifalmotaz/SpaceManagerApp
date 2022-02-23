@@ -18,9 +18,6 @@ CourseReservation _$CourseReservationFromJson(Map<String, dynamic> json) =>
       isCancelled: json['is_cancelled'] == null
           ? false
           : DataCompiler.fromDBool(json['is_cancelled'] as int),
-      customPaid: json['custom_paid'] == null
-          ? false
-          : DataCompiler.fromDBoolNull(json['custom_paid'] as int?),
       capacity: json['capacity'],
     );
 
@@ -42,7 +39,6 @@ Map<String, dynamic> _$CourseReservationToJson(CourseReservation instance) {
   writeNotNull('time_in', DataCompiler.toDBDate(instance.timeIn));
   writeNotNull('time_out', DataCompiler.toDBDate(instance.timeOut));
   writeNotNull('created_date', DataCompiler.toDBDateNull(instance.createdDate));
-  writeNotNull('custom_paid', DataCompiler.toDBoolNull(instance.customPaid));
   val['course_id'] = instance.courseId;
   return val;
 }
@@ -59,8 +55,13 @@ GuestReservation _$GuestReservationFromJson(Map<String, dynamic> json) =>
       roomId: json['room_id'],
       tag: json['tag'],
       isCancelled: DataCompiler.fromDBool(json['is_cancelled'] as int),
-      customPaid: DataCompiler.fromDBoolNull(json['custom_paid'] as int?),
       capacity: json['capacity'],
+      customPaid: json['custom_paid'] == null
+          ? false
+          : DataCompiler.fromDBool(json['custom_paid'] as int),
+      isFullpayed: json['is_fullpayed'] == null
+          ? false
+          : DataCompiler.fromDBool(json['is_fullpayed'] as int),
     );
 
 Map<String, dynamic> _$GuestReservationToJson(GuestReservation instance) {
@@ -81,10 +82,11 @@ Map<String, dynamic> _$GuestReservationToJson(GuestReservation instance) {
   writeNotNull('time_in', DataCompiler.toDBDate(instance.timeIn));
   writeNotNull('time_out', DataCompiler.toDBDate(instance.timeOut));
   writeNotNull('created_date', DataCompiler.toDBDateNull(instance.createdDate));
-  writeNotNull('custom_paid', DataCompiler.toDBoolNull(instance.customPaid));
   val['paid_amount'] = instance.paidAmount;
   val['guest_id'] = instance.guestId;
   writeNotNull('extra_hours_price', instance.extraHoursPrice);
+  writeNotNull('custom_paid', DataCompiler.toDBool(instance.customPaid));
+  writeNotNull('is_fullpayed', DataCompiler.toDBool(instance.isFullpayed));
   return val;
 }
 
@@ -105,7 +107,6 @@ class CourseReservationQuery {
     required DateTime timeIn,
     required DateTime timeOut,
     DateTime? createdDate,
-    bool? customPaid,
   }) async =>
       await db.insert('reservation', {
         if (courseId != null) 'course_id': courseId,
@@ -120,7 +121,6 @@ class CourseReservationQuery {
         if (createdDate != null)
           'created_date':
               (createdDate.millisecondsSinceEpoch / 1000).round() as int,
-        if (customPaid != null) 'custom_paid': customPaid ? 1 : 0,
       });
 
   Future<CourseReservation> read(int id) async {
@@ -142,7 +142,6 @@ class CourseReservationQuery {
     DateTime? timeIn,
     DateTime? timeOut,
     DateTime? createdDate,
-    bool? customPaid,
   }) async =>
       await db.update(
         'reservation',
@@ -159,7 +158,6 @@ class CourseReservationQuery {
           if (createdDate != null)
             'created_date':
                 (createdDate.millisecondsSinceEpoch / 1000).round() as int,
-          if (customPaid != null) 'custom_paid': customPaid ? 1 : 0,
         },
         where: 'id = ?',
         whereArgs: [id],
@@ -180,7 +178,6 @@ class CourseReservationQuery {
     DateTime? timeIn,
     DateTime? timeOut,
     DateTime? createdDate,
-    bool? customPaid,
   }) async {
     List<String> searchFields = [];
     if (courseId != null) {
@@ -207,9 +204,6 @@ class CourseReservationQuery {
     if (createdDate != null) {
       searchFields.add("reservation.created_date = ?");
     }
-    if (customPaid != null) {
-      searchFields.add("reservation.custom_paid = ?");
-    }
 
     StringBuffer buf = StringBuffer();
     for (int i = 0; i < searchFields.length; i++) {
@@ -235,7 +229,6 @@ class CourseReservationQuery {
           (timeOut.millisecondsSinceEpoch / 1000).round() as int,
         if (createdDate != null)
           (createdDate.millisecondsSinceEpoch / 1000).round() as int,
-        if (customPaid != null) customPaid ? 1 : 0,
       ],
     );
 
@@ -251,6 +244,8 @@ class GuestReservationQuery {
     required double paidAmount,
     required int guestId,
     double? extraHoursPrice,
+    bool? customPaid,
+    bool? isFullpayed,
     required int roomId,
     required String tag,
     int? capacity,
@@ -258,12 +253,13 @@ class GuestReservationQuery {
     required DateTime timeIn,
     required DateTime timeOut,
     DateTime? createdDate,
-    bool? customPaid,
   }) async =>
       await db.insert('reservation', {
         if (paidAmount != null) 'paid_amount': paidAmount,
         if (guestId != null) 'guest_id': guestId,
         if (extraHoursPrice != null) 'extra_hours_price': extraHoursPrice,
+        if (customPaid != null) 'custom_paid': customPaid ? 1 : 0,
+        if (isFullpayed != null) 'is_fullpayed': isFullpayed ? 1 : 0,
         if (roomId != null) 'room_id': roomId,
         if (tag != null) 'tag': tag,
         if (capacity != null) 'capacity': capacity,
@@ -275,7 +271,6 @@ class GuestReservationQuery {
         if (createdDate != null)
           'created_date':
               (createdDate.millisecondsSinceEpoch / 1000).round() as int,
-        if (customPaid != null) 'custom_paid': customPaid ? 1 : 0,
       });
 
   Future<GuestReservation> read(int id) async {
@@ -292,6 +287,8 @@ class GuestReservationQuery {
     double? paidAmount,
     int? guestId,
     double? extraHoursPrice,
+    bool? customPaid,
+    bool? isFullpayed,
     int? roomId,
     String? tag,
     int? capacity,
@@ -299,7 +296,6 @@ class GuestReservationQuery {
     DateTime? timeIn,
     DateTime? timeOut,
     DateTime? createdDate,
-    bool? customPaid,
   }) async =>
       await db.update(
         'reservation',
@@ -307,6 +303,8 @@ class GuestReservationQuery {
           if (paidAmount != null) 'paid_amount': paidAmount,
           if (guestId != null) 'guest_id': guestId,
           if (extraHoursPrice != null) 'extra_hours_price': extraHoursPrice,
+          if (customPaid != null) 'custom_paid': customPaid ? 1 : 0,
+          if (isFullpayed != null) 'is_fullpayed': isFullpayed ? 1 : 0,
           if (roomId != null) 'room_id': roomId,
           if (tag != null) 'tag': tag,
           if (capacity != null) 'capacity': capacity,
@@ -318,7 +316,6 @@ class GuestReservationQuery {
           if (createdDate != null)
             'created_date':
                 (createdDate.millisecondsSinceEpoch / 1000).round() as int,
-          if (customPaid != null) 'custom_paid': customPaid ? 1 : 0,
         },
         where: 'id = ?',
         whereArgs: [id],
@@ -334,6 +331,8 @@ class GuestReservationQuery {
     double? paidAmount,
     int? guestId,
     double? extraHoursPrice,
+    bool? customPaid,
+    bool? isFullpayed,
     int? roomId,
     String? tag,
     int? capacity,
@@ -341,7 +340,6 @@ class GuestReservationQuery {
     DateTime? timeIn,
     DateTime? timeOut,
     DateTime? createdDate,
-    bool? customPaid,
   }) async {
     List<String> searchFields = [];
     if (paidAmount != null) {
@@ -352,6 +350,12 @@ class GuestReservationQuery {
     }
     if (extraHoursPrice != null) {
       searchFields.add("reservation.extra_hours_price = ?");
+    }
+    if (customPaid != null) {
+      searchFields.add("reservation.custom_paid = ?");
+    }
+    if (isFullpayed != null) {
+      searchFields.add("reservation.is_fullpayed = ?");
     }
     if (roomId != null) {
       searchFields.add("reservation.room_id = ?");
@@ -374,9 +378,6 @@ class GuestReservationQuery {
     if (createdDate != null) {
       searchFields.add("reservation.created_date = ?");
     }
-    if (customPaid != null) {
-      searchFields.add("reservation.custom_paid = ?");
-    }
 
     StringBuffer buf = StringBuffer();
     for (int i = 0; i < searchFields.length; i++) {
@@ -394,6 +395,8 @@ class GuestReservationQuery {
         if (paidAmount != null) paidAmount,
         if (guestId != null) guestId,
         if (extraHoursPrice != null) extraHoursPrice,
+        if (customPaid != null) customPaid ? 1 : 0,
+        if (isFullpayed != null) isFullpayed ? 1 : 0,
         if (roomId != null) roomId,
         if (tag != null) tag,
         if (capacity != null) capacity,
@@ -404,7 +407,6 @@ class GuestReservationQuery {
           (timeOut.millisecondsSinceEpoch / 1000).round() as int,
         if (createdDate != null)
           (createdDate.millisecondsSinceEpoch / 1000).round() as int,
-        if (customPaid != null) customPaid ? 1 : 0,
       ],
     );
 
@@ -464,10 +466,6 @@ extension CourseReservationTable on CourseReservation {
   static String createdDate = 'created_date';
   static String nativeCreatedDate = 'reservation.created_date';
 
-  /// Field data: field ///
-  static String customPaid = 'custom_paid';
-  static String nativeCustomPaid = 'reservation.custom_paid';
-
   static const String sqlSelect = """
     reservation.course_id AS reservation_course_id,
     reservation.id AS reservation_id,
@@ -477,8 +475,7 @@ extension CourseReservationTable on CourseReservation {
     reservation.is_cancelled AS reservation_is_cancelled,
     reservation.time_in AS reservation_time_in,
     reservation.time_out AS reservation_time_out,
-    reservation.created_date AS reservation_created_date,
-    reservation.custom_paid AS reservation_custom_paid
+    reservation.created_date AS reservation_created_date
   """;
 
   static const String sqlFindSchema = """
@@ -501,7 +498,6 @@ extension CourseReservationTable on CourseReservation {
     'time_in',
     'time_out',
     'created_date',
-    'custom_paid',
   ];
 
   static fromJson(Map<String, dynamic> json) =>
@@ -551,6 +547,14 @@ extension GuestReservationTable on GuestReservation {
   static String nativeExtraHoursPrice = 'reservation.extra_hours_price';
 
   /// Field data: field ///
+  static String customPaid = 'custom_paid';
+  static String nativeCustomPaid = 'reservation.custom_paid';
+
+  /// Field data: field ///
+  static String isFullpayed = 'is_fullpayed';
+  static String nativeIsFullpayed = 'reservation.is_fullpayed';
+
+  /// Field data: field ///
   static String id = 'id';
   static String nativeId = 'reservation.id';
 
@@ -582,14 +586,12 @@ extension GuestReservationTable on GuestReservation {
   static String createdDate = 'created_date';
   static String nativeCreatedDate = 'reservation.created_date';
 
-  /// Field data: field ///
-  static String customPaid = 'custom_paid';
-  static String nativeCustomPaid = 'reservation.custom_paid';
-
   static const String sqlSelect = """
     reservation.paid_amount AS reservation_paid_amount,
     reservation.guest_id AS reservation_guest_id,
     reservation.extra_hours_price AS reservation_extra_hours_price,
+    reservation.custom_paid AS reservation_custom_paid,
+    reservation.is_fullpayed AS reservation_is_fullpayed,
     reservation.id AS reservation_id,
     reservation.room_id AS reservation_room_id,
     reservation.tag AS reservation_tag,
@@ -597,13 +599,14 @@ extension GuestReservationTable on GuestReservation {
     reservation.is_cancelled AS reservation_is_cancelled,
     reservation.time_in AS reservation_time_in,
     reservation.time_out AS reservation_time_out,
-    reservation.created_date AS reservation_created_date,
-    reservation.custom_paid AS reservation_custom_paid
+    reservation.created_date AS reservation_created_date
   """;
 
   static const String sqlFindSchema = """
     reservation.paid_amount IS NOT NULL
     AND reservation.guest_id IS NOT NULL
+    AND reservation.custom_paid IS NOT NULL
+    AND reservation.is_fullpayed IS NOT NULL
     AND reservation.id IS NOT NULL
     AND reservation.room_id IS NOT NULL
     AND reservation.tag IS NOT NULL
@@ -616,6 +619,8 @@ extension GuestReservationTable on GuestReservation {
     'paid_amount',
     'guest_id',
     'extra_hours_price',
+    'custom_paid',
+    'is_fullpayed',
     'id',
     'room_id',
     'tag',
@@ -624,7 +629,6 @@ extension GuestReservationTable on GuestReservation {
     'time_in',
     'time_out',
     'created_date',
-    'custom_paid',
   ];
 
   static fromJson(Map<String, dynamic> json) =>
