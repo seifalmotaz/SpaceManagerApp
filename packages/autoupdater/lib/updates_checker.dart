@@ -5,7 +5,7 @@ class AppVersion {
 
   /// Last version download link
   final String exeUrl;
-  final String downgradeUrl;
+  final String? downgradeUrl;
 
   /// is current app is the last version
   final bool isUpdated;
@@ -21,7 +21,7 @@ Future<AppVersion> getAppVersion() async {
 
   String lastVersion = data['last_version'];
   String upgradeLink = data['upgrade'];
-  String downgradeLink = data['downgrade'];
+  String? downgradeLink = data['downgrade'];
 
   if (currentAppVersion == lastVersion) {
     return AppVersion(upgradeLink, downgradeLink, true, lastVersion);

@@ -1,4 +1,7 @@
-part of widgets_group;
+import 'dart:ui';
+
+import 'package:flutter/material.dart';
+import 'package:xwidgets/src/widgets/topbar.dart';
 
 class WScaffold extends StatelessWidget {
   const WScaffold({

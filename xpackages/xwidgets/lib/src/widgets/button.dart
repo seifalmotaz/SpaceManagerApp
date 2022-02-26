@@ -1,4 +1,5 @@
-part of widgets_group;
+import 'package:flutter/material.dart';
+import 'package:xwidgets/xwidgets.dart';
 
 class WButton extends StatelessWidget {
   const WButton({

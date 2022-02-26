@@ -1,6 +1,7 @@
 name: spaceadmin
 description: A new Flutter package project.
 version: 0.0.1
+publish_to: 'none'
 homepage:
 
 environment:
@@ -10,6 +11,16 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  # State management
+  get: ^4.6.1
+  # Widgets
+  argon_buttons_flutter: ^1.1.0
+  flutter_spinkit: ^5.1.0
+  # Helper packages
+  database_system:
+    path: ../packages/database_system/
+  xwidgets:
+    path: ../xpackages/xwidgets/
 
 dev_dependencies:
   flutter_test:

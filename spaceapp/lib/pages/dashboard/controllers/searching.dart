@@ -1,7 +1,7 @@
 import 'package:database_system/database_system.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:spaceapp/helpers/snacks.dart';
+import 'package:xwidgets/xwidgets.dart';
 
 class SearchingController extends GetxController {
   static SearchingController get to => Get.find();

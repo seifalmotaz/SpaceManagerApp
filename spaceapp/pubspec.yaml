@@ -51,6 +51,9 @@ dependencies:
   syncfusion_flutter_datepicker: ^19.4.40
   syncfusion_flutter_core: ^19.4.40
   syncfusion_flutter_calendar: ^19.4.40
+  # Helper packages as pages
+  spaceadmin:
+    path: ../spaceadmin/
   # Helper packages
   database_system:
     path: ../packages/database_system/

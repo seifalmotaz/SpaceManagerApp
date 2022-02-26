@@ -57,9 +57,9 @@ class Guest {
 
   @override
   String toString() {
-    if (name != null) return name!;
-    if (email != null) return email!;
-    if (phone != null) return phone!;
+    if (name != null && name!.isNotEmpty) return name!;
+    if (email != null && email!.isNotEmpty) return email!;
+    if (phone != null && phone!.isNotEmpty) return phone!;
     return 'None';
   }
 

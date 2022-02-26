@@ -8,8 +8,9 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
+import 'package:spaceadmin/admin/panel.dart';
 import 'package:xwidgets/xwidgets.dart';
-import 'package:spaceapp/helpers/monitoring.dart';
+
 import 'package:spaceapp/pages/guest/edit_guest.dart';
 import 'package:spaceapp/pages/guest/login.dart';
 import 'package:spaceapp/services/auth.dart';
@@ -198,18 +199,34 @@ class MenuScreen extends StatelessWidget {
           ],
         ),
         const SizedBox(height: 13),
-        containerButton(
-          'Close app',
-          color: colorBittersweet,
-          onTap: () async => MonitoringApp.errorTrack(() async {
-            await staffSessionQuery.update(
-              id: AuthService.to.guest!.id,
-              timeOut: DateTime.now(),
-            );
-            await DBService.to.db.close();
-            await Get.deleteAll();
-            exit(0);
-          }),
+        Row(
+          children: [
+            Flexible(
+              flex: 2,
+              child: containerButton(
+                'Close app',
+                color: colorBittersweet,
+                onTap: () async => MonitoringApp.errorTrack(() async {
+                  await staffSessionQuery.update(
+                    id: AuthService.to.guest!.id,
+                    timeOut: DateTime.now(),
+                  );
+                  await DBService.to.db.close();
+                  await Get.deleteAll();
+                  exit(0);
+                }),
+              ),
+            ),
+            if (AuthService.to.guest!.isAdmin) const SizedBox(width: 9),
+            if (AuthService.to.guest!.isAdmin)
+              Flexible(
+                child: containerButton(
+                  'Admin panel',
+                  color: colorDarkLightest,
+                  onTap: () => Get.to(() => const AdminPanel()),
+                ),
+              ),
+          ],
         ),
         const SizedBox(height: 7),
         Row(

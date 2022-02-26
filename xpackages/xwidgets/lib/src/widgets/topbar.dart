@@ -1,4 +1,7 @@
-part of widgets_group;
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:xwidgets/src/constant/base_colors.dart';
+import 'package:xwidgets/src/widgets/resposive.dart';
 
 SizedBox topbarPadding = const SizedBox(height: kToolbarHeight * 1.61);
 

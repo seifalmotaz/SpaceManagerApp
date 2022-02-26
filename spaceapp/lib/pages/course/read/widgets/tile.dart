@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:xwidgets/xwidgets.dart';
-import 'package:spaceapp/helpers/snacks.dart';
 
 class ReservationTileWidget extends StatefulWidget {
   const ReservationTileWidget(this.reservation, {Key? key}) : super(key: key);

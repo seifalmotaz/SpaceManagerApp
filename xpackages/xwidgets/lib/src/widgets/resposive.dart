@@ -1,4 +1,4 @@
-part of widgets_group;
+import 'package:flutter/material.dart';
 
 const int largeScreenSize = 1366;
 const int customScreenSize = 1100;

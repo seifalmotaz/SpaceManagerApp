@@ -41,7 +41,7 @@ Future<void> updateIt() async {
 
 Future<void> downgradeIt() async {
   AppVersion appVersion = await getAppVersion();
-  String source = await downloadExe(appVersion.downgradeUrl);
+  String source = await downloadExe(appVersion.downgradeUrl ?? '');
   Process.run(source, []);
   windowManager.setAlwaysOnTop(true);
   await Future.delayed(const Duration(seconds: 15));

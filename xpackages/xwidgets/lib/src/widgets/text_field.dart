@@ -1,4 +1,5 @@
-part of widgets_group;
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class WTextField extends StatelessWidget {
   const WTextField({
@@ -27,6 +28,7 @@ class WTextField extends StatelessWidget {
     this.textAlign = TextAlign.start,
     this.maxLines = 1,
     required this.hint,
+    this.isDense,
     this.digitsOnly = false,
   }) : super(key: key);
 
@@ -53,6 +55,7 @@ class WTextField extends StatelessWidget {
   final bool autoFocus;
   final double? border;
   final bool obscureText;
+  final bool? isDense;
   final TextAlignVertical? textAlignVertical;
   final TextAlign textAlign;
 
@@ -97,7 +100,7 @@ class WTextField extends StatelessWidget {
               (icon == null ? TextAlignVertical.top : TextAlignVertical.center),
           decoration: InputDecoration(
             filled: true,
-            isDense: contentPadding == null ? false : true,
+            isDense: isDense,
             fillColor: color,
             contentPadding: contentPadding ??
                 const EdgeInsets.symmetric(
