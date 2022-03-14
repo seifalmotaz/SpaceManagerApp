@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.14)
 project(spaceapp LANGUAGES CXX)
 
-set(BINARY_NAME "spaceapp")
+set(BINARY_NAME "SpaceManager")
 
 cmake_policy(SET CMP0063 NEW)
 

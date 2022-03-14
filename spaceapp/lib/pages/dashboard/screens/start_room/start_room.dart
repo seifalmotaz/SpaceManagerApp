@@ -78,7 +78,7 @@ class _StartRoomSessionScreenState extends State<StartRoomSessionScreen> {
           nationalId: (nationalId.text).getStringOrNull(),
         );
         _guest = await guestQuery.read(newGuest);
-      } else if (dataEdited) {
+      } else if (dataEdited && guest.id != 0) {
         int newGuest = await guestQuery.update(
           id: guest.id,
           name: (name.text).getStringIfChanged(guest.name),
@@ -87,12 +87,11 @@ class _StartRoomSessionScreenState extends State<StartRoomSessionScreen> {
           nationalId: (nationalId.text).getStringIfChanged(guest.nationalId),
         );
         _guest = await guestQuery.read(newGuest);
-      } else {
+      } else if (!dataEdited && guest.id != 0) {
         _guest = guest;
       }
-
       int session = await roomSessionQuery.create(
-        guestId: guest.id,
+        guestId: _guest.id,
         roomId: roomSelected,
       );
 
@@ -103,10 +102,7 @@ class _StartRoomSessionScreenState extends State<StartRoomSessionScreen> {
         ),
       );
 
-      SearchingController.to.searchingController.text = '';
-      SearchingController.to.guests.value = [];
-      SearchingController.to.searching.value = false;
-      DashboardController.to.shortcutChildFocus.requestFocus();
+      DashboardController.to.toMainPageUpdate();
     } catch (e) {
       codeError(e.toString());
     }

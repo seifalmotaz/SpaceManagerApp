@@ -23,11 +23,10 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController pass = TextEditingController();
 
   submit(
-    Function startLoading,
-    Function stopLoading,
-    ButtonState btnState,
-  ) async {
-    startLoading();
+      [Function? startLoading,
+      Function? stopLoading,
+      ButtonState? btnState]) async {
+    if (startLoading != null) startLoading();
     try {
       List<Guest> guests =
           await guestQuery.find(phone: phone.text, password: pass.text);
@@ -52,7 +51,7 @@ class _LoginPageState extends State<LoginPage> {
         const Duration(minutes: 1),
       );
     }
-    stopLoading();
+    if (stopLoading != null) stopLoading();
   }
 
   @override
@@ -101,7 +100,7 @@ class _LoginPageState extends State<LoginPage> {
                 controller: pass,
                 focus: fpass,
                 obscureText: true,
-                onFieldSubmitted: (string) => fphone.requestFocus(),
+                onFieldSubmitted: (string) => submit(),
               ),
               const SizedBox(height: 13),
               SizedBox(

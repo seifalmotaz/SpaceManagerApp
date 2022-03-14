@@ -185,15 +185,19 @@ class MenuScreen extends StatelessWidget {
               child: containerButton(
                 'Logout',
                 color: colorDarkLightest.withOpacity(.81),
-                onTap: () async => MonitoringApp.errorTrack(() async {
-                  await staffSessionQuery.update(
-                    id: AuthService.to.guest!.id,
-                    timeOut: DateTime.now(),
-                  );
-                  AuthService.to.guestData.value = null;
-                  AuthService.to.sessionData.value = null;
-                  Get.offAll(() => const LoginPage());
-                }),
+                onTap: () async {
+                  try {
+                    await staffSessionQuery.update(
+                      id: AuthService.to.session!.id,
+                      timeOut: DateTime.now(),
+                    );
+                    AuthService.to.guestData.value = null;
+                    AuthService.to.sessionData.value = null;
+                    Get.offAll(() => const LoginPage());
+                  } catch (e) {
+                    codeError(e.toString());
+                  }
+                },
               ),
             ),
           ],
@@ -206,15 +210,19 @@ class MenuScreen extends StatelessWidget {
               child: containerButton(
                 'Close app',
                 color: colorBittersweet,
-                onTap: () async => MonitoringApp.errorTrack(() async {
-                  await staffSessionQuery.update(
-                    id: AuthService.to.guest!.id,
-                    timeOut: DateTime.now(),
-                  );
-                  await DBService.to.db.close();
-                  await Get.deleteAll();
-                  exit(0);
-                }),
+                onTap: () async {
+                  try {
+                    await staffSessionQuery.update(
+                      id: AuthService.to.session!.id,
+                      timeOut: DateTime.now(),
+                    );
+                    await DBService.to.db.close();
+                    await Get.deleteAll();
+                    exit(0);
+                  } catch (e) {
+                    codeError(e.toString());
+                  }
+                },
               ),
             ),
             if (AuthService.to.guest!.isAdmin) const SizedBox(width: 9),

@@ -43,7 +43,7 @@ class DashboardShortcuts extends StatelessWidget {
       child: Shortcuts(
         shortcuts: <LogicalKeySet, Intent>{
           LogicalKeySet(LogicalKeyboardKey.control, LogicalKeyboardKey.keyS):
-              SearchUsersIntent(),
+              SearchUsersIntent()
         },
         child: Actions(
           actions: {SearchUsersIntent: SearchUsersAction()},
