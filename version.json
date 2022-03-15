@@ -1,5 +1,5 @@
 {
-	"last_version": "2.0.0",
-	"upgrade": "https://github.com/seifalmotaz/SpaceManagerApp/releases/download/test-autoupdating/mysetup.exe",
+	"last_version": "2.0.1",
+	"upgrade": "https://github.com/seifalmotaz/SpaceManagerApp/releases/download/v2.0.1/setupapp.exe",
 	"downgrade": null
 }
