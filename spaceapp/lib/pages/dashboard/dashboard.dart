@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:xwidgets/xwidgets.dart';
 import 'package:spaceapp/pages/dashboard/controllers/controller.dart';
 import 'package:spaceapp/pages/dashboard/widgets/content.dart';
+import 'package:spaceapp/widgets/xwidgets.dart';
 
 import 'shortcuts.dart';
 import 'widgets/background.dart';

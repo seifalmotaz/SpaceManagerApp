@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:window_manager/window_manager.dart';
-import 'package:xwidgets/xwidgets.dart';
+import 'package:spaceapp/widgets/xwidgets.dart';
 import 'package:spaceapp/pages/dashboard/controllers/searching.dart';
 
 import 'main.dart';

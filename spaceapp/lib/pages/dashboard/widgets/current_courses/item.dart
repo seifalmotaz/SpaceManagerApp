@@ -4,7 +4,7 @@ import 'package:database_system/database_system.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jiffy/jiffy.dart';
-import 'package:xwidgets/xwidgets.dart';
+import 'package:spaceapp/widgets/xwidgets.dart';
 import 'package:spaceapp/pages/dashboard/controllers/controller.dart';
 import 'package:timeago/timeago.dart' as timeago;
 

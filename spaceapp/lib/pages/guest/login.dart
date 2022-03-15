@@ -3,7 +3,7 @@ import 'package:database_system/database_system.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
-import 'package:xwidgets/xwidgets.dart';
+import 'package:spaceapp/widgets/xwidgets.dart';
 
 import 'package:spaceapp/pages/dashboard/controllers/binding.dart';
 import 'package:spaceapp/pages/dashboard/dashboard.dart';

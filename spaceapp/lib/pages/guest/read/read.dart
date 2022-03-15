@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:xwidgets/xwidgets.dart';
+import 'package:spaceapp/widgets/xwidgets.dart';
 import 'package:spaceapp/pages/guest/read/controller.dart';
 import 'package:spaceapp/pages/guest/read/widgets/export/sessions.dart';
 

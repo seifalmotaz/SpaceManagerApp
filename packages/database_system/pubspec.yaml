@@ -33,12 +33,10 @@ dev_dependencies:
 
 # The following section is specific to Flutter.
 flutter:
-
   # To add assets to your package, add an assets section, like this:
   assets:
-    - assets/start/course.sql
-    - assets/start/guest.sql
-    - assets/start/session.sql
+    - assets/start/
+    - assets/upgrade/
   #
   # For details regarding assets in packages, see
   # https://flutter.dev/assets-and-images/#from-packages

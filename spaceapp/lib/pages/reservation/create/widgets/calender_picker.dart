@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:xwidgets/xwidgets.dart';
+import 'package:spaceapp/widgets/xwidgets.dart';
 
 import 'package:spaceapp/pages/reservation/create/controller.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';

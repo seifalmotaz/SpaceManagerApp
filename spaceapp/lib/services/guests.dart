@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:xwidgets/xwidgets.dart';
+import 'package:spaceapp/widgets/xwidgets.dart';
 
 import 'storage.dart';
 

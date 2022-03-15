@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:jiffy/jiffy.dart';
-import 'package:xwidgets/xwidgets.dart';
+import 'package:spaceapp/widgets/xwidgets.dart';
 
 import 'package:spaceapp/pages/course/read/controller.dart';
 import 'package:spaceapp/pages/course/registration/controller.dart';

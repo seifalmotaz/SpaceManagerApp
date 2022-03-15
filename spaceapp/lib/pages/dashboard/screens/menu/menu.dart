@@ -8,8 +8,8 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
-import 'package:spaceadmin/admin/panel.dart';
-import 'package:xwidgets/xwidgets.dart';
+import 'package:spaceapp/pages/admin/admin/panel.dart';
+import 'package:spaceapp/widgets/xwidgets.dart';
 
 import 'package:spaceapp/pages/guest/edit_guest.dart';
 import 'package:spaceapp/pages/guest/login.dart';

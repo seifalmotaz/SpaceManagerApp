@@ -27,7 +27,7 @@ CustomScrollView searchingResults(
             crossAxisCount: crossAxisCount,
             crossAxisSpacing: 13,
             mainAxisSpacing: 13,
-            mainAxisExtent: 285,
+            mainAxisExtent: 323,
           ),
         ),
       ),

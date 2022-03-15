@@ -6,7 +6,7 @@ import 'package:spaceapp/constants/settings.dart';
 
 import 'package:spaceapp/pages/dashboard/controllers/controller.dart';
 import 'package:spaceapp/pages/dashboard/controllers/searching.dart';
-import 'package:xwidgets/xwidgets.dart';
+import 'package:spaceapp/widgets/xwidgets.dart';
 
 class EndSessionScreenController extends GetxController {
   // calling func

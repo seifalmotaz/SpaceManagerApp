@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:xwidgets/xwidgets.dart';
+import 'package:spaceapp/widgets/xwidgets.dart';
 
 ListTile dataLabel({
   required int i,

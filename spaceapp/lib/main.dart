@@ -3,7 +3,7 @@ import 'package:spaceapp/pages/wrapper.dart';
 import 'package:get/get.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:window_manager/window_manager.dart';
-import 'package:xwidgets/xwidgets.dart';
+import 'package:spaceapp/widgets/xwidgets.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -11,8 +11,8 @@ Future<void> main() async {
 
   await windowManager.ensureInitialized();
   windowManager.waitUntilReadyToShow().then((_) async {
-    await windowManager.setAsFrameless();
-    await windowManager.maximize();
+    // await windowManager.setAsFrameless();
+    // await windowManager.maximize();
     windowManager.show();
   });
 

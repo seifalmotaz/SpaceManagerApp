@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:spaceapp/pages/dashboard/controllers/searching.dart';
-import 'package:xwidgets/xwidgets.dart';
+import 'package:spaceapp/widgets/xwidgets.dart';
 
 import 'current_courses/current_courses.dart';
 import 'reservations/reservations.dart';

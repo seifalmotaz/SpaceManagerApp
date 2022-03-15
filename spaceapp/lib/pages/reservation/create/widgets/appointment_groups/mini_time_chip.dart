@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jiffy/jiffy.dart';
-import 'package:xwidgets/xwidgets.dart';
+import 'package:spaceapp/widgets/xwidgets.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 class MiniTimeChipWidget extends StatelessWidget {

@@ -2,6 +2,10 @@ library database_system;
 
 export 'service.dart';
 //
+export './models/bill/bill.dart';
+export './models/item/item.dart';
+export './models/item_count/item_count.dart';
+//
 export './models/course/course.dart';
 export './models/course_registration/course_registration.dart';
 export './sql/registration.dart';

@@ -1,3 +1,6 @@
+import 'package:database_system/models/bill/bill.dart';
+import 'package:database_system/models/item/item.dart';
+import 'package:database_system/models/item_count/item_count.dart';
 import 'package:database_system/sql/reservation/extra.dart';
 
 import 'service.dart';
@@ -16,6 +19,11 @@ import './models/session/session.dart';
 import 'sql/session/extra.dart';
 
 typedef QueryData = Map<String, dynamic>;
+
+// store
+final BillQuery billQuery = BillQuery(DBService.to.db);
+final ItemQuery itemQuery = ItemQuery(DBService.to.db);
+final ItemCountQuery itemCountQuery = ItemCountQuery(DBService.to.db);
 
 // Guests
 final GuestQuery guestQuery = GuestQuery(DBService.to.db);

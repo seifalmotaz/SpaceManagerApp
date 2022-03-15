@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:xwidgets/xwidgets.dart';
+import 'package:spaceapp/widgets/xwidgets.dart';
 import 'package:spaceapp/pages/course/list/list.dart';
 import 'package:spaceapp/pages/dashboard/controllers/searching.dart';
 import 'package:spaceapp/pages/dashboard/screens/menu/menu.dart';

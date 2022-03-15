@@ -23,10 +23,19 @@ class DBService extends GetxService {
       options: OpenDatabaseOptions(
         onCreate: createSchema,
         readOnly: false,
-        version: 1,
+        version: 2,
+        onUpgrade: upgradeSchema,
       ),
     );
     dbDatabase.value = connect;
+  }
+
+  upgradeSchema(Database db, int oldVersion, int newVersion) async {
+    if (oldVersion == 1) {
+      String sql = await rootBundle
+          .loadString('packages/database_system/assets/upgrade/add_store.sql');
+      await db.execute(sql);
+    }
   }
 
   Future createSchema(Database db, int version) async {

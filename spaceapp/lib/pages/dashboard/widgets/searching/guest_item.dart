@@ -1,7 +1,7 @@
 import 'package:database_system/database_system.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:xwidgets/xwidgets.dart';
+import 'package:spaceapp/widgets/xwidgets.dart';
 
 import 'package:spaceapp/pages/guest/edit_guest.dart';
 import 'package:spaceapp/pages/dashboard/screens/end_room/end_room.dart';
@@ -263,7 +263,6 @@ class _GuestItemState extends State<GuestItem> {
                         flex: 3,
                         child: containerButton(
                           'Reservation',
-                          last: true,
                           onTap: () => Get.dialog(EditGuestScreen(
                             guest: guest,
                             onSave: (_guest) {
@@ -278,7 +277,6 @@ class _GuestItemState extends State<GuestItem> {
                       Flexible(
                         child: containerButton(
                           'Edit',
-                          last: true,
                           color: colorLightBittersweet,
                           onTap: () => Get.dialog(EditGuestScreen(
                             guest: guest,
@@ -290,6 +288,18 @@ class _GuestItemState extends State<GuestItem> {
                         ),
                       ),
                     ],
+                  ),
+                  containerButton(
+                    'Buy item',
+                    last: true,
+                    onTap: () => Get.dialog(EditGuestScreen(
+                      guest: guest,
+                      onSave: (_guest) {
+                        setState(() => guest = _guest);
+                        Get.back();
+                        Get.to(() => CreateReservationPage(_guest, null));
+                      },
+                    )),
                   ),
                 ],
               ),

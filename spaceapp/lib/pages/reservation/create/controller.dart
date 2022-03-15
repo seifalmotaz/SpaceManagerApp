@@ -5,7 +5,7 @@ import 'package:jiffy/jiffy.dart';
 import 'package:spaceapp/constants/settings.dart';
 
 import 'package:syncfusion_flutter_calendar/calendar.dart';
-import 'package:xwidgets/xwidgets.dart';
+import 'package:spaceapp/widgets/xwidgets.dart';
 
 class AppointmentGroup {
   int roomId;
